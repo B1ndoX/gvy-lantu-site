@@ -1,6 +1,6 @@
 # GVY Lantu Site
 
-GitHub Pages site for `lantu.gvyvoyagers.vip`.
+Static site for the GVY blueprint search website. The formal production entry should be deployed through Tencent Cloud EdgeOne Pages / Makers at `lantu.gvyvoyagers.vip`.
 
 ## Local Preview
 
