@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#062b3d" />
+    <meta
+      name="description"
+      content="星际公民蓝图查询工具：搜索武器、舰船组件、单兵装备、制作材料和任务来源。"
+    />
+    <title>星际公民蓝图查询</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./assets/favicon-192.png" />
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260621-6" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="星际公民蓝图查询首页">
+          <span class="brand-mark">
+            <img src="./assets/star-citizen-logo.png" alt="" />
+          </span>
+          <span>
+            <strong>星际公民蓝图查询</strong>
+            <small class="brand-subline">
+              <span>SC BLUEPRINT COMMAND MATRIX</span>
+              <span class="author-line">by: A Yuan</span>
+            </small>
+          </span>
+        </a>
+
+        <form class="search-bar" id="searchForm">
+          <input
+            id="searchInput"
+            name="q"
+            type="search"
+            autocomplete="off"
+            placeholder="输入蓝图、武器、组件、制造商或材料"
+          />
+          <button type="button" id="clearSearch">清空</button>
+        </form>
+
+        <div class="topbar-actions">
+          <a class="fleet-link" href="https://www.gvyvoyagers.vip">舰队官网</a>
+          <span class="filter-count-pill">已筛选 <strong id="filterCount">0</strong></span>
+          <span class="version-pill" id="versionBadge">加载中</span>
+        </div>
+      </header>
+
+      <section class="summary-strip">
+        <div>
+          <span class="summary-label">蓝图索引</span>
+          <strong id="resultTitle">蓝图索引</strong>
+        </div>
+        <div class="sort-group" aria-label="排序">
+          <button type="button" class="sort active" data-sort="relevance">推荐</button>
+          <button type="button" class="sort" data-sort="name">名称</button>
+          <button type="button" class="sort" data-sort="sources">来源</button>
+        </div>
+      </section>
+
+      <section class="filter-board" id="filterModal" aria-label="筛选条件">
+        <header class="filter-head">
+          <h2 id="filterTitle">蓝图筛选</h2>
+          <span class="filter-result-badge">相关蓝图 <strong id="modalResultCount">0</strong> 个</span>
+        </header>
+
+        <div class="filter-body">
+          <section class="filter-group" data-filter-group="category">
+            <h3>类型</h3>
+            <div class="filter-select" id="categoryFilters" data-label="类型筛选"></div>
+          </section>
+
+          <section class="filter-group compact" data-filter-group="grade">
+            <h3>等级</h3>
+            <div class="filter-select" id="gradeFilters" data-label="等级筛选"></div>
+          </section>
+
+          <section class="filter-group" data-filter-group="component-class">
+            <h3>组件类别</h3>
+            <div class="filter-select" id="componentClassFilters" data-label="组件类别筛选"></div>
+          </section>
+
+          <section class="filter-group compact" data-filter-group="manufacturer">
+            <h3>制造商</h3>
+            <div class="filter-select" id="manufacturerFilters" data-label="制造商筛选"></div>
+          </section>
+
+          <section class="filter-group" data-filter-group="material">
+            <h3>材料</h3>
+            <div class="filter-select" id="materialFilters" data-label="材料筛选"></div>
+          </section>
+
+          <section class="filter-group" data-filter-group="mission-type">
+            <h3>任务类型</h3>
+            <div class="filter-select" id="missionTypeFilters" data-label="任务类型筛选"></div>
+          </section>
+
+          <label class="source-toggle">
+            <input id="sourceOnly" type="checkbox" />
+            <span>任务奖励来源</span>
+          </label>
+
+          <button type="button" class="reset-button" id="resetFilters">重置筛选</button>
+        </div>
+      </section>
+
+      <section class="workbench">
+        <section class="results-panel">
+          <div class="results-scroll">
+            <div class="result-head">
+              <span>名称</span>
+              <span>分类 / 制造商 / 规格</span>
+              <span>来源</span>
+            </div>
+            <div class="result-list" id="resultList" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <aside class="detail-panel" id="detailPanel" aria-live="polite"></aside>
+      </section>
+    </main>
+    <div class="hidden" id="statsGrid"></div>
+    <button class="hidden" type="button" id="openFilters">筛选</button>
+    <button class="hidden" type="button" id="closeFilters">关闭</button>
+    <button class="hidden" type="button" id="applyFiltersButton">应用</button>
+
+    <template id="emptyTemplate">
+      <div class="empty-state">
+        <h3>暂无蓝图</h3>
+        <p>无</p>
+      </div>
+    </template>
+
+    <script src="./assets/app.js?v=20260621-6" defer></script>
+  </body>
+</html>
