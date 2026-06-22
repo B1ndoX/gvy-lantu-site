@@ -1,6 +1,12 @@
 # GVY Lantu Site
 
-Static site for the GVY blueprint search website. The formal production entry should be deployed through Tencent Cloud EdgeOne Pages / Makers at `lantu.gvyvoyagers.vip`.
+Static site for the GVY blueprint search website. This is a separate production project from the GVY official site.
+
+The formal production entry should be deployed through Tencent Cloud EdgeOne Pages / Makers at `https://lantu.gvyvoyagers.vip`.
+
+Do not configure GitHub Pages for this repository, and do not point DNS back to `b1ndox.github.io`.
+
+Official fleet website content belongs in the separate `gvy-official-site` project.
 
 ## Local Preview
 
