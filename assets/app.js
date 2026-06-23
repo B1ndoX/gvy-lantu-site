@@ -15,7 +15,9 @@ const state = {
   sort: "relevance",
 };
 
-const DATA_VERSION = "20260623-2";
+const DATA_VERSION = "20260624-search-precompute";
+const SEARCH_INPUT_DELAY_MS = 120;
+let searchInputTimer = 0;
 
 const els = {
   versionBadge: document.querySelector("#versionBadge"),
@@ -490,6 +492,18 @@ function recordSearchText(record) {
   return normalizeSearchText(fields.filter(Boolean).join(" "));
 }
 
+function prepareRecord(record) {
+  return {
+    ...record,
+    _searchText: recordSearchText(record),
+  };
+}
+
+function scheduleSearchApply() {
+  window.clearTimeout(searchInputTimer);
+  searchInputTimer = window.setTimeout(applyFilters, SEARCH_INPUT_DELAY_MS);
+}
+
 function relevanceScore(record) {
   let score = 0;
   if (record.category.id === "ship_component") score += 16;
@@ -727,10 +741,11 @@ function bindEvents() {
 
   els.searchInput.addEventListener("input", (event) => {
     state.query = event.target.value.trim();
-    applyFilters();
+    scheduleSearchApply();
   });
 
   els.clearSearch.addEventListener("click", () => {
+    window.clearTimeout(searchInputTimer);
     els.searchInput.value = "";
     state.query = "";
     applyFilters();
@@ -822,7 +837,7 @@ function applyFilters() {
     if (!materialMatches(record)) return false;
     if (!missionTypeMatches(record)) return false;
     if (state.sourceOnly && !(record.sourceCount > 0)) return false;
-    if (query && !recordSearchText(record).includes(query)) return false;
+    if (query && !(record._searchText || recordSearchText(record)).includes(query)) return false;
     return true;
   });
 
@@ -1028,7 +1043,7 @@ async function boot() {
     if (mineralResponse?.ok) {
       state.mineralLocations = await mineralResponse.json();
     }
-    state.records = state.data.records;
+    state.records = state.data.records.map(prepareRecord);
     els.versionBadge.textContent = state.data.version;
     initFilters();
     bindEvents();
