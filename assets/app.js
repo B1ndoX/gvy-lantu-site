@@ -15,7 +15,7 @@ const state = {
   sort: "relevance",
 };
 
-const DATA_VERSION = "20260621-5";
+const DATA_VERSION = "20260623-2";
 
 const els = {
   versionBadge: document.querySelector("#versionBadge"),

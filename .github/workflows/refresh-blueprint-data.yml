@@ -1,0 +1,61 @@
+name: Refresh blueprint data
+
+on:
+  schedule:
+    # Monday 01:00 Asia/Shanghai, Sunday 17:00 UTC.
+    - cron: "0 17 * * 0"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Refresh even if SCMDB version is unchanged"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gvy-lantu-blueprint-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Refresh data if needed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            python scripts/refresh_blueprint_data.py --force
+          else
+            python scripts/refresh_blueprint_data.py
+          fi
+
+      - name: Upload data backup
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gvy-lantu-data-backup
+          path: .data-backups/
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Commit refreshed data
+        run: |
+          if git diff --quiet; then
+            echo "No blueprint data changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets/app.js data/blueprint-index.json data/mineral-locations.json data/google-translate-cache.json data/flowcld-blueprint-calibration.json data/local-polish-names.json
+          git commit -m "Refresh blueprint data"
+          git push

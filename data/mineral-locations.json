@@ -6,7 +6,7 @@
     "signalSource": "Star Citizen Mining Signals spreadsheet",
     "locationSignalSource": "https://sg-mining-finder.pages.dev/",
     "signalUpdatedAt": "2026-06-21",
-    "retrievedAt": "2026-06-21T06:18:21.160800+00:00",
+    "retrievedAt": "2026-06-23T12:03:39.241832+00:00",
     "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
   },
   "materials": {
