@@ -1279,7 +1279,34 @@ input:focus {
   }
 
   .summary-strip {
-    min-height: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 74px;
+    padding: 10px 16px 12px;
+    justify-items: center;
+    gap: 10px;
+  }
+
+  .summary-strip > div:first-child {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .summary-label,
+  .summary-strip strong {
+    white-space: nowrap;
+  }
+
+  .summary-strip strong {
+    margin-left: 0;
+    font-size: 22px;
+  }
+
+  .sort-group {
+    justify-content: center;
   }
 
   .filter-body,
