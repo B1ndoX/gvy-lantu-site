@@ -15,7 +15,7 @@ const state = {
   sort: "relevance",
 };
 
-const DATA_VERSION = "20260628-4-9-0-ptu-12118066";
+const DATA_VERSION = "20260704-4-9-0-ptu-12148226";
 const SEARCH_INPUT_DELAY_MS = 120;
 let searchInputTimer = 0;
 

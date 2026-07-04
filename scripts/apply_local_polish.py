@@ -511,6 +511,7 @@ def polish_machine_text(text: str) -> str:
         "卡斯塔克阿姆斯": "卡斯塔克武器",
         "骑士桥武器公司": "骑士桥武器",
         "国民生产总值": "GNP",
+        "闪电电源有限公司": "闪电动力",
         "遗嘱操作": "WillsOp",
         "壳牌": "外壳",
         "桶": "炮管",
@@ -625,7 +626,11 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
         translated_blob = " ".join(
             [
                 str(zh.get("name") or ""),
+                str(zh.get("type") or ""),
+                str(zh.get("subtype") or ""),
+                str(zh.get("gear") or ""),
                 str(zh.get("manufacturer") or ""),
+                " ".join(str(value) for value in (stats.get("zh") or {}).values()),
                 " ".join(str(material.get("nameZh") or "") for material in record.get("materials") or []),
                 str((record.get("flowcld") or {}).get("itemClassCn") or ""),
                 " ".join(str(value) for value in (record.get("flowcld") or {}).get("rewardMissionTypesCn") or []),

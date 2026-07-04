@@ -22,7 +22,8 @@ APP_JS = ROOT / "assets" / "app.js"
 INDEX_HTML = ROOT / "index.html"
 BACKUP_DIR = ROOT / ".data-backups"
 SCMDB_VERSIONS_URL = "https://scmdb.net/data/versions.json"
-OFFICIAL_LOCALIZATION_SOURCE = "sc-spectrum-qq-bot/assets/localization/starcitizen"
+OFFICIAL_LOCALIZATION_ASSETS = DATA_DIR / "official-localization"
+OFFICIAL_LOCALIZATION_SOURCE = "data/official-localization/localization/starcitizen"
 BACKUP_RETENTION_DAYS = 14
 
 
@@ -144,12 +145,15 @@ def validate_index(path: Path, expected_version: str) -> None:
     index = load_json(path, {})
     records = index.get("records") or []
     counts = index.get("counts") or {}
+    localization = index.get("localization") or {}
     if index.get("version") != expected_version:
         raise RuntimeError(f"generated version {index.get('version')} does not match latest {expected_version}")
     if not records:
         raise RuntimeError("generated blueprint index has no records")
     if counts.get("blueprints") != len(records):
         raise RuntimeError("blueprint count does not match records length")
+    if int(localization.get("starCitizenLocalizationCount") or 0) <= 0:
+        raise RuntimeError("official Star Citizen localization was not applied")
 
 
 def refresh(force: bool) -> bool:
@@ -199,6 +203,8 @@ def refresh(force: bool) -> bool:
                 "scripts/apply_local_polish.py",
                 "--index",
                 str(index_path),
+                "--bot-assets",
+                str(OFFICIAL_LOCALIZATION_ASSETS),
                 "--local-names",
                 str(local_names),
                 "--flowcld-calibration",
