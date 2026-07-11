@@ -8,11 +8,18 @@
       name="description"
       content="星际公民蓝图查询工具：搜索武器、舰船组件、单兵装备、制作材料和任务来源。"
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lantu.gvyvoyagers.vip/" />
+    <meta property="og:title" content="星际公民蓝图查询" />
+    <meta property="og:description" content="搜索武器、舰船组件、单兵装备、制作材料和任务来源。" />
+    <meta property="og:image" content="https://lantu.gvyvoyagers.vip/assets/favicon-192.png" />
+    <meta name="twitter:card" content="summary" />
     <title>星际公民蓝图查询</title>
+    <link rel="canonical" href="https://lantu.gvyvoyagers.vip/" />
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/favicon-192.png" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260623-1" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260712-audit-fixes" />
   </head>
   <body>
     <main class="app-shell">
@@ -51,12 +58,12 @@
       <section class="summary-strip">
         <div>
           <span class="summary-label">蓝图索引</span>
-          <strong id="resultTitle">蓝图索引</strong>
+          <strong id="resultTitle" aria-live="polite">蓝图索引</strong>
         </div>
         <div class="sort-group" aria-label="排序">
-          <button type="button" class="sort active" data-sort="relevance">推荐</button>
-          <button type="button" class="sort" data-sort="name">名称</button>
-          <button type="button" class="sort" data-sort="sources">来源</button>
+          <button type="button" class="sort active" data-sort="relevance" aria-pressed="true">推荐</button>
+          <button type="button" class="sort" data-sort="name" aria-pressed="false">名称</button>
+          <button type="button" class="sort" data-sort="sources" aria-pressed="false">来源</button>
         </div>
       </section>
 
@@ -110,11 +117,11 @@
         <section class="results-panel">
           <div class="results-scroll">
             <div class="result-head">
-              <span>名称</span>
-              <span>分类 / 制造商 / 规格</span>
+              <span aria-hidden="true"></span>
+              <span>名称 / 分类 / 制造商 / 规格</span>
               <span>来源</span>
             </div>
-            <div class="result-list" id="resultList" aria-live="polite"></div>
+            <div class="result-list" id="resultList"></div>
           </div>
         </section>
 
@@ -128,11 +135,6 @@
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">陕ICP备2026017597号-1</a>
       </footer>
     </main>
-    <div class="hidden" id="statsGrid"></div>
-    <button class="hidden" type="button" id="openFilters">筛选</button>
-    <button class="hidden" type="button" id="closeFilters">关闭</button>
-    <button class="hidden" type="button" id="applyFiltersButton">应用</button>
-
     <template id="emptyTemplate">
       <div class="empty-state">
         <h3>暂无蓝图</h3>
@@ -140,6 +142,6 @@
       </div>
     </template>
 
-    <script src="./assets/app.js?v=20260704-4-9-0-ptu-12148226" defer></script>
+    <script src="./assets/app.js?v=20260712-4-9-0-ptu-12148226" defer></script>
   </body>
 </html>

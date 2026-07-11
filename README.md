@@ -11,14 +11,15 @@ Official fleet website content belongs in the separate `gvy-official-site` proje
 ## Local Preview
 
 ```bash
-python3 -m http.server 8002
+npm run build
+python3 -m http.server 8002 --directory dist
 ```
 
-Open `http://127.0.0.1:8002/` from this directory.
+Open `http://127.0.0.1:8002/`.
 
 ## Build
 
-No build step. The repository root is the publish directory.
+`npm run build` creates a production-only `dist/` directory. `edgeone.json` configures Makers to publish that directory so refresh scripts, localization sources, caches, and repository documentation are not exposed as site files.
 
 ## Data Refresh
 

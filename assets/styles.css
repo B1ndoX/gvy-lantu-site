@@ -679,7 +679,7 @@ input:focus {
   top: -12px;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(210px, 1fr) minmax(210px, 0.82fr) 78px;
+  grid-template-columns: 12px minmax(0, 1fr) 78px;
   gap: 8px;
   align-items: center;
   min-height: 32px;
@@ -700,7 +700,7 @@ input:focus {
 
 .result-card {
   display: grid;
-  grid-template-columns: 12px minmax(190px, 1fr) 78px;
+  grid-template-columns: 12px minmax(0, 1fr) 78px;
   gap: 10px;
   align-items: center;
   min-height: 54px;
@@ -794,6 +794,37 @@ input:focus {
   color: var(--muted-soft);
   border-color: rgba(113, 220, 255, 0.16);
   background: rgba(7, 20, 32, 0.34);
+}
+
+.load-more-results,
+.retry-load {
+  min-height: 42px;
+  border: 1px solid rgba(126, 221, 242, 0.32);
+  border-radius: 12px;
+  color: var(--cyan);
+  background: rgba(12, 38, 56, 0.72);
+  font: inherit;
+  font-weight: 780;
+  cursor: pointer;
+}
+
+.load-more-results {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.load-more-results:hover,
+.load-more-results:focus-visible,
+.retry-load:hover,
+.retry-load:focus-visible {
+  border-color: rgba(255, 196, 104, 0.58);
+  color: var(--orange);
+  background: rgba(18, 47, 68, 0.9);
+}
+
+.retry-load {
+  margin-top: 14px;
+  padding: 0 18px;
 }
 
 .detail-head {
@@ -1360,12 +1391,9 @@ input:focus {
     max-height: 220px;
   }
 
-  .result-head {
-    grid-template-columns: minmax(150px, 1fr) minmax(160px, 0.8fr) 66px;
-  }
-
+  .result-head,
   .result-card {
-    grid-template-columns: 10px minmax(150px, 1fr) 66px;
+    grid-template-columns: 10px minmax(0, 1fr) 66px;
   }
 
   .spec-grid {

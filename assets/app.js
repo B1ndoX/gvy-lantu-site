@@ -13,10 +13,12 @@ const state = {
   query: "",
   sourceOnly: false,
   sort: "relevance",
+  visibleResults: 0,
 };
 
-const DATA_VERSION = "20260704-4-9-0-ptu-12148226";
+const DATA_VERSION = "20260712-4-9-0-ptu-12148226";
 const SEARCH_INPUT_DELAY_MS = 120;
+const RESULT_BATCH_SIZE = 140;
 let searchInputTimer = 0;
 
 const els = {
@@ -24,10 +26,6 @@ const els = {
   searchForm: document.querySelector("#searchForm"),
   searchInput: document.querySelector("#searchInput"),
   clearSearch: document.querySelector("#clearSearch"),
-  openFilters: document.querySelector("#openFilters"),
-  closeFilters: document.querySelector("#closeFilters"),
-  applyFiltersButton: document.querySelector("#applyFiltersButton"),
-  filterModal: document.querySelector("#filterModal"),
   filterCount: document.querySelector("#filterCount"),
   modalResultCount: document.querySelector("#modalResultCount"),
   categoryFilters: document.querySelector("#categoryFilters"),
@@ -38,7 +36,6 @@ const els = {
   missionTypeFilters: document.querySelector("#missionTypeFilters"),
   sourceOnly: document.querySelector("#sourceOnly"),
   resetFilters: document.querySelector("#resetFilters"),
-  statsGrid: document.querySelector("#statsGrid"),
   resultTitle: document.querySelector("#resultTitle"),
   resultList: document.querySelector("#resultList"),
   detailPanel: document.querySelector("#detailPanel"),
@@ -454,8 +451,12 @@ function recordMissionTypes(record) {
 function recordSearchText(record) {
   const materials = getAllMaterials(record).flatMap((item) => [item.name, item.nameZh, materialZhName(item), materialName(item)]);
   const missionTypes = recordMissionTypes(record).flatMap((type) => [type.name, type.label]);
-  const missionFields = (record.sources || []).flatMap((source) =>
-    (source.missions || []).flatMap((mission) => [
+  const sourceFields = (record.sources || []).flatMap((source) => [
+    source.poolName,
+    source.poolNameZh,
+    source.poolSource,
+    source.poolSourceZh,
+    ...(source.missions || []).flatMap((mission) => [
       mission.title,
       mission.titleZh,
       mission.faction,
@@ -464,7 +465,7 @@ function recordSearchText(record) {
       mission.categoryZh,
       ...(mission.systems || []),
     ]),
-  );
+  ]);
   const fields = [
     record.name,
     recordName(record),
@@ -487,7 +488,7 @@ function recordSearchText(record) {
     recordComponentClass(record),
     ...materials,
     ...missionTypes,
-    ...missionFields,
+    ...sourceFields,
   ];
   return normalizeSearchText(fields.filter(Boolean).join(" "));
 }
@@ -518,7 +519,8 @@ function relevanceScore(record) {
 function optionTag(value, label, count, activeValue, triggerLabel = label) {
   const suffix = count === undefined ? "" : `（${formatNumber(count)}）`;
   const display = `${label}${suffix}`;
-  return `<button type="button" class="filter-option${value === activeValue ? " active" : ""}" data-value="${escapeHtml(value)}" data-trigger-label="${escapeHtml(triggerLabel)}" title="${escapeHtml(display)}">${escapeHtml(display)}</button>`;
+  const selected = value === activeValue;
+  return `<button type="button" role="option" aria-selected="${selected}" class="filter-option${selected ? " active" : ""}" data-value="${escapeHtml(value)}" data-trigger-label="${escapeHtml(triggerLabel)}" title="${escapeHtml(display)}">${escapeHtml(display)}</button>`;
 }
 
 function selectedOptionLabel(container, value) {
@@ -548,7 +550,9 @@ function closeDropdowns(except = null) {
 function setSelectValue(container, value) {
   container.dataset.value = value;
   container.querySelectorAll(".filter-option").forEach((option) => {
-    option.classList.toggle("active", option.dataset.value === value);
+    const selected = option.dataset.value === value;
+    option.classList.toggle("active", selected);
+    option.setAttribute("aria-selected", String(selected));
   });
   const label = selectedOptionLabel(container, value);
   const triggerLabel = container.querySelector(".filter-trigger span");
@@ -677,23 +681,6 @@ function initFilters() {
     .join(""), state.missionType);
 
   syncComponentClassFilter();
-
-  els.statsGrid.innerHTML = [
-    ["蓝图总数", state.data.counts.blueprints],
-    ["任务来源", state.data.counts.rewardPools],
-    ["中文条目", state.data.localization?.flowcldMetadataCount || state.data.localization?.flowcldCalibrationCount || 0],
-    ["舰船组件", state.data.counts.categories.ship_component || 0],
-  ]
-    .map(([label, value]) => `<div class="stat"><strong>${formatNumber(value)}</strong><span>${label}</span></div>`)
-    .join("");
-}
-
-function openFilterModal() {
-  els.filterModal.scrollIntoView({ block: "nearest" });
-}
-
-function closeFilterModal() {
-  els.filterModal.scrollIntoView({ block: "nearest" });
 }
 
 function resetFilters() {
@@ -734,6 +721,36 @@ function bindFilterSelect(select, key) {
     if (key === "category") syncComponentClassFilter();
     applyFilters();
   });
+
+  select.addEventListener("keydown", (event) => {
+    const options = [...select.querySelectorAll(".filter-option")];
+    const currentIndex = options.indexOf(document.activeElement);
+
+    if (event.key === "Escape") {
+      closeDropdowns();
+      select.querySelector(".filter-trigger")?.focus();
+      return;
+    }
+
+    if (event.target.closest(".filter-trigger") && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      event.preventDefault();
+      closeDropdowns(select);
+      select.classList.add("open");
+      select.querySelector(".filter-trigger")?.setAttribute("aria-expanded", "true");
+      const selectedIndex = options.findIndex((option) => option.getAttribute("aria-selected") === "true");
+      options[Math.max(0, selectedIndex)]?.focus();
+      return;
+    }
+
+    if (currentIndex < 0 || !["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const nextIndex = event.key === "Home"
+      ? 0
+      : event.key === "End"
+        ? options.length - 1
+        : (currentIndex + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
+    options[nextIndex]?.focus();
+  });
 }
 
 function bindEvents() {
@@ -763,14 +780,7 @@ function bindEvents() {
     applyFilters();
   });
 
-  els.openFilters.addEventListener("click", openFilterModal);
-  els.closeFilters.addEventListener("click", closeFilterModal);
-  els.applyFiltersButton.addEventListener("click", closeFilterModal);
   els.resetFilters.addEventListener("click", resetFilters);
-
-  els.filterModal.addEventListener("click", (event) => {
-    if (event.target === els.filterModal) return;
-  });
 
   document.addEventListener("click", (event) => {
     if (event.target.closest(".filter-select")) return;
@@ -780,19 +790,29 @@ function bindEvents() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeDropdowns();
-      closeFilterModal();
     }
   });
 
   document.querySelectorAll(".sort").forEach((button) => {
     button.addEventListener("click", () => {
       state.sort = button.dataset.sort;
-      document.querySelectorAll(".sort").forEach((item) => item.classList.toggle("active", item.dataset.sort === state.sort));
+      document.querySelectorAll(".sort").forEach((item) => {
+        const active = item.dataset.sort === state.sort;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
       applyFilters();
     });
   });
 
   els.resultList.addEventListener("click", (event) => {
+    const loadMore = event.target.closest("[data-load-more]");
+    if (loadMore) {
+      state.visibleResults = Math.min(state.filtered.length, state.visibleResults + RESULT_BATCH_SIZE);
+      renderResults();
+      return;
+    }
+
     const card = event.target.closest(".result-card");
     if (!card) return;
     selectRecord(card.dataset.id);
@@ -850,6 +870,7 @@ function applyFilters() {
   if (!state.filtered.some((record) => record.id === state.selectedId)) {
     state.selectedId = state.filtered[0]?.id || null;
   }
+  state.visibleResults = Math.min(RESULT_BATCH_SIZE, state.filtered.length);
 
   renderResults();
   renderDetail();
@@ -875,8 +896,8 @@ function renderResults() {
     return;
   }
 
-  els.resultList.innerHTML = state.filtered
-    .slice(0, 140)
+  const visibleRecords = state.filtered.slice(0, state.visibleResults);
+  const cards = visibleRecords
     .map((record) => {
       const sourceLabel = record.sourceCount > 0 ? "任务奖励" : "无任务来源";
       const size = sizeLabel(record.stats.size);
@@ -886,7 +907,7 @@ function renderResults() {
         ? [record.category.label, recordComponentType(record), recordManufacturer(record), componentClass, size, grade]
         : [record.category.label, recordManufacturer(record), recordSubtype(record), size, grade];
       return `
-        <button class="result-card ${escapeHtml(record.category.id)}${record.id === state.selectedId ? " active" : ""}" type="button" data-id="${escapeHtml(record.id)}">
+        <button class="result-card ${escapeHtml(record.category.id)}${record.id === state.selectedId ? " active" : ""}" type="button" data-id="${escapeHtml(record.id)}" aria-current="${record.id === state.selectedId ? "true" : "false"}">
           <span class="row-dot"></span>
           <span class="row-main">
             <strong>${escapeHtml(recordName(record))}</strong>
@@ -897,11 +918,20 @@ function renderResults() {
       `;
     })
     .join("");
+
+  const loadMore = state.visibleResults < state.filtered.length
+    ? `<button class="load-more-results" type="button" data-load-more>继续加载 <strong>${formatNumber(state.visibleResults)}</strong> / ${formatNumber(state.filtered.length)}</button>`
+    : "";
+  els.resultList.innerHTML = cards + loadMore;
 }
 
 function selectRecord(id) {
   state.selectedId = id;
-  renderResults();
+  els.resultList.querySelectorAll(".result-card").forEach((card) => {
+    const active = card.dataset.id === id;
+    card.classList.toggle("active", active);
+    card.setAttribute("aria-current", String(active));
+  });
   renderDetail();
 }
 
@@ -1040,8 +1070,13 @@ async function boot() {
     ]);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     state.data = await response.json();
+    if (!Array.isArray(state.data.records)) throw new Error("blueprint-index.json 缺少 records 数组");
     if (mineralResponse?.ok) {
-      state.mineralLocations = await mineralResponse.json();
+      try {
+        state.mineralLocations = await mineralResponse.json();
+      } catch (error) {
+        console.warn("矿点数据解析失败，继续加载蓝图索引。", error);
+      }
     }
     state.records = state.data.records.map(prepareRecord);
     els.versionBadge.textContent = state.data.version;
@@ -1049,12 +1084,15 @@ async function boot() {
     bindEvents();
     applyFilters();
   } catch (error) {
+    console.error("蓝图数据加载失败。", error);
     els.resultList.innerHTML = `
       <div class="empty-state">
         <h3>加载失败</h3>
-        <p>暂无数据</p>
+        <p>请检查网络后重试。</p>
+        <button class="retry-load" type="button" data-retry-load>重新加载</button>
       </div>
     `;
+    els.resultList.querySelector("[data-retry-load]")?.addEventListener("click", boot, { once: true });
   }
 }
 

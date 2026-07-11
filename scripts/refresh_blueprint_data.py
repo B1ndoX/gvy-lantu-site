@@ -25,6 +25,13 @@ SCMDB_VERSIONS_URL = "https://scmdb.net/data/versions.json"
 OFFICIAL_LOCALIZATION_ASSETS = DATA_DIR / "official-localization"
 OFFICIAL_LOCALIZATION_SOURCE = "data/official-localization/localization/starcitizen"
 BACKUP_RETENTION_DAYS = 14
+PUBLIC_RECORD_FIELDS_TO_REMOVE = {
+    "search",
+    "materials",
+    "productEntityClass",
+    "hasKnownIssue",
+    "tag",
+}
 
 
 def load_json(path: Path, default: Any) -> Any:
@@ -141,6 +148,20 @@ def annotate_localization_metadata(index_path: Path) -> None:
     write_json_compact(index_path, index)
 
 
+def compact_public_index(index_path: Path) -> int:
+    """Remove pipeline-only fields after localization has finished."""
+    index = load_json(index_path, {})
+    removed = 0
+    for record in index.get("records") or []:
+        for field in PUBLIC_RECORD_FIELDS_TO_REMOVE:
+            if field in record:
+                record.pop(field)
+                removed += 1
+    if removed:
+        write_json_compact(index_path, index)
+    return removed
+
+
 def validate_index(path: Path, expected_version: str) -> None:
     index = load_json(path, {})
     records = index.get("records") or []
@@ -163,9 +184,13 @@ def refresh(force: bool) -> bool:
     print(f"current SCMDB version: {current_version or 'none'}")
     print(f"latest SCMDB version:  {latest_version}")
     if current_version == latest_version and not force:
-        print("SCMDB version unchanged; keeping existing data cache.")
+        removed = compact_public_index(DATA_DIR / "blueprint-index.json")
+        if removed:
+            print(f"SCMDB version unchanged; removed {removed} pipeline-only fields from the public index.")
+        else:
+            print("SCMDB version unchanged; keeping existing data cache.")
         prune_old_backups(datetime.now(timezone.utc))
-        return False
+        return removed > 0
 
     with tempfile.TemporaryDirectory(prefix="gvy-lantu-refresh-") as tmp_name:
         tmp = Path(tmp_name)
@@ -212,6 +237,7 @@ def refresh(force: bool) -> bool:
             ]
         )
         annotate_localization_metadata(index_path)
+        compact_public_index(index_path)
         validate_index(index_path, latest_version)
 
         backup_current_data(current_version or "none", datetime.now(timezone.utc))
