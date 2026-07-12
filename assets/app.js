@@ -16,7 +16,7 @@ const state = {
   visibleResults: 0,
 };
 
-const DATA_VERSION = "20260712-4-9-0-ptu-12148226";
+const DATA_VERSION = "20260712-4-9-0-ptu-12206539";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
 let searchInputTimer = 0;
