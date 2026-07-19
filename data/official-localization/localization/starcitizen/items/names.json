@@ -1,4 +1,296 @@
 {
+  "Item_NameConstellation_Paint_FW2955_Grey_Black_Red_Camo": {
+    "chinese": "星座 夜影涂装",
+    "english": "Constellation Nightbreak Livery"
+  },
+  "Item_NameHornet_F7CR_Mk2_Paint_Green_Orange": {
+    "chinese": "大黄蜂 Mk II 绿蕨涂装",
+    "english": "Hornet Mk II Bracken Livery"
+  },
+  "Item_NameHornet_F7CS_Mk2_Paint_Black_Grey": {
+    "chinese": "大黄蜂 Mk II 铁匠涂装",
+    "english": "Hornet Mk II Blacksmith Livery"
+  },
+  "Item_NameHornet_F7CS_Mk2_Paint_Green_Gold": {
+    "chinese": "大黄蜂 Mk II 王权涂装",
+    "english": "Hornet Mk II Regalia Livery"
+  },
+  "Item_NameSTOR_opencontainer_1SCU": {
+    "chinese": "万可存 1 SCU 自助储存集装箱",
+    "english": "Stor*All 1 SCU Self-Storage Container"
+  },
+  "Item_NameSTOR_opencontainer_2SCU": {
+    "chinese": "万可存 2 SCU 自助储存集装箱",
+    "english": "Stor*All 2 SCU Self-Storage Container"
+  },
+  "Item_NameSTOR_opencontainer_4SCU": {
+    "chinese": "万可存 4 SCU 自助储存集装箱",
+    "english": "Stor*All 4 SCU Self-Storage Container"
+  },
+  "Item_NameSTOR_opencontainer_8SCU": {
+    "chinese": "万可存 8 SCU 自助储存集装箱",
+    "english": "Stor*All 8 SCU Self-Storage Container"
+  },
+  "Item_NameSyulen_Paint_chuia_BlueGold": {
+    "chinese": "速伦 翠雅涂装",
+    "english": "Syulen Chui'a Livery"
+  },
+  "Item_NameSyulen_Paint_taomoa_BlackBronze": {
+    "chinese": "速伦 涛墨涂装",
+    "english": "Syulen Tao'moa Livery"
+  },
+  "Item_NameSyulen_Paint_thlun_PurpleBronze": {
+    "chinese": "速伦 思魂涂装",
+    "english": "Syulen Thlun Livery"
+  },
+  "Item_Name_Container_CryoPod_01": {
+    "chinese": "冷冻舱",
+    "english": "CryoPod"
+  },
+  "Item_Name_nvy_flightsuit_light_core_01_01_01": {
+    "chinese": "太阳-III 胸甲 飞行员",
+    "english": "Sol-III Core Aviator"
+  },
+  "Item_Name_nvy_flightsuit_light_core_01_02_01": {
+    "chinese": "太阳-III 胸甲 投弹手",
+    "english": "Sol-III Core Bombardier"
+  },
+  "Item_Name_vgl_advocacy_undersuit_base_01": {
+    "chinese": "守卫 基底服",
+    "english": "Guardian Undersuit"
+  },
+  "Item_Namenvtc_optics_holo_x1_s1_LAMP": {
+    "chinese": "伽马 LL (1倍全息)",
+    "english": "Gamma LL (1x Holographic)"
+  },
+  "Item_Namenvtc_optics_holo_x2_s1_LAMP": {
+    "chinese": "伽马 Duo LL (2倍全息)",
+    "english": "Gamma Duo LL (2x Holographic)"
+  },
+  "Item_Namenvtc_optics_holo_x3_s1_LAMP": {
+    "chinese": "伽马 Plus LL (3倍全息)",
+    "english": "Gamma Plus LL (3x Holographic)"
+  },
+  "Item_Namenvtc_optics_rdot_x1_s1_LAMP": {
+    "chinese": "德尔塔 LL (1倍红点)",
+    "english": "Delta LL (1x Reflex)"
+  },
+  "Item_Namenvtc_optics_tsco_x4_s2_LAMP": {
+    "chinese": "陶 Plus LL (4倍光学)",
+    "english": "Tau Plus LL (4x Telescopic)"
+  },
+  "Item_Namenvtc_optics_tsco_x8_s3_LAMP": {
+    "chinese": "希塔 Pro LL (8倍光学)",
+    "english": "Theta Pro LL (8x Telescopic)"
+  },
+  "item_Mining_Consumable_Brandt": {
+    "chinese": "布兰特 模组",
+    "english": "Brandt"
+  },
+  "item_Mining_Consumable_Forel": {
+    "chinese": "羊皮纸 模组",
+    "english": "Forel"
+  },
+  "item_Mining_Consumable_Lifeline": {
+    "chinese": "生命线 模组",
+    "english": "Lifeline"
+  },
+  "item_Mining_Consumable_Optimum": {
+    "chinese": "顶胜 模组",
+    "english": "Optimum"
+  },
+  "item_Mining_Consumable_Rime": {
+    "chinese": "白霜 模组",
+    "english": "Rime"
+  },
+  "item_Mining_Consumable_Stampede": {
+    "chinese": "热潮 模组",
+    "english": "Stampede"
+  },
+  "item_Mining_Consumable_Surge": {
+    "chinese": "电涌 模组",
+    "english": "Surge"
+  },
+  "item_Mining_Consumable_Torpid": {
+    "chinese": "缓释 模组",
+    "english": "Torpid"
+  },
+  "item_Mining_Gadget_Gadget1": {
+    "chinese": "优佳",
+    "english": "Optimax"
+  },
+  "item_Mining_Gadget_Gadget2": {
+    "chinese": "波移",
+    "english": "Waveshift"
+  },
+  "item_Mining_Gadget_Gadget3": {
+    "chinese": "奥昆尼斯",
+    "english": "Okunis"
+  },
+  "item_Mining_Gadget_Gadget4": {
+    "chinese": "萨比尔",
+    "english": "Sabir"
+  },
+  "item_Mining_Gadget_Gadget5": {
+    "chinese": "至钻",
+    "english": "BoreMax"
+  },
+  "item_Mining_Gadget_Gadget6": {
+    "chinese": "坚燃",
+    "english": "Stalwart"
+  },
+  "item_Mining_MiningLaser_Drake_Default_S0": {
+    "chinese": "石工采矿激光器",
+    "english": "Pitman"
+  },
+  "item_Mining_MiningLaser_Greycat_1_S1": {
+    "chinese": "柳叶刀 MH1 型采矿激光器",
+    "english": "Lancet MH1"
+  },
+  "item_Mining_MiningLaser_Greycat_1_S2": {
+    "chinese": "柳叶刀 MH2 型采矿激光器",
+    "english": "Lancet MH2"
+  },
+  "item_Mining_MiningLaser_Greycat_1_SV": {
+    "chinese": "柳叶刀 MHV 型采矿激光器",
+    "english": "Lancet MHV"
+  },
+  "item_Mining_MiningLaser_Greycat_Default_S0": {
+    "chinese": "刀轴 MHV 采矿激光器",
+    "english": "Arbor MHV"
+  },
+  "item_Mining_MiningLaser_Greycat_Default_S1": {
+    "chinese": "刀轴 MH1 型采矿激光器",
+    "english": "Arbor MH1"
+  },
+  "item_Mining_MiningLaser_Greycat_Default_S2": {
+    "chinese": "刀轴 MH2 型采矿激光器",
+    "english": "Arbor MH2"
+  },
+  "item_Mining_MiningLaser_Greycat_Default_SV": {
+    "chinese": "刀轴 MHV 型采矿激光器",
+    "english": "Arbor MHV"
+  },
+  "item_Mining_MiningLaser_Shubin_1_S1": {
+    "chinese": "霍夫斯泰德-S1 型采矿激光器",
+    "english": "Hofstede-S1"
+  },
+  "item_Mining_MiningLaser_Shubin_1_S2": {
+    "chinese": "霍夫斯泰德-S2 型采矿激光器",
+    "english": "Hofstede-S2"
+  },
+  "item_Mining_MiningLaser_Shubin_1_SV": {
+    "chinese": "霍夫斯泰德-SV 型采矿激光器",
+    "english": "Hofstede-SV"
+  },
+  "item_Mining_MiningLaser_Shubin_2_S1": {
+    "chinese": "克莱恩-S1 型采矿激光器",
+    "english": "Klein-S1"
+  },
+  "item_Mining_MiningLaser_Shubin_2_S2": {
+    "chinese": "克莱恩-S2 型采矿激光器",
+    "english": "Klein-S2"
+  },
+  "item_Mining_MiningLaser_Shubin_2_SV": {
+    "chinese": "克莱恩-SV 型采矿激光器",
+    "english": "Klein-SV"
+  },
+  "item_Mining_MiningLaser_Thermyte_1_S1": {
+    "chinese": "冲击 I 型采矿激光器",
+    "english": "Impact I"
+  },
+  "item_Mining_MiningLaser_Thermyte_1_S2": {
+    "chinese": "冲击 II 型采矿激光器",
+    "english": "Impact II"
+  },
+  "item_Mining_MiningLaser_Thermyte_1_SV": {
+    "chinese": "冲击 S 型采矿激光器",
+    "english": "Impact S"
+  },
+  "item_Mining_MiningLaser_Thermyte_2_S1": {
+    "chinese": "螺旋 I 型采矿激光器",
+    "english": "Helix I"
+  },
+  "item_Mining_MiningLaser_Thermyte_2_S2": {
+    "chinese": "螺旋 II 型采矿激光器",
+    "english": "Helix II"
+  },
+  "item_Mining_MiningLaser_Thermyte_2_SV": {
+    "chinese": "螺旋 S 型采矿激光器",
+    "english": "Helix"
+  },
+  "item_Mining_Modules_Passive_FLTR_MK1": {
+    "chinese": "FLTR 模组",
+    "english": "[-20%废料|-15%提取功率]"
+  },
+  "item_Mining_Modules_Passive_FLTR_MK2": {
+    "chinese": "FLTR-L 模组",
+    "english": "[-23%废料|-10%提取功率]"
+  },
+  "item_Mining_Modules_Passive_FLTR_MK3": {
+    "chinese": "FLTR-XL 模组",
+    "english": "[-24%废料|-5%提取功率]"
+  },
+  "item_Mining_Modules_Passive_Focus_MK1": {
+    "chinese": "聚焦 模组",
+    "english": "Focus"
+  },
+  "item_Mining_Modules_Passive_Focus_MK2": {
+    "chinese": "聚焦 II 模组",
+    "english": "Focus II"
+  },
+  "item_Mining_Modules_Passive_Focus_MK3": {
+    "chinese": "聚焦 III 模组",
+    "english": "Focus III"
+  },
+  "item_Mining_Modules_Passive_Rieger_MK1": {
+    "chinese": "里格 模组",
+    "english": "Rieger"
+  },
+  "item_Mining_Modules_Passive_Rieger_MK2": {
+    "chinese": "里格-C2 模组",
+    "english": "Rieger-C2"
+  },
+  "item_Mining_Modules_Passive_Rieger_MK3": {
+    "chinese": "里格-C3 模组",
+    "english": "Rieger-C3"
+  },
+  "item_Mining_Modules_Passive_Torrent_MK1": {
+    "chinese": "洪流 模组",
+    "english": "Torrent"
+  },
+  "item_Mining_Modules_Passive_Torrent_MK2": {
+    "chinese": "洪流 II 模组",
+    "english": "Torrent II"
+  },
+  "item_Mining_Modules_Passive_Torrent_MK3": {
+    "chinese": "洪流 III 模组",
+    "english": "Torrent III"
+  },
+  "item_Mining_Modules_Passive_Vaux_MK1": {
+    "chinese": "沃克斯 模组",
+    "english": "Vaux"
+  },
+  "item_Mining_Modules_Passive_Vaux_MK2": {
+    "chinese": "沃克斯-C2 模组",
+    "english": "Vaux-C2"
+  },
+  "item_Mining_Modules_Passive_Vaux_MK3": {
+    "chinese": "沃克斯-C3 模组",
+    "english": "Vaux-C3"
+  },
+  "item_Mining_Modules_Passive_XTR_MK1": {
+    "chinese": "XTR 模组",
+    "english": "[+15%绿区|-5%废料|-15%提取功率]"
+  },
+  "item_Mining_Modules_Passive_XTR_MK2": {
+    "chinese": "XTR-L 模组",
+    "english": "[+22%绿区|-5.7%废料|-10%提取功率]"
+  },
+  "item_Mining_Modules_Passive_XTR_MK3": {
+    "chinese": "XTR-XL 模组",
+    "english": "[+22%绿区|-5.7%废料|-10%提取功率]"
+  },
   "item_Name100_Series_Luminalia_green_red": {
     "chinese": "100系列 盛装打扮涂装",
     "english": "100 Series Deck the Hull Livery"
@@ -51,6 +343,18 @@
     "chinese": "100系列 沙浪涂装",
     "english": "100 Series Sand Wave Livery"
   },
+  "item_Name300i_HAPR_VP_RMI_S3_Q2": {
+    "chinese": "锤头推进",
+    "english": "HE 5.3"
+  },
+  "item_Name325a_HAPR_VP_RMI_S3_Q2": {
+    "chinese": "锤头推进",
+    "english": "HE 5.3"
+  },
+  "item_Name350r_HAPR_VP_ESI_S3_Q2": {
+    "chinese": "锤头推进",
+    "english": "HM 4.3"
+  },
   "item_Name400i_Paint_2952Fortuna_Green_Grey": {
     "chinese": "400i 福尔图娜涂装",
     "english": "400i Fortuna Livery"
@@ -99,6 +403,10 @@
     "chinese": "400i 层云涂装",
     "english": "400i Stratus Livery"
   },
+  "item_Name5mm_rifle_ballistic": {
+    "chinese": "5.56毫米",
+    "english": "Gauss AP"
+  },
   "item_Name600i_Paint_2952Fortuna_Green_Grey": {
     "chinese": "600i 福尔图娜涂装",
     "english": "600i Fortuna Livery"
@@ -128,8 +436,8 @@
     "english": "600i Sterling Livery"
   },
   "item_Name600i_Paint_Unity": {
-    "chinese": "600i 奠基节涂装",
-    "english": "600i Foundation Fest Livery"
+    "chinese": "600i 奠基节指导涂装",
+    "english": "600i Foundation Guide Livery"
   },
   "item_Name890J_Paint_Black_Gold": {
     "chinese": "890跃动 半影涂装",
@@ -142,6 +450,110 @@
   "item_Name890J_Paint_Steel": {
     "chinese": "890悦动 子午线涂装",
     "english": "890 Jump Meridian Livery"
+  },
+  "item_NameALST_Stamina_S2_Q3": {
+    "chinese": "联盟星际科技 耐力推进器",
+    "english": "S2"
+  },
+  "item_NameALST_Stamina_S4_Q4": {
+    "chinese": "联盟星际科技 耐力推进器",
+    "english": "S4"
+  },
+  "item_NameAMBX_BEHR_Flares_16": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 16"
+  },
+  "item_NameAMBX_BEHR_Flares_24": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 24"
+  },
+  "item_NameAMBX_BEHR_Flares_32": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 32"
+  },
+  "item_NameAMBX_BEHR_Flares_40": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 40"
+  },
+  "item_NameAMBX_BEHR_Flares_48": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 48"
+  },
+  "item_NameAMBX_BEHR_Flares_8": {
+    "chinese": "贝林财团 热诱弹",
+    "english": "x 8"
+  },
+  "item_NameAMBX_JOKR_Chaff_16": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 16"
+  },
+  "item_NameAMBX_JOKR_Chaff_24": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 24"
+  },
+  "item_NameAMBX_JOKR_Chaff_32": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 32"
+  },
+  "item_NameAMBX_JOKR_Chaff_40": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 40"
+  },
+  "item_NameAMBX_JOKR_Chaff_48": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 48"
+  },
+  "item_NameAMBX_JOKR_Chaff_8": {
+    "chinese": "小丑工程 噪声场",
+    "english": "x 8"
+  },
+  "item_NameAMBX_JOKR_Flares_16": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 16"
+  },
+  "item_NameAMBX_JOKR_Flares_24": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 24"
+  },
+  "item_NameAMBX_JOKR_Flares_32": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 32"
+  },
+  "item_NameAMBX_JOKR_Flares_40": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 40"
+  },
+  "item_NameAMBX_JOKR_Flares_48": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 48"
+  },
+  "item_NameAMBX_JOKR_Flares_8": {
+    "chinese": "小丑工程 热诱弹",
+    "english": "x 8"
+  },
+  "item_NameAMBX_TALN_Chaff_16": {
+    "chinese": "利爪 噪声场",
+    "english": "x 16"
+  },
+  "item_NameAMBX_TALN_Chaff_24": {
+    "chinese": "利爪 噪声场",
+    "english": "x 24"
+  },
+  "item_NameAMBX_TALN_Chaff_32": {
+    "chinese": "利爪 噪声场",
+    "english": "x 32"
+  },
+  "item_NameAMBX_TALN_Chaff_40": {
+    "chinese": "利爪 噪声场",
+    "english": "x 40"
+  },
+  "item_NameAMBX_TALN_Chaff_48": {
+    "chinese": "利爪 噪声场",
+    "english": "x 48"
+  },
+  "item_NameAMBX_TALN_Chaff_8": {
+    "chinese": "利爪 噪声场",
+    "english": "x 8"
   },
   "item_NameAMRS_LaserCannon_S1": {
     "chinese": "制空 III 加农炮",
@@ -170,6 +582,10 @@
   "item_NameAMRS_ScatterGun_S3": {
     "chinese": "“爆炎” 霰弹炮",
     "english": "PyroBurst Scattergun"
+  },
+  "item_NameANVL_Hornet_F7C_shop": {
+    "chinese": "铁砧 大黄蜂",
+    "english": "F7C"
   },
   "item_NameAPAR_BallisticGatling_S4": {
     "chinese": "亡魂 加特林",
@@ -291,6 +707,42 @@
     "chinese": "ATLS 基石涂装",
     "english": "ATLS Keystone Livery"
   },
+  "item_NameAmmoBox_Ballistic_20mm_AMMO": {
+    "chinese": "弹药箱 - 20",
+    "english": "mm"
+  },
+  "item_NameAmmoBox_Ballistic_24mm": {
+    "chinese": "弹药箱 - 24",
+    "english": "mm"
+  },
+  "item_NameAmmoBox_Ballistic_25mm_AMMO": {
+    "chinese": "弹药箱 - 25",
+    "english": "mm"
+  },
+  "item_NameAmmoBox_Ballistic_35mm_AMMO": {
+    "chinese": "弹药箱 - 35",
+    "english": "mm"
+  },
+  "item_NameAmmoBox_Ballistic_50mm_AMMO": {
+    "chinese": "弹药箱 - 50",
+    "english": "mm"
+  },
+  "item_NameAmmoBox_Ballistic_60mm_AMMO": {
+    "chinese": "弹药箱 - 60",
+    "english": "mm"
+  },
+  "item_NameAmmoCrate": {
+    "chinese": "飞船弹药",
+    "english": "Ship Ammunition"
+  },
+  "item_NameAmmoCrate_Decoy": {
+    "chinese": "热诱弹弹药",
+    "english": "Decoy Ammunition"
+  },
+  "item_NameAmmoCrate_Noise": {
+    "chinese": "噪声场弹药",
+    "english": "Noise Ammunition"
+  },
   "item_NameAmmoCrate_S1": {
     "chinese": "尺寸 1 载具武器弹药",
     "english": "Size 1 Vehicle Weapon Ammuniton"
@@ -318,6 +770,130 @@
   "item_NameAmmoCrate_S7": {
     "chinese": "尺寸 7 载具武器弹药",
     "english": "Size 7 Vehicle Weapon Ammuniton"
+  },
+  "item_NameAmmobox_Ballistic_1000rd_20mm": {
+    "chinese": "实弹武器弹药箱 20",
+    "english": "mm 1000rd"
+  },
+  "item_NameAmmobox_Ballistic_120rd_106mm_exp": {
+    "chinese": "实弹武器弹药箱 高爆 106",
+    "english": "mm 120rd"
+  },
+  "item_NameAmmobox_Ballistic_120rd_40mm": {
+    "chinese": "实弹武器弹药箱 40",
+    "english": "mm 120rd"
+  },
+  "item_NameAmmobox_Ballistic_120rd_60mm": {
+    "chinese": "实弹武器弹药箱 60",
+    "english": "mm 120rd"
+  },
+  "item_NameAmmobox_Ballistic_150rd_35mm": {
+    "chinese": "实弹武器弹药箱 35",
+    "english": "mm 150rd"
+  },
+  "item_NameAmmobox_Ballistic_180rd_60mm": {
+    "chinese": "实弹武器弹药箱 60",
+    "english": "mm 180rd"
+  },
+  "item_NameAmmobox_Ballistic_200rd_25mm": {
+    "chinese": "实弹武器弹药箱 25",
+    "english": "mm 200rd"
+  },
+  "item_NameAmmobox_Ballistic_240rd_40mm": {
+    "chinese": "实弹武器弹药箱 40",
+    "english": "mm 240rd"
+  },
+  "item_NameAmmobox_Ballistic_240rd_60mm": {
+    "chinese": "实弹武器弹药箱 60",
+    "english": "mm 240rd"
+  },
+  "item_NameAmmobox_Ballistic_250rd_20mm": {
+    "chinese": "实弹武器弹药箱 20",
+    "english": "mm 250rd"
+  },
+  "item_NameAmmobox_Ballistic_300rd_35mm": {
+    "chinese": "实弹武器弹药箱 35",
+    "english": "mm 300rd"
+  },
+  "item_NameAmmobox_Ballistic_30rd_1000mm_rail": {
+    "chinese": "实弹武器弹药箱 轨道炮 1000",
+    "english": "mm 30rd"
+  },
+  "item_NameAmmobox_Ballistic_360rd_40mm": {
+    "chinese": "实弹武器弹药箱 40",
+    "english": "mm 360rd"
+  },
+  "item_NameAmmobox_Ballistic_400rd_25mm": {
+    "chinese": "实弹武器弹药箱 25",
+    "english": "mm 400rd"
+  },
+  "item_NameAmmobox_Ballistic_450rd_35mm": {
+    "chinese": "实弹武器弹药箱 35",
+    "english": "mm 450rd"
+  },
+  "item_NameAmmobox_Ballistic_480rd_40mm": {
+    "chinese": "实弹武器弹药箱 40",
+    "english": "mm 480rd"
+  },
+  "item_NameAmmobox_Ballistic_500rd_1000mm": {
+    "chinese": "实弹武器弹药箱 1000",
+    "english": "mm 500rd"
+  },
+  "item_NameAmmobox_Ballistic_500rd_20mm": {
+    "chinese": "实弹武器弹药箱 20",
+    "english": "mm 500rd"
+  },
+  "item_NameAmmobox_Ballistic_500rd_40mm_5km_exp": {
+    "chinese": "实弹武器弹药箱 高爆 20",
+    "english": "mm 500rd 5km"
+  },
+  "item_NameAmmobox_Ballistic_500rd_40mm_exp": {
+    "chinese": "实弹武器弹药箱 高爆 20",
+    "english": "mm 500rd"
+  },
+  "item_NameAmmobox_Ballistic_50mm": {
+    "chinese": "实弹武器弹药箱50",
+    "english": "mm"
+  },
+  "item_NameAmmobox_Ballistic_600rd_25mm": {
+    "chinese": "实弹武器弹药箱 25",
+    "english": "mm 600rd"
+  },
+  "item_NameAmmobox_Ballistic_600rd_35mm": {
+    "chinese": "实弹武器弹药箱 35",
+    "english": "mm 600rd"
+  },
+  "item_NameAmmobox_Ballistic_60rd_60mm": {
+    "chinese": "实弹武器弹药箱 60",
+    "english": "mm 60rd"
+  },
+  "item_NameAmmobox_Ballistic_60rd_60mm_rail": {
+    "chinese": "实弹武器弹药箱 轨道炮 60",
+    "english": "mm 60rd"
+  },
+  "item_NameAmmobox_Ballistic_60rd_80mm_rail": {
+    "chinese": "实弹武器弹药箱 轨道炮 80",
+    "english": "mm 60rd"
+  },
+  "item_NameAmmobox_Ballistic_750rd_20mm": {
+    "chinese": "实弹武器弹药箱 20",
+    "english": "mm 750rd"
+  },
+  "item_NameAmmobox_Ballistic_750rd_30mm": {
+    "chinese": "实弹武器弹药箱 30",
+    "english": "mm 750rd"
+  },
+  "item_NameAmmobox_Ballistic_800rd_25mm": {
+    "chinese": "实弹武器弹药箱 25",
+    "english": "mm 800rd"
+  },
+  "item_NameAmmobox_Ballistic_KRIG_20mm": {
+    "chinese": "克鲁格 实弹武器弹药箱 20",
+    "english": "mm"
+  },
+  "item_NameAmmobox_Ballistic_KRIG_25mm": {
+    "chinese": "克鲁格 实弹武器弹药箱 25",
+    "english": "mm"
   },
   "item_NameApollo_Paint_Black_Gold": {
     "chinese": "阿波罗 德尔斐涂装",
@@ -388,7 +964,7 @@
     "english": "Arrow Lovestruck Livery"
   },
   "item_NameArrow_Paint_Unity": {
-    "chinese": "箭矢 奠基节涂装",
+    "chinese": "箭矢 奠基节指导涂装",
     "english": "Arrow Foundation Fest Livery"
   },
   "item_NameAsgard_Paint_BIS2955_Orange_Black_Orange": {
@@ -426,6 +1002,10 @@
   "item_NameAsgard_Paint_vip_copper": {
     "chinese": "阿斯加德 英灵殿涂装",
     "english": "Asgard Valhalla Livery"
+  },
+  "item_NameAtls_Paint_silver_teal_white": {
+    "chinese": "ATLS 奠基节涂装",
+    "english": "ATLS Foundation Fest Livery"
   },
   "item_NameAurora_Mk2_Paint_Black_Black_Black": {
     "chinese": "极光 Mk II 阴影涂装",
@@ -550,6 +1130,14 @@
   "item_NameAurora_Paint_Unity": {
     "chinese": "极光 Mk I 奠基节涂装",
     "english": "Aurora Foundation Fest Livery"
+  },
+  "item_NameAurora_mk2_Paint_silver_teal_white": {
+    "chinese": "极光 Mk II 奠基节涂装",
+    "english": "Aurora Mk II Foundation Fest Livery"
+  },
+  "item_NameAurora_mk2_Paint_silver_teal_white_torch": {
+    "chinese": "极光 Mk II 奠基节指导涂装",
+    "english": "Aurora Mk II Foundation Guide Livery"
   },
   "item_NameAurora_pirate": {
     "chinese": "极光 Mk I 恐怖海盗涂装",
@@ -759,6 +1347,22 @@
     "chinese": "巨像 炸弹",
     "english": "Colossus Bomb"
   },
+  "item_NameBasher_Paint_Black_Grey_Grey": {
+    "chinese": "Basher Razorburn涂装",
+    "english": "Basher Razorburn Livery"
+  },
+  "item_NameBasher_Paint_Brown_Green_Grey": {
+    "chinese": "Basher Corroded涂装",
+    "english": "Basher Corroded Livery"
+  },
+  "item_NameBasher_Paint_Brown_White_Brown": {
+    "chinese": "Basher 梦魇涂装",
+    "english": "Basher Nightmare Livery"
+  },
+  "item_NameBasher_Paint_White_Blue_Black": {
+    "chinese": "Basher 蓝簇涂装",
+    "english": "Basher Blue Blossom Livery"
+  },
   "item_NameBuccaneer_Paint_Black_Black_Red_Camo": {
     "chinese": "掠夺者 夜影涂装",
     "english": "Buccaneer Nightbreak Livery"
@@ -792,256 +1396,256 @@
     "english": "C8 Pisces Scrubland Camo Livery"
   },
   "item_NameCOOL_ACOM_S01_IcePlunge": {
-    "chinese": "寒冰下陷IcePlunge",
-    "english": "[冷却 S1 竞速 C]"
+    "chinese": "寒冰下陷",
+    "english": "IcePlunge"
   },
   "item_NameCOOL_ACOM_S01_QuickCool": {
-    "chinese": "快冷QuickCool",
-    "english": "[冷却 S1 竞速 D]"
+    "chinese": "快冷",
+    "english": "QuickCool"
   },
   "item_NameCOOL_ACOM_S02_AbsoluteZero_SCItem": {
-    "chinese": "绝对零度AbsoluteZero",
-    "english": "[冷却 S2 竞速 B]"
+    "chinese": "绝对零度",
+    "english": "AbsoluteZero"
   },
   "item_NameCOOL_ACOM_S02_IceDive_SCItem": {
-    "chinese": "冰潜IceDive",
-    "english": "[冷却 S2 竞速 C]"
+    "chinese": "冰潜",
+    "english": "IceDive"
   },
   "item_NameCOOL_ACOM_S02_RapidCool_SCItem": {
-    "chinese": "迅冷RapidCool",
-    "english": "[冷却 S2 竞速 D]"
+    "chinese": "迅冷",
+    "english": "RapidCool"
   },
   "item_NameCOOL_AEGS_S01_Bracer": {
-    "chinese": "寒索Bracer",
-    "english": "[冷却 S1 军用 C]"
+    "chinese": "寒索",
+    "english": "Bracer"
   },
   "item_NameCOOL_AEGS_S01_Bracer_SCItem": {
-    "chinese": "寒索Bracer",
-    "english": "[冷却 S1 军用 C]"
+    "chinese": "寒索",
+    "english": "Bracer"
   },
   "item_NameCOOL_AEGS_S01_Glacier_SCItem": {
-    "chinese": "冰川Glacier",
-    "english": "[冷却 S1 军用 A]"
+    "chinese": "冰川",
+    "english": "Glacier"
   },
   "item_NameCOOL_AEGS_S01_Polar": {
-    "chinese": "极地Polar",
-    "english": "[冷却 S1 军用 B]"
+    "chinese": "极地",
+    "english": "Polar"
   },
   "item_NameCOOL_AEGS_S01_Tundra": {
-    "chinese": "冻原Tundra",
-    "english": "[冷却 S1 军用 D]"
+    "chinese": "冻原",
+    "english": "Tundra"
   },
   "item_NameCOOL_AEGS_S02_Arctic": {
-    "chinese": "北极Arctic",
-    "english": "[冷却 S2 军用 C]"
+    "chinese": "北极",
+    "english": "Arctic"
   },
   "item_NameCOOL_AEGS_S02_Boreal": {
-    "chinese": "北风Boreal",
-    "english": "[冷却 S2 军用 D]"
+    "chinese": "北风",
+    "english": "Boreal"
   },
   "item_NameCOOL_AEGS_S03_Blizzard_SCItem": {
-    "chinese": "暴雪Blizzard",
-    "english": "[冷却 S3 军用 A]"
+    "chinese": "暴雪",
+    "english": "Blizzard"
   },
   "item_NameCOOL_AEGS_S03_Galinstan_SCItem": {
-    "chinese": "液态合金Galinstan",
-    "english": "[冷却 S3 军用 D]"
+    "chinese": "液态合金",
+    "english": "Galinstan"
   },
   "item_NameCOOL_AEGS_S03_Mercury": {
-    "chinese": "水银Mercury",
-    "english": "[冷却 S3 军用 C]"
+    "chinese": "水银",
+    "english": "Mercury"
   },
   "item_NameCOOL_AEGS_S04_Idirs": {
-    "chinese": "热释Exotherm",
-    "english": "[冷却 S4 定制 A]"
+    "chinese": "热释",
+    "english": "Exotherm"
   },
   "item_NameCOOL_AEGS_S04_Reclaimer": {
-    "chinese": "风寒Algid",
-    "english": "[冷却 S4 工业 定制]"
+    "chinese": "风寒",
+    "english": "Algid"
   },
   "item_NameCOOL_AEGS_S04_Tundra": {
-    "chinese": "冻原Tundra",
-    "english": "[冷却 S4 军用 D]"
+    "chinese": "冻原",
+    "english": "Tundra"
   },
   "item_NameCOOL_JSPN_S00_FrostStarSL": {
-    "chinese": "寒霜之星SL Frost-Star SL",
-    "english": "[冷却 S0 民用 C]"
+    "chinese": "寒霜之星",
+    "english": "SL Frost-Star SL"
   },
   "item_NameCOOL_JSPN_S00_WinterStarSL_SCItem": {
-    "chinese": "寒冬之心SL Winter-Star SL",
-    "english": "[冷却 S0 民用 D]"
+    "chinese": "寒冬之心",
+    "english": "SL Winter-Star SL"
   },
   "item_NameCOOL_JSPN_S01_CryoStar": {
-    "chinese": "冷冻之心Cryo-Star",
-    "english": "[冷却 S1 民用 B]"
+    "chinese": "冷冻之心",
+    "english": "Cryo-Star"
   },
   "item_NameCOOL_JSPN_S01_FrostStar": {
-    "chinese": "寒霜之星Frost-Star",
-    "english": "[冷却 S1 民用 C]"
+    "chinese": "寒霜之星",
+    "english": "Frost-Star"
   },
   "item_NameCOOL_JSPN_S01_WinterStar": {
-    "chinese": "寒冬之心Winter-Star",
-    "english": "[冷却 S1 民用 D]"
+    "chinese": "寒冬之心",
+    "english": "Winter-Star"
   },
   "item_NameCOOL_JSPN_S02_CryoStarEX": {
-    "chinese": "冷冻之心EX Cryo-Star EX",
-    "english": "[冷却 S2 民用 B]"
+    "chinese": "冷冻之心",
+    "english": "EX Cryo-Star EX"
   },
   "item_NameCOOL_JSPN_S02_FrostStarEX": {
-    "chinese": "寒霜之星EX Frost-Star EX",
-    "english": "[冷却 S2 民用 C]"
+    "chinese": "寒霜之星",
+    "english": "EX Frost-Star EX"
   },
   "item_NameCOOL_JSPN_S02_WinterStarEX_SCItem": {
-    "chinese": "寒冬之心EX Winter-Star EX",
-    "english": "[冷却 S2 民用 D]"
+    "chinese": "寒冬之心",
+    "english": "EX Winter-Star EX"
   },
   "item_NameCOOL_JSPN_S03_FrostStarXL_SCItem": {
-    "chinese": "寒霜之星XL Frost-Star XL",
-    "english": "[冷却 S3 民用 C]"
+    "chinese": "寒霜之星",
+    "english": "XL Frost-Star XL"
   },
   "item_NameCOOL_JSPN_S03_WinterStarXL_SCItem": {
-    "chinese": "寒冬之心XL Winter-Star XL",
-    "english": "[冷却 S3 民用 D]"
+    "chinese": "寒冬之心",
+    "english": "XL Winter-Star XL"
   },
   "item_NameCOOL_JUST_S01_EcoFlow": {
-    "chinese": "生态流Eco-Flow",
-    "english": "[冷却 S1 工业 B]"
+    "chinese": "生态流",
+    "english": "Eco-Flow"
   },
   "item_NameCOOL_JUST_S01_Hydrocel": {
-    "chinese": "水凝Hydrocel",
-    "english": "[冷却 S1 工业 D]"
+    "chinese": "水凝",
+    "english": "Hydrocel"
   },
   "item_NameCOOL_JUST_S01_Thermax": {
-    "chinese": "温度美Thermax",
-    "english": "[冷却 S1 工业 C]"
+    "chinese": "温度美",
+    "english": "Thermax"
   },
   "item_NameCOOL_JUST_S02_CoolCore": {
-    "chinese": "冷却核心CoolCore",
-    "english": "[冷却 S2 工业 C]"
+    "chinese": "冷却核心",
+    "english": "CoolCore"
   },
   "item_NameCOOL_JUST_S02_Hydrojet": {
-    "chinese": "喷射HydroJet",
-    "english": "[冷却 S2 工业 D]"
+    "chinese": "喷射",
+    "english": "HydroJet"
   },
   "item_NameCOOL_JUST_S02_Snowfall": {
-    "chinese": "降雪Snowfall",
-    "english": "[冷却 S2 工业 B]"
+    "chinese": "降雪",
+    "english": "Snowfall"
   },
   "item_NameCOOL_JUST_S02_Snowpack_SCItem": {
-    "chinese": "雪堆Snowpack",
-    "english": "[冷却 S2 工业 A]"
+    "chinese": "雪堆",
+    "english": "Snowpack"
   },
   "item_NameCOOL_JUST_S03_ChillMax_SCItem": {
-    "chinese": "寒意满满Chill-Max",
-    "english": "[冷却 S3 工业 A]"
+    "chinese": "寒意满满",
+    "english": "Chill-Max"
   },
   "item_NameCOOL_JUST_S03_Hydropulse_SCItem": {
-    "chinese": "水冷脉冲Hydropulse",
-    "english": "[冷却 S3 工业 D]"
+    "chinese": "水冷脉冲",
+    "english": "Hydropulse"
   },
   "item_NameCOOL_JUST_S03_ThermalCore": {
-    "chinese": "热量核心ThermalCore",
-    "english": "[冷却 S3 工业 C]"
+    "chinese": "热量核心",
+    "english": "ThermalCore"
   },
   "item_NameCOOL_LPLT_S01_ArcticStorm": {
-    "chinese": "北境暴风ArcticStorm",
-    "english": "[冷却 S1 民用 C]"
+    "chinese": "北境暴风",
+    "english": "ArcticStorm"
   },
   "item_NameCOOL_LPLT_S01_BlastChill": {
-    "chinese": "爆寒BlastChill",
-    "english": "[冷却 S1 民用 D]"
+    "chinese": "爆寒",
+    "english": "BlastChill"
   },
   "item_NameCOOL_LPLT_S01_FlashFreeze": {
-    "chinese": "急冻FlashFreeze",
-    "english": "[冷却 S1 民用 B]"
+    "chinese": "急冻",
+    "english": "FlashFreeze"
   },
   "item_NameCOOL_LPLT_S02_ColdSnap": {
-    "chinese": "寒流ColdSnap",
-    "english": "[冷却 S2 民用 C]"
+    "chinese": "寒流",
+    "english": "ColdSnap"
   },
   "item_NameCOOL_LPLT_S03_ColdSurge_SCItem": {
-    "chinese": "寒潮ColdSurge",
-    "english": "[冷却 S3 民用 C]"
+    "chinese": "寒潮",
+    "english": "ColdSurge"
   },
   "item_NameCOOL_LPLT_S03_FrostBurn": {
-    "chinese": "霜蚀FrostBurn",
-    "english": "[冷却 S3 民用 C]"
+    "chinese": "霜蚀",
+    "english": "FrostBurn"
   },
   "item_NameCOOL_ORIG_S04_890J_SCItem": {
-    "chinese": "冰塔Serac",
-    "english": "[冷却 S4 民用 A]"
+    "chinese": "冰塔",
+    "english": "Serac"
   },
   "item_NameCOOL_TYDT_S01_HeatSafe": {
-    "chinese": "安全热控HeatSafe",
-    "english": "[冷却 S1 隐形 C]"
+    "chinese": "安全热控",
+    "english": "HeatSafe"
   },
   "item_NameCOOL_TYDT_S01_VaporBlock": {
-    "chinese": "蒸汽遏制VaporBlock",
-    "english": "[冷却 S1 隐形 B]"
+    "chinese": "蒸汽遏制",
+    "english": "VaporBlock"
   },
   "item_NameCOOL_TYDT_S02_HeatSink_SCItem": {
-    "chinese": "散热装置HeatSink",
-    "english": "[冷却 S2 隐形 C]"
+    "chinese": "散热装置",
+    "english": "HeatSink"
   },
   "item_NameCOOL_TYDT_S02_IceBox_SCItem": {
-    "chinese": "冰块IceBox",
-    "english": "[冷却 S2 隐形 B]"
+    "chinese": "冰块",
+    "english": "IceBox"
   },
   "item_NameCOOL_TYDT_S02_NightFall_SCItem": {
-    "chinese": "夜幕降临NightFall",
-    "english": "[冷却 S2 隐形 A]"
+    "chinese": "夜幕降临",
+    "english": "NightFall"
   },
   "item_NameCOOL_VNCL_S01_Blade": {
-    "chinese": "剜度 刀锋 冷却器Vanduul Blade Cooler",
-    "english": "[冷却 S1 ?? ?]"
+    "chinese": "剜度 刀锋 冷却器",
+    "english": "Vanduul Blade Cooler"
   },
   "item_NameCOOL_VNCL_S01_Cold": {
-    "chinese": "剜度 极寒 冷却器Vanduul Cold Cooler",
-    "english": "[冷却 S1 军用 ?]"
+    "chinese": "剜度 极寒 冷却器",
+    "english": "Vanduul Cold Cooler"
   },
   "item_NameCOOL_VNCL_S01_Stinger": {
-    "chinese": "剜度 毒刺 冷却器Vanduul Stinger Cooler",
-    "english": "[冷却 S1 ?? ?]"
+    "chinese": "剜度 毒刺 冷却器",
+    "english": "Vanduul Stinger Cooler"
   },
   "item_NameCOOL_VNCL_S01_Void": {
-    "chinese": "剜度 虚空 冷却器Vanduul Void Cooler",
-    "english": "[冷却 S1 ?? ?]"
+    "chinese": "剜度 虚空 冷却器",
+    "english": "Vanduul Void Cooler"
   },
   "item_NameCOOL_WCPR_S00_Fridan": {
-    "chinese": "弗里达Fridan",
-    "english": "[冷却 S0 民用 C]"
+    "chinese": "弗里达",
+    "english": "Fridan"
   },
   "item_NameCOOL_WCPR_S00_Tepilo_SCItem": {
-    "chinese": "微温Tepilo",
-    "english": "[冷却 S0 民用 A]"
+    "chinese": "微温",
+    "english": "Tepilo"
   },
   "item_NameCOOL_WCPR_S01_Berian": {
-    "chinese": "布内恩Berian",
-    "english": "[冷却 S1 民用 C]"
+    "chinese": "布内恩",
+    "english": "Berian"
   },
   "item_NameCOOL_WCPR_S01_Endo": {
-    "chinese": "内冷Endo",
-    "english": "[冷却 S1 民用 B]"
+    "chinese": "内冷",
+    "english": "Endo"
   },
   "item_NameCOOL_WCPR_S02_Graupel": {
-    "chinese": "软雹Graupel",
-    "english": "[冷却 S2 民用 C]"
+    "chinese": "软雹",
+    "english": "Graupel"
   },
   "item_NameCOOL_WCPR_S02_Taiga_SCItem": {
-    "chinese": "寒林Taiga",
-    "english": "[冷却 S2 民用 B]"
+    "chinese": "寒林",
+    "english": "Taiga"
   },
   "item_NameCOOL_WCPR_S03_Draug_SCItem": {
-    "chinese": "德劳格Draug",
-    "english": "[冷却 S3 民用 A]"
+    "chinese": "德劳格",
+    "english": "Draug"
   },
   "item_NameCOOL_WCPR_S03_Elsen_SCItem": {
-    "chinese": "埃尔森Elsen",
-    "english": "[冷却 S3 民用 A]"
+    "chinese": "埃尔森",
+    "english": "Elsen"
   },
   "item_NameCOOL_WCPR_S03_Kragen_SCItem": {
-    "chinese": "克拉根Kragen",
-    "english": "[冷却 S3 民用 A]"
+    "chinese": "克拉根",
+    "english": "Kragen"
   },
   "item_NameCRUS_game_chess_1_bishop_a": {
     "chinese": "十字军 白象",
@@ -1204,12 +1808,16 @@
     "english": "Enter Atmosphere 2956 Poster"
   },
   "item_NameCarryable_1H_SQ_Flair_Coin_1_luminalia_a": {
-    "chinese": "光灯节’54 纪念币",
-    "english": "Luminalia ' 55 Coin"
+    "chinese": "光灯节’55 纪念币",
+    "english": "Luminalia '55 Coin"
   },
   "item_NameCarryable_1H_SQ_Flair_Coin_1_lunar_rat_a": {
     "chinese": "鼠年 纪念币",
     "english": "Year of the Rat Coin"
+  },
+  "item_NameCarryable_1H_SQ_Flair_Coin_PirateWeek_2026": {
+    "chinese": "交锋 '56 纪念币",
+    "english": "Crossed Swords '56 Coin"
   },
   "item_NameCarryable_2H_CY_flair_arccorp_statue_1_a": {
     "chinese": "弧光星 齿轮球 复制品",
@@ -1244,8 +1852,12 @@
     "english": "Luminalia Gift Box"
   },
   "item_NameCarryable_2H_FL_Container_Anim_coin_case_1_a": {
-    "chinese": "纪念币陈列柜",
+    "chinese": "纪念币展示箱",
     "english": "Coin Display Case"
+  },
+  "item_NameCarryable_2H_FL_Container_Anim_coin_case_1_concierge_a": {
+    "chinese": "礼宾俱乐部纪念币展示箱",
+    "english": "zhanshiChairman's Club Coin Display Case"
   },
   "item_NameCarryable_2H_FL_Container_Anim_medgun_1_a": {
     "chinese": "战地医疗包",
@@ -1255,9 +1867,17 @@
     "chinese": "战地医疗包",
     "english": "Field Medic Kit"
   },
+  "item_NameCarryable_2H_FL_MissionItem_prototype_ship_component_1_a": {
+    "chinese": "TH-01 推进器",
+    "english": "TH-01 Propulsor"
+  },
   "item_NameCarryable_2H_FL_Painting_Constellation_a": {
     "chinese": "RSI 星座 画作",
     "english": "RSI Constellation Painting"
+  },
+  "item_NameCarryable_2H_FL_Safe_Locked": {
+    "chinese": "保险箱",
+    "english": "Safe"
   },
   "item_NameCarryable_2H_FL_ball_basketball_1_a": {
     "chinese": "篮球",
@@ -1290,6 +1910,10 @@
   "item_NameCarryable_2H_FL_toy_plushy_unified_cargo_1_a": {
     "chinese": "统一配送管理公司货箱 毛绒玩具",
     "english": "UDM Cargo Plushie"
+  },
+  "item_NameCarryable_2H_SQ_aurora_mk2_model_1_stand_a": {
+    "chinese": "极光 Mk II 模型",
+    "english": "Aurora Mk II Model"
   },
   "item_NameCarryable_2H_SQ_gladius_model_1_stand_a": {
     "chinese": "短剑 邓利维 模型",
@@ -1368,8 +1992,8 @@
     "english": "Caterpillar Pirate Livery"
   },
   "item_NameCaterpillar_Paint_Unity": {
-    "chinese": "毛虫 奠基节涂装",
-    "english": "Caterpillar Foundation Fest Livery"
+    "chinese": "毛虫 奠基节指导涂装",
+    "english": "Caterpillar Foundation Guide Livery"
   },
   "item_NameCenturion_Paint_Beachhead_Camo": {
     "chinese": "百夫长 抢滩迷彩涂装",
@@ -1548,8 +2172,8 @@
     "english": "Cutlass Destiny Livery"
   },
   "item_NameCutlass_Paint_Unity": {
-    "chinese": "弯刀 奠基节涂装",
-    "english": "Cutlass Foundation Fest Livery"
+    "chinese": "弯刀 奠基节指导涂装",
+    "english": "Cutlass Foundation Guide Livery"
   },
   "item_NameCutter_Paint_2955RedFestival_Red_Gold_Pig": {
     "chinese": "小刀 2955 吉祥红亥猪涂装",
@@ -1707,6 +2331,18 @@
     "chinese": "旋风 TR涂装",
     "english": "Cyclone TR Livery"
   },
+  "item_NameDRAK_Emerald_Arm_S1": {
+    "chinese": "龙之星运输公司",
+    "english": "Emerald Arm Thruster"
+  },
+  "item_NameDRAK_TriremeMain_S3_Q1": {
+    "chinese": "德雷克 三桨船",
+    "english": "S-3"
+  },
+  "item_NameDRAK_Trireme_S1_Q1": {
+    "chinese": "德雷克 三桨船",
+    "english": "S-1"
+  },
   "item_NameDefender_Paint_AlienWeek_Green_Red": {
     "chinese": "防卫者 眼纹涂装",
     "english": "Defender Ocellus Livery"
@@ -1772,20 +2408,20 @@
     "english": "Smoltz (Bottle)"
   },
   "item_NameDrink_bottle_cruz_01_a": {
-    "chinese": "酷滋 涌流 CRUZ Flow",
-    "english": "HEI:38 NDR:30 肌力充沛，缓慢代谢"
+    "chinese": "酷滋 涌流",
+    "english": "CRUZ Flow"
   },
   "item_NameDrink_bottle_cruz_01_dark_a": {
-    "chinese": "酷滋 暗黑 CRUZ Dark",
-    "english": "HEI:38 NDR:30 肌力充沛，缓慢代谢"
+    "chinese": "酷滋 暗黑",
+    "english": "CRUZ Dark"
   },
   "item_NameDrink_bottle_cruz_01_lux_a": {
-    "chinese": "酷滋 光明 CRUZ Lux",
-    "english": "HEI:38 NDR:30 肌力充沛，缓慢代谢"
+    "chinese": "酷滋 光明",
+    "english": "CRUZ Lux"
   },
   "item_NameDrink_bottle_cruz_01_pulse_a": {
-    "chinese": "酷滋 脉冲 CRUZ Pulse",
-    "english": "HEI:38 NDR:3 肌力充沛，缓慢代谢"
+    "chinese": "酷滋 脉冲",
+    "english": "CRUZ Pulse"
   },
   "item_NameDrink_bottle_gg_01_a": {
     "chinese": "柑橘冲击冰沙",
@@ -1860,8 +2496,8 @@
     "english": "Green Blend Smoothie"
   },
   "item_NameDrink_bottle_synergy_01_a": {
-    "chinese": "协调 Synergy",
-    "english": "HEI:48 NDR:06 精力充沛，保水"
+    "chinese": "协调",
+    "english": "Synergy"
   },
   "item_NameDrink_bottle_synergy_01_plus_a": {
     "chinese": "协调+ Synergy+",
@@ -1872,16 +2508,16 @@
     "english": "SynergySport"
   },
   "item_NameDrink_bottle_vestal_01_a": {
-    "chinese": "纯净水 Vestal Water",
-    "english": "HEI:44 保水"
+    "chinese": "纯净水",
+    "english": "Vestal Water"
   },
   "item_NameDrink_bottle_water_01_a": {
-    "chinese": "瓶装水 Water Bottle",
-    "english": "HEI:44 保水"
+    "chinese": "瓶装水",
+    "english": "Water Bottle"
   },
   "item_NameDrink_bottle_water_old_1_a": {
-    "chinese": "回收水 Reclaimed Water",
-    "english": "HEI:44 保水，毒性"
+    "chinese": "回收水",
+    "english": "Reclaimed Water"
   },
   "item_NameDrink_can_bm_01_a": {
     "chinese": "黑山苏津茶（中度调制）",
@@ -1940,20 +2576,20 @@
     "english": "Get Up Coffee (Mocha)"
   },
   "item_NameDrink_can_pips_01_a": {
-    "chinese": "必事 A20",
-    "english": "Pips A20"
+    "chinese": "必事",
+    "english": "A20"
   },
   "item_NameDrink_can_pips_01_q66_a": {
-    "chinese": "必事 Q66",
-    "english": "Pips Q66"
+    "chinese": "必事",
+    "english": "Q66"
   },
   "item_NameDrink_can_pips_01_t17_a": {
-    "chinese": "必事 能量 T17",
-    "english": "Pips Energy T17"
+    "chinese": "必事 能量",
+    "english": "T17"
   },
   "item_NameDrink_coffee_01": {
-    "chinese": "咖啡 Coffee",
-    "english": "HEI:14 口渴，认知增强"
+    "chinese": "咖啡",
+    "english": "Coffee"
   },
   "item_NameDrink_glass_highball_01_gintonic_a": {
     "chinese": "金汤力鸡尾酒",
@@ -2320,8 +2956,8 @@
     "english": "NDR:38 快速代谢，口渴"
   },
   "item_NameFood_burger_wham_01_dlux_a": {
-    "chinese": "温姆堡D-lux",
-    "english": "NDR:38 快速代谢，口渴"
+    "chinese": "温姆堡",
+    "english": "D-lux"
   },
   "item_NameFood_burger_wham_01_veggie_a": {
     "chinese": "素食温姆堡",
@@ -2659,10 +3295,6 @@
     "chinese": "财运 光亮涂装",
     "english": "Fortune Luminance Livery"
   },
-  "item_NameFortune_Paint_pink_grey_black_iridescent": {
-    "chinese": "财运 痴情涂装",
-    "english": "Fortune Lovestruck Livery"
-  },
   "item_NameFreelancer_Paint_2950Invictus_1": {
     "chinese": "自由枪骑兵 黑色涂装",
     "english": "Freelancer Black Livery"
@@ -2716,8 +3348,8 @@
     "english": "Freelancer Star Kitten Livery"
   },
   "item_NameFreelancer_Paint_Unity": {
-    "chinese": "自由枪骑兵 奠基节涂装",
-    "english": "Freelancer Foundation Fest Livery"
+    "chinese": "自由枪骑兵 奠基节指导涂装",
+    "english": "Freelancer Foundation Guide Livery"
   },
   "item_NameFreelancer_Paint_White_Red": {
     "chinese": "自由枪骑兵 埃尔罗伊咖啡店涂装",
@@ -2742,6 +3374,10 @@
   "item_NameFury_Paint_2954Fortuna_Green_Grey": {
     "chinese": "狂怒 福尔图娜涂装",
     "english": "Fury Fortuna Livery"
+  },
+  "item_NameFury_Paint_Black_Black_Gold": {
+    "chinese": "狂怒 金匠涂装",
+    "english": "Fury Goldsmith Livery"
   },
   "item_NameFury_Paint_Blue_Black_Black": {
     "chinese": "狂怒 踏浪涂装",
@@ -2795,9 +3431,17 @@
     "chinese": "螳螂GT-220 实弹加特林",
     "english": "Mantis GT-220 Gatling"
   },
+  "item_NameGLSN_BallisticGatling_S2": {
+    "chinese": "Deathroll S2 实弹加特林",
+    "english": "Deathroll S2 Gatling"
+  },
   "item_NameGLSN_BallisticGatling_S4": {
     "chinese": "折颈 S4 实弹加特林",
     "english": "Breakneck S4 Gatling"
+  },
+  "item_NameGLSN_LaserRepeater_S2": {
+    "chinese": "Snapper S2 激光速射炮",
+    "english": "Snapper S2 Repeater"
   },
   "item_NameGLSN_LaserRepeater_S3": {
     "chinese": "施虐者 S3 激光速射炮",
@@ -3088,8 +3732,8 @@
     "english": "Gladius Solar Winds Livery"
   },
   "item_NameGladius_Paint_Unity": {
-    "chinese": "短剑 奠基节涂装",
-    "english": "Gladius Foundation Fest Livery"
+    "chinese": "短剑 奠基节指导涂装",
+    "english": "Gladius Foundation Guide Livery"
   },
   "item_NameGladius_Paint_Valiant": {
     "chinese": "短剑 勇士涂装",
@@ -3138,6 +3782,10 @@
   "item_NameGolem_Paint_Yellow_Grey_Orange": {
     "chinese": "魔像 断层涂装",
     "english": "Golem Faultline Livery"
+  },
+  "item_NameGolem_Paint_silver_teal_white": {
+    "chinese": "魔像 奠基节涂装",
+    "english": "Golem Foundation Fest Livery"
   },
   "item_NameGuardian_Paint_Black_Black_Red": {
     "chinese": "守护者 黑视涂装",
@@ -3194,6 +3842,26 @@
   "item_NameGuardian_Paint_White_White_White": {
     "chinese": "守护者 白盲涂装",
     "english": "Guardian Whiteout Livery"
+  },
+  "item_NameHAPR_VP_ESI_S1_Q2": {
+    "chinese": "锤头推进",
+    "english": "HM 4.1"
+  },
+  "item_NameHAPR_VP_ESI_S2_Q2": {
+    "chinese": "锤头推进",
+    "english": "HM 4.2"
+  },
+  "item_NameHAPR_VP_ESI_S3_Q2": {
+    "chinese": "锤头推进",
+    "english": "HM 4.3"
+  },
+  "item_NameHAPR_VP_ESI_S4_Q2": {
+    "chinese": "锤头推进",
+    "english": "HM 4.4"
+  },
+  "item_NameHAPR_VP_RMI_S5_Q2": {
+    "chinese": "锤头推进",
+    "english": "HE 5.5"
   },
   "item_NameHRST_BallisticCannon_S7": {
     "chinese": "征服者-7",
@@ -3274,6 +3942,22 @@
   "item_NameHRST_Tiburon_S10_laserbeam": {
     "chinese": "霸权-10T 激光光束炮",
     "english": "Supremacy-10T Laser Beam"
+  },
+  "item_NameHYPR_FXP_ESI_S1_Q1": {
+    "chinese": "九头蛇推进",
+    "english": "M1-16"
+  },
+  "item_NameHYPR_M116A_S1_Q1": {
+    "chinese": "九头蛇推进",
+    "english": "M1-16A"
+  },
+  "item_NameHYPR_M116B_S1_Q1": {
+    "chinese": "九头蛇推进",
+    "english": "M1-16B"
+  },
+  "item_NameHammer_Propulsion_Twin_HM_4_3": {
+    "chinese": "锤头推进 双子",
+    "english": "HM 4.3"
   },
   "item_NameHammerhead_Paint_2953Fortuna_Green_Grey": {
     "chinese": "锤头鲨 福尔图娜涂装",
@@ -3627,9 +4311,13 @@
     "chinese": "铁甲 突击队涂装",
     "english": "Ironclad Commando Livery"
   },
+  "item_NameJDRV_ORIG_S04_890J": {
+    "chinese": "890 跃动 模型",
+    "english": "890 Jump Module"
+  },
   "item_NameJDRV_WETK_S04_Idris": {
-    "chinese": "遁走Exfiltrate",
-    "english": "[跳跃 S4 定制]"
+    "chinese": "遁走",
+    "english": "Exfiltrate"
   },
   "item_NameJOKR_DistortionCannon_S1": {
     "chinese": "偷袭 畸变加农炮",
@@ -3644,16 +4332,16 @@
     "english": "Suckerpunch-XL Cannon"
   },
   "item_NameJUMP_TARS_S1_C": {
-    "chinese": "探索Explorer",
-    "english": "[跳跃 S1 民用 C]"
+    "chinese": "探索",
+    "english": "Explorer"
   },
   "item_NameJUMP_TARS_S2_C": {
-    "chinese": "精进Excelsior",
-    "english": "[跳跃 S2 民用 C]"
+    "chinese": "精进",
+    "english": "Excelsior"
   },
   "item_NameJUMP_TARS_S3_C": {
-    "chinese": "启程Exodus",
-    "english": "[跳跃 S3 民用 C]"
+    "chinese": "启程",
+    "english": "Exodus"
   },
   "item_NameKBAR_BallisticCannon_S1": {
     "chinese": "9系 长剑 实弹加农炮",
@@ -3671,13 +4359,25 @@
     "chinese": "CF-117 恶犬 激光速射炮",
     "english": "CF-117 Bulldog Repeater"
   },
+  "item_NameKLWE_LaserRepeater_S1_mr01": {
+    "chinese": "CF-117 恶犬 “危险地带” 激光速射炮",
+    "english": "CF-117 Bulldog \"Hazard-Zone\" Repeater"
+  },
   "item_NameKLWE_LaserRepeater_S2": {
     "chinese": "CF-227 獾 激光速射炮",
     "english": "CF-227 Bulldog Repeater"
   },
+  "item_NameKLWE_LaserRepeater_S2_mr01": {
+    "chinese": "CF-227 獾 “危险地带” 激光速射炮",
+    "english": "CF-227 Badger \"Hazard-Zone\" Repeater"
+  },
   "item_NameKLWE_LaserRepeater_S3": {
     "chinese": "CF-337 黑豹 激光速射炮",
     "english": "CF-337 Bulldog Repeater"
+  },
+  "item_NameKLWE_LaserRepeater_S3_mr01": {
+    "chinese": "CF-337 黑豹 “危险地带” 激光速射炮",
+    "english": "CF-337 Panther \"Hazard-Zone\" Repeater"
   },
   "item_NameKLWE_LaserRepeater_S4": {
     "chinese": "CF-447 犀牛 激光速射炮",
@@ -3760,264 +4460,268 @@
     "english": "Karna \"Valor\" Rifle"
   },
   "item_NameLFSP_AEGS_S04_Idris": {
-    "chinese": "安居Safehab",
-    "english": "[维生 S4 定制]"
+    "chinese": "安居",
+    "english": "Safehab"
   },
   "item_NameLIFE_JUST_S00_Awaken_Compact": {
-    "chinese": "唤醒 精简Awaken Compact",
-    "english": "[维生 S0 工业 D]"
+    "chinese": "唤醒 精简",
+    "english": "Awaken Compact"
   },
   "item_NameLIFE_JUST_S00_Exalt_Compact": {
-    "chinese": "擢升 精简Exalt Compact",
-    "english": "[维生 S0 工业 A]"
+    "chinese": "擢升 精简",
+    "english": "Exalt Compact"
   },
   "item_NameLIFE_JUST_S00_Inspire_Compact": {
-    "chinese": "启发 精简Inspire Compact",
-    "english": "[维生 S0 工业 C]"
+    "chinese": "启发 精简",
+    "english": "Inspire Compact"
   },
   "item_NameLIFE_JUST_S00_Revere_Compact": {
-    "chinese": "崇敬 精简Revere Compact",
-    "english": "[维生 S0 工业 B]"
+    "chinese": "崇敬 精简",
+    "english": "Revere Compact"
   },
   "item_NameLIFE_JUST_S01_Awaken": {
-    "chinese": "唤醒Awaken",
-    "english": "[维生 S1 工业 D]"
+    "chinese": "唤醒",
+    "english": "Awaken"
   },
   "item_NameLIFE_JUST_S01_Exalt": {
-    "chinese": "擢升Exalt",
-    "english": "[维生 S1 工业 A]"
+    "chinese": "擢升",
+    "english": "Exalt"
   },
   "item_NameLIFE_JUST_S01_Inspire": {
-    "chinese": "启发Inspire",
-    "english": "[维生 S1 工业 C]"
+    "chinese": "启发",
+    "english": "Inspire"
   },
   "item_NameLIFE_JUST_S01_Revere": {
-    "chinese": "崇敬Revere",
-    "english": "[维生 S1 工业 B]"
+    "chinese": "崇敬",
+    "english": "Revere"
   },
   "item_NameLIFE_JUST_S02_Awaken_Advanced": {
-    "chinese": "唤醒 高级Awaken Advanced",
-    "english": "[维生 S2 工业 D]"
+    "chinese": "唤醒 高级",
+    "english": "Awaken Advanced"
   },
   "item_NameLIFE_JUST_S02_Exalt_Advanced": {
-    "chinese": "擢升 高级Exalt Advanced",
-    "english": "[维生 S2 工业 A]"
+    "chinese": "擢升 高级",
+    "english": "Exalt Advanced"
   },
   "item_NameLIFE_JUST_S02_Inspire_Advanced": {
-    "chinese": "启发 高级Inspire Advanced",
-    "english": "[维生 S2 工业 C]"
+    "chinese": "启发 高级",
+    "english": "Inspire Advanced"
   },
   "item_NameLIFE_JUST_S02_Revere_Advanced": {
-    "chinese": "崇敬 高级Revere Advanced",
-    "english": "[维生 S2 工业 B]"
+    "chinese": "崇敬 高级",
+    "english": "Revere Advanced"
   },
   "item_NameLIFE_JUST_S03_Awaken_Pro": {
-    "chinese": "唤醒 专业Awaken Pro",
-    "english": "[维生 S3 工业 D]"
+    "chinese": "唤醒 专业",
+    "english": "Awaken Pro"
   },
   "item_NameLIFE_JUST_S03_Exalt_Pro": {
-    "chinese": "擢升 专业Exalt Pro",
-    "english": "[维生 S3 工业 A]"
+    "chinese": "擢升 专业",
+    "english": "Exalt Pro"
   },
   "item_NameLIFE_JUST_S03_Inspire_Pro": {
-    "chinese": "启发 专业Inspire Pro",
-    "english": "[维生 S3 工业 C]"
+    "chinese": "启发 专业",
+    "english": "Inspire Pro"
   },
   "item_NameLIFE_JUST_S03_Revere_Pro": {
-    "chinese": "崇敬 专业Revere Pro",
-    "english": "[维生 S3 工业 B]"
+    "chinese": "崇敬 专业",
+    "english": "Revere Pro"
   },
   "item_NameLIFE_RSI_S00_Gaia_FV": {
-    "chinese": "盖亚FV Gaia FV",
-    "english": "[维生 S0 军用 A]"
+    "chinese": "盖亚",
+    "english": "FV Gaia FV"
   },
   "item_NameLIFE_RSI_S00_Halcyon_FV": {
-    "chinese": "平安FV Halcyon FV",
-    "english": "[维生 S0 军用 D]"
+    "chinese": "平安",
+    "english": "FV Halcyon FV"
   },
   "item_NameLIFE_RSI_S00_Sanctuary_FV": {
-    "chinese": "庇护FV Sanctuary FV",
-    "english": "[维生 S0 军用 B]"
+    "chinese": "庇护",
+    "english": "FV Sanctuary FV"
   },
   "item_NameLIFE_RSI_S00_Serenity_FV": {
-    "chinese": "宁静FV Serenity FV",
-    "english": "[维生 S0 军用 C]"
+    "chinese": "宁静",
+    "english": "FV Serenity FV"
   },
   "item_NameLIFE_RSI_S01_Gaia_F10": {
-    "chinese": "盖亚F10 Gaia F10",
-    "english": "[维生 S1 军用 A]"
+    "chinese": "盖亚",
+    "english": "F10 Gaia F10"
   },
   "item_NameLIFE_RSI_S01_Halcyon_F10": {
-    "chinese": "平安F10 Halcyon F10",
-    "english": "[维生 S1 军用 D]"
+    "chinese": "平安",
+    "english": "F10 Halcyon F10"
   },
   "item_NameLIFE_RSI_S01_Sanctuary_F10": {
-    "chinese": "庇护F10 Sanctuary F10",
-    "english": "[维生 S1 军用 B]"
+    "chinese": "庇护",
+    "english": "F10 Sanctuary F10"
   },
   "item_NameLIFE_RSI_S01_Serenity_F10": {
-    "chinese": "宁静F10 Serenity F10",
-    "english": "[维生 S1 军用 C]"
+    "chinese": "宁静",
+    "english": "F10 Serenity F10"
   },
   "item_NameLIFE_RSI_S02_Gaia_F20": {
-    "chinese": "盖亚F20 Gaia F20",
-    "english": "[维生 S2 军用 A]"
+    "chinese": "盖亚",
+    "english": "F20 Gaia F20"
   },
   "item_NameLIFE_RSI_S02_Halcyon_F20": {
-    "chinese": "平安F20 Halcyon F20",
-    "english": "[维生 S2 军用 D]"
+    "chinese": "平安",
+    "english": "F20 Halcyon F20"
   },
   "item_NameLIFE_RSI_S02_Sanctuary_F20": {
-    "chinese": "庇护F20 Sanctuary F20",
-    "english": "[维生 S2 军用 B]"
+    "chinese": "庇护",
+    "english": "F20 Sanctuary F20"
   },
   "item_NameLIFE_RSI_S02_Serenity_F20": {
-    "chinese": "宁静F20 Serenity F20",
-    "english": "[维生 S2 军用 C]"
+    "chinese": "宁静",
+    "english": "F20 Serenity F20"
   },
   "item_NameLIFE_RSI_S03_Gaia_F30": {
-    "chinese": "盖亚F30 Gaia F30",
-    "english": "[维生 S3 军用 A]"
+    "chinese": "盖亚",
+    "english": "F30 Gaia F30"
   },
   "item_NameLIFE_RSI_S03_Halcyon_F30": {
-    "chinese": "平安F30 Halcyon F30",
-    "english": "[维生 S3 军用 D]"
+    "chinese": "平安",
+    "english": "F30 Halcyon F30"
   },
   "item_NameLIFE_RSI_S03_Sanctuary_F30": {
-    "chinese": "庇护F30 Sanctuary F30",
-    "english": "[维生 S3 军用 B]"
+    "chinese": "庇护",
+    "english": "F30 Sanctuary F30"
   },
   "item_NameLIFE_RSI_S03_Serenity_F30": {
-    "chinese": "宁静F30 Serenity F30",
-    "english": "[维生 S3 军用 C]"
+    "chinese": "宁静",
+    "english": "F30 Serenity F30"
   },
   "item_NameLIFE_SASU_S00_Dahlia_Mini": {
-    "chinese": "大丽花 迷你Dahlia Mini",
-    "english": "[维生 S0 民用 C]"
+    "chinese": "大丽花 迷你",
+    "english": "Dahlia Mini"
   },
   "item_NameLIFE_SASU_S00_Goldenrod_Mini": {
-    "chinese": "秋麒麟 迷你Goldenrod Mini",
-    "english": "[维生 S0 民用 B]"
+    "chinese": "秋麒麟 迷你",
+    "english": "Goldenrod Mini"
   },
   "item_NameLIFE_SASU_S00_Marigold_Mini": {
-    "chinese": "万寿菊 迷你Marigold Mini",
-    "english": "[维生 S0 民用 A]"
+    "chinese": "万寿菊 迷你",
+    "english": "Marigold Mini"
   },
   "item_NameLIFE_SASU_S00_Zinnia_Mini": {
-    "chinese": "百日菊 迷你Zinnia Mini",
-    "english": "[维生 S0 民用 D]"
+    "chinese": "百日菊 迷你",
+    "english": "Zinnia Mini"
   },
   "item_NameLIFE_SASU_S01_Dahlia": {
-    "chinese": "大丽花Dahlia",
-    "english": "[维生 S1 民用 C]"
+    "chinese": "大丽花",
+    "english": "Dahlia"
   },
   "item_NameLIFE_SASU_S01_Goldenrod": {
-    "chinese": "秋麒麟Goldenrod",
-    "english": "[维生 S1 民用 B]"
+    "chinese": "秋麒麟",
+    "english": "Goldenrod"
   },
   "item_NameLIFE_SASU_S01_Marigold": {
-    "chinese": "万寿菊Marigold",
-    "english": "[维生 S1 民用 A]"
+    "chinese": "万寿菊",
+    "english": "Marigold"
   },
   "item_NameLIFE_SASU_S01_Zinnia": {
-    "chinese": "百日菊Zinnia",
-    "english": "[维生 S1 民用 D]"
+    "chinese": "百日菊",
+    "english": "Zinnia"
   },
   "item_NameLIFE_SASU_S02_Dahlia_Premium": {
-    "chinese": "大丽花 高端Dahlia Premium",
-    "english": "[维生 S2 民用 C]"
+    "chinese": "大丽花 高端",
+    "english": "Dahlia Premium"
   },
   "item_NameLIFE_SASU_S02_Goldenrod_Premium": {
-    "chinese": "秋麒麟 高端Goldenrod Premium",
-    "english": "[维生 S2 民用 B]"
+    "chinese": "秋麒麟 高端",
+    "english": "Goldenrod Premium"
   },
   "item_NameLIFE_SASU_S02_Marigold_Premium": {
-    "chinese": "万寿菊 高端Marigold Premium",
-    "english": "[维生 S2 民用 A]"
+    "chinese": "万寿菊 高端",
+    "english": "Marigold Premium"
   },
   "item_NameLIFE_SASU_S02_Zinnia_Premium": {
-    "chinese": "百日菊 高端Zinnia Premium",
-    "english": "[维生 S2 民用 D]"
+    "chinese": "百日菊 高端",
+    "english": "Zinnia Premium"
   },
   "item_NameLIFE_SASU_S03_Dahlia_Delux": {
-    "chinese": "大丽花 豪华Dahlia Delux",
-    "english": "[维生 S3 民用 C]"
+    "chinese": "大丽花 豪华",
+    "english": "Dahlia Delux"
   },
   "item_NameLIFE_SASU_S03_Goldenrod_Delux": {
-    "chinese": "秋麒麟 豪华Goldenrod Delux",
-    "english": "[维生 S3 民用 B]"
+    "chinese": "秋麒麟 豪华",
+    "english": "Goldenrod Delux"
   },
   "item_NameLIFE_SASU_S03_Marigold_Delux": {
-    "chinese": "万寿菊 豪华Marigold Delux",
-    "english": "[维生 S3 民用 A]"
+    "chinese": "万寿菊 豪华",
+    "english": "Marigold Delux"
   },
   "item_NameLIFE_SASU_S03_Zinnia_Delux": {
-    "chinese": "百日菊 豪华Zinnia Delux",
-    "english": "[维生 S3 民用 D]"
+    "chinese": "百日菊 豪华",
+    "english": "Zinnia Delux"
+  },
+  "item_NameLIFE_TYDT_Filter": {
+    "chinese": "擦净 过滤器",
+    "english": "ScrubClean Filter"
   },
   "item_NameLIFE_TYDT_S00_AirFresh_Lite": {
-    "chinese": "新风 精简AirFresh Lite",
-    "english": "[维生 S0 民用 B]"
+    "chinese": "新风 精简",
+    "english": "AirFresh Lite"
   },
   "item_NameLIFE_TYDT_S00_ComfortAir_Lite": {
-    "chinese": "舒气 精简ComfortAir Lite",
-    "english": "[维生 S0 民用 C]"
+    "chinese": "舒气 精简",
+    "english": "ComfortAir Lite"
   },
   "item_NameLIFE_TYDT_S00_PureClean_Lite": {
-    "chinese": "纯净 精简PureClean Lite",
-    "english": "[维生 S0 民用 A]"
+    "chinese": "纯净 精简",
+    "english": "PureClean Lite"
   },
   "item_NameLIFE_TYDT_S00_VentScrub_Lite": {
-    "chinese": "气爽 精简VentScrub Lite",
-    "english": "[维生 S0 民用 D]"
+    "chinese": "气爽 精简",
+    "english": "VentScrub Lite"
   },
   "item_NameLIFE_TYDT_S01_AirFresh": {
-    "chinese": "新风AirFresh",
-    "english": "[维生 S1 民用 B]"
+    "chinese": "新风",
+    "english": "AirFresh"
   },
   "item_NameLIFE_TYDT_S01_ComfortAir": {
-    "chinese": "舒气ComfortAir",
-    "english": "[维生 S1 民用 C]"
+    "chinese": "舒气",
+    "english": "ComfortAir"
   },
   "item_NameLIFE_TYDT_S01_PureClean": {
-    "chinese": "纯净PureClean",
-    "english": "[维生 S1 民用 A]"
+    "chinese": "纯净",
+    "english": "PureClean"
   },
   "item_NameLIFE_TYDT_S01_VentScrub": {
-    "chinese": "气爽VentScrub",
-    "english": "[维生 S1 民用 D]"
+    "chinese": "气爽",
+    "english": "VentScrub"
   },
   "item_NameLIFE_TYDT_S02_AirFresh_Plus": {
-    "chinese": "新风 加量AirFresh Plus",
-    "english": "[维生 S2 民用 B]"
+    "chinese": "新风 加量",
+    "english": "AirFresh Plus"
   },
   "item_NameLIFE_TYDT_S02_ComfortAir_Plus": {
-    "chinese": "舒气 加量ComfortAir Plus",
-    "english": "[维生 S2 民用 C]"
+    "chinese": "舒气 加量",
+    "english": "ComfortAir Plus"
   },
   "item_NameLIFE_TYDT_S02_PureClean_Plus": {
-    "chinese": "纯净 加量PureClean Plus",
-    "english": "[维生 S2 民用 A]"
+    "chinese": "纯净 加量",
+    "english": "PureClean Plus"
   },
   "item_NameLIFE_TYDT_S02_VentScrub_Plus": {
-    "chinese": "气爽 加量VentScrub Plus",
-    "english": "[维生 S2 民用 D]"
+    "chinese": "气爽 加量",
+    "english": "VentScrub Plus"
   },
   "item_NameLIFE_TYDT_S03_AirFresh_Max": {
-    "chinese": "新风 满配AirFresh Max",
-    "english": "[维生 S3 民用 B]"
+    "chinese": "新风 满配",
+    "english": "AirFresh Max"
   },
   "item_NameLIFE_TYDT_S03_ComfortAir_Max": {
-    "chinese": "舒气 满配ComfortAir Max",
-    "english": "[维生 S3 民用 C]"
+    "chinese": "舒气 满配",
+    "english": "ComfortAir Max"
   },
   "item_NameLIFE_TYDT_S03_PureClean_Max": {
-    "chinese": "纯净 满配PureClean Max",
-    "english": "[维生 S3 民用 A]"
+    "chinese": "纯净 满配",
+    "english": "PureClean Max"
   },
   "item_NameLIFE_TYDT_S03_VentScrub_Max": {
-    "chinese": "气爽 满配VentScrub Max",
-    "english": "[维生 S3 民用 D]"
+    "chinese": "气爽 满配",
+    "english": "VentScrub Max"
   },
   "item_NameLOOT_game_chess_1_bishop_a": {
     "chinese": "海伯利安 黄铜象",
@@ -4130,6 +4834,14 @@
   "item_NameM80_Paint_white_white_blue": {
     "chinese": "M80 王朝涂装",
     "english": "M80 Dynasty Livery"
+  },
+  "item_NameMISC_Freelancer_DUR_shop": {
+    "chinese": "武藏 自由枪骑兵",
+    "english": "DUR"
+  },
+  "item_NameMISC_Freelancer_MAX_shop": {
+    "chinese": "武藏 自由枪骑兵",
+    "english": "MAX"
   },
   "item_NameMISL_S01_CS_BEHR_Spearhead_Ground": {
     "chinese": "矛头 GVI-CS 导弹",
@@ -4343,6 +5055,10 @@
     "chinese": "报复 军械 后部模块",
     "english": "Retaliator Ordnance Rear Module"
   },
+  "item_NameMODU_GREY_Basher_Cosmetic_Mohawk_Default": {
+    "chinese": "Basher Chopper 机体套件 顶部",
+    "english": "Basher Chopper Bodykit Top"
+  },
   "item_NameMODU_GREY_Shiv_Cosmetic_Nose_SetA": {
     "chinese": "锈刃 砍杀者 机体套件 前部",
     "english": "Shiv \"Slasher\" Bodykit Front"
@@ -4479,6 +5195,14 @@
     "chinese": "MPUV 痴情涂装",
     "english": "MPUV Lovestruck Livery"
   },
+  "item_NameMRCK_S03_GAMA_Railen_Dual_S02": {
+    "chinese": "盖塔克 导弹架 2",
+    "english": "xS2"
+  },
+  "item_NameMRCK_S04_GAMA_Railen_Octo_S01": {
+    "chinese": "盖塔克 导弹架 8",
+    "english": "xS1"
+  },
   "item_NameMTC_Paint_Beige_Grey_Red_Headhunters": {
     "chinese": "MTC 猎头帮死神涂装",
     "english": "MTC Headhunters Reaper Livery"
@@ -4523,6 +5247,10 @@
     "chinese": "MXC 学员涂装",
     "english": "MXC Cadet Livery"
   },
+  "item_NameMT_PersonalMobiGlas": {
+    "chinese": "个人",
+    "english": "MobiGlas"
+  },
   "item_NameMXOX_NeutronCannon_S1": {
     "chinese": "NN-13 中子加农炮",
     "english": "NN-13 Cannon"
@@ -4546,6 +5274,10 @@
   "item_NameMXOX_NeutronRepeater_S3": {
     "chinese": "NDB-30 中子速射炮",
     "english": "NDB-30 Repeater"
+  },
+  "item_NameM_rsi_pilot_flightsuit_jetpack": {
+    "chinese": "无畏-",
+    "english": "OS"
   },
   "item_NameMantis_Paint_IAE2950_Grey_Blue": {
     "chinese": "螳螂 风暴使者涂装",
@@ -4648,20 +5380,20 @@
     "english": "Meteor Shimmer Livery"
   },
   "item_NameMining_Head_S00_Arbor_SCItem": {
-    "chinese": "S0 刀轴Arbor",
-    "english": "[-40%不稳定]"
+    "chinese": "S0 刀轴",
+    "english": "Arbor"
   },
   "item_NameMining_Head_S00_Helix_SCItem": {
-    "chinese": "S0 螺旋Helix",
-    "english": "[-40%绿区|+20%绿区速率]"
+    "chinese": "S0 螺旋",
+    "english": "Helix"
   },
   "item_NameMining_Head_S00_Hofstede_SCItem": {
-    "chinese": "S00 霍夫斯泰德Hofstede",
-    "english": "[+30%不稳定|-40%抗性|+40%绿区|+20%绿区范围]"
+    "chinese": "S00 霍夫斯泰德",
+    "english": "Hofstede"
   },
   "item_NameMining_Head_S00_Klein_SCItem": {
-    "chinese": "劳森采矿激光器Lawson",
-    "english": "[+30%不稳定|-40%抗性|+40%绿区]"
+    "chinese": "劳森采矿激光器",
+    "english": "Lawson"
   },
   "item_NameMoth_Paint_Blue_Grey_Green": {
     "chinese": "飞蛾 潮池涂装",
@@ -4682,10 +5414,6 @@
   "item_NameMoth_Paint_White_Grey_Orange": {
     "chinese": "飞蛾 白云石涂装",
     "english": "MOTH Dolomite Livery"
-  },
-  "item_NameMoth_Paint_pink_grey_black_iridescent": {
-    "chinese": "飞蛾 痴情涂装",
-    "english": "MOTH Lovestruck Livery"
   },
   "item_NameMount_Gimbal_S1": {
     "chinese": "变化圆盘 S1 可动挂点",
@@ -4887,6 +5615,10 @@
     "chinese": "Nox 浪涌涂装",
     "english": "Nox Thli Livery"
   },
+  "item_NameOKBV_FP_ESCI_S2_Q1": {
+    "chinese": "OKB 上升能量",
+    "english": "IV"
+  },
   "item_NameORI_game_chess_1_bishop_a": {
     "chinese": "起源 白象",
     "english": "Origin White Bishop"
@@ -4964,240 +5696,240 @@
     "english": "Brawler Medium Armor"
   },
   "item_NamePOWR_ACOM_S01_StarHeart": {
-    "chinese": "星心StarHeart",
-    "english": "[发电 S1 竞速 B]"
+    "chinese": "星心",
+    "english": "StarHeart"
   },
   "item_NamePOWR_ACOM_S01_StarHeart_SCItem": {
-    "chinese": "星心StarHeart",
-    "english": "[发电 S1 竞速 B]"
+    "chinese": "星心",
+    "english": "StarHeart"
   },
   "item_NamePOWR_ACOM_S01_SunFlare_SCItem": {
-    "chinese": "耀斑SunFlare",
-    "english": "[发电 S1 竞速 C]"
+    "chinese": "耀斑",
+    "english": "SunFlare"
   },
   "item_NamePOWR_ACOM_S01_Sunflare": {
-    "chinese": "耀斑SunFlare",
-    "english": "[发电 S1 竞速 C]"
+    "chinese": "耀斑",
+    "english": "SunFlare"
   },
   "item_NamePOWR_ACOM_S02_LuxCore_SCItem": {
-    "chinese": "照度核心LuxCore",
-    "english": "[发电 S2 竞速 A]"
+    "chinese": "照度核心",
+    "english": "LuxCore"
   },
   "item_NamePOWR_ACOM_S02_StarBurn_SCItem": {
-    "chinese": "星火StarBurn",
-    "english": "[发电 S2 竞速 B]"
+    "chinese": "星火",
+    "english": "StarBurn"
   },
   "item_NamePOWR_AEGS_S01_Charger": {
-    "chinese": "战马Charger",
-    "english": "[发电 S1 军用 D]"
+    "chinese": "战马",
+    "english": "Charger"
   },
   "item_NamePOWR_AEGS_S01_Charger_SCItem": {
-    "chinese": "战马Charger",
-    "english": "[发电 S1 军用 D]"
+    "chinese": "战马",
+    "english": "Charger"
   },
   "item_NamePOWR_AEGS_S01_FierellCascade_SCItem": {
-    "chinese": "菲耶尔级联Fierell Cascade",
-    "english": "[发电 S1 军用 B]"
+    "chinese": "菲耶尔级联",
+    "english": "Fierell Cascade"
   },
   "item_NamePOWR_AEGS_S01_Regulus": {
-    "chinese": "雷古勒斯Regulus",
-    "english": "[发电 S1 军用 C]"
+    "chinese": "雷古勒斯",
+    "english": "Regulus"
   },
   "item_NamePOWR_AEGS_S01_Regulus_SCItem": {
-    "chinese": "雷古勒斯Regulus",
-    "english": "[发电 S1 军用 C]"
+    "chinese": "雷古勒斯",
+    "english": "Regulus"
   },
   "item_NamePOWR_AEGS_S02_Maelstrom_SCItem": {
-    "chinese": "大漩涡Maelstrom",
-    "english": "[发电 S2 军用 C]"
+    "chinese": "大漩涡",
+    "english": "Maelstrom"
   },
   "item_NamePOWR_AEGS_S02_QuadracellMT_SCItem": {
-    "chinese": "四相电池MT QuadraCell MT",
-    "english": "[发电 S2 军用 A]"
+    "chinese": "四相电池",
+    "english": "MT QuadraCell MT"
   },
   "item_NamePOWR_AEGS_S02_Vortex": {
-    "chinese": "涡流Vortex",
-    "english": "[发电 S2 军用 D]"
+    "chinese": "涡流",
+    "english": "Vortex"
   },
   "item_NamePOWR_AEGS_S03_Drassik_SCItem": {
-    "chinese": "德拉西克Drassik",
-    "english": "[发电 S3 军用 D]"
+    "chinese": "德拉西克",
+    "english": "Drassik"
   },
   "item_NamePOWR_AEGS_S03_QuadracellMX_SCItem": {
-    "chinese": "四相电池MX QuadraCell MX",
-    "english": "[发电 S3 军用 A]"
+    "chinese": "四相电池",
+    "english": "MX QuadraCell MX"
   },
   "item_NamePOWR_AMRS_S01_HyperGen": {
-    "chinese": "极生HyperGen",
-    "english": "[发电 S1 军用 D]"
+    "chinese": "极生",
+    "english": "HyperGen"
   },
   "item_NamePOWR_AMRS_S01_HyperGen_SCItem": {
-    "chinese": "极生HyperGen",
-    "english": "[发电 S1 军用 D]"
+    "chinese": "极生",
+    "english": "HyperGen"
   },
   "item_NamePOWR_AMRS_S01_JS300_SCItem": {
     "chinese": "JS-300",
     "english": "[发电 S1 军用 A]"
   },
   "item_NamePOWR_AMRS_S01_OverDrive": {
-    "chinese": "过载驱动OverDrive",
-    "english": "[发电 S1 军用 C]"
+    "chinese": "过载驱动",
+    "english": "OverDrive"
   },
   "item_NamePOWR_AMRS_S01_OverDrive_SCItem": {
-    "chinese": "过载驱动OverDrive",
-    "english": "[发电 S1 军用 C]"
+    "chinese": "过载驱动",
+    "english": "OverDrive"
   },
   "item_NamePOWR_AMRS_S02_ExoGen": {
-    "chinese": "外生ExoGen",
-    "english": "[发电 S2 军用 D]"
+    "chinese": "外生",
+    "english": "ExoGen"
   },
   "item_NamePOWR_AMRS_S02_JS400_SCItem": {
     "chinese": "JS-400",
     "english": "[发电 S2 军用 A]"
   },
   "item_NamePOWR_AMRS_S02_UltraFlux_SCItem": {
-    "chinese": "终极流量UltraFlux",
-    "english": "[发电 S2 军用 B]"
+    "chinese": "终极流量",
+    "english": "UltraFlux"
   },
   "item_NamePOWR_AMRS_S03_JS500_SCItem": {
     "chinese": "JS-500",
     "english": "[发电 S3 军用 A]"
   },
   "item_NamePOWR_AMRS_S03_SuperDrive_SCItem": {
-    "chinese": "超级驱动SuperDrive",
-    "english": "[发电 S3 军用 C]"
+    "chinese": "超级驱动",
+    "english": "SuperDrive"
   },
   "item_NamePOWR_JUST_S00_Jennet_SCItem": {
-    "chinese": "詹妮特Jennet",
-    "english": "[发电 S0 工业 D]"
+    "chinese": "詹妮特",
+    "english": "Jennet"
   },
   "item_NamePOWR_JUST_S00_SteadFast": {
-    "chinese": "坚定Steadfast",
-    "english": "[发电 S0 工业 C]"
+    "chinese": "坚定",
+    "english": "Steadfast"
   },
   "item_NamePOWR_JUST_S00_SteadFast_SCItem": {
-    "chinese": "坚定Steadfast",
-    "english": "[发电 S0 工业 C]"
+    "chinese": "坚定",
+    "english": "Steadfast"
   },
   "item_NamePOWR_JUST_S01_Endurance": {
-    "chinese": "耐力Endurance",
-    "english": "[发电 S1 工业 B]"
+    "chinese": "耐力",
+    "english": "Endurance"
   },
   "item_NamePOWR_JUST_S01_Endurance_SCItem": {
-    "chinese": "耐力Endurance",
-    "english": "[发电 S1 工业 B]"
+    "chinese": "耐力",
+    "english": "Endurance"
   },
   "item_NamePOWR_JUST_S01_Fortitude_SCItem": {
-    "chinese": "刚毅Fortitude",
-    "english": "[发电 S1 工业 C]"
+    "chinese": "刚毅",
+    "english": "Fortitude"
   },
   "item_NamePOWR_JUST_S01_Roughneck_SCItem": {
-    "chinese": "莽夫Roughneck",
-    "english": "[发电 S1 工业 D]"
+    "chinese": "莽夫",
+    "english": "Roughneck"
   },
   "item_NamePOWR_JUST_S02_Genoa_SCItem": {
-    "chinese": "热那亚Genoa",
-    "english": "[发电 S2 工业 A]"
+    "chinese": "热那亚",
+    "english": "Genoa"
   },
   "item_NamePOWR_JUST_S02_Trommel_SCItem": {
-    "chinese": "滚筒筛Trommel",
-    "english": "[发电 S2 工业 D]"
+    "chinese": "滚筒筛",
+    "english": "Trommel"
   },
   "item_NamePOWR_JUST_S03_Endurance": {
-    "chinese": "耐力Endurance",
-    "english": "[发电 S3 工业 B]"
+    "chinese": "耐力",
+    "english": "Endurance"
   },
   "item_NamePOWR_JUST_S03_Ginzel_SCItem": {
-    "chinese": "金杰尔Ginzel",
-    "english": "[发电 S3 工业 C]"
+    "chinese": "金杰尔",
+    "english": "Ginzel"
   },
   "item_NamePOWR_LPLT_S00_DuraJet_SCItem": {
-    "chinese": "杜拉汞DuraJet",
-    "english": "[发电 S0 民用 D]"
+    "chinese": "杜拉汞",
+    "english": "DuraJet"
   },
   "item_NamePOWR_LPLT_S00_Radix": {
-    "chinese": "基数Radix",
-    "english": "[发电 S0 民用 C]"
+    "chinese": "基数",
+    "english": "Radix"
   },
   "item_NamePOWR_LPLT_S00_Radix_SCItem": {
-    "chinese": "基数Radix",
-    "english": "[发电 S0 民用 C]"
+    "chinese": "基数",
+    "english": "Radix"
   },
   "item_NamePOWR_LPLT_S01_IonBurst": {
-    "chinese": "离子爆裂IonBurst",
-    "english": "[发电 S1 民用 B]"
+    "chinese": "离子爆裂",
+    "english": "IonBurst"
   },
   "item_NamePOWR_LPLT_S01_PowerBolt_SCItem": {
-    "chinese": "电力栓PowerBolt",
-    "english": "[发电 S1 民用 C]"
+    "chinese": "电力栓",
+    "english": "PowerBolt"
   },
   "item_NamePOWR_LPLT_S01_ZapJet_SCItem": {
-    "chinese": "活力飞机ZapJet",
-    "english": "[发电 S1 民用 D]"
+    "chinese": "活力飞机",
+    "english": "ZapJet"
   },
   "item_NamePOWR_LPLT_S02_FullForce_SCItem": {
-    "chinese": "全力FullForce",
-    "english": "[发电 S2 民用 C]"
+    "chinese": "全力",
+    "english": "FullForce"
   },
   "item_NamePOWR_LPLT_S02_IonSurge_SCItem": {
-    "chinese": "离子奔涌IonSurge",
-    "english": "[发电 S2 民用 B]"
+    "chinese": "离子奔涌",
+    "english": "IonSurge"
   },
   "item_NamePOWR_LPLT_S03_FullForcePro_SCItem": {
-    "chinese": "全力 Pro FullForce Pro",
-    "english": "[发电 S3 民用 C]"
+    "chinese": "全力",
+    "english": "Pro FullForce Pro"
   },
   "item_NamePOWR_LPLT_S03_SparkJetPro_SCItem": {
-    "chinese": "火花机Pro SparkJet Pro",
-    "english": "[发电 S3 民用 D]"
+    "chinese": "火花机",
+    "english": "Pro SparkJet Pro"
   },
   "item_NamePOWR_ORIG_S04_890J_SCItem": {
-    "chinese": "星状Stellate",
-    "english": "[发电 S4 民用 A]"
+    "chinese": "星状",
+    "english": "Stellate"
   },
   "item_NamePOWR_SASU_S01_LightBlossom": {
-    "chinese": "光绽LightBlossom",
-    "english": "[发电 S1 民用 C]"
+    "chinese": "光绽",
+    "english": "LightBlossom"
   },
   "item_NamePOWR_SASU_S01_LightBlossom_SCItem": {
-    "chinese": "光绽LightBlossom",
-    "english": "[发电 S1 民用 C]"
+    "chinese": "光绽",
+    "english": "LightBlossom"
   },
   "item_NamePOWR_SASU_S01_WhiteRose_SCItem": {
-    "chinese": "白瑰WhiteRose",
-    "english": "[发电 S1 民用 A]"
+    "chinese": "白瑰",
+    "english": "WhiteRose"
   },
   "item_NamePOWR_SASU_S02_DayBreak_SCItem": {
-    "chinese": "破晓DayBreak",
-    "english": "[发电 S2 民用 C]"
+    "chinese": "破晓",
+    "english": "DayBreak"
   },
   "item_NamePOWR_SASU_S02_Lotus_SCItem": {
-    "chinese": "莲花Lotus",
-    "english": "[发电 S2 民用 A]"
+    "chinese": "莲花",
+    "english": "Lotus"
   },
   "item_NamePOWR_SASU_S03_TigerLilly_SCItem": {
-    "chinese": "卷丹TigerLilly",
-    "english": "[发电 S3 民用 A]"
+    "chinese": "卷丹",
+    "english": "TigerLilly"
   },
   "item_NamePOWR_TYDT_S01_DeltaMax_SCItem": {
-    "chinese": "德尔塔Max DeltaMax",
-    "english": "[发电 S1 隐形 B]"
+    "chinese": "德尔塔",
+    "english": "Max DeltaMax"
   },
   "item_NamePOWR_TYDT_S01_SonicLite": {
-    "chinese": "轻音SonicLite",
-    "english": "[发电 S1 隐形 C]"
+    "chinese": "轻音",
+    "english": "SonicLite"
   },
   "item_NamePOWR_TYDT_S01_SonicLite_SCItem": {
-    "chinese": "轻音SonicLite",
-    "english": "[发电 S1 隐形 C]"
+    "chinese": "轻音",
+    "english": "SonicLite"
   },
   "item_NamePOWR_TYDT_S02_Eclipse_SCItem": {
-    "chinese": "日蚀Eclipse",
-    "english": "[发电 S2 隐形 A]"
+    "chinese": "日蚀",
+    "english": "Eclipse"
   },
   "item_NamePOWR_TYDT_S02_GammaMax_SCItem": {
-    "chinese": "伽马Max GammaMax",
-    "english": "[发电 S2 隐形 B]"
+    "chinese": "伽马",
+    "english": "Max GammaMax"
   },
   "item_NamePRAR_DistortionScatterGun_S3": {
     "chinese": "改革 畸变霰弹炮",
@@ -5507,6 +6239,10 @@
     "chinese": "破碎的剜度长矛展示架",
     "english": "Shattered Vanduul Lance Display"
   },
+  "item_NamePlayerDeco_Gunrack_4P_3R_Lowtech_1_a": {
+    "chinese": "博斯科武器展示架",
+    "english": "Bosco Weapon Display Rack"
+  },
   "item_NamePlayerDeco_It_couch_improvised_1_combined_a_pirate": {
     "chinese": "残颅 沙发",
     "english": "Salvaged Skull Couch"
@@ -5664,8 +6400,8 @@
     "english": "Prospector Outcast Livery (Modified)"
   },
   "item_NameProspector_Paint_Unity": {
-    "chinese": "勘探者 奠基节涂装",
-    "english": "Prospector Foundation Fest Livery"
+    "chinese": "勘探者 奠基节指导涂装",
+    "english": "Prospector Foundation Guide Livery"
   },
   "item_NameProspector_Paint_WorkersWeek_White_Blue_Blue": {
     "chinese": "勘探者 基石涂装",
@@ -5763,181 +6499,197 @@
     "chinese": "脉冲 星空猫涂装",
     "english": "Pulse Star Kitten Livery"
   },
+  "item_NameQDMP_RSI_S03_CAPTOR": {
+    "chinese": "劫持者",
+    "english": "QD Captor QD"
+  },
+  "item_NameQDMP_WETK_S01_Burke": {
+    "chinese": "伯克",
+    "english": "QD Burke QD"
+  },
   "item_NameQDRV_ACAS_S02_SparkFire_SCItem": {
-    "chinese": "火花SparkFire",
-    "english": "[量子 S2 竞速 C]"
+    "chinese": "火花",
+    "english": "SparkFire"
   },
   "item_NameQDRV_ACAS_S02_SunFire_SCItem": {
-    "chinese": "阳炎SunFire",
-    "english": "[量子 S2 竞速 B]"
+    "chinese": "阳炎",
+    "english": "SunFire"
   },
   "item_NameQDRV_ARCC_S01_Flood_SCItem": {
-    "chinese": "溢流Flood",
-    "english": "[量子 S1 民用 D]"
+    "chinese": "溢流",
+    "english": "Flood"
   },
   "item_NameQDRV_ARCC_S01_Rush": {
-    "chinese": "突进Rush",
-    "english": "[量子 S1 民用 C]"
+    "chinese": "突进",
+    "english": "Rush"
   },
   "item_NameQDRV_ARCC_S02_Cascade_SCItem": {
-    "chinese": "喷流Cascade",
-    "english": "[量子 S2 民用 D]"
+    "chinese": "喷流",
+    "english": "Cascade"
   },
   "item_NameQDRV_ARCC_S03_Echo": {
-    "chinese": "回声Echo",
-    "english": "[量子 S3 民用 D]"
+    "chinese": "回声",
+    "english": "Echo"
   },
   "item_NameQDRV_ARCC_S03_Echo_SCItem": {
-    "chinese": "回声Echo",
-    "english": "[量子 S3 民用 D]"
+    "chinese": "回声",
+    "english": "Echo"
   },
   "item_NameQDRV_ARCC_S03_Fissure": {
-    "chinese": "裂缝Fissure",
-    "english": "[量子 S3 民用 C]"
+    "chinese": "裂缝",
+    "english": "Fissure"
   },
   "item_NameQDRV_ARCC_S03_Fissure_SCItem": {
-    "chinese": "裂缝Fissure",
-    "english": "[量子 S3 民用 C]"
+    "chinese": "裂缝",
+    "english": "Fissure"
   },
   "item_NameQDRV_ARCC_S03_Impulse": {
-    "chinese": "脉冲Impulse",
-    "english": "[量子 S3 民用 B]"
+    "chinese": "脉冲",
+    "english": "Impulse"
   },
   "item_NameQDRV_ARCC_S03_Impulse_SCItem": {
-    "chinese": "脉冲Impulse",
-    "english": "[量子 S3 民用 B]"
+    "chinese": "脉冲",
+    "english": "Impulse"
   },
   "item_NameQDRV_JUST_S01_Goliath": {
-    "chinese": "哥利亚Goliath",
-    "english": "[量子 S1 工业 C]"
+    "chinese": "哥利亚",
+    "english": "Goliath"
   },
   "item_NameQDRV_JUST_S01_Vulcan_SCItem": {
-    "chinese": "伏尔甘Vulcan",
-    "english": "[量子 S1 工业 D]"
+    "chinese": "伏尔甘",
+    "english": "Vulcan"
   },
   "item_NameQDRV_JUST_S02_Bolon": {
-    "chinese": "伯龙Bolon",
-    "english": "[量子 S2 工业 C]"
+    "chinese": "伯龙",
+    "english": "Bolon"
   },
   "item_NameQDRV_JUST_S02_Huracan_SCItem": {
-    "chinese": "乌拉坎Huracan",
-    "english": "[量子 S2 工业 B]"
+    "chinese": "乌拉坎",
+    "english": "Huracan"
   },
   "item_NameQDRV_JUST_S03_Agni": {
-    "chinese": "阿格尼Agni",
-    "english": "[量子 S3 工业 B]"
+    "chinese": "阿格尼",
+    "english": "Agni"
   },
   "item_NameQDRV_JUST_S03_Agni_SCItem": {
-    "chinese": "阿格尼Agni",
-    "english": "[量子 S3 工业 B]"
+    "chinese": "阿格尼",
+    "english": "Agni"
   },
   "item_NameQDRV_JUST_S03_Kama": {
-    "chinese": "卡玛Kama",
-    "english": "[量子 S3 工业 C]"
+    "chinese": "卡玛",
+    "english": "Kama"
   },
   "item_NameQDRV_JUST_S03_Vesta": {
-    "chinese": "维斯塔Vesta",
-    "english": "[量子 S3 工业 D]"
+    "chinese": "维斯塔",
+    "english": "Vesta"
   },
   "item_NameQDRV_JUST_S03_Vesta_SCItem": {
-    "chinese": "维斯塔Vesta",
-    "english": "[量子 S3 工业 D]"
+    "chinese": "维斯塔",
+    "english": "Vesta"
   },
   "item_NameQDRV_ORIG_S04_890J_SCItem": {
-    "chinese": "极速Allegro",
-    "english": "[量子 S4 民用 A]"
+    "chinese": "极速",
+    "english": "Allegro"
   },
   "item_NameQDRV_RACO_S01_Drift": {
-    "chinese": "漂泊Drift",
-    "english": "[量子 S1 隐形 C]"
+    "chinese": "漂泊",
+    "english": "Drift"
   },
   "item_NameQDRV_RACO_S01_Spectre_SCItem": {
-    "chinese": "幽魂Spectre",
-    "english": "[量子 S1 隐形 A]"
+    "chinese": "幽魂",
+    "english": "Spectre"
   },
   "item_NameQDRV_RACO_S02_Bolt_SCItem": {
-    "chinese": "雷电Bolt",
-    "english": "[量子 S2 隐形 B]"
+    "chinese": "雷电",
+    "english": "Bolt"
   },
   "item_NameQDRV_RACO_S02_Nova_SCItem": {
-    "chinese": "新星Nova",
-    "english": "[量子 S2 隐形 C]"
+    "chinese": "新星",
+    "english": "Nova"
   },
   "item_NameQDRV_RACO_S02_Spicule_SCItem": {
-    "chinese": "刺针Spicule",
-    "english": "[量子 S2 隐形 A]"
+    "chinese": "刺针",
+    "english": "Spicule"
   },
   "item_NameQDRV_RSI_S01_Eos": {
-    "chinese": "黎明女神Eos",
-    "english": "[量子 S1 民用 C]"
+    "chinese": "黎明女神",
+    "english": "Eos"
   },
   "item_NameQDRV_RSI_S01_Hyperion_SCItem": {
-    "chinese": "光之神Hyperion",
-    "english": "[量子 S1 民用 B]"
+    "chinese": "光之神",
+    "english": "Hyperion"
   },
   "item_NameQDRV_RSI_S02_Aither_SCItem": {
-    "chinese": "以太Aither",
-    "english": "[量子 S2 民用 B]"
+    "chinese": "以太",
+    "english": "Aither"
   },
   "item_NameQDRV_RSI_S03_Erebos": {
-    "chinese": "黑暗之神Erebos",
-    "english": "[量子 S3 民用 A]"
+    "chinese": "黑暗之神",
+    "english": "Erebos"
   },
   "item_NameQDRV_RSI_S03_Metis": {
-    "chinese": "智谋女神Metis",
-    "english": "[量子 S3 民用 C]"
+    "chinese": "智谋女神",
+    "english": "Metis"
   },
   "item_NameQDRV_RSI_S03_Tyche": {
-    "chinese": "命运女神Tyche",
-    "english": "[量子 S3 民用 B]"
+    "chinese": "命运女神",
+    "english": "Tyche"
   },
   "item_NameQDRV_TARS_S01_Expedition": {
-    "chinese": "远征Expedition",
-    "english": "[量子 S1 民用 C]"
+    "chinese": "远征",
+    "english": "Expedition"
   },
   "item_NameQDRV_TARS_S02_Odyssey": {
-    "chinese": "奥德赛Odyssey",
-    "english": "[量子 S2 民用 C]"
+    "chinese": "奥德赛",
+    "english": "Odyssey"
   },
   "item_NameQDRV_TARS_S03_Drifter": {
-    "chinese": "漂流者Drifter",
-    "english": "[量子 S3 民用 D]"
+    "chinese": "漂流者",
+    "english": "Drifter"
   },
   "item_NameQDRV_TARS_S03_Ranger": {
-    "chinese": "游骑兵Ranger",
-    "english": "[量子 S3 民用 B]"
+    "chinese": "游骑兵",
+    "english": "Ranger"
   },
   "item_NameQDRV_TARS_S03_Wanderer": {
-    "chinese": "漫游者Wanderer",
-    "english": "[量子 S3 民用 C]"
+    "chinese": "漫游者",
+    "english": "Wanderer"
   },
   "item_NameQDRV_WETK_S01_Beacon": {
-    "chinese": "信标Beacon",
-    "english": "[量子 S1 军用 C]"
+    "chinese": "信标",
+    "english": "Beacon"
   },
   "item_NameQDRV_WETK_S01_Siren": {
-    "chinese": "警笛Siren",
-    "english": "[量子 S1 军用 B]"
+    "chinese": "警笛",
+    "english": "Siren"
   },
   "item_NameQDRV_WETK_S02_Crossfield": {
-    "chinese": "克罗斯菲尔德Crossfield",
-    "english": "[量子 S2 军用 C]"
+    "chinese": "克罗斯菲尔德",
+    "english": "Crossfield"
   },
   "item_NameQDRV_WETK_S03_Balandin": {
-    "chinese": "巴兰丁Balandin",
-    "english": "[量子 S3 军用 B]"
+    "chinese": "巴兰丁",
+    "english": "Balandin"
   },
   "item_NameQDRV_WETK_S03_Pontes": {
-    "chinese": "庞特斯Pontes",
-    "english": "[量子 S3 军用 C]"
+    "chinese": "庞特斯",
+    "english": "Pontes"
   },
   "item_NameQDRV_WETK_S03_TS2": {
     "chinese": "TS-2",
     "english": "[量子 S3 军用 A]"
   },
   "item_NameQDRV_WETK_S04_Idris": {
-    "chinese": "前线Frontline",
-    "english": "[量子 S4 定制]"
+    "chinese": "前线",
+    "english": "Frontline"
+  },
+  "item_NameQDRV_XIAN_S01": {
+    "chinese": "希安 量子驱动器",
+    "english": "XIAN Quantum Drive"
+  },
+  "item_NameQED_RSI_S04_Tidelock": {
+    "chinese": "潮汐锁定",
+    "english": "QD Tidelock QD"
   },
   "item_NameRAFT_Paint_IAE2951_Blue_Black": {
     "chinese": "木筏 风暴使者涂装",
@@ -5982,6 +6734,22 @@
   "item_NameROC_Paint_Quicksilver_grey": {
     "chinese": "ROC 水银涂装",
     "english": "ROC Quicksilver Livery"
+  },
+  "item_NameRSI_Aurora_CL_shop": {
+    "chinese": "RSI 极光",
+    "english": "CL"
+  },
+  "item_NameRSI_Aurora_ES_shop": {
+    "chinese": "RSI 极光",
+    "english": "ES"
+  },
+  "item_NameRSI_Aurora_LN_shop": {
+    "chinese": "RSI 极光",
+    "english": "LN"
+  },
+  "item_NameRSI_Aurora_MR_shop": {
+    "chinese": "RSI 极光",
+    "english": "MR"
   },
   "item_NameRSI_BallisticCannon_Meteor_Bespoke": {
     "chinese": "狮子座加农炮",
@@ -6144,8 +6912,8 @@
     "english": "Razor Central Tower Livery"
   },
   "item_NameRazor_Paint_Unity": {
-    "chinese": "剃刀 奠基节涂装",
-    "english": "Razor Foundation Fest Livery"
+    "chinese": "剃刀 奠基节指导涂装",
+    "english": "Razor Foundation Guide Livery"
   },
   "item_NameRazor_Paint_White_Blue_Blue_microTech": {
     "chinese": "剃刀 志远涂装",
@@ -6247,161 +7015,193 @@
     "chinese": "报复者 反冲涂装",
     "english": "Retaliator Backlash Livery"
   },
+  "item_NameSECO_S1_F4_DD": {
+    "chinese": "墨水-标记 104-",
+    "english": "ID"
+  },
+  "item_NameSECO_S1_F4_SD": {
+    "chinese": "墨水-分裂 104-",
+    "english": "IS"
+  },
+  "item_NameSECO_S2_F4_DD": {
+    "chinese": "墨水-标记 204-",
+    "english": "ID"
+  },
+  "item_NameSECO_S2_F4_SD": {
+    "chinese": "墨水-分裂 204-",
+    "english": "IS"
+  },
+  "item_NameSECO_S3_F4_DD": {
+    "chinese": "墨水-标记 304-",
+    "english": "ID"
+  },
+  "item_NameSECO_S3_F4_SD": {
+    "chinese": "墨水-分裂 304-",
+    "english": "IS"
+  },
+  "item_NameSECO_S4_F4_DD": {
+    "chinese": "墨水-标记 404-",
+    "english": "ID"
+  },
+  "item_NameSECO_S4_F4_SD": {
+    "chinese": "墨水-分裂 404-",
+    "english": "IS"
+  },
   "item_NameSHLD_AEGS_S04_Idris": {
-    "chinese": "圣盾 伊德里斯 护盾AEGS Idris Shield",
-    "english": "[护盾 S4 ? ?]"
+    "chinese": "圣盾 伊德里斯 护盾",
+    "english": "AEGS Idris Shield"
   },
   "item_NameSHLD_AEGS_S04_Reclaimer_SCItem": {
-    "chinese": "RS-屏障 RS-Barrier",
-    "english": "[护盾 S4 工业 定制]"
+    "chinese": "RS-屏障",
+    "english": "RS-Barrier"
   },
   "item_NameSHLD_ASAS_S01_Cloak": {
-    "chinese": "斗篷Cloak",
-    "english": "[护盾 S1 隐形 D]"
+    "chinese": "斗篷",
+    "english": "Cloak"
   },
   "item_NameSHLD_ASAS_S01_Mirage": {
-    "chinese": "蜃景Mirage",
-    "english": "[护盾 S1 隐形 A]"
+    "chinese": "蜃景",
+    "english": "Mirage"
   },
   "item_NameSHLD_ASAS_S01_Obscura": {
-    "chinese": "暗黑Obscura",
-    "english": "[护盾 S2 隐形 C]"
+    "chinese": "暗黑",
+    "english": "Obscura"
   },
   "item_NameSHLD_ASAS_S01_Shimmer": {
-    "chinese": "微光Shimmer",
-    "english": "[护盾 S1 隐形 C]"
+    "chinese": "微光",
+    "english": "Shimmer"
   },
   "item_NameSHLD_ASAS_S01_Veil": {
-    "chinese": "面纱Veil",
-    "english": "[护盾 S1 隐形 B]"
+    "chinese": "面纱",
+    "english": "Veil"
   },
   "item_NameSHLD_ASAS_S02_Shroud": {
-    "chinese": "护罩Shroud",
-    "english": "[护盾 S2 隐形 D]"
+    "chinese": "护罩",
+    "english": "Shroud"
   },
   "item_NameSHLD_BANU_S01_Suldrath": {
-    "chinese": "苏得拉斯Suldrath",
-    "english": "[护盾 S1 军用 C]"
+    "chinese": "苏得拉斯",
+    "english": "Suldrath"
   },
   "item_NameSHLD_BANU_S02_Sukoran": {
-    "chinese": "斯科拉Sukoran",
-    "english": "[护盾 S2 军用 C]"
+    "chinese": "斯科拉",
+    "english": "Sukoran"
   },
   "item_NameSHLD_BASL_S00_Castra": {
-    "chinese": "营地Castra",
-    "english": "[护盾 S0 工业 C]"
+    "chinese": "营地",
+    "english": "Castra"
   },
   "item_NameSHLD_BASL_S01_Bulwark": {
-    "chinese": "堡垒Bulwark",
-    "english": "[护盾 S1 工业 C]"
+    "chinese": "堡垒",
+    "english": "Bulwark"
   },
   "item_NameSHLD_BASL_S01_Guardian": {
-    "chinese": "守卫Guardian",
-    "english": "[护盾 S1 工业 B]"
+    "chinese": "守卫",
+    "english": "Guardian"
   },
   "item_NameSHLD_BASL_S01_Palisade": {
-    "chinese": "栅栏Palisade",
-    "english": "[护盾 S1 工业 A]"
+    "chinese": "栅栏",
+    "english": "Palisade"
   },
   "item_NameSHLD_BASL_S01_Steward": {
-    "chinese": "管家Steward",
-    "english": "[护盾 S1 工业 D]"
+    "chinese": "管家",
+    "english": "Steward"
   },
   "item_NameSHLD_BASL_S02_Aspis": {
-    "chinese": "重盾Aspis",
-    "english": "[护盾 S2 工业 C]"
+    "chinese": "重盾",
+    "english": "Aspis"
   },
   "item_NameSHLD_BASL_S03_Stronghold": {
-    "chinese": "据点Stronghold",
-    "english": "[护盾 S3 工业 C]"
+    "chinese": "据点",
+    "english": "Stronghold"
   },
   "item_NameSHLD_BEHR_S01_5SA": {
-    "chinese": "5SA 拉达Rhada",
-    "english": "[护盾 S1 民用 C]"
+    "chinese": "5SA 拉达",
+    "english": "Rhada"
   },
   "item_NameSHLD_BEHR_S01_6SA": {
-    "chinese": "6SA 阿比特Arbiter",
-    "english": "[护盾 S1 民用 B]"
+    "chinese": "6SA 阿比特",
+    "english": "Arbiter"
   },
   "item_NameSHLD_BEHR_S01_7sa": {
-    "chinese": "7SA 康科德Concord",
-    "english": "[护盾 S1 民用 A]"
+    "chinese": "7SA 康科德",
+    "english": "Concord"
   },
   "item_NameSHLD_BEHR_S02_5MA": {
-    "chinese": "5MA 系马尔里Chimalli",
-    "english": "[护盾 S2 民用 C]"
+    "chinese": "5MA 系马尔里",
+    "english": "Chimalli"
   },
   "item_NameSHLD_BEHR_S03_5CA": {
-    "chinese": "5CA 阿库拉Akura",
-    "english": "[护盾 S3 民用 C]"
+    "chinese": "5CA 阿库拉",
+    "english": "Akura"
   },
   "item_NameSHLD_GODI_S01_AllStop": {
-    "chinese": "全面停滞AllStop",
-    "english": "[护盾 S1 军用 C]"
+    "chinese": "全面停滞",
+    "english": "AllStop"
   },
   "item_NameSHLD_GODI_S01_AllStop_SCItem": {
-    "chinese": "全面停滞AllStop",
-    "english": "[护盾 S1 军用 C]"
+    "chinese": "全面停滞",
+    "english": "AllStop"
   },
   "item_NameSHLD_GODI_S01_FR66": {
     "chinese": "FR-66",
     "english": "[护盾 S1 军用 A]"
   },
   "item_NameSHLD_GODI_S01_ForceWall": {
-    "chinese": "防御之墙ForceWall",
-    "english": "[护盾 S1 军用 B]"
+    "chinese": "防御之墙",
+    "english": "ForceWall"
   },
   "item_NameSHLD_GODI_S01_SecureHyde": {
-    "chinese": "安全屏蔽SecureHyde",
-    "english": "[护盾 S1 军用 D]"
+    "chinese": "安全屏蔽",
+    "english": "SecureHyde"
   },
   "item_NameSHLD_GODI_S02_FullStop": {
-    "chinese": "完全停滞FullStop",
-    "english": "[护盾 S2 军用 C]"
+    "chinese": "完全停滞",
+    "english": "FullStop"
   },
   "item_NameSHLD_GODI_S04_Idris": {
-    "chinese": "坚盾Holdstrong",
-    "english": "[护盾 S4 定制]"
+    "chinese": "坚盾",
+    "english": "Holdstrong"
   },
   "item_NameSHLD_ORIG_S04_890J_SCItem": {
-    "chinese": "斜堤Glacis",
-    "english": "[护盾 S4 工业 A]"
+    "chinese": "斜堤",
+    "english": "Glacis"
   },
   "item_NameSHLD_S01_CIV_SECO_Ink": {
-    "chinese": "墨水INK",
-    "english": "[护盾 S1 民用 D]"
+    "chinese": "墨水",
+    "english": "INK"
   },
   "item_NameSHLD_S01_CMP_YORM_Targa": {
-    "chinese": "塔尔加Targa",
-    "english": "[护盾 S1 竞速 C]"
+    "chinese": "塔尔加",
+    "english": "Targa"
   },
   "item_NameSHLD_SECO_S00_PIN": {
-    "chinese": "别针PIN",
-    "english": "[护盾 S0 民用 C]"
+    "chinese": "别针",
+    "english": "PIN"
   },
   "item_NameSHLD_SECO_S01_HEX": {
-    "chinese": "六角HEX",
-    "english": "[护盾 S1 民用 B]"
+    "chinese": "六角",
+    "english": "HEX"
   },
   "item_NameSHLD_SECO_S01_INK": {
-    "chinese": "墨水INK",
-    "english": "[护盾 S1 民用 D]"
+    "chinese": "墨水",
+    "english": "INK"
   },
   "item_NameSHLD_SECO_S01_WEB": {
-    "chinese": "蛛网WEB",
-    "english": "[护盾 S1 民用 C]"
+    "chinese": "蛛网",
+    "english": "WEB"
   },
   "item_NameSHLD_SECO_S02_STOP": {
-    "chinese": "停滞STOP",
-    "english": "[护盾 S2 民用 C]"
+    "chinese": "停滞",
+    "english": "STOP"
   },
   "item_NameSHLD_YORM_S01_Falco": {
-    "chinese": "法尔科Falco",
-    "english": "[护盾 S1 竞速 D]"
+    "chinese": "法尔科",
+    "english": "Falco"
   },
   "item_NameSHLD_YORM_S01_Targa": {
-    "chinese": "塔尔加Targa",
-    "english": "[护盾 S1 竞速 C]"
+    "chinese": "塔尔加",
+    "english": "Targa"
   },
   "item_NameSQ_Flair_Coin_1_a_1H": {
     "chinese": "舰船大对决’52 墨丘利 纪念币",
@@ -6527,9 +7327,9 @@
     "chinese": "拯救 迪斯科涂装",
     "english": "Salvation Disco Livery"
   },
-  "item_NameSalvation_Paint_pink_grey_black_iridescent": {
-    "chinese": "拯救 痴情涂装",
-    "english": "Salvation Lovestruck Livery"
+  "item_NameSalvation_Paint_silver_teal_white": {
+    "chinese": "拯救 奠基节涂装",
+    "english": "Salvation Foundation Fest Livery"
   },
   "item_NameSanTokYai_Paint_AlienWeek_Teal_Pink": {
     "chinese": "桑托起亚 和谐涂装",
@@ -6860,8 +7660,8 @@
     "english": "Mercury Star Runner Skyrider Livery"
   },
   "item_NameStar_Runner_Paint_Unity": {
-    "chinese": "墨丘利星际快运船 奠基节涂装",
-    "english": "Mercury Star Runner Foundation Fest Livery"
+    "chinese": "墨丘利星际快运船 奠基节指导涂装",
+    "english": "Mercury Star Runner Foundation Guide Livery"
   },
   "item_NameStarfarer_Paint_2950Invictus_1": {
     "chinese": "星际远航者 黑色涂装",
@@ -6876,8 +7676,8 @@
     "english": "Starfarer Storm Surge Livery"
   },
   "item_NameStarfarer_Paint_Unity": {
-    "chinese": "星际远航者 奠基节涂装",
-    "english": "Starfarer Foundation Fest Livery"
+    "chinese": "星际远航者 奠基节指导涂装",
+    "english": "Starfarer Foundation Guide Livery"
   },
   "item_NameStarlancer_Paint_Blue_Black_White": {
     "chinese": "星际枪骑兵 积雪涂装",
@@ -7239,6 +8039,14 @@
     "chinese": "大熊座 绿洲涂装",
     "english": "Ursa Oasis Livery"
   },
+  "item_NameVNCL_Blade_S1_Strike_FAF_IR": {
+    "chinese": "剜度 刀锋 撞击 导弹",
+    "english": "S1"
+  },
+  "item_NameVNCL_DF_MOUSE": {
+    "chinese": "剜度",
+    "english": "DF"
+  },
   "item_NameVNCL_Gen2_LaserBeam_S9": {
     "chinese": "剜度 重拳 “点燃者” 激光光束炮",
     "english": "Vanduul Mauler 'IGNITER' Beam"
@@ -7266,6 +8074,14 @@
   "item_NameVNCL_LaserCannon_S2": {
     "chinese": "“胡蜂”速射炮",
     "english": "'WASP' Repeater"
+  },
+  "item_NameVNCL_Mark_Platform_x3": {
+    "chinese": "剜度 死镰 导弹平台",
+    "english": "x3"
+  },
+  "item_NameVNCL_Mark_Platform_x4": {
+    "chinese": "剜度 死镰 导弹平台",
+    "english": "x4"
   },
   "item_NameVNCL_NC_S5_Q1": {
     "chinese": "“战争”中子加农炮",
@@ -7299,6 +8115,14 @@
     "chinese": "剜度 S5 加农炮",
     "english": "Vanduul S5 Cannon"
   },
+  "item_NameVNCL_Stinger_NC_S5": {
+    "chinese": "剜度 毒刺 中子大炮",
+    "english": "S5"
+  },
+  "item_NameVNCL_Stinger_Platform_x12": {
+    "chinese": "剜度 毒刺 导弹架",
+    "english": "x12"
+  },
   "item_NameValkyrie_Paint_2950Invictus_1": {
     "chinese": "女武神 浅灰涂装",
     "english": "Valkyrie Light Grey Livery"
@@ -7316,8 +8140,8 @@
     "english": "Valkyrie 2950 Best In Show Livery"
   },
   "item_NameValkyrie_Paint_Unity": {
-    "chinese": "女武神 奠基节涂装",
-    "english": "Valkyrie Foundation Fest Livery"
+    "chinese": "女武神 奠基节指导涂装",
+    "english": "Valkyrie Foundation Guide Livery"
   },
   "item_NameVanguard_Paint_2953Fortuna_Green_Grey": {
     "chinese": "先锋 福尔图娜涂装",
@@ -7408,8 +8232,8 @@
     "english": "Vulture Outcast Livery (Modified)"
   },
   "item_NameVulture_Paint_Unity": {
-    "chinese": "秃鹫 奠基节涂装",
-    "english": "Vulture Foundation Fest Livery"
+    "chinese": "秃鹫 奠基节指导涂装",
+    "english": "Vulture Foundation Guide Livery"
   },
   "item_NameWolf_Paint_Black_Black_Red_Camo": {
     "chinese": "狼式 夜影涂装",
@@ -7559,6 +8383,10 @@
     "chinese": "宙斯 Mk II 艳阳涂装",
     "english": "Zeus Mk II Sunswept Livery"
   },
+  "item_NameZoom": {
+    "chinese": "螳螂",
+    "english": "GT-220"
+  },
   "item_Name_987_Jacket_01_01_01": {
     "chinese": "军团 夹克",
     "english": "Legion Jacket"
@@ -7576,8 +8404,8 @@
     "english": "Bantam Hat Badger Bad"
   },
   "item_Name_987_hat_01_01_dmc": {
-    "chinese": "矮脚鸡 帽子 DMC",
-    "english": "Bantam Hat DMC"
+    "chinese": "矮脚鸡 帽子",
+    "english": "DMC"
   },
   "item_Name_987_hat_01_01_philsfillup": {
     "chinese": "矮脚鸡 帽子 菲尔加油",
@@ -7588,12 +8416,12 @@
     "english": "Bantam Hat Stor*All"
   },
   "item_Name_987_hat_01_01_taba": {
-    "chinese": "矮脚鸡 帽子 TABA",
-    "english": "Bantam Hat TABA"
+    "chinese": "矮脚鸡 帽子",
+    "english": "TABA"
   },
   "item_Name_987_hat_01_01_urw": {
-    "chinese": "矮脚鸡 帽子 URW",
-    "english": "Bantam Hat URW"
+    "chinese": "矮脚鸡 帽子",
+    "english": "URW"
   },
   "item_Name_987_jacket_03_01_01": {
     "chinese": "节奏 夹克 金色",
@@ -7996,172 +8824,172 @@
     "english": "[计算机 S2 军用 B]"
   },
   "item_Name_COMP_BLTR_S01_Crypt": {
-    "chinese": "加密Crypt",
-    "english": "[计算机 S1 隐形 A]"
+    "chinese": "加密",
+    "english": "Crypt"
   },
   "item_Name_COMP_BLTR_S01_Cypher": {
-    "chinese": "解码Cypher",
-    "english": "[计算机 S1 隐形 B]"
+    "chinese": "解码",
+    "english": "Cypher"
   },
   "item_Name_COMP_BRRA_S01_Lamarr": {
-    "chinese": "拉马尔Lamarr",
-    "english": "[计算机 S1 竞赛 C]"
+    "chinese": "拉马尔",
+    "english": "Lamarr"
   },
   "item_Name_COMP_BRRA_S01_Pascal": {
-    "chinese": "帕斯卡Pascal",
-    "english": "[计算机 S1 竞赛 B]"
+    "chinese": "帕斯卡",
+    "english": "Pascal"
   },
   "item_Name_COMP_FSIN_S02_CompuWare": {
-    "chinese": "康博CompuWare",
-    "english": "[计算机 S2 民用 C]"
+    "chinese": "康博",
+    "english": "CompuWare"
   },
   "item_Name_COMP_MITE_S01_dynaSys": {
     "chinese": "dynaSys",
     "english": "[计算机 S1 民用 C]"
   },
   "item_Name_COMP_SADA_S01_Ferric": {
-    "chinese": "铁Ferric",
-    "english": "[计算机 S1 工业 C]"
+    "chinese": "铁",
+    "english": "Ferric"
   },
   "item_Name_COMP_SADA_S01_Wolfram": {
-    "chinese": "钨Wolfram",
-    "english": "[计算机 S1 工业 B]"
+    "chinese": "钨",
+    "english": "Wolfram"
   },
   "item_Name_COMP_SADA_S02_Chrome": {
-    "chinese": "铬Chrome",
-    "english": "[计算机 S2 工业 B]"
+    "chinese": "铬",
+    "english": "Chrome"
   },
   "item_Name_COMP_SADA_S02_Inox": {
-    "chinese": "不锈钢Inox",
-    "english": "[计算机 S2 工业 C]"
+    "chinese": "不锈钢",
+    "english": "Inox"
   },
   "item_Name_COMP_WLOP_S00_Adze": {
-    "chinese": "扁斧Adze",
-    "english": "[计算机 S0 民用 C]"
+    "chinese": "扁斧",
+    "english": "Adze"
   },
   "item_Name_COMP_WLOP_S00_Chamfer": {
-    "chinese": "斜角Chamfer",
-    "english": "[计算机 S0 民用 B]"
+    "chinese": "斜角",
+    "english": "Chamfer"
   },
   "item_Name_COMP_WLOP_S00_Lattice": {
-    "chinese": "格子Lattice",
-    "english": "[计算机 S0 民用 C]"
+    "chinese": "格子",
+    "english": "Lattice"
   },
   "item_Name_COMP_WLOP_S01_Baier": {
-    "chinese": "拜尔Baier",
-    "english": "[计算机 S1 民用 C]"
+    "chinese": "拜尔",
+    "english": "Baier"
   },
   "item_Name_COMP_WLOP_S01_Mitre": {
-    "chinese": "米特Mitre",
-    "english": "[计算机 S1 民用 B]"
+    "chinese": "米特",
+    "english": "Mitre"
   },
   "item_Name_COMP_WLOP_S02_Baas": {
-    "chinese": "巴斯Baas",
-    "english": "[计算机 S2 民用 C]"
+    "chinese": "巴斯",
+    "english": "Baas"
   },
   "item_Name_COMP_WLOP_S02_Dado": {
-    "chinese": "达多Dado",
-    "english": "[计算机 S2 民用 D]"
+    "chinese": "达多",
+    "english": "Dado"
   },
   "item_Name_COOL_ACOM_S01_ZeroRush": {
-    "chinese": "零冲ZeroRush",
-    "english": "[冷却 S1 竞速 B]"
+    "chinese": "零冲",
+    "english": "ZeroRush"
   },
   "item_Name_COOL_AEGS_S01_Glacier": {
-    "chinese": "冰川Glacier",
-    "english": "[冷却 S1 军用 A]"
+    "chinese": "冰川",
+    "english": "Glacier"
   },
   "item_Name_COOL_AEGS_S01_Tundra": {
-    "chinese": "苔原Tundra",
-    "english": "[冷却 S1 军用 D]"
+    "chinese": "苔原",
+    "english": "Tundra"
   },
   "item_Name_COOL_AEGS_S02_Avalanche": {
-    "chinese": "雪崩Avalanche",
-    "english": "[冷却 S2 军用 A]"
+    "chinese": "雪崩",
+    "english": "Avalanche"
   },
   "item_Name_COOL_AEGS_S02_Boreal": {
-    "chinese": "北风Boreal",
-    "english": "[冷却 S2 军用 D]"
+    "chinese": "北风",
+    "english": "Boreal"
   },
   "item_Name_COOL_AEGS_S02_Permafrost": {
-    "chinese": "永冻Permafrost",
-    "english": "[冷却 S2 军用 B]"
+    "chinese": "永冻",
+    "english": "Permafrost"
   },
   "item_Name_COOL_AEGS_S03_Tempest": {
-    "chinese": "暴风雨Tempest",
-    "english": "[冷却 S3 军用 B]"
+    "chinese": "暴风雨",
+    "english": "Tempest"
   },
   "item_Name_COOL_JSPN_S00_CryoStarSL": {
-    "chinese": "低温之星SL CryoStarSL",
-    "english": "[冷却 S0 民用 B]"
+    "chinese": "低温之星",
+    "english": "SL CryoStarSL"
   },
   "item_Name_COOL_JSPN_S01_CryoStar": {
-    "chinese": "低温之星CryoStar",
-    "english": "[冷却 S1 民用 B]"
+    "chinese": "低温之星",
+    "english": "CryoStar"
   },
   "item_Name_COOL_JSPN_S02_CryoStarEX": {
-    "chinese": "低温之星EX CryoStarEX",
-    "english": "[冷却 S2 民用 B]"
+    "chinese": "低温之星",
+    "english": "EX CryoStarEX"
   },
   "item_Name_COOL_JSPN_S03_CryoStarXL": {
-    "chinese": "低温之星XL CryoStarXL",
-    "english": "[冷却 S3 民用 B]"
+    "chinese": "低温之星",
+    "english": "XL CryoStarXL"
   },
   "item_Name_COOL_JUST_S01_EcoFlow": {
-    "chinese": "生态流Eco-Flow",
-    "english": "[冷却 S1 工业 B]"
+    "chinese": "生态流",
+    "english": "Eco-Flow"
   },
   "item_Name_COOL_JUST_S01_UltraFlow": {
-    "chinese": "终极对流Ultra-Flow",
-    "english": "[冷却 S1 工业 A]"
+    "chinese": "终极对流",
+    "english": "Ultra-Flow"
   },
   "item_Name_COOL_JUST_S02_Snowfall": {
-    "chinese": "飘雪Snowfall",
-    "english": "[冷却 S2 工业 B]"
+    "chinese": "飘雪",
+    "english": "Snowfall"
   },
   "item_Name_COOL_JUST_S03_IceFlush": {
-    "chinese": "冰流Ice-Flush",
-    "english": "[冷却 S3 工业 B]"
+    "chinese": "冰流",
+    "english": "Ice-Flush"
   },
   "item_Name_COOL_LPLT_S01_FlashFreeze": {
-    "chinese": "急冻FlashFreeze",
-    "english": "[冷却 S1 民用 B]"
+    "chinese": "急冻",
+    "english": "FlashFreeze"
   },
   "item_Name_COOL_LPLT_S02_FullFrost": {
-    "chinese": "寒霜FullFrost",
-    "english": "[冷却 S2 民用 B]"
+    "chinese": "寒霜",
+    "english": "FullFrost"
   },
   "item_Name_COOL_LPLT_S02_WhiteOut": {
-    "chinese": "白苍WhiteOut",
-    "english": "[冷却 S2 民用 D]"
+    "chinese": "白苍",
+    "english": "WhiteOut"
   },
   "item_Name_COOL_LPLT_S03_FrostBite": {
-    "chinese": "冻伤FrostBite",
-    "english": "[冷却 S3 民用 B]"
+    "chinese": "冻伤",
+    "english": "FrostBite"
   },
   "item_Name_COOL_TYDT_S01_SnowBlind": {
-    "chinese": "雪盲SnowBlind",
-    "english": "[冷却 S1 隐形 A]"
+    "chinese": "雪盲",
+    "english": "SnowBlind"
   },
   "item_Name_COOL_VNCL_S01_Cold": {
-    "chinese": "冰冷Cold",
-    "english": "[冷却 S1 军用 ?]"
+    "chinese": "冰冷",
+    "english": "Cold"
   },
   "item_Name_COOL_WCPR_S00_Kelvid": {
-    "chinese": "凯尔维德Kelvid",
-    "english": "[冷却 S0 民用 B]"
+    "chinese": "凯尔维德",
+    "english": "Kelvid"
   },
   "item_Name_COOL_WCPR_S01_Gelid": {
-    "chinese": "极寒Gelid",
-    "english": "[冷却 S1 民用 A]"
+    "chinese": "极寒",
+    "english": "Gelid"
   },
   "item_Name_COOL_WCPR_S02_Graupel": {
-    "chinese": "霰Graupel",
-    "english": "[冷却 S2 民用 C]"
+    "chinese": "霰",
+    "english": "Graupel"
   },
   "item_Name_COOL_WCPR_S02_Taiga": {
-    "chinese": "寒林Taiga",
-    "english": "[冷却 S2 民用 B]"
+    "chinese": "寒林",
+    "english": "Taiga"
   },
   "item_Name_CTL_Hat_01_01_01": {
     "chinese": "拉巴特帽 蓝色",
@@ -8278,6 +9106,10 @@
   "item_Name_CTL_Shirt_06_01_01": {
     "chinese": "贝利托 衬衫",
     "english": "Bellito Shirt"
+  },
+  "item_Name_Carryable_1H_SQ_Flair_Coin_1_chairmansclub_a": {
+    "chinese": "礼宾俱乐部 纪念币",
+    "english": "Chairman's Club Coin"
   },
   "item_Name_Carryable_2H_CY_CollectorMaterial_001": {
     "chinese": "超材料测试 #146",
@@ -8739,6 +9571,10 @@
     "chinese": "岩层 臂甲 热浪",
     "english": "Strata Arms Heatwave"
   },
+  "item_Name_GRIN_utility_medium_arms_03_05_16": {
+    "chinese": "岩层 臂甲 列夫斯基版",
+    "english": "Strata Arms Levski Edition"
+  },
   "item_Name_GRIN_utility_medium_backpack_01_01_01": {
     "chinese": "伪壳 背包",
     "english": "Aril Backpack"
@@ -8815,6 +9651,10 @@
     "chinese": "岩层 背包 热浪",
     "english": "Strata Backpack Heatwave"
   },
+  "item_Name_GRIN_utility_medium_backpack_03_05_16": {
+    "chinese": "岩层 背包 列夫斯基版",
+    "english": "Strata Backpack Levski Edition"
+  },
   "item_Name_GRIN_utility_medium_core_01_01_01": {
     "chinese": "伪壳 胸甲",
     "english": "Aril Core"
@@ -8890,6 +9730,10 @@
   "item_Name_GRIN_utility_medium_core_03_04_01": {
     "chinese": "岩层 胸甲 热浪",
     "english": "Strata Core Heatwave"
+  },
+  "item_Name_GRIN_utility_medium_core_03_05_16": {
+    "chinese": "岩层 胸甲 列夫斯基版",
+    "english": "Strata Core Levski Edition"
   },
   "item_Name_GRIN_utility_medium_helmet_01_01_01": {
     "chinese": "伪壳 头盔",
@@ -8990,6 +9834,10 @@
   "item_Name_GRIN_utility_medium_legs_03_04_01": {
     "chinese": "岩层 腿甲 热浪",
     "english": "Strata Legs Heatwave"
+  },
+  "item_Name_GRIN_utility_medium_legs_03_05_16": {
+    "chinese": "岩层 腿甲 列夫斯基版",
+    "english": "Strata Legs Levski Edition"
   },
   "item_Name_GSB_Boots_01_01_01": {
     "chinese": "流浪者靴 基础款",
@@ -9136,328 +9984,328 @@
     "english": "Brawler Helmet"
   },
   "item_Name_POWR_ACOM_S01_LumaCore": {
-    "chinese": "亮度核心LumaCore",
-    "english": "[发电 S1 竞速 A]"
+    "chinese": "亮度核心",
+    "english": "LumaCore"
   },
   "item_Name_POWR_ACOM_S02_SolarFlare": {
-    "chinese": "太阳耀斑SolarFlare",
-    "english": "[发电 S2 竞速 C]"
+    "chinese": "太阳耀斑",
+    "english": "SolarFlare"
   },
   "item_Name_POWR_AEGS_S01_QuadraCell": {
-    "chinese": "四相电池QuadraCell",
-    "english": "[发电 S1 军用 A]"
+    "chinese": "四相电池",
+    "english": "QuadraCell"
   },
   "item_Name_POWR_AEGS_S02_Bolide": {
-    "chinese": "火流星Bolide",
-    "english": "[发电 S2 军用 B]"
+    "chinese": "火流星",
+    "english": "Bolide"
   },
   "item_Name_POWR_AEGS_S02_Vortex": {
-    "chinese": "涡流Vortex",
-    "english": "[发电 S2 军用 D]"
+    "chinese": "涡流",
+    "english": "Vortex"
   },
   "item_Name_POWR_AEGS_S03_Centurion": {
-    "chinese": "百夫长Centurion",
-    "english": "[发电 S3 军用 C]"
+    "chinese": "百夫长",
+    "english": "Centurion"
   },
   "item_Name_POWR_AEGS_S03_Fulgur": {
-    "chinese": "灿烂Fulgur",
-    "english": "[发电 S3 军用 B]"
+    "chinese": "灿烂",
+    "english": "Fulgur"
   },
   "item_Name_POWR_AMRS_S01_DynaFlux": {
-    "chinese": "动力流DynaFlux",
-    "english": "[发电 S1 军用 B]"
+    "chinese": "动力流",
+    "english": "DynaFlux"
   },
   "item_Name_POWR_AMRS_S02_ExoGen": {
-    "chinese": "外生ExoGen",
-    "english": "[发电 S2 军用 D]"
+    "chinese": "外生",
+    "english": "ExoGen"
   },
   "item_Name_POWR_AMRS_S02_TurboDrive": {
-    "chinese": "涡轮驱动TurboDrive",
-    "english": "[发电 S2 军用 C]"
+    "chinese": "涡轮驱动",
+    "english": "TurboDrive"
   },
   "item_Name_POWR_AMRS_S03_MegaFlux": {
-    "chinese": "巨大流量MegaFlux",
-    "english": "[发电 S3 军用 B]"
+    "chinese": "巨大流量",
+    "english": "MegaFlux"
   },
   "item_Name_POWR_AMRS_S03_SmartGen": {
-    "chinese": "智能驱动SmartGen",
-    "english": "[发电 S3 军用 D]"
+    "chinese": "智能驱动",
+    "english": "SmartGen"
   },
   "item_Name_POWR_JUST_S00_Defiant": {
-    "chinese": "挑战Defiant",
-    "english": "[发电 S0 工业 B]"
+    "chinese": "挑战",
+    "english": "Defiant"
   },
   "item_Name_POWR_JUST_S01_Breton": {
-    "chinese": "布列塔尼Breton",
-    "english": "[发电 S1 工业 A]"
+    "chinese": "布列塔尼",
+    "english": "Breton"
   },
   "item_Name_POWR_JUST_S02_Diligence": {
-    "chinese": "勤奋Diligence",
-    "english": "[发电 S2 工业 C]"
+    "chinese": "勤奋",
+    "english": "Diligence"
   },
   "item_Name_POWR_JUST_S02_Sedulity": {
-    "chinese": "奋勉Sedulity",
-    "english": "[发电 S2 工业 B]"
+    "chinese": "奋勉",
+    "english": "Sedulity"
   },
   "item_Name_POWR_JUST_S03_Durango": {
-    "chinese": "杜兰戈Durango",
-    "english": "[发电 S3 工业 A]"
+    "chinese": "杜兰戈",
+    "english": "Durango"
   },
   "item_Name_POWR_JUST_S03_Reliance": {
-    "chinese": "信任Reliance",
-    "english": "[发电 S3 工业 B]"
+    "chinese": "信任",
+    "english": "Reliance"
   },
   "item_Name_POWR_LPLT_S00_IonWave": {
-    "chinese": "离子波IonWave",
-    "english": "[发电 S0 民用 B]"
+    "chinese": "离子波",
+    "english": "IonWave"
   },
   "item_Name_POWR_LPLT_S01_IonBurst": {
-    "chinese": "离子爆裂IonBurst",
-    "english": "[发电 S1 民用 B]"
+    "chinese": "离子爆裂",
+    "english": "IonBurst"
   },
   "item_Name_POWR_LPLT_S02_FullForce": {
-    "chinese": "全力FullForce",
-    "english": "[发电 S2 民用 C]"
+    "chinese": "全力",
+    "english": "FullForce"
   },
   "item_Name_POWR_LPLT_S02_SparkJet": {
-    "chinese": "火花机SparkJet",
-    "english": "[发电 S2 民用 D]"
+    "chinese": "火花机",
+    "english": "SparkJet"
   },
   "item_Name_POWR_LPLT_S03_IonSurgePro": {
-    "chinese": "离子奔涌Pro IonSurgePro",
-    "english": "[发电 S3 民用 B]"
+    "chinese": "离子奔涌",
+    "english": "Pro IonSurgePro"
   },
   "item_Name_POWR_SASU_S01_MagnaBloom": {
-    "chinese": "大盛MagnaBloom",
-    "english": "[发电 S1 民用 B]"
+    "chinese": "大盛",
+    "english": "MagnaBloom"
   },
   "item_Name_POWR_SASU_S02_Radiance": {
-    "chinese": "光辉Radiance",
-    "english": "[发电 S2 民用 B]"
+    "chinese": "光辉",
+    "english": "Radiance"
   },
   "item_Name_POWR_SASU_S03_Celestial": {
-    "chinese": "天体Celestial",
-    "english": "[发电 S3 民用 B]"
+    "chinese": "天体",
+    "english": "Celestial"
   },
   "item_Name_POWR_SASU_S03_NewDawn": {
-    "chinese": "曙光NewDawn",
-    "english": "[发电 S3 民用 C]"
+    "chinese": "曙光",
+    "english": "NewDawn"
   },
   "item_Name_POWR_TYDT_S01_Slipstream": {
-    "chinese": "尾流Slipstream",
-    "english": "[发电 S1 隐形 A]"
+    "chinese": "尾流",
+    "english": "Slipstream"
   },
   "item_Name_POWR_TYDT_S02_Cirrus": {
-    "chinese": "卷云Cirrus",
-    "english": "[发电 S2 隐形 C]"
+    "chinese": "卷云",
+    "english": "Cirrus"
   },
   "item_Name_POWR_VNCL_S01_HellsHeart": {
-    "chinese": "地狱之心HellsHeart",
-    "english": "[发电 S1 军用 ?]"
+    "chinese": "地狱之心",
+    "english": "HellsHeart"
   },
   "item_Name_QDRV_ARCC_S01_Burst": {
-    "chinese": "爆发Burst",
-    "english": "[量子 S1 民用 B]"
+    "chinese": "爆发",
+    "english": "Burst"
   },
   "item_Name_QDRV_ARCC_S02_Flash": {
-    "chinese": "闪电Flash",
-    "english": "[量子 S2 民用 B]"
+    "chinese": "闪电",
+    "english": "Flash"
   },
   "item_Name_QDRV_ARCC_S02_Torrent": {
-    "chinese": "激流Torrent",
-    "english": "[量子 S2 民用 C]"
+    "chinese": "激流",
+    "english": "Torrent"
   },
   "item_Name_QDRV_JUST_S01_Colossus": {
-    "chinese": "巨像Colossus",
-    "english": "[量子 S1 工业 B]"
+    "chinese": "巨像",
+    "english": "Colossus"
   },
   "item_Name_QDRV_JUST_S02_Yaluk": {
-    "chinese": "亚鲁克Yaluk",
-    "english": "[量子 S2 工业 D]"
+    "chinese": "亚鲁克",
+    "english": "Yaluk"
   },
   "item_Name_QDRV_RACO_S01_Zephyr": {
-    "chinese": "和风Zephyr",
-    "english": "[量子 S1 隐形 B]"
+    "chinese": "和风",
+    "english": "Zephyr"
   },
   "item_Name_QDRV_RSI_S01_Atlas": {
-    "chinese": "擎天之神Atlas",
-    "english": "[量子 S1 民用 A]"
+    "chinese": "擎天之神",
+    "english": "Atlas"
   },
   "item_Name_QDRV_RSI_S02_Hemera": {
-    "chinese": "白昼女神Hemera",
-    "english": "[量子 S2 民用 A]"
+    "chinese": "白昼女神",
+    "english": "Hemera"
   },
   "item_Name_QDRV_TARS_S01_Voyage": {
-    "chinese": "航程Voyage",
-    "english": "[量子 S1 民用 B]"
+    "chinese": "航程",
+    "english": "Voyage"
   },
   "item_Name_QDRV_TARS_S02_Sojourn": {
-    "chinese": "旅居Sojourn",
-    "english": "[量子 S2 民用 B]"
+    "chinese": "旅居",
+    "english": "Sojourn"
   },
   "item_Name_QDRV_WETK_S01_Beacon": {
-    "chinese": "信标Beacon",
-    "english": "[量子 S1 军用 C]"
+    "chinese": "信标",
+    "english": "Beacon"
   },
   "item_Name_QDRV_WETK_S01_VK00": {
     "chinese": "VK-00",
     "english": "[量子 S1 军用 A]"
   },
   "item_Name_QDRV_WETK_S02_Yeager": {
-    "chinese": "猎人Yeager",
-    "english": "[量子 S2 军用 B]"
+    "chinese": "猎人",
+    "english": "Yeager"
   },
   "item_Name_QRDV_ACAS_S01_Foxfire": {
-    "chinese": "狐火Foxfire",
-    "english": "[量子 S1 竞速 B]"
+    "chinese": "狐火",
+    "english": "Foxfire"
   },
   "item_Name_QRDV_ACAS_S01_LightFire": {
-    "chinese": "光火LightFire",
-    "english": "[量子 S1 竞速 C]"
+    "chinese": "光火",
+    "english": "LightFire"
   },
   "item_Name_RADR_BLTR_S01_Hunter": {
-    "chinese": "猎手Hunter",
-    "english": "[雷达 S1 隐形 B]"
+    "chinese": "猎手",
+    "english": "Hunter"
   },
   "item_Name_RADR_BLTR_S01_Pelerous": {
-    "chinese": "方位盘Pelerous",
-    "english": "[雷达 S1 隐形 C]"
+    "chinese": "方位盘",
+    "english": "Pelerous"
   },
   "item_Name_RADR_BLTR_S01_Prophet": {
-    "chinese": "预言家Prophet",
-    "english": "[雷达 S1 隐形 A]"
+    "chinese": "预言家",
+    "english": "Prophet"
   },
   "item_Name_RADR_BLTR_S02_Cassandra": {
-    "chinese": "卡珊德拉Cassandra",
-    "english": "[雷达 S2 隐形 A]"
+    "chinese": "卡珊德拉",
+    "english": "Cassandra"
   },
   "item_Name_RADR_BLTR_S02_Predator": {
-    "chinese": "掠食者Predator",
-    "english": "[雷达 S2 隐形 B]"
+    "chinese": "掠食者",
+    "english": "Predator"
   },
   "item_Name_RADR_BLTR_S02_Spyglass": {
-    "chinese": "窥镜Spyglass",
-    "english": "[雷达 S2 隐形 C]"
+    "chinese": "窥镜",
+    "english": "Spyglass"
   },
   "item_Name_RADR_CHCO_S00_BroadSpecGo": {
-    "chinese": "泛用规格-Go BroadSpec-Go",
-    "english": "[雷达 S0 工业 B]"
+    "chinese": "泛用规格-",
+    "english": "Go BroadSpec-Go"
   },
   "item_Name_RADR_CHCO_S00_FullSpecGo": {
-    "chinese": "全装规格-Go FullSpec-Go",
-    "english": "[雷达 S0 工业 A]"
+    "chinese": "全装规格-",
+    "english": "Go FullSpec-Go"
   },
   "item_Name_RADR_CHCO_S00_SurveyorGo": {
-    "chinese": "勘测者-Go Surveyor-Go",
-    "english": "[雷达 S0 工业 C]"
+    "chinese": "勘测者-",
+    "english": "Go Surveyor-Go"
   },
   "item_Name_RADR_CHCO_S01_BroadspecLite": {
-    "chinese": "泛用规格-Lite Broadspec-Lite",
-    "english": "[雷达 S1 工业 B]"
+    "chinese": "泛用规格-",
+    "english": "Lite Broadspec-Lite"
   },
   "item_Name_RADR_CHCO_S01_ObserverGo": {
-    "chinese": "观察者-Go Observer-Go",
-    "english": "[雷达 S1 工业 D]"
+    "chinese": "观察者-",
+    "english": "Go Observer-Go"
   },
   "item_Name_RADR_CHCO_S01_ObserverLite": {
-    "chinese": "观察者-Lite Observer-Lite",
-    "english": "[雷达 S1 工业 D]"
+    "chinese": "观察者-",
+    "english": "Lite Observer-Lite"
   },
   "item_Name_RADR_CHCO_S01_SurveyorLite": {
-    "chinese": "勘测者-Lite Surveyor-Lite",
-    "english": "[雷达 S1 工业 C]"
+    "chinese": "勘测者-",
+    "english": "Lite Surveyor-Lite"
   },
   "item_Name_RADR_CHCO_S02_BroadSpec": {
-    "chinese": "泛用规格BroadSpec",
-    "english": "[雷达 S2 工业 B]"
+    "chinese": "泛用规格",
+    "english": "BroadSpec"
   },
   "item_Name_RADR_CHCO_S02_FullSpec": {
-    "chinese": "全装规格FullSpec",
-    "english": "[雷达 S2 工业 A]"
+    "chinese": "全装规格",
+    "english": "FullSpec"
   },
   "item_Name_RADR_CHCO_S02_Observer": {
-    "chinese": "观察者Observer",
-    "english": "[雷达 S2 工业 D]"
+    "chinese": "观察者",
+    "english": "Observer"
   },
   "item_Name_RADR_CHCO_S02_Surveyor": {
-    "chinese": "勘测者Surveyor",
-    "english": "[雷达 S2 工业 C]"
+    "chinese": "勘测者",
+    "english": "Surveyor"
   },
   "item_Name_RADR_CHCO_S03_FullSpecMax": {
-    "chinese": "全装规格-Max FullSpec-Max",
-    "english": "[雷达 S3 工业 A]"
+    "chinese": "全装规格-",
+    "english": "Max FullSpec-Max"
   },
   "item_Name_RADR_CHCO_S03_ObserverMax": {
-    "chinese": "观察者-Max Observer-Max",
-    "english": "[雷达 S3 工业 D]"
+    "chinese": "观察者-",
+    "english": "Max Observer-Max"
   },
   "item_Name_RADR_CHCO_S03_SurveyorMax": {
-    "chinese": "勘测者-Max Surveyor-Max",
-    "english": "[雷达 S3 工业 C]"
+    "chinese": "勘测者-",
+    "english": "Max Surveyor-Max"
   },
   "item_Name_RADR_CHCO_S04_BroadSpecMax": {
-    "chinese": "泛用规格-Max BroadSpec-Max",
-    "english": "[雷达 S4 工业 B]"
+    "chinese": "泛用规格-",
+    "english": "Max BroadSpec-Max"
   },
   "item_Name_RADR_GRNP_S00_Agure": {
-    "chinese": "阿古雷Agure",
-    "english": "[雷达 S0 军用 D]"
+    "chinese": "阿古雷",
+    "english": "Agure"
   },
   "item_Name_RADR_GRNP_S00_Prevenir": {
-    "chinese": "戒备Prevenir",
-    "english": "[雷达 S0 军用 C]"
+    "chinese": "戒备",
+    "english": "Prevenir"
   },
   "item_Name_RADR_GRNP_S00_Sens": {
-    "chinese": "感知Sens",
-    "english": "[雷达 S0 军用 B]"
+    "chinese": "感知",
+    "english": "Sens"
   },
   "item_Name_RADR_GRNP_S00_V6026": {
     "chinese": "V60-26",
     "english": "[雷达 S0 军用 A]"
   },
   "item_Name_RADR_GRNP_S01_Ecouter": {
-    "chinese": "聆听Ecouter",
-    "english": "[雷达 S1 军用 C]"
+    "chinese": "聆听",
+    "english": "Ecouter"
   },
   "item_Name_RADR_GRNP_S01_Tige": {
-    "chinese": "遏制Tige",
-    "english": "[雷达 S1 军用 B]"
+    "chinese": "遏制",
+    "english": "Tige"
   },
   "item_Name_RADR_GRNP_S01_V80111": {
     "chinese": "V801-11",
     "english": "[雷达 S1 军用 A]"
   },
   "item_Name_RADR_GRNP_S01_Voir": {
-    "chinese": "真相Voir",
-    "english": "[雷达 S1 军用 D]"
+    "chinese": "真相",
+    "english": "Voir"
   },
   "item_Name_RADR_GRNP_S02_Epier": {
-    "chinese": "显现Epier",
-    "english": "[雷达 S2 军用 C]"
+    "chinese": "显现",
+    "english": "Epier"
   },
   "item_Name_RADR_GRNP_S02_Savoir": {
-    "chinese": "洞察Savoir",
-    "english": "[雷达 S2 军用 D]"
+    "chinese": "洞察",
+    "english": "Savoir"
   },
   "item_Name_RADR_GRNP_S02_V80112": {
     "chinese": "V801-12",
     "english": "[雷达 S2 军用 A]"
   },
   "item_Name_RADR_GRNP_S02_Vigilance": {
-    "chinese": "警惕Vigilance",
-    "english": "[雷达 S2 军用 B]"
+    "chinese": "警惕",
+    "english": "Vigilance"
   },
   "item_Name_RADR_GRNP_S03_Devoue": {
-    "chinese": "奉献Devoue",
-    "english": "[雷达 S3 军用 B]"
+    "chinese": "奉献",
+    "english": "Devoue"
   },
   "item_Name_RADR_GRNP_S03_Fidele": {
-    "chinese": "忠信Fidele",
-    "english": "[雷达 S3 军用 D]"
+    "chinese": "忠信",
+    "english": "Fidele"
   },
   "item_Name_RADR_GRNP_S03_Resolu": {
-    "chinese": "决断Resolu",
-    "english": "[雷达 S3 军用 C]"
+    "chinese": "决断",
+    "english": "Resolu"
   },
   "item_Name_RADR_GRNP_S03_V880": {
     "chinese": "V880",
@@ -9488,60 +10336,60 @@
     "english": "[雷达 S2 竞赛 B]"
   },
   "item_Name_RADR_WLOP_S00_Denning": {
-    "chinese": "丹宁Denning",
-    "english": "[雷达 S0 民用 C]"
+    "chinese": "丹宁",
+    "english": "Denning"
   },
   "item_Name_RADR_WLOP_S00_Fabian": {
-    "chinese": "法比安Fabian",
-    "english": "[雷达 S0 民用 A]"
+    "chinese": "法比安",
+    "english": "Fabian"
   },
   "item_Name_RADR_WLOP_S00_Vogel": {
-    "chinese": "沃格尔Vogel",
-    "english": "[雷达 S0 民用 B]"
+    "chinese": "沃格尔",
+    "english": "Vogel"
   },
   "item_Name_RADR_WLOP_S01_Abetti": {
-    "chinese": "阿贝提Abetti",
-    "english": "[雷达 S1 民用 A]"
+    "chinese": "阿贝提",
+    "english": "Abetti"
   },
   "item_Name_RADR_WLOP_S01_Backlund": {
-    "chinese": "巴克伦Backlund",
-    "english": "[雷达 S1 民用 B]"
+    "chinese": "巴克伦",
+    "english": "Backlund"
   },
   "item_Name_RADR_WLOP_S01_Capston": {
-    "chinese": "卡普斯顿Capston",
-    "english": "[雷达 S1 民用 C]"
+    "chinese": "卡普斯顿",
+    "english": "Capston"
   },
   "item_Name_RADR_WLOP_S01_Fleming": {
-    "chinese": "弗莱明Fleming",
-    "english": "[雷达 S1 民用 D]"
+    "chinese": "弗莱明",
+    "english": "Fleming"
   },
   "item_Name_RADR_WLOP_S02_Agrippa": {
-    "chinese": "阿格里帕Agrippa",
-    "english": "[雷达 S2 民用 A]"
+    "chinese": "阿格里帕",
+    "english": "Agrippa"
   },
   "item_Name_RADR_WLOP_S02_Battani": {
-    "chinese": "巴塔尼Battani",
-    "english": "[雷达 S2 民用 B]"
+    "chinese": "巴塔尼",
+    "english": "Battani"
   },
   "item_Name_RADR_WLOP_S02_Chernykh": {
-    "chinese": "切尔尼克Chernykh",
-    "english": "[雷达 S2 民用 C]"
+    "chinese": "切尔尼克",
+    "english": "Chernykh"
   },
   "item_Name_RADR_WLOP_S02_Fawad": {
-    "chinese": "法瓦德Fawad",
-    "english": "[雷达 S2 民用 D]"
+    "chinese": "法瓦德",
+    "english": "Fawad"
   },
   "item_Name_RADR_WLOP_S03_Anysta": {
-    "chinese": "安内斯塔Anysta",
-    "english": "[雷达 S3 民用 A]"
+    "chinese": "安内斯塔",
+    "english": "Anysta"
   },
   "item_Name_RADR_WLOP_S03_Capsulo": {
-    "chinese": "卡普苏洛Capsulo",
-    "english": "[雷达 S3 民用 B]"
+    "chinese": "卡普苏洛",
+    "english": "Capsulo"
   },
   "item_Name_RADR_WLOP_S03_Socoria": {
-    "chinese": "索科利亚Socoria",
-    "english": "[雷达 S3 民用 D]"
+    "chinese": "索科利亚",
+    "english": "Socoria"
   },
   "item_Name_RMB_goggles_01": {
     "chinese": "阿瓦洛斯侦察兵目镜",
@@ -9628,68 +10476,68 @@
     "english": "Day One Shirt \"Voyager\""
   },
   "item_Name_SHLD_ASAS_S01_Mirage": {
-    "chinese": "蜃景Mirage",
-    "english": "[护盾 S1 隐形 A]"
+    "chinese": "蜃景",
+    "english": "Mirage"
   },
   "item_Name_SHLD_ASAS_S01_Veil": {
-    "chinese": "面纱Veil",
-    "english": "[护盾 S1 隐形 B]"
+    "chinese": "面纱",
+    "english": "Veil"
   },
   "item_Name_SHLD_ASAS_S02_Obscura": {
-    "chinese": "暗黑Obscura",
-    "english": "[护盾 S2 隐形 C]"
+    "chinese": "暗黑",
+    "english": "Obscura"
   },
   "item_Name_SHLD_ASAS_S02_Sheut": {
-    "chinese": "心景Sheut",
-    "english": "[护盾 S2 隐形 B]"
+    "chinese": "心景",
+    "english": "Sheut"
   },
   "item_Name_SHLD_ASAS_S02_Umbra": {
-    "chinese": "本影Umbra",
-    "english": "[护盾 S2 隐形 A]"
+    "chinese": "本影",
+    "english": "Umbra"
   },
   "item_Name_SHLD_BASL_S00_Bastion": {
-    "chinese": "堡垒Bastion",
-    "english": "[护盾 S0 工业 D]"
+    "chinese": "堡垒",
+    "english": "Bastion"
   },
   "item_Name_SHLD_BASL_S00_Siege": {
-    "chinese": "围攻Siege",
-    "english": "[护盾 S0 工业 B]"
+    "chinese": "围攻",
+    "english": "Siege"
   },
   "item_Name_SHLD_BASL_S01_Guardian": {
-    "chinese": "守卫Guardian",
-    "english": "[护盾 S1 工业 B]"
+    "chinese": "守卫",
+    "english": "Guardian"
   },
   "item_Name_SHLD_BASL_S01_Palisade": {
-    "chinese": "栅栏Palisade",
-    "english": "[护盾 S1 工业 A]"
+    "chinese": "栅栏",
+    "english": "Palisade"
   },
   "item_Name_SHLD_BASL_S01_Steward": {
-    "chinese": "管家Steward",
-    "english": "[护盾 S1 工业 D]"
+    "chinese": "管家",
+    "english": "Steward"
   },
   "item_Name_SHLD_BASL_S02_Armada": {
-    "chinese": "舰队Armada",
-    "english": "[护盾 S2 工业 D ]"
+    "chinese": "舰队",
+    "english": "Armada"
   },
   "item_Name_SHLD_BASL_S02_Citadel": {
-    "chinese": "要塞Citadel",
-    "english": "[护盾 S2 工业 B]"
+    "chinese": "要塞",
+    "english": "Citadel"
   },
   "item_Name_SHLD_BASL_S02_Rampart": {
-    "chinese": "城墙Rampart",
-    "english": "[护盾 S2 工业 A]"
+    "chinese": "城墙",
+    "english": "Rampart"
   },
   "item_Name_SHLD_BASL_S03_Barbican": {
-    "chinese": "外堡Barbican",
-    "english": "[护盾 S3 工业 B]"
+    "chinese": "外堡",
+    "english": "Barbican"
   },
   "item_Name_SHLD_BASL_S03_Parapet": {
-    "chinese": "护墙Parapet",
-    "english": "[护盾 S3 工业 A]"
+    "chinese": "护墙",
+    "english": "Parapet"
   },
   "item_Name_SHLD_BASL_S03_Ward": {
-    "chinese": "城壁Ward",
-    "english": "[护盾 S3 工业 D]"
+    "chinese": "城壁",
+    "english": "Ward"
   },
   "item_Name_SHLD_BEHR_S01_6SA": {
     "chinese": "6SA “阿比特Arbiter”",
@@ -9720,84 +10568,84 @@
     "english": "[护盾 S1 军用 A]"
   },
   "item_Name_SHLD_GODI_S02_CoverAll": {
-    "chinese": "全面覆盖CoverAll",
-    "english": "[护盾 S2 军用 B]"
+    "chinese": "全面覆盖",
+    "english": "CoverAll"
   },
   "item_Name_SHLD_GODI_S02_FR76": {
     "chinese": "FR-76",
     "english": "[护盾 S2 军用 A]"
   },
   "item_Name_SHLD_GODI_S02_SecureShield": {
-    "chinese": "安全护盾SecureShield",
-    "english": "[护盾 S2 军用 D]"
+    "chinese": "安全护盾",
+    "english": "SecureShield"
   },
   "item_Name_SHLD_GODI_S03_FR86": {
     "chinese": "FR-86",
     "english": "[护盾 S3 军用 A]"
   },
   "item_Name_SHLD_GODI_S03_FullBlock": {
-    "chinese": "完全格挡FullBlock",
-    "english": "[护盾 S3 军用 B]"
+    "chinese": "完全格挡",
+    "english": "FullBlock"
   },
   "item_Name_SHLD_GODI_S03_SecureScreen": {
-    "chinese": "安全屏障SecureScreen",
-    "english": "[护盾 S3 军用 D]"
+    "chinese": "安全屏障",
+    "english": "SecureScreen"
   },
   "item_Name_SHLD_GODI_S03_SureStop": {
-    "chinese": "必然停滞SureStop",
-    "english": "[护盾 S3 军用 C]"
+    "chinese": "必然停滞",
+    "english": "SureStop"
   },
   "item_Name_SHLD_SECO_S00_LOC": {
-    "chinese": "疯狂LOC",
-    "english": "[护盾 S0 民用 B]"
+    "chinese": "疯狂",
+    "english": "LOC"
   },
   "item_Name_SHLD_SECO_S00_RED": {
-    "chinese": "激进RED",
-    "english": "[护盾 S0 民用 D]"
+    "chinese": "激进",
+    "english": "RED"
   },
   "item_Name_SHLD_SECO_S01_HEX": {
-    "chinese": "六角HEX",
-    "english": "[护盾 S1 民用 B]"
+    "chinese": "六角",
+    "english": "HEX"
   },
   "item_Name_SHLD_SECO_S02_BLOC": {
-    "chinese": "集团BLOC",
-    "english": "[护盾 S2 民用 B]"
+    "chinese": "集团",
+    "english": "BLOC"
   },
   "item_Name_SHLD_SECO_S02_RPEL": {
-    "chinese": "击退RPEL",
-    "english": "[护盾 S2 民用 D]"
+    "chinese": "击退",
+    "english": "RPEL"
   },
   "item_Name_SHLD_SECO_S03_ARMOR": {
-    "chinese": "盔甲ARMOR",
-    "english": "[护盾 S3 民用 B]"
+    "chinese": "盔甲",
+    "english": "ARMOR"
   },
   "item_Name_SHLD_SECO_S03_GUARD": {
-    "chinese": "守卫GUARD",
-    "english": "[护盾 S3 民用 C]"
+    "chinese": "守卫",
+    "english": "GUARD"
   },
   "item_Name_SHLD_SECO_S03_HAVEN": {
-    "chinese": "港湾HAVEN",
-    "english": "[护盾 S3 民用 D]"
+    "chinese": "港湾",
+    "english": "HAVEN"
   },
   "item_Name_SHLD_VNCL_S01_Hide": {
-    "chinese": "隐藏Hide",
-    "english": "[护盾 S1 军用 ?]"
+    "chinese": "隐藏",
+    "english": "Hide"
   },
   "item_Name_SHLD_YORM_S01_Jaghte": {
-    "chinese": "贾格特Jaghte",
-    "english": "[护盾 S1 竞速 B]"
+    "chinese": "贾格特",
+    "english": "Jaghte"
   },
   "item_Name_SHLD_YORM_S02_Bamoty": {
-    "chinese": "巴莫蒂Bamoty",
-    "english": "[护盾 S2 竞速 D]"
+    "chinese": "巴莫蒂",
+    "english": "Bamoty"
   },
   "item_Name_SHLD_YORM_S02_Haltur": {
-    "chinese": "哈尔图Haltur",
-    "english": "[护盾 S2 竞速 B]"
+    "chinese": "哈尔图",
+    "english": "Haltur"
   },
   "item_Name_SHLD_YORM_S02_Trenta": {
-    "chinese": "特伦塔Trenta",
-    "english": "[护盾 S2 竞速 C]"
+    "chinese": "特伦塔",
+    "english": "Trenta"
   },
   "item_Name_SPV_Jacket_01_01_01": {
     "chinese": "卡斯蒂罗夹克 正装",
@@ -10207,6 +11055,10 @@
     "chinese": "萨洛克面罩 钴蓝色",
     "english": "Salluq Mask Cobalt"
   },
+  "item_Name_alb_mask_04_01_01": {
+    "chinese": "翔空 蒙面头套 暗影猫",
+    "english": "Volatus Balaclava Stealth Kitten"
+  },
   "item_Name_alb_pants_01_01_01": {
     "chinese": "特卡夫 裤子",
     "english": "Tekaw Pants"
@@ -10546,6 +11398,22 @@
   "item_Name_basl_combat_light_helmet_02_01_01": {
     "chinese": "王牌截击者 头盔",
     "english": "Ace Interceptor Helmet"
+  },
+  "item_Name_battaglia_boot_01": {
+    "chinese": "岩暮靴",
+    "english": "Geodusk Boots"
+  },
+  "item_Name_battaglia_jacket_01": {
+    "chinese": "岩暮 夹克",
+    "english": "Geodusk Jacket"
+  },
+  "item_Name_battaglia_meca_01": {
+    "chinese": "RB-CX4 义肢",
+    "english": "RB-CX4 Prosthetics"
+  },
+  "item_Name_battaglia_pants_01": {
+    "chinese": "岩暮 裤子",
+    "english": "Geodusk Pants"
   },
   "item_Name_cba_boots_01_01_01": {
     "chinese": "卷云靴 灰色",
@@ -11004,12 +11872,12 @@
     "english": "DefenseCon '56 Hat"
   },
   "item_Name_cbd_hat_03_drake_03": {
-    "chinese": "德雷克品牌帽 红色Logo",
-    "english": "Drake Hat Red Logo"
+    "chinese": "德雷克品牌帽 红色",
+    "english": "Logo"
   },
   "item_Name_cbd_hat_03_drake_dec": {
-    "chinese": "德雷克品牌帽 黄色Logo",
-    "english": "Drake Hat Yellow Logo"
+    "chinese": "德雷克品牌帽 黄色",
+    "english": "Logo"
   },
   "item_Name_cbd_hat_03_expo_dec": {
     "chinese": "2949 星系际航空航天博览会品牌帽",
@@ -11118,6 +11986,10 @@
   "item_Name_cbd_hat_03_origin_dec": {
     "chinese": "起源跃动品牌帽",
     "english": "Origin Jumpworks Hat"
+  },
+  "item_Name_cbd_hat_03_palevski_01": {
+    "chinese": "人民联盟品牌帽",
+    "english": "People's Alliance Hat"
   },
   "item_Name_cbd_hat_03_redwind_01": {
     "chinese": "红风帽",
@@ -11691,6 +12563,10 @@
     "chinese": "ORC-mkX 腿甲（改）",
     "english": "ORC-mkX Legs (Modified)"
   },
+  "item_Name_cds_combat_heavy_arms_01_02_02": {
+    "chinese": "ADP-mk4 臂甲 回生之息",
+    "english": "ADP-mk4 Arms SecondWind"
+  },
   "item_Name_cds_combat_heavy_backpack_01_01_01": {
     "chinese": "CSP-68H 背包",
     "english": "CSP-68H Backpack"
@@ -11698,6 +12574,22 @@
   "item_Name_cds_combat_heavy_backpack_01_iae2022_01": {
     "chinese": "CSP-68H 背包 红色警戒",
     "english": "CSP-68H Backpack Red Alert"
+  },
+  "item_Name_cds_combat_heavy_core_01_02_02": {
+    "chinese": "ADP-mk4 胸甲 回生之息",
+    "english": "ADP-mk4 Core SecondWind"
+  },
+  "item_Name_cds_combat_heavy_helmet_01_02_02": {
+    "chinese": "ADP-mk4 头盔 回生之息",
+    "english": "ADP-mk4 Helmet SecondWind"
+  },
+  "item_Name_cds_combat_heavy_legs_01_02_02": {
+    "chinese": "ADP-mk4 腿甲 回生之息",
+    "english": "ADP-mk4 Legs SecondWind"
+  },
+  "item_Name_cds_combat_light_arms_02_02_01": {
+    "chinese": "FBL-8a 臂甲 回生之息",
+    "english": "FBL-8a Arms SecondWind"
   },
   "item_Name_cds_combat_light_arms_03_01_01": {
     "chinese": "FBL-8a 臂甲（改）",
@@ -11751,6 +12643,10 @@
     "chinese": "CSP-68L 背包 纪元",
     "english": "CSP-68L Backpack Epoque"
   },
+  "item_Name_cds_combat_light_backpack_01_06_01": {
+    "chinese": "幽影 背包 据点",
+    "english": "Geist Backpack Stronghold"
+  },
   "item_Name_cds_combat_light_backpack_02_01_01": {
     "chinese": "CSP-68L 背包 凯门鳄",
     "english": "CSP-68L Backpack Cayman"
@@ -11766,6 +12662,10 @@
   "item_Name_cds_combat_light_backpack_03_01_01": {
     "chinese": "幽影 背包 金簇",
     "english": "Geist Backpack Golden Blossom"
+  },
+  "item_Name_cds_combat_light_core_02_02_01": {
+    "chinese": "FBL-8a 胸甲 回生之息",
+    "english": "FBL-8a Core SecondWind"
   },
   "item_Name_cds_combat_light_core_03_01_01": {
     "chinese": "FBL-8a 胸甲（改）",
@@ -11783,6 +12683,10 @@
     "chinese": "FBL-8a 胸甲（改）",
     "english": "FBL-8a Core (Modified)"
   },
+  "item_Name_cds_combat_light_helmet_02_02_01": {
+    "chinese": "FBL-8a 头盔 回生之息",
+    "english": "FBL-8a Helmet SecondWind"
+  },
   "item_Name_cds_combat_light_helmet_03_01_01": {
     "chinese": "FBL-8a 头盔（改）",
     "english": "FBL-8a Helmet (Modified)"
@@ -11799,6 +12703,10 @@
     "chinese": "FBL-8a 头盔（改）",
     "english": "FBL-8a Helmet (Modified)"
   },
+  "item_Name_cds_combat_light_legs_02_02_01": {
+    "chinese": "FBL-8a 腿甲 回生之息",
+    "english": "FBL-8a Legs SecondWind"
+  },
   "item_Name_cds_combat_light_legs_03_01_01": {
     "chinese": "FBL-8a 腿甲（改）",
     "english": "FBL-8a Legs (Modified)"
@@ -11814,6 +12722,10 @@
   "item_Name_cds_combat_light_legs_04_01_01": {
     "chinese": "FBL-8a 腿甲（改）",
     "english": "FBL-8a Legs (Modified)"
+  },
+  "item_Name_cds_combat_medium_arms_01_02_01": {
+    "chinese": "ORC-mkX 臂甲 回生之息",
+    "english": "ORC-mkX Arms SecondWind"
   },
   "item_Name_cds_combat_medium_arms_03_01_01": {
     "chinese": "ORC-mkX 臂甲（异种威胁）",
@@ -11847,6 +12759,10 @@
     "chinese": "GCD-陆军 背包",
     "english": "GCD-Army Backpack"
   },
+  "item_Name_cds_combat_medium_core_01_02_01": {
+    "chinese": "ORC-mkX 胸甲 回生之息",
+    "english": "ORC-mkX Core SecondWind"
+  },
   "item_Name_cds_combat_medium_core_03_01_01": {
     "chinese": "ORC-mkX 胸甲（异种威胁）",
     "english": "ORC-mkX Core (XenoThreat)"
@@ -11866,6 +12782,10 @@
   "item_Name_cds_combat_medium_core_04_01_xenothreat": {
     "chinese": "ORC-mkX 胸甲（异种威胁 v2）",
     "english": "ORC-mkX Core (XenoThreat v2)"
+  },
+  "item_Name_cds_combat_medium_helmet_01_02_01": {
+    "chinese": "ORC-mkX 头盔 回生之息",
+    "english": "ORC-mkX Helmet SecondWind"
   },
   "item_Name_cds_combat_medium_helmet_03_01_01": {
     "chinese": "ORC-mkX 头盔（异种威胁）",
@@ -11887,6 +12807,10 @@
     "chinese": "ORC-mkX 头盔（异种威胁 v2）",
     "english": "ORC-mkX Helmet (XenoThreat v2)"
   },
+  "item_Name_cds_combat_medium_legs_01_02_01": {
+    "chinese": "ORC-mkX 回生之息",
+    "english": "ORC-mkX Legs SecondWind"
+  },
   "item_Name_cds_combat_medium_legs_03_01_01": {
     "chinese": "ORC-mkX 腿甲（异种威胁）",
     "english": "ORC-mkX Legs (XenoThreat)"
@@ -11906,6 +12830,62 @@
   "item_Name_cds_combat_medium_legs_04_01_xenothreat": {
     "chinese": "ORC-mkX 腿甲（异种威胁 v2）",
     "english": "ORC-mkX Legs (XenoThreat v2)"
+  },
+  "item_Name_cds_combat_superheavy_arms_02_01_01": {
+    "chinese": "BUL-H4 护甲 臂甲 据点",
+    "english": "BUL-H4 Armor Arms Stronghold"
+  },
+  "item_Name_cds_combat_superheavy_backpack_01_01_01": {
+    "chinese": "H4-PBF 弹药携具",
+    "english": "H4-PBF Ammo Carrier"
+  },
+  "item_Name_cds_combat_superheavy_backpack_01_03_01": {
+    "chinese": "H4-PBF 弹药携具 雪地迷彩",
+    "english": "H4-PBF Ammo Carrier Snow Camo"
+  },
+  "item_Name_cds_combat_superheavy_backpack_01_04_01": {
+    "chinese": "H4-PBF 弹药携具 钢纹",
+    "english": "H4-PBF Ammo Carrier SteelTek"
+  },
+  "item_Name_cds_combat_superheavy_backpack_01_05_01": {
+    "chinese": "BUL-H4 弹药携具 据点",
+    "english": "BUL-H4 Ammo Carrier Stronghold"
+  },
+  "item_Name_cds_combat_superheavy_helmet_01_01_01": {
+    "chinese": "BUL-H4 头盔",
+    "english": "BUL-H4 Helmet"
+  },
+  "item_Name_cds_combat_superheavy_helmet_01_01_02": {
+    "chinese": "BUL-H4 头盔 据点",
+    "english": "BUL-H4 Helmet Stronghold"
+  },
+  "item_Name_cds_combat_superheavy_helmet_01_03_01": {
+    "chinese": "BUL-H4 头盔 雪地迷彩",
+    "english": "BUL-H4 Helmet Snow Camo"
+  },
+  "item_Name_cds_combat_superheavy_helmet_01_04_01": {
+    "chinese": "BUL-H4 头盔 钢纹",
+    "english": "BUL-H4 Helmet SteelTek"
+  },
+  "item_Name_cds_combat_superheavy_legs_02_01_01": {
+    "chinese": "BUL-H4 护甲 腿甲 据点",
+    "english": "BUL-H4 Armor Legs Stronghold"
+  },
+  "item_Name_cds_combat_superheavy_suit_01_01_01": {
+    "chinese": "BUL-H4 护甲",
+    "english": "BUL-H4 Armor"
+  },
+  "item_Name_cds_combat_superheavy_suit_01_03_01": {
+    "chinese": "BUL-H4 护甲 雪地迷彩",
+    "english": "BUL-H4 Armor Snow Camo"
+  },
+  "item_Name_cds_combat_superheavy_suit_01_04_01": {
+    "chinese": "BUL-H4 护甲 钢纹",
+    "english": "BUL-H4 Armor SteelTek"
+  },
+  "item_Name_cds_combat_superheavy_suit_02_01_01": {
+    "chinese": "BUL-H4 护甲 据点",
+    "english": "BUL-H4 Armor Stronghold"
   },
   "item_Name_cds_heavy_armor_01_arms": {
     "chinese": "ADP-mk4 臂甲 林地版",
@@ -13291,6 +14271,10 @@
     "chinese": "GCD-陆军 基底服",
     "english": "GCD-Army Undersuit"
   },
+  "item_Name_cds_undersuit_armor_01_02_02": {
+    "chinese": "FBL-8u 基底服 回生之息",
+    "english": "FBL-8u Undersuit SecondWind"
+  },
   "item_Name_cds_undersuit_helmet_01": {
     "chinese": "A23 竞速头盔 林地版",
     "english": "A23 Flight Helmet Woodland"
@@ -14183,6 +15167,10 @@
     "chinese": "格林沃特 衬衫 橄榄色",
     "english": "Greenwater Shirt Olive"
   },
+  "item_Name_dnn_shoes_03_02_01": {
+    "chinese": "折返鞋 最后通牒",
+    "english": "Doubleback Shoes Ultimatum"
+  },
   "item_Name_doom_armor_medium_arms_02_01_01": {
     "chinese": "缝纫机 臂甲",
     "english": "Stitcher Arms"
@@ -14756,12 +15744,12 @@
     "english": "Crusader Industries T-Shirt"
   },
   "item_Name_eld_shirt_04_drake_04": {
-    "chinese": "德雷克 T恤 红色Logo",
-    "english": "Drake T-Shirt Red Logo"
+    "chinese": "德雷克 T恤 红色",
+    "english": "Logo"
   },
   "item_Name_eld_shirt_04_drake_dec": {
-    "chinese": "德雷克 T恤 黄色Logo",
-    "english": "Drake T-Shirt Yellow Logo"
+    "chinese": "德雷克 T恤 黄色",
+    "english": "Logo"
   },
   "item_Name_eld_shirt_04_expo_dec": {
     "chinese": "星系际航空航天博览会 T恤",
@@ -15630,6 +16618,10 @@
   "item_Name_fta_medium_helmet_01_14_01": {
     "chinese": "岩层 头盔 舒宾版",
     "english": "Strata Helmet Shubin Edition"
+  },
+  "item_Name_fta_medium_helmet_01_15_16": {
+    "chinese": "岩层 头盔 列夫斯基版",
+    "english": "Strata Helmet Levski Edition"
   },
   "item_Name_fta_medium_helmet_02_01_01": {
     "chinese": "岩层 头盔 热浪",
@@ -16819,6 +17811,10 @@
     "chinese": "幽影 臂甲 金簇",
     "english": "Geist Armor Arms Golden Blossom"
   },
+  "item_Name_kap_combat_light_arms_04_01_01": {
+    "chinese": "幽影 臂甲 据点",
+    "english": "Geist Armor Arms Stronghold"
+  },
   "item_Name_kap_combat_light_core_01_01_01": {
     "chinese": "幽影 胸甲",
     "english": "Geist Armor Core"
@@ -16854,6 +17850,10 @@
   "item_Name_kap_combat_light_core_03_01_01": {
     "chinese": "幽影 胸甲 金簇",
     "english": "Geist Armor Core Golden Blossom"
+  },
+  "item_Name_kap_combat_light_core_04_01_01": {
+    "chinese": "幽影 胸甲 据点",
+    "english": "Geist Armor Core Stronghold"
   },
   "item_Name_kap_combat_light_helmet_01_01_01": {
     "chinese": "幽影 头盔",
@@ -16922,6 +17922,10 @@
   "item_Name_kap_combat_light_legs_03_01_01": {
     "chinese": "幽影 腿甲 金簇",
     "english": "Geist Armor Legs Golden Blossom"
+  },
+  "item_Name_kap_combat_light_legs_04_01_01": {
+    "chinese": "幽影 腿甲 据点",
+    "english": "Geist Armor Legs Stronghold"
   },
   "item_Name_ksar_armor_heavy_helmet_01_01_01": {
     "chinese": "曼提戈尔头盔",
@@ -17051,77 +18055,197 @@
     "chinese": "鳞纹基底服 沼泽",
     "english": "Scaleweave Undersuit Quagmire"
   },
+  "item_Name_m_hdtc_jacket_01_01_01": {
+    "chinese": "斗士 夹克",
+    "english": "Bellator Jacket"
+  },
+  "item_Name_m_hdtc_jacket_01_02_01": {
+    "chinese": "斗士 夹克 大陆",
+    "english": "Bellator Jacket Continental"
+  },
+  "item_Name_m_hdtc_jacket_01_03_01": {
+    "chinese": "斗士 夹克 塔顿",
+    "english": "Bellator Jacket Tatton"
+  },
+  "item_Name_m_hdtc_jacket_01_04_01": {
+    "chinese": "斗士 夹克 迈达斯",
+    "english": "Bellator Jacket Midas"
+  },
+  "item_Name_m_hdtc_jacket_01_05_01": {
+    "chinese": "斗士 夹克 锚点",
+    "english": "Bellator Jacket Anchor"
+  },
+  "item_Name_m_hdtc_jacket_02_01_01": {
+    "chinese": "斗士 夹克 金匠",
+    "english": "Bellator Jacket Goldsmith"
+  },
+  "item_Name_m_hdtc_pants_01_01_01": {
+    "chinese": "斗士 长裤",
+    "english": "Bellator Trousers"
+  },
+  "item_Name_m_hdtc_pants_01_01_07": {
+    "chinese": "斗士 长裤 锚点",
+    "english": "Bellator Trousers Anchor"
+  },
+  "item_Name_m_hdtc_pants_01_02_01": {
+    "chinese": "斗士 长裤 大陆",
+    "english": "Bellator Trousers Continental"
+  },
+  "item_Name_m_hdtc_pants_01_03_01": {
+    "chinese": "斗士 长裤 塔顿",
+    "english": "Bellator Trousers Tatton"
+  },
+  "item_Name_m_hdtc_pants_01_04_01": {
+    "chinese": "斗士 长裤 迈达斯",
+    "english": "Bellator Trousers Midas"
+  },
+  "item_Name_m_hdtc_pants_01_06_01": {
+    "chinese": "斗士 长裤 金匠",
+    "english": "Bellator Trousers Goldsmith"
+  },
+  "item_Name_m_hdtc_shirt_01_01_01": {
+    "chinese": "斗士 衬衫",
+    "english": "Bellator Shirt"
+  },
+  "item_Name_m_hdtc_shirt_01_02_01": {
+    "chinese": "斗士 衬衫 大陆",
+    "english": "Bellator Shirt Continental"
+  },
+  "item_Name_m_hdtc_shirt_01_03_01": {
+    "chinese": "斗士 衬衫 塔顿",
+    "english": "Bellator Shirt Tatton"
+  },
+  "item_Name_m_hdtc_shirt_01_04_01": {
+    "chinese": "斗士 衬衫 迈达斯",
+    "english": "Bellator Shirt Midas"
+  },
+  "item_Name_m_hdtc_shirt_01_05_01": {
+    "chinese": "斗士 衬衫 锚点",
+    "english": "Bellator Shirt Anchor"
+  },
+  "item_Name_m_hdtc_shirt_01_06_01": {
+    "chinese": "斗士 衬衫 金匠",
+    "english": "Bellator Shirt Goldsmith"
+  },
+  "item_Name_m_hdtc_shirt_02_01_01": {
+    "chinese": "斗士 衬衫与马甲",
+    "english": "Bellator Shirt and Waistcoat"
+  },
+  "item_Name_m_hdtc_shirt_02_02_01": {
+    "chinese": "斗士 衬衫与马甲 大陆",
+    "english": "Bellator Shirt and Waistcoat Continental"
+  },
+  "item_Name_m_hdtc_shirt_02_03_01": {
+    "chinese": "斗士 衬衫与马甲 塔顿",
+    "english": "Bellator Shirt and Waistcoat Tatton"
+  },
+  "item_Name_m_hdtc_shirt_02_04_01": {
+    "chinese": "斗士 衬衫与马甲 迈达斯",
+    "english": "Bellator Shirt and Waistcoat Midas"
+  },
+  "item_Name_m_hdtc_shirt_02_05_01": {
+    "chinese": "斗士 衬衫与马甲 锚点",
+    "english": "Bellator Shirt and Waistcoat Anchor"
+  },
+  "item_Name_m_hdtc_shirt_02_06_01": {
+    "chinese": "斗士 衬衫与马甲 金匠",
+    "english": "Bellator Shirt and Waistcoat Goldsmith"
+  },
+  "item_Name_m_hdtc_shoes_01_01_01": {
+    "chinese": "魂灵鞋",
+    "english": "Spettro Shoes"
+  },
+  "item_Name_m_hdtc_shoes_01_01_04": {
+    "chinese": "魂灵鞋 迈达斯",
+    "english": "Spettro Shoes Midas"
+  },
+  "item_Name_m_hdtc_shoes_01_01_07": {
+    "chinese": "魂灵鞋 锚点",
+    "english": "Spettro Shoes Anchor"
+  },
+  "item_Name_m_hdtc_shoes_01_02_01": {
+    "chinese": "魂灵鞋 大陆",
+    "english": "Spettro Shoes Continental"
+  },
+  "item_Name_m_hdtc_shoes_01_03_01": {
+    "chinese": "魂灵鞋 塔顿",
+    "english": "Spettro Shoes Tatton"
+  },
+  "item_Name_m_hdtc_shoes_01_06_01": {
+    "chinese": "魂灵鞋 金匠",
+    "english": "Spettro Shoes Goldsmith"
+  },
   "item_Name_mrai_boots_01_01_01": {
-    "chinese": "未来 竞速靴子",
-    "english": "Mirai Racing Boots"
+    "chinese": "中微子 竞速靴子 未来",
+    "english": "Neutrino Racing Boots Mirai"
   },
   "item_Name_mrai_flightsuit_01_01_01": {
-    "chinese": "未来 竞速飞行服",
-    "english": "Mirai Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 未来",
+    "english": "Neutrino Racing Flight Suit Mirai"
   },
   "item_Name_mrai_flightsuit_01_03_01": {
-    "chinese": "起源 竞速飞行服",
-    "english": "Origin Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 起源",
+    "english": "Neutrino Racing Flight Suit Origin"
   },
   "item_Name_mrai_flightsuit_01_04_01": {
-    "chinese": "穆雷杯 竞速飞行服",
-    "english": "Murray Cup Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 穆雷杯",
+    "english": "Neutrino Racing Flight Suit Murray Cup"
   },
   "item_Name_mrai_flightsuit_01_05_01": {
-    "chinese": "星空猫 竞速飞行服",
-    "english": "Star Kitten Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 星空猫",
+    "english": "Neutrino Racing Flight Suit Star Kitten"
   },
   "item_Name_mrai_flightsuit_01_07_02": {
-    "chinese": "白炽 竞速飞行服",
-    "english": "WhiteHot Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 白炽",
+    "english": "Neutrino Racing Flight Suit WhiteHot"
   },
   "item_Name_mrai_flightsuit_01_07_12": {
-    "chinese": "黑火 竞速飞行服",
-    "english": "BlackFire Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 黑火",
+    "english": "Neutrino Racing Flight Suit BlackFire"
   },
   "item_Name_mrai_flightsuit_01_07_18": {
-    "chinese": "蓝焰 竞速飞行服",
-    "english": "BlueFlame Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 蓝焰",
+    "english": "Neutrino Racing Flight Suit BlueFlame"
   },
   "item_Name_mrai_flightsuit_02_01_01": {
-    "chinese": "福尔图娜 竞速飞行服",
-    "english": "Fortuna Racing Flight Suit"
+    "chinese": "中微子 竞速飞行服 福尔图娜",
+    "english": "Neutrino Racing Flight Suit Fortuna"
   },
   "item_Name_mrai_flightsuit_helmet_01_01_01": {
-    "chinese": "未来 竞速头盔",
-    "english": "Mirai Racing Helmet"
+    "chinese": "中微子 竞速头盔 未来",
+    "english": "Neutrino Racing Helmet Mirai"
   },
   "item_Name_mrai_flightsuit_helmet_01_03_01": {
-    "chinese": "起源 竞速头盔",
-    "english": "Origin Racing Helmet"
+    "chinese": "中微子 竞速头盔 起源",
+    "english": "Neutrino Racing Helmet Origin"
   },
   "item_Name_mrai_flightsuit_helmet_01_04_01": {
-    "chinese": "穆雷杯 竞速头盔",
-    "english": "Murray Cup Racing Helmet"
+    "chinese": "中微子 竞速头盔 穆雷杯",
+    "english": "Neutrino Racing Helmet Murray Cup"
   },
   "item_Name_mrai_flightsuit_helmet_01_05_01": {
-    "chinese": "星空猫 竞速头盔",
-    "english": "Star Kitten Racing Helmet"
+    "chinese": "中微子 竞速头盔 星空猫",
+    "english": "Neutrino Racing Helmet Star Kitten"
   },
   "item_Name_mrai_flightsuit_helmet_01_06_01": {
-    "chinese": "福尔图娜 竞速头盔",
-    "english": "Fortuna Racing Helmet"
+    "chinese": "中微子 竞速头盔 福尔图娜",
+    "english": "Neutrino Racing Helmet Fortuna"
   },
   "item_Name_mrai_flightsuit_helmet_01_07_02": {
-    "chinese": "白炽 竞速头盔",
-    "english": "WhiteHot Racing Helmet"
+    "chinese": "中微子 竞速头盔 白炽",
+    "english": "Neutrino Racing Helmet WhiteHot"
   },
   "item_Name_mrai_flightsuit_helmet_01_07_12": {
-    "chinese": "黑火 竞速头盔",
-    "english": "BlackFire Racing Helmet"
+    "chinese": "中微子 竞速头盔 黑火",
+    "english": "Neutrino Racing Helmet BlackFire"
   },
   "item_Name_mrai_flightsuit_helmet_01_07_18": {
-    "chinese": "蓝焰 竞速头盔",
-    "english": "BlueFlame Racing Helmet"
+    "chinese": "中微子 竞速头盔 蓝焰",
+    "english": "Neutrino Racing Helmet BlueFlame"
   },
   "item_Name_mrai_gloves_01_01_01": {
-    "chinese": "未来 竞速手套",
-    "english": "Mirai Racing Gloves"
+    "chinese": "中微子 竞速手套 未来",
+    "english": "Neutrino Racing Gloves Mirai"
   },
   "item_Name_mym_fashion_suit_01_01_01": {
     "chinese": "安布卢斯服",
@@ -17411,6 +18535,10 @@
     "chinese": "弗斯顿 连体服 ASD版",
     "english": "Falston Jumpsuit \"ASD Edition\""
   },
+  "item_Name_nvs_jumpsuit_01_17_16": {
+    "chinese": "弗斯顿 连体服 人民联盟版",
+    "english": "Falston Jumpsuit \"People's Alliance Edition\""
+  },
   "item_Name_nvs_pants_02_01_01": {
     "chinese": "奥尔申 军官裤",
     "english": "Orsen Officer Pants"
@@ -17514,14 +18642,6 @@
   "item_Name_nvy_training_shoes_01_01_01": {
     "chinese": "柔云疾跑鞋",
     "english": "CloudSprint Shoes"
-  },
-  "item_Name_nvy_training_shorts_01_01_01": {
-    "chinese": "主动装备 训练短裤",
-    "english": "ActiveWear Training Shorts"
-  },
-  "item_Name_nvy_training_shorts_01_01_15": {
-    "chinese": "主动装备 训练短裤 卡其色",
-    "english": "ActiveWear Training Shorts Khaki"
   },
   "item_Name_oct_boots_01_01_01": {
     "chinese": "布雷塞韦尔靴",
@@ -19467,6 +20587,18 @@
     "chinese": "阿纳 头盔 若无",
     "english": "Ana Helmet Wao"
   },
+  "item_Name_qrt_combat_heavy_helmet_03_01_01": {
+    "chinese": "鬼牙 头盔",
+    "english": "Kiba Helmet"
+  },
+  "item_Name_qrt_combat_heavy_helmet_04_01_01": {
+    "chinese": "鬼 鬼牙 头盔",
+    "english": "Oni Kiba Helmet"
+  },
+  "item_Name_qrt_combat_heavy_helmet_05_01_01": {
+    "chinese": "将军 鬼牙 头盔 据点",
+    "english": "Shogun Kiba Helmet Stronghold"
+  },
   "item_Name_qrt_combat_heavy_legs_02_01_01": {
     "chinese": "授卫 腿甲",
     "english": "Bokto Legs"
@@ -19514,6 +20646,10 @@
   "item_Name_qrt_combat_medium_arms_04_01_01": {
     "chinese": "龟甲 臂甲 绝命",
     "english": "Testudo Arms Deathblow"
+  },
+  "item_Name_qrt_combat_medium_arms_05_01_01": {
+    "chinese": "龟甲 臂甲 据点",
+    "english": "Tetsudo Arms Stronghold"
   },
   "item_Name_qrt_combat_medium_backpack_01_01_01": {
     "chinese": "龟甲 背包",
@@ -19659,6 +20795,10 @@
     "chinese": "龟甲 腿甲 绝命",
     "english": "Testudo Legs Deathblow"
   },
+  "item_Name_qrt_combat_medium_legs_05_01_01": {
+    "chinese": "龟甲 腿甲 据点",
+    "english": "Tetsudo Legs Stronghold"
+  },
   "item_Name_qrt_mantis_helmet_01_02_01": {
     "chinese": "颅盖 头盔 破晓",
     "english": "Calva Helmet Daybreaker"
@@ -19683,6 +20823,10 @@
     "chinese": "萨宾 基底服 火红节",
     "english": "Sabine Undersuit Red Festival"
   },
+  "item_Name_qrt_mantis_undersuit_01_05_01": {
+    "chinese": "萨宾 基底服 最后通牒",
+    "english": "Sabine Undersuit Ultimatum"
+  },
   "item_Name_qrt_mantis_undersuit_helmet_01_01_01": {
     "chinese": "颅盖 竞速头盔",
     "english": "Calva Racing Helmet"
@@ -19694,6 +20838,30 @@
   "item_Name_qrt_mantis_undersuit_helmet_02_02_01": {
     "chinese": "颅盖 竞速头盔 火红节",
     "english": "Calva Racing Helmet Red Festival"
+  },
+  "item_Name_qrt_mask_01_01_01": {
+    "chinese": "鬼牙 面罩",
+    "english": "Kiba Mask"
+  },
+  "item_Name_qrt_mask_01_01_02": {
+    "chinese": "鬼牙 面罩 血涌",
+    "english": "Kiba Mask Flush"
+  },
+  "item_Name_qrt_mask_01_01_04": {
+    "chinese": "鬼牙 面罩 贪婪",
+    "english": "Kiba Mask Greed"
+  },
+  "item_Name_qrt_mask_01_01_09": {
+    "chinese": "鬼牙 面罩 激情",
+    "english": "Kiba Mask Passion"
+  },
+  "item_Name_qrt_mask_01_01_11": {
+    "chinese": "鬼牙 面罩 安乐",
+    "english": "Kiba Mask Raku"
+  },
+  "item_Name_qrt_mask_01_01_12": {
+    "chinese": "鬼牙 面罩 财欲",
+    "english": "Kiba Mask Avarice"
   },
   "item_Name_qrt_specialist_heavy_arms_01_01_01": {
     "chinese": "安腾 臂甲",
@@ -19935,6 +21103,10 @@
     "chinese": "阿蒂麦斯 头盔 极乐",
     "english": "Artimex Helmet Elysium"
   },
+  "item_Name_qrt_specialist_medium_helmet_01_05_01": {
+    "chinese": "阿蒂麦斯 头盔 最后通牒",
+    "english": "Artimex Helmet Ultimatum"
+  },
   "item_Name_qrt_specialist_medium_helmet_02_01_01": {
     "chinese": "阿蒂麦斯 头盔 赫斯顿动力精英安保队版",
     "english": "Artimex Helmet Hurston Dynamics Executive Security"
@@ -20047,6 +21219,10 @@
     "chinese": "帕拉蒂诺 背包 鎏影",
     "english": "Palatino Backpack Shadow Gild"
   },
+  "item_Name_qrt_utility_heavy_backpack_01_04_01": {
+    "chinese": "帕拉蒂诺 背包 据点",
+    "english": "Palatino Backpack Stronghold"
+  },
   "item_Name_qrt_utility_heavy_backpack_02_01_01": {
     "chinese": "帕拉蒂诺 背包 I 型",
     "english": "Palatino Backpack Mark I"
@@ -20086,6 +21262,10 @@
   "item_Name_qrt_utility_heavy_core_02_01_01": {
     "chinese": "帕拉蒂诺 胸甲 I 型",
     "english": "Palatino Core Mark I"
+  },
+  "item_Name_qrt_utility_heavy_core_03_01_01": {
+    "chinese": "帕拉蒂诺 胸甲 据点",
+    "english": "Palatino Core Stronghold"
   },
   "item_Name_qrt_utility_heavy_helmet_01_01_01": {
     "chinese": "帕拉蒂诺 头盔",
@@ -23567,6 +24747,54 @@
     "chinese": "扬尘腿甲 沙漠",
     "english": "DustUp Legs Desert"
   },
+  "item_Name_slaver_combat_heavy_arms_01_02_01": {
+    "chinese": "蔑视 臂甲 最后通牒",
+    "english": "Defiance Arms Ultimatum"
+  },
+  "item_Name_slaver_combat_heavy_core_01_02_01": {
+    "chinese": "蔑视 胸甲 最后通牒",
+    "english": "Defiance Core Ultimatum"
+  },
+  "item_Name_slaver_combat_heavy_helmet_01_02_01": {
+    "chinese": "蔑视 头盔 最后通牒",
+    "english": "Defiance Helmet Ultimatum"
+  },
+  "item_Name_slaver_combat_heavy_legs_01_02_01": {
+    "chinese": "蔑视 腿甲 最后通牒",
+    "english": "Defiance Legs Ultimatum"
+  },
+  "item_Name_slaver_combat_light_arms_01_02_01": {
+    "chinese": "棉布 臂甲 最后通牒",
+    "english": "Calico Arms Ultimatum"
+  },
+  "item_Name_slaver_combat_light_core_01_02_01": {
+    "chinese": "棉布 胸甲 最后通牒",
+    "english": "Calico Core Ultimatum"
+  },
+  "item_Name_slaver_combat_light_helmet_01_02_01": {
+    "chinese": "棉布头盔 战术",
+    "english": "Calico Helmet Tactical"
+  },
+  "item_Name_slaver_combat_light_legs_01_02_01": {
+    "chinese": "棉布 腿甲 最后通牒",
+    "english": "Calico Legs Ultimatum"
+  },
+  "item_Name_slaver_combat_medium_arms_01_02_01": {
+    "chinese": "扬尘 臂甲 最后通牒",
+    "english": "DustUp Arms Ultimatum"
+  },
+  "item_Name_slaver_combat_medium_core_01_02_01": {
+    "chinese": "扬尘 胸甲 最后通牒",
+    "english": "DustUp Core Ultimatum"
+  },
+  "item_Name_slaver_combat_medium_helmet_01_02_01": {
+    "chinese": "扬尘 头盔 最后通牒",
+    "english": "DustUp Helmet Ultimatum"
+  },
+  "item_Name_slaver_combat_medium_legs_01_02_01": {
+    "chinese": "扬尘 腿甲 最后通牒",
+    "english": "DustUp Legs Ultimatum"
+  },
   "item_Name_slaver_medium_armor_helmet_01_starkitty": {
     "chinese": "扬尘头盔 星空猫",
     "english": "DustUp Helmet Star Kitten Custom"
@@ -23588,12 +24816,12 @@
     "english": "Stoneskin Undersuit"
   },
   "item_Name_slaver_undersuit_helmet_01": {
-    "chinese": "石肤头盔 沙漠",
-    "english": "Stoneskin Helmet Desert"
-  },
-  "item_Name_slaver_undersuit_helmet_02": {
     "chinese": "石肤头盔 战术",
     "english": "Stoneskin Helmet Tactical"
+  },
+  "item_Name_slaver_undersuit_helmet_02": {
+    "chinese": "石肤头盔 沙漠",
+    "english": "Stoneskin Helmet Desert"
   },
   "item_Name_spv_bioticorp_jacket_01_01_01": {
     "chinese": "利波夹克",
@@ -23639,6 +24867,10 @@
     "chinese": "尘魔护甲 臂甲 纪元",
     "english": "Dust Devil Arms Epoque"
   },
+  "item_Name_srvl_combat_heavy_arms_03_01_01": {
+    "chinese": "搅局者 臂甲",
+    "english": "Wrecker Arms"
+  },
   "item_Name_srvl_combat_heavy_arms_03_02_01": {
     "chinese": "搅局者 臂甲 血偿",
     "english": "Wrecker Arms Payback"
@@ -23646,6 +24878,10 @@
   "item_Name_srvl_combat_heavy_arms_03_03_01": {
     "chinese": "搅局者 臂甲 苍灰",
     "english": "Wrecker Arms Ashen"
+  },
+  "item_Name_srvl_combat_heavy_core_03_01_01": {
+    "chinese": "搅局者 胸甲",
+    "english": "Wrecker Core"
   },
   "item_Name_srvl_combat_heavy_core_03_02_01": {
     "chinese": "搅局者 胸甲 血偿",
@@ -23655,6 +24891,10 @@
     "chinese": "搅局者 胸甲 苍灰",
     "english": "Wrecker Core Ashen"
   },
+  "item_Name_srvl_combat_heavy_helmet_03_01_01": {
+    "chinese": "搅局者 头盔",
+    "english": "Wrecker Helmet"
+  },
   "item_Name_srvl_combat_heavy_helmet_03_02_01": {
     "chinese": "搅局者 头盔 血偿",
     "english": "Wrecker Helmet Payback"
@@ -23662,6 +24902,10 @@
   "item_Name_srvl_combat_heavy_helmet_03_03_01": {
     "chinese": "搅局者 头盔 苍灰",
     "english": "Wrecker Helmet Ashen"
+  },
+  "item_Name_srvl_combat_heavy_legs_03_01_01": {
+    "chinese": "搅局者 腿甲",
+    "english": "Wrecker Legs"
   },
   "item_Name_srvl_combat_heavy_legs_03_02_01": {
     "chinese": "搅局者 腿甲 血偿",
@@ -25020,8 +26264,8 @@
     "english": "Good Boot"
   },
   "item_Name_vpw_bouncer_jacket_01_01_01": {
-    "chinese": "马来剑 夹克",
-    "english": "Creese Jacket"
+    "chinese": "马来剑 夹克 九尾",
+    "english": "Creese Jacket Nine Tails"
   },
   "item_Name_vpw_bouncer_jacket_01_02_01": {
     "chinese": "马来剑 夹克 碎颅",
@@ -25062,6 +26306,42 @@
   "item_Name_vpw_bouncer_shirt_01_01_01": {
     "chinese": "数字虎（紫色计划）衬衫",
     "english": "Tyger (Project Purple) Shirt"
+  },
+  "item_Nameapar_hmg_ballistic_01": {
+    "chinese": "世仇 重机枪",
+    "english": "Vendetta HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_collector01": {
+    "chinese": "世仇 “雪地迷彩” 重机枪",
+    "english": "Vendetta \"Snow Camo\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_mag": {
+    "chinese": "世仇 重机枪弹匣 (1000 发)",
+    "english": "Vendetta HMG Magazine (1000 Cap)"
+  },
+  "item_Nameapar_hmg_ballistic_01_mr01": {
+    "chinese": "世仇 “突围者” 重机枪",
+    "english": "Vendetta \"Siegebreaker\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_mr02": {
+    "chinese": "世仇 “据点” 重机枪",
+    "english": "Vendetta \"Stronghold\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_store01": {
+    "chinese": "世仇 “钢纹” 重机枪",
+    "english": "Vendetta \"SteelTek\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_tint01": {
+    "chinese": "世仇 “战壕兵” 重机枪",
+    "english": "Vendetta \"Trencher\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_tint02": {
+    "chinese": "世仇 “暗猎者” 重机枪",
+    "english": "Vendetta \"Darkstalker\" HMG"
+  },
+  "item_Nameapar_hmg_ballistic_01_tint03": {
+    "chinese": "世仇 “灿星” 重机枪",
+    "english": "Vendetta \"Brightstar\" HMG"
   },
   "item_Nameapar_melee_01": {
     "chinese": "恶魔利齿 战术匕首",
@@ -25427,6 +26707,10 @@
     "chinese": "S-38 弹匣 (20 发)",
     "english": "S-38 Magazine (20 cap)"
   },
+  "item_Namebehr_pistol_ballistic_01_mr01": {
+    "chinese": "S-38 “回生之息” 手枪",
+    "english": "S-38 \"SecondWind\" Pistol"
+  },
   "item_Namebehr_rifle_ballistic_01": {
     "chinese": "P4-AR 步枪",
     "english": "P4-AR Rifle"
@@ -25446,6 +26730,14 @@
   "item_Namebehr_rifle_ballistic_01_mag": {
     "chinese": "P4-AR 弹匣 (40 发)",
     "english": "P4-AR Magazine (40 cap)"
+  },
+  "item_Namebehr_rifle_ballistic_01_mr01": {
+    "chinese": "P4-AR “回生之息” 步枪",
+    "english": "P4-AR \"SecondWind\" Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_01_sf01": {
+    "chinese": "P6-AR “星空猫” 步枪",
+    "english": "P4-AR \"Star Kitten\" Rifle"
   },
   "item_Namebehr_rifle_ballistic_01_store01": {
     "chinese": "P4-AR “福尔图娜” 步枪",
@@ -25498,6 +26790,30 @@
   "item_Namebehr_rifle_ballistic_02a": {
     "chinese": "P8-ARM 步枪",
     "english": "P8-ARM Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_03": {
+    "chinese": "CQ7 步枪",
+    "english": "CQ7 Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_03_mag": {
+    "chinese": "CQ7 步枪弹匣 (40 发)",
+    "english": "CQ7 Rifle Magazine (40 Cap)"
+  },
+  "item_Namebehr_rifle_ballistic_03_store01": {
+    "chinese": "CQ7 “金匠” 步枪",
+    "english": "CQ7 \"Goldsmith\" Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_03_tint01": {
+    "chinese": "CQ7 “黑名单” 步枪",
+    "english": "CQ7 \"Blacklist\" Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_03_tint02": {
+    "chinese": "CQ7 “雪焰” 步枪",
+    "english": "CQ7 \"Snowfire\" Rifle"
+  },
+  "item_Namebehr_rifle_ballistic_03_tint03": {
+    "chinese": "CQ7 “步战” 步枪",
+    "english": "CQ7 \"Infantry\" Rifle"
   },
   "item_Namebehr_shotgun_ballistic_01": {
     "chinese": "BR-2 霰弹枪",
@@ -25596,16 +26912,16 @@
     "english": "AdrenaPen (Demexatrine)"
   },
   "item_Namecrlf_consumable_adrenaline_02": {
-    "chinese": "肾上腺素笔 Xtra",
-    "english": "AdrenaPen Xtra"
+    "chinese": "肾上腺素笔",
+    "english": "Xtra"
   },
   "item_Namecrlf_consumable_gopill_01": {
     "chinese": "兴奋笔 (莫达非他命)",
     "english": "BoostPen (Modamphetamine)"
   },
   "item_Namecrlf_consumable_gopill_02": {
-    "chinese": "兴奋笔 Xtra",
-    "english": "BoostPen Xtra"
+    "chinese": "兴奋笔",
+    "english": "Xtra"
   },
   "item_Namecrlf_consumable_healing_01": {
     "chinese": "医疗笔 (血红扎)",
@@ -25628,12 +26944,12 @@
     "english": "DeconPen (Canoiodide)"
   },
   "item_Namecrlf_consumable_radiation_02": {
-    "chinese": "辐康笔 Xtra",
-    "english": "DeconPen Xtra"
+    "chinese": "辐康笔",
+    "english": "Xtra"
   },
   "item_Namecrlf_consumable_steroid_02": {
-    "chinese": "皮质醇笔 Xtra",
-    "english": "CorticoPen Xtra"
+    "chinese": "皮质醇笔",
+    "english": "Xtra"
   },
   "item_Namecrlf_consumable_steroids_01": {
     "chinese": "皮质醇笔 (甾体激素)",
@@ -26099,9 +27415,21 @@
     "chinese": "齐射碎片手枪弹匣 (8 发)",
     "english": "Salvo Frag Pistol Magazine (8 cap)"
   },
+  "item_Namehdgw_rifle_ballistic_01": {
+    "chinese": "阿灵顿 步枪",
+    "english": "Arlington Rifle"
+  },
+  "item_Namehdgw_rifle_ballistic_01_mag": {
+    "chinese": "阿灵顿 步枪弹匣 (25 发)",
+    "english": "Arlington Rifle Magazine (25 Cap)"
+  },
   "item_Nameht_glass_wine_1_a": {
     "chinese": "卡斯蒂利亚 葡萄酒杯",
     "english": "Castilla Wine Glass"
+  },
+  "item_Nameklwe_grapplebeam_01": {
+    "chinese": "卡给",
+    "english": "RTDDemeco LMG"
   },
   "item_Nameklwe_lmg_energy_01": {
     "chinese": "德美科 轻机枪",
@@ -26258,6 +27586,10 @@
   "item_Nameklwe_smg_energy_01_mag": {
     "chinese": "卢敏 V 冲锋枪电池 (45 发)",
     "english": "Lumin V SMG Battery (45 cap)"
+  },
+  "item_Nameklwe_smg_energy_01_mr01": {
+    "chinese": "卢敏 V “回生之息” 冲锋枪",
+    "english": "Lumin V \"SecondWind\" SMG"
   },
   "item_Nameklwe_sniper_energy_01": {
     "chinese": "箭头 狙击枪",
@@ -27358,5 +28690,653 @@
   "item_Namevolt_ubarrel_flsh_s1": {
     "chinese": "光明 战术手电",
     "english": "Lux Flashlight"
+  },
+  "item_SubTypeIron": {
+    "chinese": "铁",
+    "english": "Iron"
+  },
+  "item_decoration_armchair_AEGS_name": {
+    "chinese": "圣盾 飞船扶手椅",
+    "english": "AEGS Ship Arm Chair"
+  },
+  "item_decoration_armchair_RSI_name": {
+    "chinese": "RSI 飞船扶手椅",
+    "english": "RSI Ship Arm Chair"
+  },
+  "item_decoration_armchair_highend_name": {
+    "chinese": "高档扶手椅",
+    "english": "High End Arm Chair"
+  },
+  "item_decoration_armchair_lowend_name": {
+    "chinese": "廉价扶手椅",
+    "english": "Low End Arm Chair"
+  },
+  "item_decoration_chair_DRAK_name": {
+    "chinese": "德雷克 飞船椅子",
+    "english": "Drake Ship Chair"
+  },
+  "item_decoration_chair_beanbag_name": {
+    "chinese": "豆袋",
+    "english": "Beanbag"
+  },
+  "item_decoration_chair_highend_name": {
+    "chinese": "高档餐椅",
+    "english": "High End Dining Chair"
+  },
+  "item_decoration_chair_lowend_name": {
+    "chinese": "廉价餐椅",
+    "english": "Low End Dining Chair"
+  },
+  "item_decoration_couch_highend_name": {
+    "chinese": "高档沙发",
+    "english": "High End Couch"
+  },
+  "item_decoration_couch_lowend_name": {
+    "chinese": "廉价沙发",
+    "english": "Low End Couch"
+  },
+  "item_decoration_table_highend_large_name": {
+    "chinese": "高档桌子 大号",
+    "english": "High End Table Large"
+  },
+  "item_decoration_table_highend_medium_name": {
+    "chinese": "高档桌子 中号",
+    "english": "High End Table Medium"
+  },
+  "item_decoration_table_highend_small_name": {
+    "chinese": "高档桌子 小号",
+    "english": "High End Table Small"
+  },
+  "item_decoration_table_lowend_large_name": {
+    "chinese": "廉价桌子 大号",
+    "english": "Low End Table Large"
+  },
+  "item_decoration_table_lowend_medium_name": {
+    "chinese": "廉价桌子 中号",
+    "english": "Low End Table Medium"
+  },
+  "item_decoration_table_lowend_small_name": {
+    "chinese": "廉价桌子 小号",
+    "english": "Low End Table Small"
+  },
+  "item_fuelnozzle_GRIN_Fast_Name": {
+    "chinese": "诺菲尔德",
+    "english": "Norfield"
+  },
+  "item_fuelnozzle_GRIN_Safe_Name": {
+    "chinese": "哈金",
+    "english": "Harkin"
+  },
+  "item_fuelnozzle_MISC_Standard_Name": {
+    "chinese": "RN-7s",
+    "english": "[流速氢1.65量子0.91 | 血量9000]"
+  },
+  "item_fuelpod_GRIN_BigAndFast_Name": {
+    "chinese": "巨灵",
+    "english": "Gargant"
+  },
+  "item_fuelpod_GRIN_FastAndSmall_Name": {
+    "chinese": "鲣鱼",
+    "english": "Bonito"
+  },
+  "item_fuelpod_MISC_Standard_Name": {
+    "chinese": "CR-60",
+    "english": "[调节1.16 | 血量22800 | 20 SCU]"
+  },
+  "item_fuelpod_SHIN_BitQuckerThanStandard_Name": {
+    "chinese": "内梅茨",
+    "english": "Nemec"
+  },
+  "item_fuelpod_SHIN_FastAndInsecure_Name": {
+    "chinese": "伦福德",
+    "english": "Rumford"
+  },
+  "item_fuelpod_STOR_BigandSlow_Name": {
+    "chinese": "GSX-EX",
+    "english": "[调节0.45 | 血量21000 | 32 SCU]"
+  },
+  "item_fuelpod_STOR_Fast_Name": {
+    "chinese": "GSX-RF",
+    "english": "[调节0.54| 血量14280 | 23 SCU]"
+  },
+  "item_fuelpod_STOR_Safe_Name": {
+    "chinese": "GSX-HP",
+    "english": "[调节0.54 | 血量21420 | 15 SCU]"
+  },
+  "item_namarma_barrel_comp_s1_contestedzonereward": {
+    "chinese": "西翁 巧匠 枪口补偿器 1",
+    "english": "Sion \"Tweaker\" Compensator1"
+  },
+  "item_nameArchimedes_Paint_P72": {
+    "chinese": "P-72 阿基米德涂装",
+    "english": "P-72 Archimedes Livery"
+  },
+  "item_nameCOOL_WCPR_S02_Aufeis_SCItem": {
+    "chinese": "积冰",
+    "english": "Aufeis"
+  },
+  "item_nameMerlin_Paint_P52": {
+    "chinese": "P-52 梅林涂装",
+    "english": "P-52 Merlin Livery"
+  },
+  "item_nameQDRV_RSI_S02_Hemera_SCItem": {
+    "chinese": "白昼女神",
+    "english": "Hemera"
+  },
+  "item_nameQDRV_RSI_S02_Khaos_SCItem": {
+    "chinese": "混沌",
+    "english": "Khaos"
+  },
+  "item_nameQDRV_RSI_S03_Erebos_SCItem": {
+    "chinese": "黑暗之神",
+    "english": "Erebos"
+  },
+  "item_nameQDRV_RSI_S03_Metis_SCItem": {
+    "chinese": "智谋女神",
+    "english": "Metis"
+  },
+  "item_nameQDRV_RSI_S03_Tyche_SCItem": {
+    "chinese": "命运女神",
+    "english": "Tyche"
+  },
+  "item_nameQDRV_TARS_S01_Wayfare_SCItem": {
+    "chinese": "旅行",
+    "english": "Wayfare"
+  },
+  "item_nameQDRV_TARS_S02_Quest_SCItem": {
+    "chinese": "追逐",
+    "english": "Quest"
+  },
+  "item_nameQDRV_TARS_S03_Drifter_SCItem": {
+    "chinese": "漂流者",
+    "english": "Drifter"
+  },
+  "item_nameQDRV_TARS_S03_Ranger_SCItem": {
+    "chinese": "游骑兵",
+    "english": "Ranger"
+  },
+  "item_nameQDRV_TARS_S03_Wanderer_SCItem": {
+    "chinese": "漫游者",
+    "english": "Wanderer"
+  },
+  "item_nameQDRV_WETK_S02_XL1_SCItem": {
+    "chinese": "XL-1",
+    "english": "[量子 S2 军用 A]"
+  },
+  "item_nameQDRV_WETK_S03_Balandin_SCItem": {
+    "chinese": "巴兰丁",
+    "english": "Balandin"
+  },
+  "item_nameQDRV_WETK_S03_TS2_SCItem": {
+    "chinese": "TS-2",
+    "english": "[量子 S3 军用 A]"
+  },
+  "item_nameReliant_Paint_Mako": {
+    "chinese": "信赖新闻 涂装",
+    "english": "Reliant Mako Livery"
+  },
+  "item_nameReliant_Paint_Sen": {
+    "chinese": "信赖科考 涂装",
+    "english": "Reliant Sen Livery"
+  },
+  "item_nameReliant_Paint_Tana": {
+    "chinese": "信赖武装 涂装",
+    "english": "Reliant Tana Livery"
+  },
+  "item_nameUrsa_Paint_Emerald": {
+    "chinese": "大熊座 福尔图娜涂装",
+    "english": "Ursa Fortuna Livery"
+  },
+  "item_name_ContestedZone_Keycard_Security": {
+    "chinese": "焰联 安保密钥卡",
+    "english": "PYAM Security Keycard"
+  },
+  "item_name_ContestedZone_Keycard_Supervisor": {
+    "chinese": "焰联 主管密钥卡",
+    "english": "PYAM Supervisor Keycard"
+  },
+  "item_name_FLBL_AEGS_Avenger_Handling": {
+    "chinese": "复仇者 PHB 飞行刀片",
+    "english": "Avenger PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Speed": {
+    "chinese": "复仇者 TSB 飞行刀片",
+    "english": "Avenger TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Stalker_Handling": {
+    "chinese": "复仇者 追猎 PHB 飞行刀片",
+    "english": "Avenger Stalker PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Stalker_Speed": {
+    "chinese": "复仇者 追猎 TSB 飞行刀片",
+    "english": "Avenger Stalker TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Stalker_standard": {
+    "chinese": "复仇者 追猎 标配 飞行刀片",
+    "english": "Avenger Stalker Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Titan_Handling": {
+    "chinese": "复仇者 泰坦 PHB 飞行刀片",
+    "english": "Avenger Titan PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Titan_Speed": {
+    "chinese": "复仇者 泰坦 TSB 飞行刀片",
+    "english": "Avenger Titan TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Titan_standard": {
+    "chinese": "复仇者 泰坦 标配 飞行刀片",
+    "english": "Avenger Titan Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Warlock_Handling": {
+    "chinese": "复仇者 术士 PHB 飞行刀片",
+    "english": "Avenger Warlock PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Warlock_Speed": {
+    "chinese": "复仇者 术士 TSB 飞行刀片",
+    "english": "Avenger Warlock TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_Warlock_standard": {
+    "chinese": "复仇者 术士 标配 飞行刀片",
+    "english": "Avenger Warlock Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Avenger_standard": {
+    "chinese": "复仇者 标配 飞行刀片",
+    "english": "Avenger Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Gladius_Handling": {
+    "chinese": "短剑 PHB 飞行刀片",
+    "english": "Gladius PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Gladius_Speed": {
+    "chinese": "短剑 TSB 飞行刀片",
+    "english": "Gladius TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Gladius_standard": {
+    "chinese": "短剑 标配 飞行刀片",
+    "english": "Gladius Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Hammerhead_Handling": {
+    "chinese": "锤头鲨 PHB 飞行刀片",
+    "english": "Hammerhead PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Hammerhead_Speed": {
+    "chinese": "锤头鲨 TSB 飞行刀片",
+    "english": "Hammerhead TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Hammerhead_standard": {
+    "chinese": "锤头鲨 标配 飞行刀片",
+    "english": "Hammerhead Standard Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Redeemer_Handling": {
+    "chinese": "救赎者 PHB 飞行刀片",
+    "english": "Redeemer PHB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Redeemer_Speed": {
+    "chinese": "救赎者 TSB 飞行刀片",
+    "english": "Redeemer TSB Flight Blade"
+  },
+  "item_name_FLBL_AEGS_Redeemer_standard": {
+    "chinese": "救赎者 标配 飞行刀片",
+    "english": "Redeemer Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Arrow_Handling": {
+    "chinese": "箭矢 PHB 飞行刀片",
+    "english": "Arrow PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Arrow_Speed": {
+    "chinese": "箭矢 TSB 飞行刀片",
+    "english": "Arrow TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Arrow_standard": {
+    "chinese": "箭矢 标配 飞行刀片",
+    "english": "Arrow Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Asgard_Handling": {
+    "chinese": "铁砧 阿斯加德 PHB 飞行刀片",
+    "english": "Anvil Asgard PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Asgard_Speed": {
+    "chinese": "铁砧 阿斯加德 TSB 飞行刀片",
+    "english": "Anvil Asgard TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Asgard_standard": {
+    "chinese": "铁砧 阿斯加德 标配 飞行刀片",
+    "english": "Anvil Asgard Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Carrack_Handling": {
+    "chinese": "铁砧 克拉克 PHB 飞行刀片",
+    "english": "Anvil Carrack PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Carrack_Speed": {
+    "chinese": "铁砧 克拉克 TSB 飞行刀片",
+    "english": "Anvil Carrack TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Carrack_standard": {
+    "chinese": "铁砧 克拉克 标配 飞行刀片",
+    "english": "Anvil Carrack Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8R_Handling": {
+    "chinese": "双鱼座 C8R PHB 飞行刀片",
+    "english": "C8R Pisces PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8R_Speed": {
+    "chinese": "双鱼座 C8R TSB 飞行刀片",
+    "english": "C8R Pisces TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8R_standard": {
+    "chinese": "双鱼座 C8R 标配 飞行刀片",
+    "english": "C8R Pisces Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8X_Handling": {
+    "chinese": "双鱼座 C8X PHB 飞行刀片",
+    "english": "C8X Pisces PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8X_Speed": {
+    "chinese": "双鱼座 C8X TSB 飞行刀片",
+    "english": "C8X Pisces TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_C8X_standard": {
+    "chinese": "双鱼座 C8X 标配 飞行刀片",
+    "english": "C8X Pisces Standard Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_Handling": {
+    "chinese": "双鱼座 C8 PHB 飞行刀片",
+    "english": "Pisces PHB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_Speed": {
+    "chinese": "双鱼座 C8 TSB 飞行刀片",
+    "english": "Pisces TSB Flight Blade"
+  },
+  "item_name_FLBL_ANVL_Pisces_standard": {
+    "chinese": "双鱼座 C8 标配 飞行刀片",
+    "english": "Pisces Standard Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_1T_Handling": {
+    "chinese": "MPUV 牵引 PHB 飞行刀片",
+    "english": "MPUV-1T PHB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_1T_Speed": {
+    "chinese": "MPUV 牵引 TSB 飞行刀片",
+    "english": "MPUV-1T TSB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_1T_standard": {
+    "chinese": "MPUV 牵引 标配 飞行刀片",
+    "english": "MPUV-1T Standard Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_Handling": {
+    "chinese": "MPUV 货运 PHB 飞行刀片",
+    "english": "MPUV-1C PHB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_Speed": {
+    "chinese": "MPUV 货运 TSB 飞行刀片",
+    "english": "MPUV-1C TSB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_Transport_Handling": {
+    "chinese": "MPUV 载人 PHB 飞行刀片",
+    "english": "MPUV-1P PHB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_Transport_Speed": {
+    "chinese": "MPUV 载人 TSB 飞行刀片",
+    "english": "MPUV-1P TSB Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_Transport_standard": {
+    "chinese": "MPUV 载人 标配 飞行刀片",
+    "english": "MPUV-1P Standard Flight Blade"
+  },
+  "item_name_FLBL_ARGO_MPUV_standard": {
+    "chinese": "MPUV 货运 标配 飞行刀片",
+    "english": "MPUV-1C Standard Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Buccaneer_Handling": {
+    "chinese": "德雷克 掠夺者 PHB 飞行刀片",
+    "english": "Drake Buccaneer PHB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Buccaneer_Speed": {
+    "chinese": "德雷克 掠夺者 TSB 飞行刀片",
+    "english": "Drake Buccaneer TSB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Buccaneer_standard": {
+    "chinese": "德雷克 掠夺者 标配 飞行刀片",
+    "english": "Drake Buccaneer Standard Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Clipper_Handling": {
+    "chinese": "德雷克 快帆 PHB 飞行刀片",
+    "english": "Drake Clipper PHB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Clipper_Speed": {
+    "chinese": "德雷克 快帆 TSB 飞行刀片",
+    "english": "Drake Clipper TSB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Clipper_standard": {
+    "chinese": "德雷克 快帆 标配 飞行刀片",
+    "english": "Drake Clipper Standard Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Corsair_Handling": {
+    "chinese": "德雷克 海盗船 PHB 飞行刀片",
+    "english": "Drake Corsair PHB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Corsair_Speed": {
+    "chinese": "德雷克 海盗船 TSB 飞行刀片",
+    "english": "Drake Corsair TSB Flight Blade"
+  },
+  "item_name_FLBL_DRAK_Corsair_standard": {
+    "chinese": "德雷克 海盗船 标配 飞行刀片",
+    "english": "Drake Corsair Standard Flight Blade"
+  },
+  "item_name_FLBL_GLSN_Shiv_Handling": {
+    "chinese": "锈刃 PHB 飞行刀片",
+    "english": "Shiv PHB Flight Blade"
+  },
+  "item_name_FLBL_GLSN_Shiv_Speed": {
+    "chinese": "锈刃 TSB 飞行刀片",
+    "english": "Shiv TSB Flight Blade"
+  },
+  "item_name_FLBL_GLSN_Shiv_standard": {
+    "chinese": "锈刃 标配 飞行刀片",
+    "english": "Shiv Standard Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L21_Wolf_Handling": {
+    "chinese": "克鲁格 L-21 狼式 PHB 飞行刀片",
+    "english": "Kruger L-21 Wolf PHB Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L21_Wolf_Speed": {
+    "chinese": "克鲁格 L-21 狼式 TSB 飞行刀片",
+    "english": "Kruger L-21 Wolf TSB Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L21_Wolf_standard": {
+    "chinese": "克鲁格 L-21 狼式 标配 飞行刀片",
+    "english": "Kruger L-21 Wolf Standard Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L22_AlphaWolf_Handling": {
+    "chinese": "克鲁格 L-22 头狼 PHB 飞行刀片",
+    "english": "Kruger L-22 AlphaWolf PHB Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L22_AlphaWolf_Speed": {
+    "chinese": "克鲁格 L-22 头狼 TSB 飞行刀片",
+    "english": "Kruger L-22 AlphaWolf TSB Flight Blade"
+  },
+  "item_name_FLBL_KRIG_L22_AlphaWolf_standard": {
+    "chinese": "克鲁格 L-22 头狼 标配 飞行刀片",
+    "english": "Kruger L-22 AlphaWolf Standard Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_Antares_Handling": {
+    "chinese": "天蝎座 蝎心 PHB 飞行刀片",
+    "english": "Scorpius Antares PHB Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_Antares_Speed": {
+    "chinese": "天蝎座 蝎心 TSB 飞行刀片",
+    "english": "Scorpius Antares TSB Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_Antares_standard": {
+    "chinese": "天蝎座 蝎心 标配 飞行刀片",
+    "english": "Scorpius Antares Standard Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_Handling": {
+    "chinese": "天蝎座 PHB 飞行刀片",
+    "english": "Scorpius PHB Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_Speed": {
+    "chinese": "天蝎座 TSB 飞行刀片",
+    "english": "Scorpius TSB Flight Blade"
+  },
+  "item_name_FLBL_RSI_Scorpius_standard": {
+    "chinese": "天蝎座 标配 飞行刀片",
+    "english": "Scorpius Standard Flight Blade"
+  },
+  "item_name_FLBL_generic_standard": {
+    "chinese": "标配 飞行刀片",
+    "english": "Standard Flight Blade"
+  },
+  "item_name_FPS_Consumable_KeyCard_Rockcrack_SecureStorage": {
+    "chinese": "QV 安保仓储室密钥卡",
+    "english": "QV Secure Storage Keycard"
+  },
+  "item_name_FPS_Consumable_KeyCard_TSG_CargoDeck_A": {
+    "chinese": "碎刃帮空间站“货运甲板 A” 密钥卡",
+    "english": "SB-Station 'Cargo Deck A' Keycard"
+  },
+  "item_name_Physical_Currency_Scrip_Council_1": {
+    "chinese": "堂会凭证",
+    "english": "Council Scrip"
+  },
+  "item_name_Physical_Currency_Scrip_Merc_1": {
+    "chinese": "雇佣兵公会凭证",
+    "english": "MG Scrip"
+  },
+  "item_name_cbd_hat_03_IAE2020": {
+    "chinese": "IAE 2950 帽子",
+    "english": "IAE 2950 Hat"
+  },
+  "item_name_eld_shirt_04_IAE2020": {
+    "chinese": "IAE 2950 T恤",
+    "english": "IAE 2950 T-Shirt"
+  },
+  "item_name_gys_jacket_01_01_12": {
+    "chinese": "刽子手 护甲 胸甲 停机",
+    "english": "Carnifex Armor Core Shutdown"
+  },
+  "item_name_gys_jacket_01_01_13": {
+    "chinese": "刽子手 护甲 胸甲 捣碎机",
+    "english": "Carnifex Armor Core Bruiser"
+  },
+  "item_name_gys_jacket_01_01_14": {
+    "chinese": "刽子手 护甲 胸甲 拟铜",
+    "english": "Carnifex Armor Core Brassy"
+  },
+  "item_name_gys_pants_01_01_12": {
+    "chinese": "刽子手 护甲 腿甲 停机",
+    "english": "Carnifex Armor Legs Shutdown"
+  },
+  "item_name_gys_pants_01_01_13": {
+    "chinese": "刽子手 护甲 腿甲 捣碎机",
+    "english": "Carnifex Armor Legs Bruiser"
+  },
+  "item_name_gys_pants_01_01_14": {
+    "chinese": "刽子手 护甲 腿甲 拟铜",
+    "english": "Carnifex Armor Legs Brassy"
+  },
+  "item_name_gys_undersuit_01_01_12": {
+    "chinese": "深空 基底服 停机",
+    "english": "Deep-Space Undersuit Shutdown"
+  },
+  "item_name_gys_undersuit_01_01_13": {
+    "chinese": "深空 基底服 捣碎机",
+    "english": "Deep-Space Undersuit Bruiser"
+  },
+  "item_name_gys_undersuit_01_01_14": {
+    "chinese": "深空 基底服 拟铜",
+    "english": "Deep-Space Undersuit Brassy"
+  },
+  "item_name_hackingchip_001": {
+    "chinese": "破解密钥",
+    "english": "FUNT"
+  },
+  "item_name_hackingchip_002": {
+    "chinese": "开膛手",
+    "english": "Ripper"
+  },
+  "item_name_hackingchip_003": {
+    "chinese": "虎爪",
+    "english": "Tigersclaw"
+  },
+  "item_name_hackingchip_004": {
+    "chinese": "重新授权",
+    "english": "Re-Authorizer"
+  },
+  "item_name_hackingchip_005": {
+    "chinese": "威尔士科",
+    "english": "Walesko"
+  },
+  "item_name_hackingchip_006": {
+    "chinese": "碎冰锥",
+    "english": "icePick"
+  },
+  "item_name_rockcrack_laser_Lens_a": {
+    "chinese": "萨达瑞晶聚焦透镜",
+    "english": "Sadaryx Focus Lens"
+  },
+  "item_name_rockcrack_laser_powercell_a": {
+    "chinese": "激光催化剂",
+    "english": "Lasing Catalyst"
+  },
+  "item_name_rockcrack_sparkplug_a": {
+    "chinese": "PGR 电容器",
+    "english": "PGR Capacitor"
+  },
+  "item_name_srvl_helmet_01_01_12": {
+    "chinese": "亡颅 头盔 停机",
+    "english": "Deadhead Helmet Shutdown"
+  },
+  "item_name_srvl_helmet_01_01_13": {
+    "chinese": "亡颅 头盔 捣碎机",
+    "english": "Deadhead Helmet Bruiser"
+  },
+  "item_name_srvl_helmet_01_01_14": {
+    "chinese": "亡颅 头盔 拟铜",
+    "english": "Deadhead Helmet Brassy"
+  },
+  "item_namearma_barrel_comp_s2_contestedzonereward": {
+    "chinese": "西翁 巧匠 枪口补偿器 2",
+    "english": "Sion \"Tweaker\" Compensator2"
+  },
+  "item_namearma_barrel_stab_s2_contestedzonereward": {
+    "chinese": "伊莫德 巧匠 枪口稳定器 2",
+    "english": "Emod \"Tweaker\" Stabilizer2"
+  },
+  "item_nameptv_paint_camo": {
+    "chinese": "PTV 全地形伪装：森林 (ATC-F) 涂装",
+    "english": "PTV All Terrain Camouflage: Forest (ATC-F) Livery"
+  },
+  "item_nameptv_paint_cherry": {
+    "chinese": "PTV 樱桃红涂装",
+    "english": "PTV Cherry Livery"
+  },
+  "item_nameptv_paint_double": {
+    "chinese": "PTV 玛瑙灰涂装",
+    "english": "PTV Agate Gray Livery"
+  },
+  "item_nameptv_paint_metal": {
+    "chinese": "PTV 炮铜涂装",
+    "english": "PTV Gunmetal Livery"
+  },
+  "item_nameptv_paint_stealth": {
+    "chinese": "PTV 战术隐身涂装",
+    "english": "PTV Tactical Stealth Livery"
+  },
+  "item_nameptv_paint_willys": {
+    "chinese": "PTV 步枪绿涂装",
+    "english": "PTV Rifle Green Livery"
+  },
+  "item_qt_obstruction": {
+    "chinese": "障碍物 %0.1",
+    "english": "f km"
+  },
+  "item_salvageHead_GRIN_Standard_Name": {
+    "chinese": "捆扎打捞头",
+    "english": "Baler Salvage Head"
+  },
+  "item_salvageHead_RSI_Salvation_Name": {
+    "chinese": "拯救打捞头",
+    "english": "Salvation Salvage Head"
   }
 }

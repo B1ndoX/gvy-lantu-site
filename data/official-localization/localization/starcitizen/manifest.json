@@ -1,10 +1,10 @@
 {
-  "component_candidates": 417,
-  "entry_count": 89069,
-  "generated_at": "2026-07-04T11:57:58Z",
-  "items": 6840,
+  "component_candidates": 439,
+  "entry_count": 90132,
+  "generated_at": "2026-07-19T12:45:13Z",
+  "items": 7335,
   "locations": 326,
-  "ships": 319,
+  "ships": 324,
   "shops": 54,
-  "source_path": "/volume1/docker/data/localization/chinese_(simplified)/global.ini"
+  "source_path": "Documents/data/localization/chinese_(simplified)/global.ini"
 }
