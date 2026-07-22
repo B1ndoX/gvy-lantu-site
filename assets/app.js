@@ -16,7 +16,7 @@ const state = {
   visibleResults: 0,
 };
 
-const DATA_VERSION = "20260719-4-9-0-live-12248363";
+const DATA_VERSION = "20260722-gzip-startup-v2";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
 let searchInputTimer = 0;
@@ -1061,22 +1061,35 @@ function renderSources(record) {
     .join("");
 }
 
+async function fetchJson(path) {
+  if (typeof DecompressionStream === "function") {
+    try {
+      const compressedResponse = await fetch(`${path}.gz?v=${DATA_VERSION}`);
+      if (compressedResponse.ok && compressedResponse.body) {
+        const decompressedStream = compressedResponse.body.pipeThrough(new DecompressionStream("gzip"));
+        return JSON.parse(await new Response(decompressedStream).text());
+      }
+    } catch (error) {
+      console.info("压缩数据不可用，改用兼容数据源。", error);
+    }
+  }
+
+  const response = await fetch(`${path}?v=${DATA_VERSION}`);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
 async function boot() {
   els.resultList.innerHTML = `<div class="loading-state"><div><h3>正在加载蓝图</h3><p>请稍候...</p></div></div>`;
   try {
-    const [response, mineralResponse] = await Promise.all([
-      fetch(`./data/blueprint-index.json?v=${DATA_VERSION}`),
-      fetch(`./data/mineral-locations.json?v=${DATA_VERSION}`).catch(() => null),
+    const [blueprintData, mineralData] = await Promise.all([
+      fetchJson("./data/blueprint-index.json"),
+      fetchJson("./data/mineral-locations.json").catch(() => null),
     ]);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.data = await response.json();
+    state.data = blueprintData;
     if (!Array.isArray(state.data.records)) throw new Error("blueprint-index.json 缺少 records 数组");
-    if (mineralResponse?.ok) {
-      try {
-        state.mineralLocations = await mineralResponse.json();
-      } catch (error) {
-        console.warn("矿点数据解析失败，继续加载蓝图索引。", error);
-      }
+    if (mineralData) {
+      state.mineralLocations = mineralData;
     }
     state.records = state.data.records.map(prepareRecord);
     els.versionBadge.textContent = state.data.version;
