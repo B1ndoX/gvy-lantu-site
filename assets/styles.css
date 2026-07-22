@@ -645,6 +645,7 @@ input:focus {
 .site-footer p {
   max-width: 860px;
   margin: 0;
+  white-space: nowrap;
 }
 
 .site-footer a {
@@ -1427,6 +1428,10 @@ input:focus {
     display: grid;
     justify-items: start;
     margin-top: 14px;
+  }
+
+  .site-footer p {
+    white-space: normal;
   }
 
   .footer-beian {
