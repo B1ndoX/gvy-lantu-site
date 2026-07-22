@@ -674,8 +674,8 @@ input:focus {
 
 .public-security-beian img {
   display: block;
-  width: 18px;
-  height: 20px;
+  width: 11px;
+  height: 12px;
   object-fit: contain;
   flex: 0 0 auto;
 }
