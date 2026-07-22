@@ -64,7 +64,7 @@ button {
   width: min(1380px, calc(100vw - (var(--page-gutter) * 2)));
   min-height: calc(100vh - (var(--page-gutter) * 2));
   margin: var(--page-gutter) auto;
-  padding: 20px var(--shell-padding-x) 22px;
+  padding: 20px var(--shell-padding-x) 0;
   border: 1px solid rgba(100, 221, 255, 0.36);
   border-radius: var(--shell-radius);
   background:
