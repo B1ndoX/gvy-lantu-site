@@ -1377,6 +1377,7 @@ input:focus {
 @media (max-width: 880px) {
   .app-shell {
     padding-top: 14px;
+    padding-bottom: 0;
   }
 
   .topbar {
@@ -1464,7 +1465,7 @@ input:focus {
     justify-items: start;
     margin-top: 14px;
     padding-top: 16px;
-    padding-bottom: max(18px, env(safe-area-inset-bottom));
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
     gap: 8px;
   }
 
@@ -1476,7 +1477,10 @@ input:focus {
 
   .footer-beian {
     margin-left: 0;
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    gap: 4px;
+    font-size: clamp(0.62rem, 2.75vw, 0.68rem);
   }
 
   .footer-beian-separator {
