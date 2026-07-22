@@ -657,6 +657,29 @@ input:focus {
   color: var(--orange);
 }
 
+.footer-beian {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.public-security-beian {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.public-security-beian img {
+  display: block;
+  width: 18px;
+  height: 20px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
 .results-scroll,
 .detail-scroll {
   height: 100%;
@@ -1404,5 +1427,13 @@ input:focus {
     display: grid;
     justify-items: start;
     margin-top: 14px;
+  }
+
+  .footer-beian {
+    justify-content: flex-start;
+  }
+
+  .footer-beian-separator {
+    display: none;
   }
 }
