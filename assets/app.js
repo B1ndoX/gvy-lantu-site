@@ -16,7 +16,7 @@ const state = {
   visibleResults: 0,
 };
 
-const DATA_VERSION = "20260722-gzip-startup-v2";
+const DATA_VERSION = "20260726-4-10-0-ptu-12311913";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
 let searchInputTimer = 0;
