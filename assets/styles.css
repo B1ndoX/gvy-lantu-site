@@ -361,31 +361,18 @@ input:focus {
 }
 
 .filter-body {
-  display: grid;
-  grid-template-columns:
-    minmax(135px, 0.9fr)
-    minmax(112px, 0.72fr)
-    minmax(150px, 0.9fr)
-    minmax(190px, 1.25fr)
-    minmax(145px, 0.9fr)
-    minmax(160px, 1fr)
-    minmax(145px, 0.92fr)
-    minmax(118px, 0.76fr);
-  grid-template-areas:
-    "category grade component material mission manufacturer source reset";
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   gap: 8px;
-  align-items: start;
+  align-items: center;
   padding: 10px;
-}
-
-.filter-body.no-component {
-  grid-template-areas:
-    "category grade component material mission manufacturer source reset";
 }
 
 .filter-group {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: auto 76px;
+  flex: 0 0 auto;
   gap: 8px;
   align-items: center;
   min-width: 0;
@@ -406,6 +393,12 @@ input:focus {
 
 .filter-group[data-filter-group="category"] {
   grid-area: category;
+  grid-template-columns: auto 106px;
+}
+
+.filter-group[data-filter-group="component-type"] {
+  grid-area: component-type;
+  grid-template-columns: auto 106px;
 }
 
 .filter-group[data-filter-group="grade"] {
@@ -413,7 +406,7 @@ input:focus {
 }
 
 .filter-group[data-filter-group="component-class"] {
-  grid-area: component;
+  grid-area: component-class;
 }
 
 .filter-group[data-filter-group="manufacturer"] {
@@ -426,6 +419,7 @@ input:focus {
 
 .filter-group[data-filter-group="mission-type"] {
   grid-area: mission;
+  grid-template-columns: auto 82px;
 }
 
 .filter-select {
@@ -517,13 +511,6 @@ input:focus {
   gap: 4px;
 }
 
-.filter-group[data-filter-group="manufacturer"] .filter-menu,
-.filter-group[data-filter-group="material"] .filter-menu,
-.filter-group[data-filter-group="mission-type"] .filter-menu {
-  right: 0;
-  left: auto;
-}
-
 .filter-menu::-webkit-scrollbar {
   width: 6px;
 }
@@ -536,7 +523,7 @@ input:focus {
 .filter-option {
   min-height: 30px;
   border-radius: 8px;
-  padding: 0 8px;
+  padding: 0 4px;
   overflow: hidden;
   color: var(--muted);
   font-size: 12px;
@@ -570,18 +557,21 @@ input:focus {
 
 .source-toggle {
   grid-area: source;
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   min-height: 34px;
   margin-top: 0;
+  padding: 0 10px;
   border: 1px solid rgba(113, 220, 255, 0.22);
   border-radius: 10px;
   color: var(--muted);
   background: rgba(13, 30, 44, 0.58);
   font-size: 12px;
   font-weight: 730;
+  white-space: nowrap;
 }
 
 .source-toggle input {
@@ -592,6 +582,7 @@ input:focus {
 
 .reset-button {
   grid-area: reset;
+  flex: 0 0 96px;
   min-height: 34px;
   margin-top: 0;
   padding: 0 12px;
@@ -1337,14 +1328,9 @@ input:focus {
 @media (max-width: 1320px) {
   .filter-body,
   .filter-body.no-component {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-areas:
-      "category grade component material"
-      "mission manufacturer source reset";
-  }
-
-  .filter-group {
-    grid-template-columns: auto minmax(0, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   .workbench {
@@ -1429,24 +1415,6 @@ input:focus {
     justify-content: center;
   }
 
-  .filter-body,
-  .filter-body.no-component {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "category grade"
-      "component material"
-      "mission manufacturer"
-      "source reset";
-  }
-
-  .filter-group {
-    gap: 6px;
-  }
-
-  .filter-group h3 {
-    font-size: 11px;
-  }
-
   .filter-menu {
     max-height: 220px;
   }
@@ -1485,5 +1453,59 @@ input:focus {
 
   .footer-beian-separator {
     display: none;
+  }
+}
+
+@media (min-width: 621px) and (max-width: 720px) {
+  .filter-body,
+  .filter-body.no-component {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    grid-template-areas:
+      "category component-type grade"
+      "component-class material mission"
+      "manufacturer source reset";
+    justify-content: start;
+  }
+}
+
+@media (max-width: 620px) {
+  .filter-body,
+  .filter-body.no-component {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "category component-type"
+      "grade component-class"
+      "material mission"
+      "manufacturer source"
+      "reset reset";
+    align-items: center;
+  }
+
+  .filter-group,
+  .filter-group[data-filter-group="category"],
+  .filter-group[data-filter-group="component-type"],
+  .filter-group[data-filter-group="mission-type"] {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px;
+  }
+
+  .filter-group h3 {
+    font-size: 11px;
+  }
+
+  .filter-menu {
+    max-width: calc(100vw - 96px);
+  }
+
+  .source-toggle {
+    justify-self: start;
+    width: auto;
+  }
+
+  .reset-button {
+    justify-self: center;
+    width: min(180px, 100%);
   }
 }

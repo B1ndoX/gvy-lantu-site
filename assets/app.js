@@ -5,8 +5,9 @@ const state = {
   filtered: [],
   selectedId: null,
   category: "all",
+  componentType: "none",
   grade: "all",
-  componentClass: "all",
+  componentClass: "none",
   manufacturer: "all",
   material: "all",
   missionType: "all",
@@ -29,6 +30,7 @@ const els = {
   filterCount: document.querySelector("#filterCount"),
   modalResultCount: document.querySelector("#modalResultCount"),
   categoryFilters: document.querySelector("#categoryFilters"),
+  componentTypeFilters: document.querySelector("#componentTypeFilters"),
   gradeFilters: document.querySelector("#gradeFilters"),
   componentClassFilters: document.querySelector("#componentClassFilters"),
   manufacturerFilters: document.querySelector("#manufacturerFilters"),
@@ -561,20 +563,21 @@ function setSelectValue(container, value) {
   if (trigger) trigger.title = label;
 }
 
-function syncComponentClassFilter() {
-  const group = els.componentClassFilters.closest(".filter-group");
-  const body = group.closest(".filter-body");
+function syncShipComponentFilters() {
   const visible = state.category === "ship_component";
-  group.hidden = false;
-  body.classList.toggle("no-component", !visible);
-  els.componentClassFilters.classList.toggle("disabled", !visible);
-  if (!visible) {
-    state.componentClass = "none";
-    setSelectValue(els.componentClassFilters, state.componentClass);
-    els.componentClassFilters.classList.remove("open");
-  } else if (state.componentClass === "none") {
-    state.componentClass = "all";
-    setSelectValue(els.componentClassFilters, state.componentClass);
+  for (const [select, key] of [
+    [els.componentTypeFilters, "componentType"],
+    [els.componentClassFilters, "componentClass"],
+  ]) {
+    select.classList.toggle("disabled", !visible);
+    if (!visible) {
+      state[key] = "none";
+      setSelectValue(select, state[key]);
+      select.classList.remove("open");
+    } else if (state[key] === "none") {
+      state[key] = "all";
+      setSelectValue(select, state[key]);
+    }
   }
 }
 
@@ -634,6 +637,18 @@ function initFilters() {
     .join(""), state.grade);
 
   const componentRecords = state.records.filter((record) => record.category.id === "ship_component");
+  const componentTypeCounts = countBy(componentRecords, (record) => record.type);
+  const componentTypeActive = state.category === "ship_component" ? state.componentType : "none";
+  renderDropdown(els.componentTypeFilters, [
+    optionTag("none", "无", undefined, componentTypeActive),
+    ...componentTypeOrder
+      .filter(([id]) => id === "all" || componentTypeCounts.has(id))
+      .map(([id, label]) => {
+        const count = id === "all" ? componentRecords.length : componentTypeCounts.get(id) || 0;
+        return optionTag(id, label, count, componentTypeActive);
+      }),
+  ].join(""), componentTypeActive);
+
   const componentClassCounts = countBy(componentRecords, (record) => recordFlowcld(record).itemClass);
   const componentClassActive = state.category === "ship_component" ? state.componentClass : "none";
   renderDropdown(els.componentClassFilters, [
@@ -680,11 +695,12 @@ function initFilters() {
     })
     .join(""), state.missionType);
 
-  syncComponentClassFilter();
+  syncShipComponentFilters();
 }
 
 function resetFilters() {
   state.category = "all";
+  state.componentType = "none";
   state.grade = "all";
   state.componentClass = "none";
   state.manufacturer = "all";
@@ -693,12 +709,13 @@ function resetFilters() {
   state.sourceOnly = false;
   els.sourceOnly.checked = false;
   setSelectValue(els.categoryFilters, state.category);
+  setSelectValue(els.componentTypeFilters, state.componentType);
   setSelectValue(els.gradeFilters, state.grade);
   setSelectValue(els.componentClassFilters, state.componentClass);
   setSelectValue(els.manufacturerFilters, state.manufacturer);
   setSelectValue(els.materialFilters, state.material);
   setSelectValue(els.missionTypeFilters, state.missionType);
-  syncComponentClassFilter();
+  syncShipComponentFilters();
   applyFilters();
 }
 
@@ -718,7 +735,7 @@ function bindFilterSelect(select, key) {
     state[key] = option.dataset.value;
     setSelectValue(select, state[key]);
     closeDropdowns();
-    if (key === "category") syncComponentClassFilter();
+    if (key === "category") syncShipComponentFilters();
     applyFilters();
   });
 
@@ -769,6 +786,7 @@ function bindEvents() {
   });
 
   bindFilterSelect(els.categoryFilters, "category");
+  bindFilterSelect(els.componentTypeFilters, "componentType");
   bindFilterSelect(els.gradeFilters, "grade");
   bindFilterSelect(els.componentClassFilters, "componentClass");
   bindFilterSelect(els.manufacturerFilters, "manufacturer");
@@ -841,16 +859,22 @@ function componentClassMatches(record) {
   return state.componentClass === "all" || state.componentClass === "none" || recordFlowcld(record).itemClass === state.componentClass;
 }
 
+function componentTypeMatches(record) {
+  if (state.category !== "ship_component") return true;
+  return state.componentType === "all" || state.componentType === "none" || record.type === state.componentType;
+}
+
 function missionTypeMatches(record) {
   return state.missionType === "all" || recordMissionTypes(record).some((type) => type.name === state.missionType);
 }
 
 function applyFilters() {
   const query = normalizeSearchText(state.query);
-  syncComponentClassFilter();
+  syncShipComponentFilters();
 
   state.filtered = state.records.filter((record) => {
     if (state.category !== "all" && record.category.id !== state.category) return false;
+    if (!componentTypeMatches(record)) return false;
     if (state.grade !== "all" && String(record.stats.grade || "") !== state.grade) return false;
     if (!componentClassMatches(record)) return false;
     if (state.manufacturer !== "all" && record.manufacturer !== state.manufacturer) return false;
@@ -879,7 +903,7 @@ function applyFilters() {
 
 function activeFilterCount() {
   const values = [state.category, state.grade, state.manufacturer, state.material, state.missionType];
-  if (state.category === "ship_component") values.push(state.componentClass);
+  if (state.category === "ship_component") values.push(state.componentType, state.componentClass);
   return values.filter((value) => value !== "all").length + (state.sourceOnly ? 1 : 0);
 }
 
