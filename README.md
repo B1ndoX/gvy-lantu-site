@@ -13,6 +13,7 @@ Official fleet website content belongs in the separate `gvy-official-site` proje
 - This repository contains only the GVY blueprint query site.
 - The production domain is `https://lantu.gvyvoyagers.vip`.
 - The "GVY 主页" link must point to `https://www.gvyvoyagers.vip`.
+- The adjacent "维科洛查询" link must point to `https://wikelo.gvyvoyagers.vip`.
 - Do not modify or publish the fleet official site from this repository.
 - Do not use `blueprint-site` as a production directory.
 - Do not enable GitHub Pages or point DNS to `b1ndox.github.io`.
@@ -61,7 +62,7 @@ Open `http://127.0.0.1:8002/`.
 
 Commit and push production changes only from this repository. Tencent Cloud EdgeOne Pages / Makers builds the connected `B1ndoX/gvy-lantu-site` repository with `npm run build` and publishes `dist/` to `https://lantu.gvyvoyagers.vip`.
 
-After every deployment, verify the production domain directly, including the page version, filter interactions, desktop/mobile overflow, console errors, and the `GVY 主页` destination. A successful Git push alone is not proof that production deployment has completed.
+After every deployment, verify the production domain directly, including the page version, filter interactions, desktop/mobile overflow, console errors, and both the `GVY 主页` and `维科洛查询` destinations. A successful Git push alone is not proof that production deployment has completed.
 
 ## Data Refresh
 

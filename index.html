@@ -19,7 +19,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/favicon-192.png" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260801-component-filter-v1" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260806-wikelo-nav-v1" />
   </head>
   <body>
     <main class="app-shell">
@@ -49,7 +49,10 @@
         </form>
 
         <div class="topbar-actions">
-          <a class="fleet-link" href="https://www.gvyvoyagers.vip">GVY 主页</a>
+          <nav class="site-links" aria-label="GVY 相关站点">
+            <a class="site-link fleet-link" href="https://www.gvyvoyagers.vip">GVY 主页</a>
+            <a class="site-link wikelo-link" href="https://wikelo.gvyvoyagers.vip">维科洛查询</a>
+          </nav>
           <span class="filter-count-pill">已筛选 <strong id="filterCount">0</strong></span>
           <span class="version-pill" id="versionBadge">加载中</span>
         </div>
