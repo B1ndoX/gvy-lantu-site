@@ -2,7 +2,7 @@
   "source": "https://flowcld.xyz/tools/blueprint",
   "endpoint": "https://flowcld.xyz/app-api/product/blueprint/page",
   "language": "CN",
-  "fetchedAt": "2026-08-02T18:00:06.153253+00:00",
+  "fetchedAt": "2026-08-09T17:31:34.781652+00:00",
   "totalReported": 1594,
   "itemCount": 1594,
   "localizedCount": 1557,
@@ -1845,60 +1845,6 @@
       "craftTimeSeconds": 240
     },
     {
-      "recordGuid": "5fa322e9-ddb3-4696-94fb-45725aca6aef",
-      "internalName": "cds_combat_heavy_arms_01_02_02",
-      "blueprintName": "ADP-mk4 Arms SecondWind",
-      "blueprintNameCn": "ADP-mk4 Arms SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "arms",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "d0d6a9aa-9e5a-4e11-8211-d080faeeca47",
-      "internalName": "cds_combat_heavy_core_01_02_02",
-      "blueprintName": "ADP-mk4 Core SecondWind",
-      "blueprintNameCn": "ADP-mk4 Core SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "core",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "d7471459-d238-4f44-b5c5-e793377de11a",
-      "internalName": "cds_combat_heavy_legs_01_02_02",
-      "blueprintName": "ADP-mk4 Legs SecondWind",
-      "blueprintNameCn": "ADP-mk4 Legs SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "legs",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
       "recordGuid": "33c91dc9-c6fe-4f38-ac17-4e5ebefcc7b9",
       "internalName": "cds_armor_heavy_helmet_01_01_01",
       "blueprintName": "ADP-mk4 Helmet Woodland",
@@ -1914,6 +1860,24 @@
       ],
       "rewardMissionTypesCn": [
         "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "d0d6a9aa-9e5a-4e11-8211-d080faeeca47",
+      "internalName": "cds_combat_heavy_core_01_02_02",
+      "blueprintName": "ADP-mk4 Core SecondWind",
+      "blueprintNameCn": "ADP-mk4 胸甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
       ]
     },
     {
@@ -1935,6 +1899,24 @@
       ]
     },
     {
+      "recordGuid": "d7471459-d238-4f44-b5c5-e793377de11a",
+      "internalName": "cds_combat_heavy_legs_01_02_02",
+      "blueprintName": "ADP-mk4 Legs SecondWind",
+      "blueprintNameCn": "ADP-mk4 腿甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "f65a6b00-2c0b-4ee8-b76d-17713c56b36f",
       "internalName": "cds_armor_heavy_legs_01_01_01",
       "blueprintName": "ADP-mk4 Legs Woodland",
@@ -1950,6 +1932,24 @@
       ],
       "rewardMissionTypesCn": [
         "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "5fa322e9-ddb3-4696-94fb-45725aca6aef",
+      "internalName": "cds_combat_heavy_arms_01_02_02",
+      "blueprintName": "ADP-mk4 Arms SecondWind",
+      "blueprintNameCn": "ADP-mk4 臂甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
       ]
     },
     {
@@ -1981,60 +1981,6 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 960
-    },
-    {
-      "recordGuid": "df70f106-b946-4f99-bc5d-811d0b964d5a",
-      "internalName": "hdtc_jacket_01_01_01",
-      "blueprintName": "Bellator Jacket",
-      "blueprintNameCn": "Bellator Jacket",
-      "categoryName": "FPSArmours",
-      "subcategory": "core",
-      "manufacturer": "hdtc",
-      "isReward": true,
-      "rewardMissionCount": 2,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Bounty Hunter"
-      ],
-      "rewardMissionTypesCn": [
-        "赏金猎人"
-      ]
-    },
-    {
-      "recordGuid": "8913923b-e0db-4338-8bf6-b284a567db08",
-      "internalName": "hdtc_shirt_02_01_01",
-      "blueprintName": "Bellator Shirt and Waistcoat",
-      "blueprintNameCn": "Bellator Shirt and Waistcoat",
-      "categoryName": "FPSArmours",
-      "subcategory": "core",
-      "manufacturer": "hdtc",
-      "isReward": true,
-      "rewardMissionCount": 2,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Bounty Hunter"
-      ],
-      "rewardMissionTypesCn": [
-        "赏金猎人"
-      ]
-    },
-    {
-      "recordGuid": "0646d386-d907-482f-b1a6-1e832952297a",
-      "internalName": "hdtc_pants_01_01_01",
-      "blueprintName": "Bellator Trousers",
-      "blueprintNameCn": "Bellator Trousers",
-      "categoryName": "FPSArmours",
-      "subcategory": "legs",
-      "manufacturer": "hdtc",
-      "isReward": true,
-      "rewardMissionCount": 2,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Bounty Hunter"
-      ],
-      "rewardMissionTypesCn": [
-        "赏金猎人"
-      ]
     },
     {
       "recordGuid": "e191cc6b-bc91-4a06-a410-c8e0cfee3f61",
@@ -2115,11 +2061,12 @@
       "craftTimeSeconds": 960
     },
     {
-      "recordGuid": "305aeac5-543f-463e-b2ae-f04a9cdbef8c",
-      "internalName": "cds_combat_superheavy_suit_01_01_01",
-      "blueprintName": "BUL-H4 Armor",
-      "blueprintNameCn": "BUL-H4 Armor",
+      "recordGuid": "1917de77-e1ae-46ac-ac77-d43b9bc1454e",
+      "internalName": "cds_combat_superheavy_helmet_01_01_01",
+      "blueprintName": "BUL-H4 Helmet",
+      "blueprintNameCn": "BUL-H4 头盔",
       "categoryName": "FPSArmours",
+      "subcategory": "helmet",
       "manufacturer": "cds",
       "isReward": true,
       "rewardMissionCount": 1,
@@ -2132,12 +2079,11 @@
       ]
     },
     {
-      "recordGuid": "1917de77-e1ae-46ac-ac77-d43b9bc1454e",
-      "internalName": "cds_combat_superheavy_helmet_01_01_01",
-      "blueprintName": "BUL-H4 Helmet",
-      "blueprintNameCn": "BUL-H4 Helmet",
+      "recordGuid": "305aeac5-543f-463e-b2ae-f04a9cdbef8c",
+      "internalName": "cds_combat_superheavy_suit_01_01_01",
+      "blueprintName": "BUL-H4 Armor",
+      "blueprintNameCn": "BUL-H4 护甲",
       "categoryName": "FPSArmours",
-      "subcategory": "helmet",
       "manufacturer": "cds",
       "isReward": true,
       "rewardMissionCount": 1,
@@ -2489,7 +2435,7 @@
       "recordGuid": "ad3568b3-9a28-441e-b8cd-af572cd52e3f",
       "internalName": "klwe_laserrepeater_s1_mr01",
       "blueprintName": "CF-117 Bulldog \"Hazard-Zone\" Repeater",
-      "blueprintNameCn": "CF-117 Bulldog \"Hazard-Zone\" Repeater (S1尺寸)",
+      "blueprintNameCn": "CF-117 恶犬 “危险地带” 能量速射炮 (S1尺寸)",
       "categoryName": "ShipWeapons",
       "subcategory": "laser",
       "manufacturer": "klwe",
@@ -2533,7 +2479,7 @@
       "recordGuid": "51512369-2271-4ed6-9d65-b004924d2964",
       "internalName": "klwe_laserrepeater_s2_mr01",
       "blueprintName": "CF-227 Badger \"Hazard-Zone\" Repeater",
-      "blueprintNameCn": "CF-227 Badger \"Hazard-Zone\" Repeater (S2尺寸)",
+      "blueprintNameCn": "CF-227 凶獾 “危险地带” 能量速射炮 (S2尺寸)",
       "categoryName": "ShipWeapons",
       "subcategory": "laser",
       "manufacturer": "klwe",
@@ -2577,7 +2523,7 @@
       "recordGuid": "e622355c-46fe-48c7-85d3-e9a843777d0c",
       "internalName": "klwe_laserrepeater_s3_mr01",
       "blueprintName": "CF-337 Panther \"Hazard-Zone\" Repeater",
-      "blueprintNameCn": "CF-337 Panther \"Hazard-Zone\" Repeater (S3尺寸)",
+      "blueprintNameCn": "CF-337 黑豹 “危险地带” 能量速射炮 (S3尺寸)",
       "categoryName": "ShipWeapons",
       "subcategory": "laser",
       "manufacturer": "klwe",
@@ -2675,7 +2621,7 @@
       "recordGuid": "1a85280e-7b8f-4486-a563-17cd2549d268",
       "internalName": "behr_rifle_ballistic_03",
       "blueprintName": "CQ7 Rifle",
-      "blueprintNameCn": "CQ7 Rifle (实弹)",
+      "blueprintNameCn": "CQ7 步枪 (实弹)",
       "categoryName": "FPSWeapons",
       "subcategory": "rifle",
       "manufacturer": "behr",
@@ -2873,12 +2819,12 @@
       ]
     },
     {
-      "recordGuid": "350cc844-93d1-49a7-a2fc-b50eac006945",
-      "internalName": "cds_combat_light_arms_02_02_01",
-      "blueprintName": "FBL-8a Arms SecondWind",
-      "blueprintNameCn": "FBL-8a Arms SecondWind",
+      "recordGuid": "e75c0be5-82b7-4cdf-ab29-7187040a27ac",
+      "internalName": "cds_combat_light_helmet_02_02_01",
+      "blueprintName": "FBL-8a Helmet SecondWind",
+      "blueprintNameCn": "FBL-8a 头盔 回生之息",
       "categoryName": "FPSArmours",
-      "subcategory": "arms",
+      "subcategory": "helmet",
       "manufacturer": "cds",
       "isReward": true,
       "rewardMissionCount": 0,
@@ -2894,27 +2840,9 @@
       "recordGuid": "1ac52ca8-a15c-445a-9b1b-adbc4f060cf0",
       "internalName": "cds_combat_light_core_02_02_01",
       "blueprintName": "FBL-8a Core SecondWind",
-      "blueprintNameCn": "FBL-8a Core SecondWind",
+      "blueprintNameCn": "FBL-8a 胸甲 回生之息",
       "categoryName": "FPSArmours",
       "subcategory": "core",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 120,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "e75c0be5-82b7-4cdf-ab29-7187040a27ac",
-      "internalName": "cds_combat_light_helmet_02_02_01",
-      "blueprintName": "FBL-8a Helmet SecondWind",
-      "blueprintNameCn": "FBL-8a Helmet SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
       "manufacturer": "cds",
       "isReward": true,
       "rewardMissionCount": 0,
@@ -2930,9 +2858,27 @@
       "recordGuid": "77047612-1413-4401-a29d-74822babf286",
       "internalName": "cds_combat_light_legs_02_02_01",
       "blueprintName": "FBL-8a Legs SecondWind",
-      "blueprintNameCn": "FBL-8a Legs SecondWind",
+      "blueprintNameCn": "FBL-8a 腿甲 回生之息",
       "categoryName": "FPSArmours",
       "subcategory": "legs",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 120,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
+      "recordGuid": "350cc844-93d1-49a7-a2fc-b50eac006945",
+      "internalName": "cds_combat_light_arms_02_02_01",
+      "blueprintName": "FBL-8a Arms SecondWind",
+      "blueprintNameCn": "FBL-8a 臂甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
       "manufacturer": "cds",
       "isReward": true,
       "rewardMissionCount": 0,
@@ -3440,7 +3386,7 @@
       "recordGuid": "2c622127-8999-4818-8540-1959c26aa96d",
       "internalName": "cds_combat_superheavy_backpack_01_01_01",
       "blueprintName": "H4-PBF Ammo Carrier",
-      "blueprintNameCn": "H4-PBF Ammo Carrier",
+      "blueprintNameCn": "H4-PBF 弹药携行具",
       "categoryName": "FPSArmours",
       "manufacturer": "cds",
       "isReward": true,
@@ -3541,7 +3487,7 @@
       "recordGuid": "3fd6dde5-1d51-411b-a01b-37e2d540d43e",
       "internalName": "gmni_pistol_ballistic_01_imp01",
       "blueprintName": "LH86 \"Pathfinder\" Pistol",
-      "blueprintNameCn": "LH86 手枪 “寻路者” (帝国 帝国)",
+      "blueprintNameCn": "LH86 手枪 “寻路者” (帝国 实弹)",
       "categoryName": "FPSWeapons",
       "subcategory": "pistol",
       "manufacturer": "gmni",
@@ -3650,24 +3596,6 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 10
-    },
-    {
-      "recordGuid": "b488199e-f0fc-4e8b-89bd-d3a435d6dce1",
-      "internalName": "klwe_smg_energy_01_mr01",
-      "blueprintName": "Lumin V \"SecondWind\" SMG",
-      "blueprintNameCn": "Lumin V \"SecondWind\" SMG",
-      "categoryName": "FPSWeapons",
-      "subcategory": "smg",
-      "manufacturer": "klwe",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 120,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
     },
     {
       "recordGuid": "bad004a3-647a-463c-ab7f-539b992d2ac7",
@@ -3848,6 +3776,17 @@
       "rewardMissionTypesCn": [
         "其他"
       ]
+    },
+    {
+      "recordGuid": "bee42c5b-59ac-40c0-9bed-f2af1f56992e",
+      "internalName": "mrai_flightsuit_01_01_01",
+      "blueprintName": "Neutrino Racing Flight Suit Mirai",
+      "blueprintNameCn": "Neutrino Racing Flight Suit Mirai",
+      "categoryName": "FPSArmours",
+      "manufacturer": "mrai",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 90
     },
     {
       "recordGuid": "19550053-2b2c-4382-9da0-cf72e32e7976",
@@ -4864,78 +4803,6 @@
       "craftTimeSeconds": 180
     },
     {
-      "recordGuid": "939fd17c-9ab9-42ba-9c66-bdff35650f10",
-      "internalName": "cds_combat_medium_arms_01_02_01",
-      "blueprintName": "ORC-mkX Arms SecondWind",
-      "blueprintNameCn": "ORC-mkX Arms SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "arms",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 190,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "cfb81d2e-21f6-432e-9293-335a2b76833e",
-      "internalName": "cds_combat_medium_core_01_02_01",
-      "blueprintName": "ORC-mkX Core SecondWind",
-      "blueprintNameCn": "ORC-mkX Core SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "core",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 190,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "7e329a5d-3b5a-4f8c-a1ec-1299ef1debd9",
-      "internalName": "cds_combat_medium_helmet_01_02_01",
-      "blueprintName": "ORC-mkX Helmet SecondWind",
-      "blueprintNameCn": "ORC-mkX Helmet SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 190,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "ad7e7203-073a-4937-a43e-d5ed7170e460",
-      "internalName": "cds_combat_medium_legs_01_02_01",
-      "blueprintName": "ORC-mkX Legs SecondWind",
-      "blueprintNameCn": "ORC-mkX Legs SecondWind",
-      "categoryName": "FPSArmours",
-      "subcategory": "legs",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 190,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
       "recordGuid": "62240c5f-59f1-40d4-8809-b77424f9a5f6",
       "internalName": "cds_armor_medium_helmet_01_01_10",
       "blueprintName": "ORC-mkX Helmet Arctic",
@@ -4946,6 +4813,24 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 190
+    },
+    {
+      "recordGuid": "7e329a5d-3b5a-4f8c-a1ec-1299ef1debd9",
+      "internalName": "cds_combat_medium_helmet_01_02_01",
+      "blueprintName": "ORC-mkX Helmet SecondWind",
+      "blueprintNameCn": "ORC-mkX 头盔 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 190,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
     },
     {
       "recordGuid": "96d3e478-1d4b-4b21-a3db-8e079e750be4",
@@ -5014,6 +4899,24 @@
       "craftTimeSeconds": 190
     },
     {
+      "recordGuid": "cfb81d2e-21f6-432e-9293-335a2b76833e",
+      "internalName": "cds_combat_medium_core_01_02_01",
+      "blueprintName": "ORC-mkX Core SecondWind",
+      "blueprintNameCn": "ORC-mkX 胸甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 190,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "b3bf090a-9003-4839-92e8-2b161fb14177",
       "internalName": "cds_armor_medium_core_01_01_18",
       "blueprintName": "ORC-mkX Core Twilight",
@@ -5078,6 +4981,24 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 190
+    },
+    {
+      "recordGuid": "ad7e7203-073a-4937-a43e-d5ed7170e460",
+      "internalName": "cds_combat_medium_legs_01_02_01",
+      "blueprintName": "ORC-mkX Legs SecondWind",
+      "blueprintNameCn": "ORC-mkX 腿甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 190,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
     },
     {
       "recordGuid": "98ff5c7f-9f6b-448c-ba13-8c6665c81466",
@@ -5146,6 +5067,24 @@
       "craftTimeSeconds": 190
     },
     {
+      "recordGuid": "939fd17c-9ab9-42ba-9c66-bdff35650f10",
+      "internalName": "cds_combat_medium_arms_01_02_01",
+      "blueprintName": "ORC-mkX Arms SecondWind",
+      "blueprintNameCn": "ORC-mkX 臂甲 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 190,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "832086e6-7f5f-4b3f-a15d-67352b4f3788",
       "internalName": "cds_armor_medium_arms_01_01_18",
       "blueprintName": "ORC-mkX Arms Twilight",
@@ -5212,10 +5151,22 @@
       "craftTimeSeconds": 190
     },
     {
+      "recordGuid": "09d9048a-7f2f-475d-b51d-06f6c0c435da",
+      "internalName": "behr_rifle_ballistic_01_mag",
+      "blueprintName": "P4-AR Magazine (40 cap)",
+      "blueprintNameCn": "P4-AR 弹匣（40 发） (实弹)",
+      "categoryName": "Ammo",
+      "subcategory": "ballistic",
+      "manufacturer": "behr",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 10
+    },
+    {
       "recordGuid": "7012c8b6-a894-41c2-a954-5b8f3f3e1b9a",
       "internalName": "behr_rifle_ballistic_01_mr01",
       "blueprintName": "P4-AR \"SecondWind\" Rifle",
-      "blueprintNameCn": "P4-AR \"SecondWind\" Rifle (实弹)",
+      "blueprintNameCn": "P4-AR 步枪 “回生之息” (实弹)",
       "categoryName": "FPSWeapons",
       "subcategory": "rifle",
       "manufacturer": "behr",
@@ -5228,18 +5179,6 @@
       "rewardMissionTypesCn": [
         "其他"
       ]
-    },
-    {
-      "recordGuid": "09d9048a-7f2f-475d-b51d-06f6c0c435da",
-      "internalName": "behr_rifle_ballistic_01_mag",
-      "blueprintName": "P4-AR Magazine (40 cap)",
-      "blueprintNameCn": "P4-AR 弹匣（40 发） (实弹)",
-      "categoryName": "Ammo",
-      "subcategory": "ballistic",
-      "manufacturer": "behr",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 10
     },
     {
       "recordGuid": "50864a3f-5fe9-4557-8141-c1990218ad93",
@@ -6427,10 +6366,22 @@
       "craftTimeSeconds": 90
     },
     {
+      "recordGuid": "fa4f0260-02e9-4079-9b60-8df31811fe8c",
+      "internalName": "behr_pistol_ballistic_01_mag",
+      "blueprintName": "S-38 Magazine (20 cap)",
+      "blueprintNameCn": "S-38 弹匣（20 发） (实弹)",
+      "categoryName": "Ammo",
+      "subcategory": "ballistic",
+      "manufacturer": "behr",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 10
+    },
+    {
       "recordGuid": "020bb260-171f-441b-9bc0-6e44284efa1a",
       "internalName": "behr_pistol_ballistic_01_mr01",
       "blueprintName": "S-38 \"SecondWind\" Pistol",
-      "blueprintNameCn": "S-38 \"SecondWind\" Pistol (实弹)",
+      "blueprintNameCn": "S-38 手枪 “回生之息” (实弹)",
       "categoryName": "FPSWeapons",
       "subcategory": "pistol",
       "manufacturer": "behr",
@@ -6443,18 +6394,6 @@
       "rewardMissionTypesCn": [
         "其他"
       ]
-    },
-    {
-      "recordGuid": "fa4f0260-02e9-4079-9b60-8df31811fe8c",
-      "internalName": "behr_pistol_ballistic_01_mag",
-      "blueprintName": "S-38 Magazine (20 cap)",
-      "blueprintNameCn": "S-38 弹匣（20 发） (实弹)",
-      "categoryName": "Ammo",
-      "subcategory": "ballistic",
-      "manufacturer": "behr",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 10
     },
     {
       "recordGuid": "5a4bd10a-4ec2-4e17-9e2b-0142a8feb4d4",
@@ -6689,132 +6628,6 @@
       "craftTimeSeconds": 540
     },
     {
-      "recordGuid": "38dcf3fc-7141-4133-bae9-4dc6b02ed2df",
-      "internalName": "hdtc_shoes_01_01_01",
-      "blueprintName": "Spettro Shoes",
-      "blueprintNameCn": "Spettro Shoes",
-      "categoryName": "FPSArmours",
-      "manufacturer": "hdtc",
-      "isReward": true,
-      "rewardMissionCount": 2,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Bounty Hunter"
-      ],
-      "rewardMissionTypesCn": [
-        "赏金猎人"
-      ]
-    },
-    {
-      "recordGuid": "d9de0fdb-bede-42d9-b2ab-0cf4897f3762",
-      "internalName": "grin_utility_medium_arms_03_05_16",
-      "blueprintName": "Strata Arms Levski Edition",
-      "blueprintNameCn": "Strata Arms Levski Edition",
-      "categoryName": "FPSArmours",
-      "subcategory": "arms",
-      "manufacturer": "grin",
-      "isReward": true,
-      "rewardMissionCount": 8,
-      "craftTimeSeconds": 200,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "da6ec330-12af-4d03-aded-c84574b41b69",
-      "internalName": "grin_utility_medium_backpack_03_05_16",
-      "blueprintName": "Strata Backpack Levski Edition",
-      "blueprintNameCn": "Strata Backpack Levski Edition",
-      "categoryName": "FPSArmours",
-      "manufacturer": "grin",
-      "isReward": true,
-      "rewardMissionCount": 8,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "fdf5d10f-8c1f-4ab1-b214-d9f3f081de8e",
-      "internalName": "grin_utility_medium_core_03_05_16",
-      "blueprintName": "Strata Core Levski Edition",
-      "blueprintNameCn": "Strata Core Levski Edition",
-      "categoryName": "FPSArmours",
-      "subcategory": "core",
-      "manufacturer": "grin",
-      "isReward": true,
-      "rewardMissionCount": 8,
-      "craftTimeSeconds": 200,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "a747fdac-acaa-4570-9c91-8e8c0a21fd0a",
-      "internalName": "fta_medium_helmet_01_15_16",
-      "blueprintName": "Strata Helmet Levski Edition",
-      "blueprintNameCn": "Strata Helmet Levski Edition",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "fta",
-      "isReward": true,
-      "rewardMissionCount": 8,
-      "craftTimeSeconds": 200,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "8e84ac20-d218-4c46-97f8-dc28fcdb23f5",
-      "internalName": "grin_utility_medium_legs_03_05_16",
-      "blueprintName": "Strata Legs Levski Edition",
-      "blueprintNameCn": "Strata Legs Levski Edition",
-      "categoryName": "FPSArmours",
-      "subcategory": "legs",
-      "manufacturer": "grin",
-      "isReward": true,
-      "rewardMissionCount": 8,
-      "craftTimeSeconds": 200,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Search"
-      ]
-    },
-    {
       "recordGuid": "87fff41b-b925-4fdf-b819-22eeb7be6406",
       "internalName": "behr_ballisticrepeater_s1",
       "blueprintName": "SW16BR1 “Buzzsaw” Repeater",
@@ -6982,34 +6795,6 @@
       ]
     },
     {
-      "recordGuid": "4e3a610c-ed81-4d65-8957-933ea5a7c767",
-      "internalName": "apar_hmg_ballistic_01_collector01",
-      "blueprintName": "Vendetta \"Snow Camo\" HMG",
-      "blueprintNameCn": "Vendetta \"Snow Camo\" HMG (收藏版 实弹)",
-      "categoryName": "FPSWeapons",
-      "manufacturer": "apar",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 345,
-      "rewardMissionTypes": [
-        "Collection"
-      ],
-      "rewardMissionTypesCn": [
-        "采集"
-      ]
-    },
-    {
-      "recordGuid": "b2857c9f-e7ca-4e6f-9071-d352a58383d4",
-      "internalName": "apar_hmg_ballistic_01",
-      "blueprintName": "Vendetta HMG",
-      "blueprintNameCn": "Vendetta HMG (实弹)",
-      "categoryName": "FPSWeapons",
-      "manufacturer": "apar",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 345
-    },
-    {
       "recordGuid": "33be7f1a-3f75-4627-bb8b-88e6d6b42f4e",
       "internalName": "qdrv_wetk_s01_vk00_scitem",
       "blueprintName": "VK-00",
@@ -7082,6 +6867,151 @@
       "isReward": true,
       "rewardMissionCount": 2,
       "craftTimeSeconds": 10,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "b2857c9f-e7ca-4e6f-9071-d352a58383d4",
+      "internalName": "apar_hmg_ballistic_01",
+      "blueprintName": "Vendetta HMG",
+      "blueprintNameCn": "世仇 重机枪 (实弹)",
+      "categoryName": "FPSWeapons",
+      "manufacturer": "apar",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 345
+    },
+    {
+      "recordGuid": "4e3a610c-ed81-4d65-8957-933ea5a7c767",
+      "internalName": "apar_hmg_ballistic_01_collector01",
+      "blueprintName": "Vendetta \"Snow Camo\" HMG",
+      "blueprintNameCn": "世仇 重机枪 雪地迷彩 (收藏版 实弹)",
+      "categoryName": "FPSWeapons",
+      "manufacturer": "apar",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 345,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
+      "recordGuid": "188a1cff-9b29-4362-9a98-1d85db6b5c79",
+      "internalName": "mrai_flightsuit_helmet_01_01_01",
+      "blueprintName": "Neutrino Racing Helmet Mirai",
+      "blueprintNameCn": "中微子 竞速头盔 未来",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "mrai",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 90
+    },
+    {
+      "recordGuid": "7aa43fa1-11d7-4ad2-a1b7-9b11a92b4d5c",
+      "internalName": "mrai_flightsuit_helmet_01_07_02",
+      "blueprintName": "Neutrino Racing Helmet WhiteHot",
+      "blueprintNameCn": "中微子 竞速头盔 白炽",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "996b49dc-96ec-431d-8638-be232ef89596",
+      "internalName": "mrai_flightsuit_helmet_01_07_18",
+      "blueprintName": "Neutrino Racing Helmet BlueFlame",
+      "blueprintNameCn": "中微子 竞速头盔 蓝焰",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "6ef10d50-8fde-4d6e-9fdd-71486a57cba8",
+      "internalName": "mrai_flightsuit_helmet_01_07_12",
+      "blueprintName": "Neutrino Racing Helmet BlackFire",
+      "blueprintNameCn": "中微子 竞速头盔 黑火",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "ef2fe5ec-e7c3-4c44-b589-b3cdf2f83db5",
+      "internalName": "mrai_flightsuit_01_07_02",
+      "blueprintName": "Neutrino Racing Flight Suit WhiteHot",
+      "blueprintNameCn": "中微子 竞速飞行服 白炽",
+      "categoryName": "FPSArmours",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "fdb77585-2af6-4ee7-b603-e5116618b966",
+      "internalName": "mrai_flightsuit_01_07_18",
+      "blueprintName": "Neutrino Racing Flight Suit BlueFlame",
+      "blueprintNameCn": "中微子 竞速飞行服 蓝焰",
+      "categoryName": "FPSArmours",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "a94dcfee-51b0-439a-bbc7-62086dbd2395",
+      "internalName": "mrai_flightsuit_01_07_12",
+      "blueprintName": "Neutrino Racing Flight Suit BlackFire",
+      "blueprintNameCn": "中微子 竞速飞行服 黑火",
+      "categoryName": "FPSArmours",
+      "manufacturer": "mrai",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 90,
       "rewardMissionTypes": [
         "Mercenary"
       ],
@@ -9063,6 +8993,24 @@
       ],
       "rewardMissionTypesCn": [
         "运送"
+      ]
+    },
+    {
+      "recordGuid": "b488199e-f0fc-4e8b-89bd-d3a435d6dce1",
+      "internalName": "klwe_smg_energy_01_mr01",
+      "blueprintName": "Lumin V \"SecondWind\" SMG",
+      "blueprintNameCn": "卢敏 V 冲锋枪 “回生之息”",
+      "categoryName": "FPSWeapons",
+      "subcategory": "smg",
+      "manufacturer": "klwe",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 120,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
       ]
     },
     {
@@ -11762,7 +11710,7 @@
       "recordGuid": "7e51e245-9baa-4845-b9e5-7028f257adb9",
       "internalName": "lbco_pistol_energy_01_chromic01",
       "blueprintName": "Yubarev \"Mirage\" Pistol",
-      "blueprintNameCn": "尤巴列夫 手枪 “幻金” (镀铬 镀铬)",
+      "blueprintNameCn": "尤巴列夫 手枪 “幻金” (镀铬)",
       "categoryName": "FPSWeapons",
       "subcategory": "pistol",
       "manufacturer": "lbco",
@@ -11780,7 +11728,7 @@
       "recordGuid": "b7bf92c7-a3ee-4082-996b-46bc67b5929b",
       "internalName": "lbco_pistol_energy_01_sunset01",
       "blueprintName": "Yubarev \"Igniter\" Pistol",
-      "blueprintNameCn": "尤巴列夫 手枪 “点火器” (日落 日落)",
+      "blueprintNameCn": "尤巴列夫 手枪 “点火器” (日落)",
       "categoryName": "FPSWeapons",
       "subcategory": "pistol",
       "manufacturer": "lbco",
@@ -11798,7 +11746,7 @@
       "recordGuid": "deff640a-7e14-474d-9dcf-961e4ee0b717",
       "internalName": "lbco_pistol_energy_01_acid01",
       "blueprintName": "Yubarev \"Venom\" Pistol",
-      "blueprintNameCn": "尤巴列夫 手枪 “猛毒” (酸蚀 酸蚀)",
+      "blueprintNameCn": "尤巴列夫 手枪 “猛毒” (酸蚀)",
       "categoryName": "FPSWeapons",
       "subcategory": "pistol",
       "manufacturer": "lbco",
@@ -11885,6 +11833,28 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 200
+    },
+    {
+      "recordGuid": "a747fdac-acaa-4570-9c91-8e8c0a21fd0a",
+      "internalName": "fta_medium_helmet_01_15_16",
+      "blueprintName": "Strata Helmet Levski Edition",
+      "blueprintNameCn": "岩层 头盔 列夫斯基版",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "fta",
+      "isReward": true,
+      "rewardMissionCount": 8,
+      "craftTimeSeconds": 200,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Search"
+      ]
     },
     {
       "recordGuid": "3cf4c7d4-2326-4b8f-b081-843b11a03106",
@@ -12000,6 +11970,27 @@
       "craftTimeSeconds": 90
     },
     {
+      "recordGuid": "da6ec330-12af-4d03-aded-c84574b41b69",
+      "internalName": "grin_utility_medium_backpack_03_05_16",
+      "blueprintName": "Strata Backpack Levski Edition",
+      "blueprintNameCn": "岩层 背包 列夫斯基版",
+      "categoryName": "FPSArmours",
+      "manufacturer": "grin",
+      "isReward": true,
+      "rewardMissionCount": 8,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Search"
+      ]
+    },
+    {
       "recordGuid": "a15468da-4d68-4f8b-a611-fa4829a70b73",
       "internalName": "grin_utility_medium_core_02_01_01",
       "blueprintName": "Strata Core",
@@ -12015,6 +12006,28 @@
       ],
       "rewardMissionTypesCn": [
         "采集"
+      ]
+    },
+    {
+      "recordGuid": "fdf5d10f-8c1f-4ab1-b214-d9f3f081de8e",
+      "internalName": "grin_utility_medium_core_03_05_16",
+      "blueprintName": "Strata Core Levski Edition",
+      "blueprintNameCn": "岩层 胸甲 列夫斯基版",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "grin",
+      "isReward": true,
+      "rewardMissionCount": 8,
+      "craftTimeSeconds": 200,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Search"
       ]
     },
     {
@@ -12084,6 +12097,28 @@
       ]
     },
     {
+      "recordGuid": "8e84ac20-d218-4c46-97f8-dc28fcdb23f5",
+      "internalName": "grin_utility_medium_legs_03_05_16",
+      "blueprintName": "Strata Legs Levski Edition",
+      "blueprintNameCn": "岩层 腿甲 列夫斯基版",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "grin",
+      "isReward": true,
+      "rewardMissionCount": 8,
+      "craftTimeSeconds": 200,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Search"
+      ]
+    },
+    {
       "recordGuid": "30637e47-8ac2-4a52-8e60-df437baaf9d4",
       "internalName": "grin_utility_medium_legs_02_01_16",
       "blueprintName": "Strata Legs Shire",
@@ -12147,6 +12182,28 @@
       ],
       "rewardMissionTypesCn": [
         "采集"
+      ]
+    },
+    {
+      "recordGuid": "d9de0fdb-bede-42d9-b2ab-0cf4897f3762",
+      "internalName": "grin_utility_medium_arms_03_05_16",
+      "blueprintName": "Strata Arms Levski Edition",
+      "blueprintNameCn": "岩层 臂甲 列夫斯基版",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
+      "manufacturer": "grin",
+      "isReward": true,
+      "rewardMissionCount": 8,
+      "craftTimeSeconds": 200,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Search"
       ]
     },
     {
@@ -14923,6 +14980,60 @@
       ]
     },
     {
+      "recordGuid": "df70f106-b946-4f99-bc5d-811d0b964d5a",
+      "internalName": "hdtc_jacket_01_01_01",
+      "blueprintName": "Bellator Jacket",
+      "blueprintNameCn": "斗士 夹克",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "hdtc",
+      "isReward": true,
+      "rewardMissionCount": 2,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Bounty Hunter"
+      ],
+      "rewardMissionTypesCn": [
+        "赏金猎人"
+      ]
+    },
+    {
+      "recordGuid": "8913923b-e0db-4338-8bf6-b284a567db08",
+      "internalName": "hdtc_shirt_02_01_01",
+      "blueprintName": "Bellator Shirt and Waistcoat",
+      "blueprintNameCn": "斗士 衬衫与马甲",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "hdtc",
+      "isReward": true,
+      "rewardMissionCount": 2,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Bounty Hunter"
+      ],
+      "rewardMissionTypesCn": [
+        "赏金猎人"
+      ]
+    },
+    {
+      "recordGuid": "0646d386-d907-482f-b1a6-1e832952297a",
+      "internalName": "hdtc_pants_01_01_01",
+      "blueprintName": "Bellator Trousers",
+      "blueprintNameCn": "斗士 西裤",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "hdtc",
+      "isReward": true,
+      "rewardMissionCount": 2,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Bounty Hunter"
+      ],
+      "rewardMissionTypesCn": [
+        "赏金猎人"
+      ]
+    },
+    {
       "recordGuid": "53682234-5ecd-4cce-b572-7b37a91e0b57",
       "internalName": "shld_asas_s01_cloak_scitem",
       "blueprintName": "Cloak",
@@ -15247,29 +15358,6 @@
       "rewardMissionTypesCn": [
         "雇佣兵"
       ]
-    },
-    {
-      "recordGuid": "188a1cff-9b29-4362-9a98-1d85db6b5c79",
-      "internalName": "mrai_flightsuit_helmet_01_01_01",
-      "blueprintName": "Neutrino Racing Helmet Mirai",
-      "blueprintNameCn": "未来 竞速头盔",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "mrai",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 90
-    },
-    {
-      "recordGuid": "bee42c5b-59ac-40c0-9bed-f2af1f56992e",
-      "internalName": "mrai_flightsuit_01_01_01",
-      "blueprintName": "Neutrino Racing Flight Suit Mirai",
-      "blueprintNameCn": "未来 竞速飞行服",
-      "categoryName": "FPSArmours",
-      "manufacturer": "mrai",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 90
     },
     {
       "recordGuid": "fe989d57-d565-44a5-ae56-9d13801a60a6",
@@ -16807,41 +16895,6 @@
       "craftTimeSeconds": 1140
     },
     {
-      "recordGuid": "7aa43fa1-11d7-4ad2-a1b7-9b11a92b4d5c",
-      "internalName": "mrai_flightsuit_helmet_01_07_02",
-      "blueprintName": "Neutrino Racing Helmet WhiteHot",
-      "blueprintNameCn": "白炽 竞速头盔",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
-      "recordGuid": "ef2fe5ec-e7c3-4c44-b589-b3cdf2f83db5",
-      "internalName": "mrai_flightsuit_01_07_02",
-      "blueprintName": "Neutrino Racing Flight Suit WhiteHot",
-      "blueprintNameCn": "白炽 竞速飞行服",
-      "categoryName": "FPSArmours",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
       "recordGuid": "ea73da29-d597-4930-91ac-846310561bb0",
       "internalName": "powr_sasu_s01_whiterose_scitem",
       "blueprintName": "WhiteRose",
@@ -17951,7 +18004,7 @@
       "recordGuid": "13a09220-850b-4697-8708-3a0db79e33df",
       "internalName": "ksar_shotgun_energy_01_imp01",
       "blueprintName": "Devastator \"Pathfinder\" Shotgun",
-      "blueprintNameCn": "破坏者 霰弹枪 “寻路者” (帝国 帝国)",
+      "blueprintNameCn": "破坏者 霰弹枪 “寻路者” (帝国)",
       "categoryName": "FPSWeapons",
       "subcategory": "shotgun",
       "manufacturer": "ksar",
@@ -18410,7 +18463,7 @@
       "recordGuid": "b7cb9401-e1f8-49e7-bfb3-d82dc467df8e",
       "internalName": "klwe_sniper_energy_01_imp01",
       "blueprintName": "Arrowhead \"Pathfinder\" Sniper Rifle",
-      "blueprintNameCn": "箭头 狙击步枪 “寻路者” (帝国 帝国)",
+      "blueprintNameCn": "箭头 狙击步枪 “寻路者” (帝国)",
       "categoryName": "FPSWeapons",
       "subcategory": "sniper",
       "manufacturer": "klwe",
@@ -20204,41 +20257,6 @@
       ]
     },
     {
-      "recordGuid": "996b49dc-96ec-431d-8638-be232ef89596",
-      "internalName": "mrai_flightsuit_helmet_01_07_18",
-      "blueprintName": "Neutrino Racing Helmet BlueFlame",
-      "blueprintNameCn": "蓝焰 竞速头盔",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
-      "recordGuid": "fdb77585-2af6-4ee7-b603-e5116618b966",
-      "internalName": "mrai_flightsuit_01_07_18",
-      "blueprintName": "Neutrino Racing Flight Suit BlueFlame",
-      "blueprintNameCn": "蓝焰 竞速飞行服",
-      "categoryName": "FPSArmours",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
       "recordGuid": "a9a3c7ee-70d9-4f55-b78f-1f87ada03829",
       "internalName": "slaver_armor_heavy_helmet_01_01_01",
       "blueprintName": "Defiance Helmet Tactical",
@@ -21615,7 +21633,7 @@
       "recordGuid": "ec46698b-a710-46e2-8532-9fb71cedecd2",
       "internalName": "lbco_sniper_energy_imp01",
       "blueprintName": "Atzkav \"Deadeye\" Sniper Rifle",
-      "blueprintNameCn": "阿兹卡夫 狙击步枪 “亡者之眼” (帝国 帝国)",
+      "blueprintNameCn": "阿兹卡夫 狙击步枪 “亡者之眼” (帝国)",
       "categoryName": "FPSWeapons",
       "subcategory": "sniper",
       "manufacturer": "lbco",
@@ -21627,7 +21645,7 @@
       "recordGuid": "3eea6d43-d683-4ec7-9853-be654982f135",
       "internalName": "lbco_sniper_energy_01_chromic01",
       "blueprintName": "Atzkav \"Mirage\" Sniper Rifle",
-      "blueprintNameCn": "阿兹卡夫 狙击步枪 “幻金” (镀铬 镀铬)",
+      "blueprintNameCn": "阿兹卡夫 狙击步枪 “幻金” (镀铬)",
       "categoryName": "FPSWeapons",
       "subcategory": "sniper",
       "manufacturer": "lbco",
@@ -21645,7 +21663,7 @@
       "recordGuid": "e471e8d9-51d2-43cf-b94e-201e70a68a5b",
       "internalName": "lbco_sniper_energy_01_sunset01",
       "blueprintName": "Atzkav \"Igniter\" Sniper Rifle",
-      "blueprintNameCn": "阿兹卡夫 狙击步枪 “点火器” (日落 日落)",
+      "blueprintNameCn": "阿兹卡夫 狙击步枪 “点火器” (日落)",
       "categoryName": "FPSWeapons",
       "subcategory": "sniper",
       "manufacturer": "lbco",
@@ -21663,7 +21681,7 @@
       "recordGuid": "3b156899-9335-4d24-8746-6fad72f78911",
       "internalName": "lbco_sniper_energy_01_acid01",
       "blueprintName": "Atzkav \"Venom\" Sniper Rifle",
-      "blueprintNameCn": "阿兹卡夫 狙击步枪 “猛毒” (酸蚀 酸蚀)",
+      "blueprintNameCn": "阿兹卡夫 狙击步枪 “猛毒” (酸蚀)",
       "categoryName": "FPSWeapons",
       "subcategory": "sniper",
       "manufacturer": "lbco",
@@ -23622,6 +23640,23 @@
       "craftTimeSeconds": 90
     },
     {
+      "recordGuid": "38dcf3fc-7141-4133-bae9-4dc6b02ed2df",
+      "internalName": "hdtc_shoes_01_01_01",
+      "blueprintName": "Spettro Shoes",
+      "blueprintNameCn": "魂灵 鞋子",
+      "categoryName": "FPSArmours",
+      "manufacturer": "hdtc",
+      "isReward": true,
+      "rewardMissionCount": 2,
+      "craftTimeSeconds": 90,
+      "rewardMissionTypes": [
+        "Bounty Hunter"
+      ],
+      "rewardMissionTypesCn": [
+        "赏金猎人"
+      ]
+    },
+    {
       "recordGuid": "603f910f-f053-4b0b-8eb0-45ed8df7104a",
       "internalName": "ksar_undersuit_01_01_01",
       "blueprintName": "Scaleweave Undersuit",
@@ -23724,41 +23759,6 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 1680
-    },
-    {
-      "recordGuid": "6ef10d50-8fde-4d6e-9fdd-71486a57cba8",
-      "internalName": "mrai_flightsuit_helmet_01_07_12",
-      "blueprintName": "Neutrino Racing Helmet BlackFire",
-      "blueprintNameCn": "黑火 竞速头盔",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
-      "recordGuid": "a94dcfee-51b0-439a-bbc7-62086dbd2395",
-      "internalName": "mrai_flightsuit_01_07_12",
-      "blueprintName": "Neutrino Racing Flight Suit BlackFire",
-      "blueprintNameCn": "黑火 竞速飞行服",
-      "categoryName": "FPSArmours",
-      "manufacturer": "mrai",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
     },
     {
       "recordGuid": "e329b3df-81b3-4fa8-ad86-cc9ddd835e0c",
