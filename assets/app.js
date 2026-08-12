@@ -17,13 +17,15 @@ const state = {
   visibleResults: 0,
 };
 
-const DATA_VERSION = "20260809-4-10-0-ptu-12409360";
+const DATA_VERSION = "20260812T022229Z-4-9-0-live-12344265";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
 let searchInputTimer = 0;
 
 const els = {
+  dataStatus: document.querySelector("#dataStatus"),
   versionBadge: document.querySelector("#versionBadge"),
+  dataUpdatedBadge: document.querySelector("#dataUpdatedBadge"),
   searchForm: document.querySelector("#searchForm"),
   searchInput: document.querySelector("#searchInput"),
   clearSearch: document.querySelector("#clearSearch"),
@@ -42,6 +44,24 @@ const els = {
   resultList: document.querySelector("#resultList"),
   detailPanel: document.querySelector("#detailPanel"),
 };
+
+function formatDataUpdatedAt(value) {
+  if (!value) return "更新时间暂无";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "更新时间暂无";
+  const formatted = new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  })
+    .format(date)
+    .replace(/\//g, "/");
+  return `更新 ${formatted}`;
+}
 
 const categoryOrder = [
   ["all", "全部"],
@@ -1117,6 +1137,11 @@ async function boot() {
     }
     state.records = state.data.records.map(prepareRecord);
     els.versionBadge.textContent = state.data.version;
+    els.dataUpdatedBadge.textContent = formatDataUpdatedAt(state.data.dataUpdatedAt);
+    els.dataStatus.setAttribute(
+      "aria-label",
+      `${state.data.version}，${formatDataUpdatedAt(state.data.dataUpdatedAt)}，北京时间`,
+    );
     initFilters();
     bindEvents();
     applyFilters();

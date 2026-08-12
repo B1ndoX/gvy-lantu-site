@@ -19,7 +19,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="./assets/favicon-192.png" />
     <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./assets/styles.css?v=20260806-wikelo-nav-v1" />
+    <link rel="stylesheet" href="./assets/styles.css?v=20260812-live-status-v1" />
   </head>
   <body>
     <main class="app-shell">
@@ -54,7 +54,10 @@
             <a class="site-link wikelo-link" href="https://wikelo.gvyvoyagers.vip">维科洛查询</a>
           </nav>
           <span class="filter-count-pill">已筛选 <strong id="filterCount">0</strong></span>
-          <span class="version-pill" id="versionBadge">加载中</span>
+          <span class="version-pill" id="dataStatus" tabindex="0" aria-describedby="dataUpdatedBadge">
+            <strong id="versionBadge">加载中</strong>
+            <small class="data-updated-tooltip" id="dataUpdatedBadge" role="tooltip">更新时间读取中</small>
+          </span>
         </div>
       </header>
 
@@ -159,6 +162,6 @@
       </div>
     </template>
 
-    <script src="./assets/app.js?v=20260809-4-10-0-ptu-12409360" defer></script>
+    <script src="./assets/app.js?v=20260812T022229Z-4-9-0-live-12344265" defer></script>
   </body>
 </html>

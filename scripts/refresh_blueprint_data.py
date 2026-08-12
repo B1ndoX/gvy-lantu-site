@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh GVY blueprint data only when SCMDB publishes a newer version."""
+"""Continuously refresh GVY blueprints from the latest stable SCMDB LIVE release."""
 
 from __future__ import annotations
 
@@ -10,10 +10,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+
+from scmdb_versions import is_live_version, select_latest_live_version, version_sort_key
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -42,16 +45,26 @@ def load_json(path: Path, default: Any) -> Any:
 
 
 def write_json_compact(path: Path, payload: Any) -> None:
-    path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    path.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":"), sort_keys=True), encoding="utf-8")
 
 
-def fetch_latest_scmdb_version() -> str:
-    request = urllib.request.Request(SCMDB_VERSIONS_URL, headers={"User-Agent": "GVY Lantu Site/1.0"})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        versions = json.loads(response.read().decode("utf-8"))
+def fetch_latest_live_scmdb_version(attempts: int = 3) -> str:
+    versions = None
+    for attempt in range(1, attempts + 1):
+        request = urllib.request.Request(SCMDB_VERSIONS_URL, headers={"User-Agent": "GVY Lantu Site/1.0"})
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                versions = json.loads(response.read().decode("utf-8"))
+            break
+        except Exception:
+            if attempt == attempts:
+                raise
+            wait_seconds = attempt * 2
+            print(f"SCMDB version check failed; retrying in {wait_seconds}s ({attempt}/{attempts})", file=sys.stderr)
+            time.sleep(wait_seconds)
     if not versions:
         raise RuntimeError("SCMDB versions.json returned no versions")
-    return str(versions[0]["version"])
+    return select_latest_live_version(versions)["version"]
 
 
 def run(args: list[str], *, allow_failure: bool = False) -> bool:
@@ -68,6 +81,19 @@ def run(args: list[str], *, allow_failure: bool = False) -> bool:
 def copy_if_exists(source: Path, target: Path) -> None:
     if source.exists():
         shutil.copy2(source, target)
+
+
+def replace_if_exists(source: Path, target: Path) -> None:
+    """Publish a staged file atomically on the destination filesystem."""
+    if not source.exists():
+        return
+    temporary_target = target.with_name(f".{target.name}.refresh-tmp")
+    temporary_target.unlink(missing_ok=True)
+    try:
+        shutil.copy2(source, temporary_target)
+        temporary_target.replace(target)
+    finally:
+        temporary_target.unlink(missing_ok=True)
 
 
 def clean_version_slug(version: str) -> str:
@@ -121,9 +147,9 @@ def backup_current_data(current_version: str, now: datetime) -> Path:
     return target
 
 
-def update_data_version(version: str) -> None:
+def update_data_version(version: str, updated_at: datetime) -> None:
     text = APP_JS.read_text(encoding="utf-8")
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
+    stamp = updated_at.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     next_value = f"{stamp}-{version.replace('.', '-').replace('+', '-')}"
     old = 'const DATA_VERSION = "'
     start = text.find(old)
@@ -148,6 +174,14 @@ def annotate_localization_metadata(index_path: Path) -> None:
     write_json_compact(index_path, index)
 
 
+def annotate_refresh_metadata(index_path: Path, version: str, updated_at: datetime) -> None:
+    index = load_json(index_path, {})
+    index["releaseChannel"] = "LIVE"
+    index["dataUpdatedAt"] = updated_at.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
+    index["version"] = version
+    write_json_compact(index_path, index)
+
+
 def compact_public_index(index_path: Path) -> int:
     """Remove pipeline-only fields after localization has finished."""
     index = load_json(index_path, {})
@@ -167,8 +201,21 @@ def validate_index(path: Path, expected_version: str) -> None:
     records = index.get("records") or []
     counts = index.get("counts") or {}
     localization = index.get("localization") or {}
+    if not is_live_version(expected_version):
+        raise RuntimeError(f"refresh target is not a stable LIVE version: {expected_version}")
     if index.get("version") != expected_version:
-        raise RuntimeError(f"generated version {index.get('version')} does not match latest {expected_version}")
+        raise RuntimeError(f"generated version {index.get('version')} does not match latest LIVE {expected_version}")
+    if not is_live_version(str(index.get("version") or "")):
+        raise RuntimeError(f"generated index is not from a stable LIVE version: {index.get('version')}")
+    if index.get("releaseChannel") != "LIVE":
+        raise RuntimeError(f"generated index has invalid release channel: {index.get('releaseChannel')}")
+    updated_at = str(index.get("dataUpdatedAt") or "")
+    try:
+        parsed_updated_at = datetime.fromisoformat(updated_at.replace("Z", "+00:00"))
+    except ValueError as error:
+        raise RuntimeError("generated index has no valid dataUpdatedAt timestamp") from error
+    if parsed_updated_at.tzinfo is None:
+        raise RuntimeError("generated index dataUpdatedAt must include a timezone")
     if not records:
         raise RuntimeError("generated blueprint index has no records")
     if counts.get("blueprints") != len(records):
@@ -180,9 +227,13 @@ def validate_index(path: Path, expected_version: str) -> None:
 def refresh(force: bool) -> bool:
     current = load_json(DATA_DIR / "blueprint-index.json", {})
     current_version = str(current.get("version") or "")
-    latest_version = fetch_latest_scmdb_version()
+    latest_version = fetch_latest_live_scmdb_version()
     print(f"current SCMDB version: {current_version or 'none'}")
-    print(f"latest SCMDB version:  {latest_version}")
+    print(f"latest LIVE version:   {latest_version}")
+    if is_live_version(current_version) and version_sort_key(current_version) > version_sort_key(latest_version):
+        raise RuntimeError(
+            f"refusing LIVE rollback from {current_version} to stale manifest version {latest_version}"
+        )
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
         if removed:
@@ -203,7 +254,16 @@ def refresh(force: bool) -> bool:
         copy_if_exists(DATA_DIR / "flowcld-blueprint-calibration.json", flowcld)
         copy_if_exists(DATA_DIR / "local-polish-names.json", local_names)
 
-        run([sys.executable, "scripts/build_data.py", "--out", str(index_path)])
+        run(
+            [
+                sys.executable,
+                "scripts/build_data.py",
+                "--out",
+                str(index_path),
+                "--version",
+                latest_version,
+            ]
+        )
         run([sys.executable, "scripts/translate_index_google.py", "--index", str(index_path), "--cache", str(google_cache)])
 
         fresh_flowcld = tmp / "flowcld-blueprint-calibration.fresh.json"
@@ -238,22 +298,24 @@ def refresh(force: bool) -> bool:
         )
         annotate_localization_metadata(index_path)
         compact_public_index(index_path)
+        completed_at = datetime.now(timezone.utc)
+        annotate_refresh_metadata(index_path, latest_version, completed_at)
         validate_index(index_path, latest_version)
 
         backup_current_data(current_version or "none", datetime.now(timezone.utc))
-        shutil.copy2(index_path, DATA_DIR / "blueprint-index.json")
-        copy_if_exists(google_cache, DATA_DIR / "google-translate-cache.json")
-        copy_if_exists(flowcld, DATA_DIR / "flowcld-blueprint-calibration.json")
-        copy_if_exists(local_names, DATA_DIR / "local-polish-names.json")
-        update_data_version(latest_version)
+        replace_if_exists(index_path, DATA_DIR / "blueprint-index.json")
+        replace_if_exists(google_cache, DATA_DIR / "google-translate-cache.json")
+        replace_if_exists(flowcld, DATA_DIR / "flowcld-blueprint-calibration.json")
+        replace_if_exists(local_names, DATA_DIR / "local-polish-names.json")
+        update_data_version(latest_version, completed_at)
 
     print(f"updated blueprint data to {latest_version}")
     return True
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Refresh GVY blueprint data when SCMDB publishes a new version.")
-    parser.add_argument("--force", action="store_true", help="Refresh even when SCMDB version is unchanged.")
+    parser = argparse.ArgumentParser(description="Refresh GVY blueprint data from the latest stable SCMDB LIVE release.")
+    parser.add_argument("--force", action="store_true", help="Rebuild the current LIVE release even when unchanged.")
     args = parser.parse_args()
     refresh(args.force)
     return 0

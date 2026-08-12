@@ -2,12 +2,12 @@ name: Refresh blueprint data
 
 on:
   schedule:
-    # Monday 01:00 Asia/Shanghai, Sunday 17:00 UTC.
-    - cron: "0 17 * * 0"
+    # Check four times daily. Only a newer stable LIVE release is published.
+    - cron: "17 */6 * * *"
   workflow_dispatch:
     inputs:
       force:
-        description: "Refresh even if SCMDB version is unchanged"
+        description: "Rebuild even if the stable LIVE version is unchanged"
         required: false
         type: boolean
         default: false
@@ -30,6 +30,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Test LIVE-only refresh rules
+        run: python -m unittest discover -s tests -v
 
       - name: Refresh data if needed
         run: |

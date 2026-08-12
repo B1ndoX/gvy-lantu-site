@@ -67,10 +67,12 @@ After every deployment, verify the production domain directly, including the pag
 ## Data Refresh
 
 Blueprint data refreshes are handled by `.github/workflows/refresh-blueprint-data.yml`.
-The scheduled run checks SCMDB every Monday at 01:00 Asia/Shanghai.
+The scheduled run checks SCMDB every six hours and only accepts the newest stable `LIVE` release. `PTU`, `EPTU`, Tech Preview, and other test channels are never published by this site, even when SCMDB lists them first or gives them a higher version number.
 
-If SCMDB has no newer version, the workflow keeps the existing data cache and makes no commit.
-If a newer version exists, `scripts/refresh_blueprint_data.py` regenerates the blueprint index, applies localization in this priority order:
+The header shows the active LIVE version. Hovering or keyboard-focusing the version badge reveals `dataUpdatedAt` as `更新 YYYY/MM/DD HH:mm` in Asia/Shanghai; tapping the badge provides the same information on touch devices. This timestamp changes only after a new dataset has been fetched, localized, validated, backed up, and atomically published; routine checks with no newer LIVE release do not change it.
+
+If SCMDB has no newer `LIVE` version, the workflow keeps the existing data cache and makes no commit. A stale manifest is also prevented from rolling an existing `LIVE` release backward.
+If a newer `LIVE` version exists, `scripts/refresh_blueprint_data.py` locks the build to that exact release, regenerates the blueprint index, applies localization in this priority order:
 
 1. Local official Star Citizen localization package snapshot
 2. FlowCLD Chinese calibration
@@ -79,3 +81,4 @@ If a newer version exists, `scripts/refresh_blueprint_data.py` regenerates the b
 Before replacing data files, the script saves a local backup under `.data-backups/`.
 Local backups are retained for 14 days and are ignored by Git.
 In GitHub Actions, the backup folder is also uploaded as a workflow artifact with 14-day retention.
+All staged public files are validated before same-filesystem atomic replacement. Transient SCMDB network failures are retried up to three times; if refresh still fails, the existing LIVE cache and its displayed update time remain unchanged.

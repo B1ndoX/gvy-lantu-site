@@ -6,9 +6,12 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 import urllib.request
 from pathlib import Path
 from typing import Any
+
+from scmdb_versions import select_latest_live_version
 
 
 BASE_URL = "https://scmdb.net/data"
@@ -19,10 +22,19 @@ def load_json(path: Path) -> Any:
         return json.load(handle)
 
 
-def fetch_json(url: str) -> Any:
-    request = urllib.request.Request(url, headers={"User-Agent": "SC Blueprint Atlas/1.0"})
-    with urllib.request.urlopen(request, timeout=45) as response:
-        return json.loads(response.read().decode("utf-8"))
+def fetch_json(url: str, attempts: int = 3) -> Any:
+    for attempt in range(1, attempts + 1):
+        request = urllib.request.Request(url, headers={"User-Agent": "GVY Lantu Site/1.0"})
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except Exception:
+            if attempt == attempts:
+                raise
+            wait_seconds = attempt * 2
+            print(f"SCMDB request failed; retrying in {wait_seconds}s ({attempt}/{attempts})", file=sys.stderr)
+            time.sleep(wait_seconds)
+    raise RuntimeError("SCMDB request retries were exhausted")
 
 
 def read_source(cache_dir: Path | None, filename: str, url: str) -> Any:
@@ -255,14 +267,28 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build blueprint-site/data/blueprint-index.json")
     parser.add_argument("--cache-dir", type=Path, help="Directory containing cached SCMDB JSON files")
     parser.add_argument("--out", type=Path, default=Path(__file__).resolve().parents[1] / "data" / "blueprint-index.json")
+    parser.add_argument("--version", help="Exact SCMDB LIVE version selected by the refresh pipeline")
     args = parser.parse_args()
 
     versions = read_source(args.cache_dir, "versions.json", f"{BASE_URL}/versions.json")
     if not versions:
         print("No SCMDB versions found", file=sys.stderr)
         return 1
-    version = versions[0]["version"]
-    merged_file = versions[0]["file"]
+    if args.version:
+        selected = next((entry for entry in versions if entry.get("version") == args.version), None)
+        if selected is None:
+            print(f"Requested SCMDB version was not found: {args.version}", file=sys.stderr)
+            return 1
+        try:
+            selected = select_latest_live_version([selected])
+        except RuntimeError as error:
+            print(f"Refusing requested SCMDB version: {error}", file=sys.stderr)
+            return 1
+    else:
+        selected = select_latest_live_version(versions)
+
+    version = selected["version"]
+    merged_file = selected["file"]
 
     mission_data = read_source(args.cache_dir, merged_file, f"{BASE_URL}/{merged_file}")
     crafting = read_source(args.cache_dir, f"crafting_blueprints-{version}.json", f"{BASE_URL}/crafting_blueprints-{version}.json")
