@@ -82,3 +82,7 @@ Before replacing data files, the script saves a local backup under `.data-backup
 Local backups are retained for 14 days and are ignored by Git.
 In GitHub Actions, the backup folder is also uploaded as a workflow artifact with 14-day retention.
 All staged public files are validated before same-filesystem atomic replacement. Transient SCMDB network failures are retried up to three times; if refresh still fails, the existing LIVE cache and its displayed update time remain unchanged.
+
+The same six-hour workflow also runs `scripts/refresh_mineral_signals.py`. It verifies the embedded `RADAR_DATA` published by the Shadow Guardians Mining Resource Finder, maps source aliases such as Quantanium/Quantainium, and updates only the radar base, maximum cluster, and derived values already attached to local mineral locations. Location distribution is not inferred or replaced by this step.
+
+Mineral signal updates use strict material and location coverage checks, a 14-day backup under `.data-backups/`, same-filesystem atomic replacement, and a new frontend data cache key. If the source is unavailable, incomplete, or invalid, the workflow fails and keeps the last deployed mineral data. If verified values are unchanged, it makes no signal-data commit.

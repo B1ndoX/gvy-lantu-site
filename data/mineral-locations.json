@@ -3,11 +3,13 @@
     "name": "Star Citizen mineral locations",
     "source": "UEX API 2.0",
     "sourceUrl": "https://api.uexcorp.uk/2.0/",
-    "signalSource": "Star Citizen Mining Signals spreadsheet",
+    "signalSource": "Shadow Guardians Mining Resource Finder",
     "locationSignalSource": "https://sg-mining-finder.pages.dev/",
-    "signalUpdatedAt": "2026-06-21",
+    "signalUpdatedAt": "2026-08-16",
     "retrievedAt": "2026-06-23T12:03:39.241832+00:00",
-    "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
+    "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations.",
+    "signalSourceVersion": "4.9",
+    "signalSyncedAt": "2026-08-16T11:49:57.585632Z"
   },
   "materials": {
     "Agricium": {
@@ -237,9 +239,10 @@
           7770,
           11655,
           15540,
-          19425,
-          23310
-        ]
+          19425
+        ],
+        "base": 3885,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },
@@ -667,7 +670,9 @@
           17140,
           21425,
           25710
-        ]
+        ],
+        "base": 4285,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -1172,9 +1177,10 @@
           7680,
           11520,
           15360,
-          19200,
-          23040
-        ]
+          19200
+        ],
+        "base": 3840,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },
@@ -1376,10 +1382,10 @@
           3540,
           7080,
           10620,
-          14160,
-          17700,
-          21240
-        ]
+          14160
+        ],
+        "base": 3540,
+        "maxCluster": 4
       },
       "hasReliableLocations": true
     },
@@ -1573,10 +1579,10 @@
           3600,
           7200,
           10800,
-          14400,
-          18000,
-          21600
-        ]
+          14400
+        ],
+        "base": 3600,
+        "maxCluster": 4
       },
       "hasReliableLocations": true
     },
@@ -1765,10 +1771,10 @@
           3570,
           7140,
           10710,
-          14280,
-          17850,
-          21420
-        ]
+          14280
+        ],
+        "base": 3570,
+        "maxCluster": 4
       },
       "hasReliableLocations": true
     },
@@ -2254,7 +2260,9 @@
           16960,
           21200,
           25440
-        ]
+        ],
+        "base": 4240,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -2591,7 +2599,9 @@
           16900,
           21125,
           25350
-        ]
+        ],
+        "base": 4225,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -3025,10 +3035,10 @@
           3585,
           7170,
           10755,
-          14340,
-          17925,
-          21510
-        ]
+          14340
+        ],
+        "base": 3585,
+        "maxCluster": 4
       },
       "hasReliableLocations": true
     },
@@ -3736,7 +3746,9 @@
           16720,
           20900,
           25080
-        ]
+        ],
+        "base": 4180,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -4432,7 +4444,9 @@
           17080,
           21350,
           25620
-        ]
+        ],
+        "base": 4270,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -4668,9 +4682,10 @@
           7650,
           11475,
           15300,
-          19125,
-          22950
-        ]
+          19125
+        ],
+        "base": 3825,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },
@@ -4742,11 +4757,10 @@
         "values": [
           3400,
           6800,
-          10200,
-          13600,
-          17000,
-          20400
-        ]
+          10200
+        ],
+        "base": 3400,
+        "maxCluster": 3
       },
       "hasReliableLocations": true
     },
@@ -4860,11 +4874,10 @@
         "values": [
           3370,
           6740,
-          10110,
-          13480,
-          16850,
-          20220
-        ]
+          10110
+        ],
+        "base": 3370,
+        "maxCluster": 3
       },
       "hasReliableLocations": true
     },
@@ -5252,7 +5265,9 @@
           17200,
           21500,
           25800
-        ]
+        ],
+        "base": 4300,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -5282,12 +5297,10 @@
         "rarity": "Legendary",
         "values": [
           3170,
-          6340,
-          9510,
-          12680,
-          15850,
-          19020
-        ]
+          6340
+        ],
+        "base": 3170,
+        "maxCluster": 2
       },
       "hasReliableLocations": true
     },
@@ -5435,7 +5448,9 @@
           16840,
           21050,
           25260
-        ]
+        ],
+        "base": 4210,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -5598,11 +5613,10 @@
         "values": [
           3385,
           6770,
-          10155,
-          13540,
-          16925,
-          20310
-        ]
+          10155
+        ],
+        "base": 3385,
+        "maxCluster": 3
       },
       "hasReliableLocations": true
     },
@@ -5730,12 +5744,10 @@
         "rarity": "Legendary",
         "values": [
           3200,
-          6400,
-          9600,
-          12800,
-          16000,
-          19200
-        ]
+          6400
+        ],
+        "base": 3200,
+        "maxCluster": 2
       },
       "hasReliableLocations": true
     },
@@ -5974,7 +5986,9 @@
           17020,
           21275,
           25530
-        ]
+        ],
+        "base": 4255,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -6138,12 +6152,10 @@
         "rarity": "Legendary",
         "values": [
           3185,
-          6370,
-          9555,
-          12740,
-          15925,
-          19110
-        ]
+          6370
+        ],
+        "base": 3185,
+        "maxCluster": 2
       },
       "hasReliableLocations": true
     },
@@ -6364,10 +6376,10 @@
           3555,
           7110,
           10665,
-          14220,
-          17775,
-          21330
-        ]
+          14220
+        ],
+        "base": 3555,
+        "maxCluster": 4
       },
       "hasReliableLocations": true
     },
@@ -6575,7 +6587,9 @@
           16780,
           20975,
           25170
-        ]
+        ],
+        "base": 4195,
+        "maxCluster": 6
       },
       "hasReliableLocations": true
     },
@@ -6806,9 +6820,10 @@
           7710,
           11565,
           15420,
-          19275,
-          23130
-        ]
+          19275
+        ],
+        "base": 3855,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },
@@ -7007,9 +7022,10 @@
           7800,
           11700,
           15600,
-          19500,
-          23400
-        ]
+          19500
+        ],
+        "base": 3900,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },
@@ -7195,9 +7211,10 @@
           7740,
           11610,
           15480,
-          19350,
-          23220
-        ]
+          19350
+        ],
+        "base": 3870,
+        "maxCluster": 5
       },
       "hasReliableLocations": true
     },

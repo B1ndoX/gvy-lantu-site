@@ -1311,14 +1311,20 @@ input:focus {
 }
 
 .mineral-location-tooltip strong {
+  overflow: visible;
   color: var(--text-strong);
   font-size: 12px;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .mineral-location-tooltip small {
   margin: 0;
+  overflow: visible;
   color: var(--muted);
   font-size: 10px;
+  text-overflow: clip;
+  white-space: normal;
 }
 
 .mineral-signal-values {
@@ -1533,6 +1539,23 @@ input:focus {
 }
 
 @media (max-width: 620px) {
+  .mineral-overlay {
+    padding: 12px;
+  }
+
+  .mineral-card {
+    width: calc(100vw - 24px);
+    height: calc(100dvh - 24px);
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .mineral-card-body {
+    min-height: auto;
+    overflow: visible;
+  }
+
   .topbar-actions {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     width: 100%;
