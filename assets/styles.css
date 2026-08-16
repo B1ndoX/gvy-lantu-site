@@ -1545,8 +1545,8 @@ input:focus {
 
   .mineral-card {
     width: calc(100vw - 24px);
-    height: calc(100dvh - 24px);
-    max-height: none;
+    height: auto;
+    max-height: calc(100dvh - 24px);
     overflow-x: hidden;
     overflow-y: auto;
   }
@@ -1554,6 +1554,10 @@ input:focus {
   .mineral-card-body {
     min-height: auto;
     overflow: visible;
+  }
+
+  .mineral-card.has-location-signals .mineral-card-body {
+    padding-top: 72px;
   }
 
   .topbar-actions {

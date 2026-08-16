@@ -398,6 +398,9 @@ function renderMineralInfo(name) {
   const info = mineralLocationInfo(name);
   const displayName = materialDisplayLabel(name, flowcldMaterialLabels[name]);
   const commodity = info?.commodityName && info.commodityName !== name ? info.commodityName : "";
+  const hasLocationSignals = mineralLocationGroups.some(([key]) =>
+    (info?.locations?.[key] || []).some((location) => (location.signal?.values || []).length),
+  );
   const updatedAt = state.mineralLocations?.metadata?.retrievedAt
     ? new Date(state.mineralLocations.metadata.retrievedAt).toLocaleString("zh-CN", {
         year: "numeric",
@@ -410,7 +413,7 @@ function renderMineralInfo(name) {
 
   return `
     <div class="mineral-overlay" role="presentation">
-      <section class="mineral-card" role="dialog" aria-modal="true" aria-label="${escapeHtml(displayName)}矿点详情">
+      <section class="mineral-card${hasLocationSignals ? " has-location-signals" : ""}" role="dialog" aria-modal="true" aria-label="${escapeHtml(displayName)}矿点详情">
         <header class="mineral-card-head">
           <div>
             <span>矿物分布</span>
