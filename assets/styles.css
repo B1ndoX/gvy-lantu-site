@@ -1547,6 +1547,7 @@ input:focus {
     width: calc(100vw - 24px);
     height: auto;
     max-height: calc(100dvh - 24px);
+    grid-template-rows: auto auto auto;
     overflow-x: hidden;
     overflow-y: auto;
   }
