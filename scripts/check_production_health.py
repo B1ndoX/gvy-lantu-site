@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import re
@@ -106,23 +107,38 @@ def cache_busted_url(base_url: str, path: str, nonce: str) -> str:
     )
 
 
-def fetch_bytes(url: str) -> bytes:
-    request = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "GVY Lantu Production Health/1.0",
-            "Cache-Control": "no-cache",
-            "Pragma": "no-cache",
-        },
-    )
-    with urllib.request.urlopen(request, timeout=45) as response:
-        if response.status != 200:
-            raise RuntimeError(f"unexpected HTTP status {response.status}: {url}")
-        return response.read()
+def fetch_bytes(url: str, attempts: int = 3) -> bytes:
+    last_error: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        request = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "GVY Lantu Production Health/1.0",
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
+            },
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=45) as response:
+                if response.status != 200:
+                    raise RuntimeError(f"unexpected HTTP status {response.status}")
+                return response.read()
+        except Exception as error:
+            last_error = error
+            if attempt < attempts:
+                time.sleep(attempt * 2)
+    raise RuntimeError(f"failed to fetch {url} after {attempts} attempts: {last_error}")
 
 
 def fetch_json(url: str) -> dict[str, Any]:
     return json.loads(fetch_bytes(url).decode("utf-8-sig"))
+
+
+def fetch_gzip_json(url: str) -> dict[str, Any]:
+    try:
+        return json.loads(gzip.decompress(fetch_bytes(url)).decode("utf-8-sig"))
+    except (gzip.BadGzipFile, json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise RuntimeError(f"invalid compressed JSON from {url}: {error}") from error
 
 
 def check_once(
@@ -144,8 +160,12 @@ def check_once(
         if len(asset) < 100:
             raise RuntimeError(f"production asset is unexpectedly small: {name}")
 
-    production_blueprints = fetch_json(cache_busted_url(base_url, "/data/blueprint-index.json", nonce))
-    production_minerals = fetch_json(cache_busted_url(base_url, "/data/mineral-locations.json", nonce))
+    production_blueprints = fetch_gzip_json(
+        cache_busted_url(base_url, "/data/blueprint-index.json.gz", nonce)
+    )
+    production_minerals = fetch_gzip_json(
+        cache_busted_url(base_url, "/data/mineral-locations.json.gz", nonce)
+    )
     validate_production_snapshot(
         production_blueprints,
         local_blueprints,

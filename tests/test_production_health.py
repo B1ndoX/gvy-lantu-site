@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import sys
+import gzip
+import json
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
@@ -9,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_production_health import extract_asset_revisions, validate_production_snapshot
+from check_production_health import extract_asset_revisions, fetch_gzip_json, validate_production_snapshot
 from write_refresh_heartbeat import heartbeat_payload
 
 
@@ -72,6 +74,18 @@ class ProductionHealthTests(unittest.TestCase):
         self.assertEqual(payload["lastMaintenanceAt"], "2026-08-18T08:00:00Z")
         self.assertEqual(payload["blueprintRefresh"], "success")
         self.assertEqual(payload["mineralLocationsRefresh"], "success")
+
+    def test_reads_compressed_production_json(self) -> None:
+        import check_production_health
+
+        original_fetch = check_production_health.fetch_bytes
+        check_production_health.fetch_bytes = lambda _url: gzip.compress(
+            json.dumps({"status": "ok"}).encode("utf-8")
+        )
+        try:
+            self.assertEqual(fetch_gzip_json("https://example.invalid/data.json.gz"), {"status": "ok"})
+        finally:
+            check_production_health.fetch_bytes = original_fetch
 
 
 if __name__ == "__main__":

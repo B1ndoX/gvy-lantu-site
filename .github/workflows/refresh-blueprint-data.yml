@@ -106,6 +106,7 @@ jobs:
 
       - name: Verify EdgeOne production deployment
         id: production_health
+        if: steps.commit_refresh.outputs.changed == 'true'
         continue-on-error: true
         run: |
           git pull --ff-only origin main
