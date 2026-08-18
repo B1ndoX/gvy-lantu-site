@@ -552,8 +552,13 @@ function renderMineralInfo(name) {
   const hasLocationSignals = mineralLocationGroups.some(([key]) =>
     (info?.locations?.[key] || []).some((location) => (location.signal?.values || []).length),
   );
-  const updatedAt = state.mineralLocations?.metadata?.retrievedAt
-    ? new Date(state.mineralLocations.metadata.retrievedAt).toLocaleString("zh-CN", {
+  const mineralMetadata = state.mineralLocations?.metadata || {};
+  const latestMineralTimestamp = [mineralMetadata.retrievedAt, mineralMetadata.signalSyncedAt]
+    .map((value) => (value ? new Date(value) : null))
+    .filter((value) => value && !Number.isNaN(value.getTime()))
+    .sort((left, right) => right.getTime() - left.getTime())[0];
+  const updatedAt = latestMineralTimestamp
+    ? latestMineralTimestamp.toLocaleString("zh-CN", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",

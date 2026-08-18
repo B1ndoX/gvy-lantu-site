@@ -62,16 +62,22 @@ Open `http://127.0.0.1:8002/`.
 
 Commit and push production changes only from this repository. Tencent Cloud EdgeOne Pages / Makers builds the connected `B1ndoX/gvy-lantu-site` repository with `npm run build` and publishes `dist/` to `https://lantu.gvyvoyagers.vip`.
 
-After every deployment, verify the production domain directly, including the page version, filter interactions, desktop/mobile overflow, console errors, and both the `GVY 主页` and `维科洛查询` destinations. A successful Git push alone is not proof that production deployment has completed.
+The project deliberately has no runtime npm dependencies. EdgeOne uses its supported Node.js `24.5.0` image, skips package installation with `node --version`, and runs the repository-owned static build script. The generated HTML is revalidated on every request, while fingerprinted assets and version-keyed JSON remain long-cacheable.
+
+After every automated data deployment, `scripts/check_production_health.py` polls the formal domain for up to 15 minutes. It requires the deployed CSS and JavaScript fingerprints to match the final repository checkout, verifies that the public blueprint payload is stable `LIVE`, compares its complete semantic hash with the committed payload, and performs the same complete comparison plus coverage checks for mineral locations and signals. If an automated refresh commit does not become healthy, the workflow reverts that exact machine commit, pushes the previous verified snapshot, and waits for production recovery. It never automatically reverts an unrelated manual commit. A successful Git push alone is not proof that production deployment has completed.
+
+For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `GVY 主页` and `维科洛查询` destinations.
 
 ## Data Refresh
 
 Blueprint data refreshes are handled by `.github/workflows/refresh-blueprint-data.yml`.
-The scheduled run checks SCMDB every six hours and only accepts the newest stable `LIVE` release. `PTU`, `EPTU`, Tech Preview, and other test channels are never published by this site, even when SCMDB lists them first or gives them a higher version number.
+The normal schedule (`17 */6 * * *`, UTC) checks SCMDB every six hours and only accepts the newest stable `LIVE` release. `PTU`, `EPTU`, Tech Preview, and other test channels are never published by this site, even when SCMDB lists them first or gives them a higher version number.
 
-The header shows the active LIVE version. Hovering or keyboard-focusing the version badge reveals `dataUpdatedAt` as `更新 YYYY/MM/DD HH:mm` in Asia/Shanghai; tapping the badge provides the same information on touch devices. This timestamp changes only after a new dataset has been fetched, localized, validated, backed up, and atomically published; routine checks with no newer LIVE release do not change it.
+The maintenance schedule (`43 17 1,15 * *`, UTC) runs twice monthly with `--force`. It rebuilds the current stable LIVE release even when the version string is unchanged, so upstream corrections, localization calibration changes, and same-version crafting changes are not missed. It also updates `.github/refresh-heartbeat.json`; do not delete this tracked file or remove it from the commit allowlist.
 
-If SCMDB has no newer `LIVE` version, the workflow keeps the existing data cache and makes no commit. A stale manifest is also prevented from rolling an existing `LIVE` release backward.
+The header shows the active LIVE version. Hovering or keyboard-focusing the version badge reveals `dataUpdatedAt` as `更新 YYYY/MM/DD HH:mm` in Asia/Shanghai; tapping the badge provides the same information on touch devices. This timestamp changes only after a newer release or a scheduled/manual forced calibration has been fetched, localized, validated, backed up, and atomically published. Routine six-hour checks with no newer LIVE release do not change it.
+
+If SCMDB has no newer `LIVE` version, a normal six-hour run keeps the existing data cache and makes no commit. The twice-monthly maintenance run intentionally creates a verified calibration snapshot and heartbeat commit. A stale manifest is prevented from rolling an existing `LIVE` release backward.
 If a newer `LIVE` version exists, `scripts/refresh_blueprint_data.py` locks the build to that exact release, regenerates the blueprint index, applies localization in this priority order:
 
 1. Local official Star Citizen localization package snapshot
@@ -87,7 +93,44 @@ The same six-hour workflow first runs `scripts/refresh_mineral_locations.py`. It
 
 After the location check, `scripts/refresh_mineral_signals.py` verifies the embedded `RADAR_DATA` published by the Shadow Guardians Mining Resource Finder, maps source aliases such as Quantanium/Quantainium, and updates only the radar base, maximum cluster, and derived values already attached to local mineral locations. Location distribution is not inferred by this signal-only step.
 
-Mineral location and signal updates both use strict coverage checks, a 14-day backup under `.data-backups/`, same-filesystem atomic replacement, and a new frontend data cache key. If either external source is unavailable, incomplete, or invalid, that step keeps the last deployed verified mineral cache; it does not block a valid newer LIVE blueprint release. If verified values are unchanged, it makes no mineral-data commit.
+Mineral location and signal updates both use strict coverage checks, a 14-day backup under `.data-backups/`, same-filesystem atomic replacement, and a new frontend data cache key. If either external source is unavailable, incomplete, or invalid, that step keeps the last deployed verified mineral cache; it does not block a valid newer LIVE blueprint release. The workflow is marked failed after the verified old production snapshot has been checked, so a permanently broken source cannot remain silently green. If verified values are unchanged, it makes no mineral-data commit. The mineral dialog displays the newest valid timestamp among the UEX location snapshot and signal calibration.
+
+## Long-Term Unattended Operation
+
+The site is designed to remain available for at least a year and to continue beyond that without routine application maintenance. It is a static site: browsing, filtering, favorites, quality controls, dismantling, and mineral dialogs do not depend on an application server, database, login provider, secret, or expiring API token at request time.
+
+The persistence chain is:
+
+1. GitHub Actions checks all data sources four times per day.
+2. New data is built in a temporary directory and must pass unit, coverage, channel, localization, count, uniqueness, and source consistency checks.
+3. The previous verified files are backed up before same-filesystem atomic replacement.
+4. Only approved generated files are staged and committed; unrelated or untracked files are never swept into an automated commit.
+5. The workflow rebases onto the current `main` branch before pushing, reducing races with a manual repository update.
+6. EdgeOne builds the pushed commit, and the workflow then rebuilds the final checkout and compares the formal production domain with that exact snapshot.
+7. If a source fails, the workflow reports failure while the existing static production deployment and verified cached data remain usable. If an automated refresh deployment fails production verification, that exact machine commit is automatically reverted and the restored production snapshot is verified. The next six-hour run retries automatically.
+
+GitHub documents that scheduled workflows in public repositories can be disabled after 60 days without repository activity. The twice-monthly heartbeat provides continuing repository activity even when Star Citizen stays on one LIVE version for months. Its minute `43` schedule also avoids the high-load start-of-hour window where GitHub says scheduled runs may be delayed or dropped.
+
+Long-term recovery layers:
+
+- `main` Git history retains every deployed data revision beyond the 14-day artifact window.
+- `.data-backups/` is uploaded as a 14-day GitHub Actions artifact whenever present.
+- A failure before push leaves the previous EdgeOne deployment untouched; an unhealthy automated refresh after push is reverted and redeployed from Git history.
+- Content hashes prevent stale JavaScript/CSS reuse; `DATA_VERSION` prevents stale JSON reuse; HTML uses revalidation instead of immutable caching.
+
+Do not weaken the system by removing the two schedules, `continue-on-error` plus final failure reporting, the heartbeat, atomic replacement, validation thresholds, content fingerprints, production health polling, or stable-LIVE selection. Do not make test-channel data a fallback for a missing LIVE source.
+
+This design removes routine maintenance but cannot make third-party ownership disappear. The GitHub repository must remain enabled, the EdgeOne project and connected repository must remain authorized, and the `gvyvoyagers.vip` domain/DNS/TLS account must remain valid. Upstream format changes cannot corrupt production, but a permanently changed upstream format will keep the last verified cache and produce failed Action runs until its adapter is updated.
+
+Useful manual audit commands:
+
+```bash
+python3 -m unittest discover -s tests -v
+node --check assets/app.js
+npm run build
+python3 scripts/check_production_health.py --timeout 0
+gh run list --workflow refresh-blueprint-data.yml --limit 12
+```
 
 ## Blueprint Tools: Favorites, Quality, and Dismantling
 

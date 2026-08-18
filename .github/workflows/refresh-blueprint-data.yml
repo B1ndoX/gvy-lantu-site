@@ -4,6 +4,9 @@ on:
   schedule:
     # Check four times daily. Only a newer stable LIVE release is published.
     - cron: "17 */6 * * *"
+    # Rebuild the current LIVE snapshot twice monthly. This catches same-version
+    # upstream corrections and keeps GitHub scheduled workflows active.
+    - cron: "43 17 1,15 * *"
   workflow_dispatch:
     inputs:
       force:
@@ -22,6 +25,7 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -34,36 +38,45 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "24"
 
       - name: Test data refresh rules
         run: python -m unittest discover -s tests -v
 
       - name: Refresh data if needed
+        id: blueprint_refresh
+        continue-on-error: true
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+          if { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; } || [ "${{ github.event.schedule }}" = "43 17 1,15 * *" ]; then
             python scripts/refresh_blueprint_data.py --force
           else
             python scripts/refresh_blueprint_data.py
           fi
 
       - name: Refresh mineral locations if needed
-        run: |
-          if ! python scripts/refresh_mineral_locations.py; then
-            echo "::warning::UEX mineral location refresh failed validation; keeping the verified cached locations so LIVE blueprint publication can continue."
-          fi
+        id: mineral_locations
+        continue-on-error: true
+        run: python scripts/refresh_mineral_locations.py
 
       - name: Refresh mineral signals if needed
-        run: |
-          if ! python scripts/refresh_mineral_signals.py; then
-            echo "::warning::Mineral signal refresh failed; keeping the verified cached signals so LIVE blueprint publication can continue."
-          fi
+        id: mineral_signals
+        continue-on-error: true
+        run: python scripts/refresh_mineral_signals.py
 
       - name: Validate production build
         run: |
           node --check assets/app.js
-          npm install --ignore-scripts
           npm run build
+
+      - name: Record maintenance heartbeat
+        if: github.event.schedule == '43 17 1,15 * *'
+        run: |
+          python scripts/write_refresh_heartbeat.py \
+            --run-id "${{ github.run_id }}" \
+            --commit "${{ github.sha }}" \
+            --blueprint-outcome "${{ steps.blueprint_refresh.outcome }}" \
+            --mineral-locations-outcome "${{ steps.mineral_locations.outcome }}" \
+            --mineral-signals-outcome "${{ steps.mineral_signals.outcome }}"
 
       - name: Upload data backup
         uses: actions/upload-artifact@v4
@@ -75,13 +88,47 @@ jobs:
           retention-days: 14
 
       - name: Commit refreshed data
+        id: commit_refresh
         run: |
-          if git diff --quiet; then
-            echo "No blueprint data changes."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html assets/app.js data/blueprint-index.json data/mineral-locations.json data/google-translate-cache.json data/flowcld-blueprint-calibration.json data/local-polish-names.json
+          git add .github/refresh-heartbeat.json index.html assets/app.js data/blueprint-index.json data/mineral-locations.json data/google-translate-cache.json data/flowcld-blueprint-calibration.json data/local-polish-names.json
+          if git diff --cached --quiet; then
+            echo "No blueprint data changes."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           git commit -m "Refresh blueprint and mineral data"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify EdgeOne production deployment
+        id: production_health
+        continue-on-error: true
+        run: |
+          git pull --ff-only origin main
+          npm run build
+          python scripts/check_production_health.py \
+            --base-url "https://lantu.gvyvoyagers.vip" \
+            --timeout 900 \
+            --interval 15
+
+      - name: Roll back an unhealthy automated refresh
+        if: steps.production_health.outcome == 'failure' && steps.commit_refresh.outputs.changed == 'true'
+        run: |
+          git pull --ff-only origin main
+          git revert --no-edit "${{ steps.commit_refresh.outputs.commit_sha }}"
+          git push origin HEAD:main
+          npm run build
+          python scripts/check_production_health.py \
+            --base-url "https://lantu.gvyvoyagers.vip" \
+            --timeout 900 \
+            --interval 15
+
+      - name: Report refresh source failure
+        if: steps.blueprint_refresh.outcome == 'failure' || steps.mineral_locations.outcome == 'failure' || steps.mineral_signals.outcome == 'failure' || steps.production_health.outcome == 'failure'
+        run: |
+          echo "A refresh source or production deployment failed. Existing verified data was preserved or restored."
+          exit 1
