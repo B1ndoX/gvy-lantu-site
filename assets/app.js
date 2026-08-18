@@ -1,4 +1,5 @@
 const state = {
+  mode: "craft",
   data: null,
   mineralLocations: { materials: {}, metadata: null },
   records: [],
@@ -13,13 +14,17 @@ const state = {
   missionType: "all",
   query: "",
   sourceOnly: false,
+  favoritesOnly: false,
+  favorites: new Set(),
+  qualityValues: {},
   sort: "relevance",
   visibleResults: 0,
 };
 
-const DATA_VERSION = "20260816T114957Z-4-9-0-live-12344265";
+const DATA_VERSION = "20260818T065926Z-4-9-0-live-12344265";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
+const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 let searchInputTimer = 0;
 
 const els = {
@@ -30,7 +35,16 @@ const els = {
   searchInput: document.querySelector("#searchInput"),
   clearSearch: document.querySelector("#clearSearch"),
   filterCount: document.querySelector("#filterCount"),
+  summaryLabel: document.querySelector("#summaryLabel"),
+  favoritesToggle: document.querySelector("#favoritesToggle"),
+  favoritesCount: document.querySelector("#favoritesCount"),
   modalResultCount: document.querySelector("#modalResultCount"),
+  filterTitle: document.querySelector("#filterTitle"),
+  filterResultLabel: document.querySelector("#filterResultLabel"),
+  categoryFilterLabel: document.querySelector("#categoryFilterLabel"),
+  materialFilterLabel: document.querySelector("#materialFilterLabel"),
+  missionTypeGroup: document.querySelector('[data-filter-group="mission-type"]'),
+  modeTabs: [...document.querySelectorAll("[data-mode]")],
   categoryFilters: document.querySelector("#categoryFilters"),
   componentTypeFilters: document.querySelector("#componentTypeFilters"),
   gradeFilters: document.querySelector("#gradeFilters"),
@@ -39,11 +53,51 @@ const els = {
   materialFilters: document.querySelector("#materialFilters"),
   missionTypeFilters: document.querySelector("#missionTypeFilters"),
   sourceOnly: document.querySelector("#sourceOnly"),
+  sourceToggle: document.querySelector("#sourceToggle"),
+  sourceSort: document.querySelector("#sourceSort"),
+  resultMetaLabel: document.querySelector("#resultMetaLabel"),
   resetFilters: document.querySelector("#resetFilters"),
   resultTitle: document.querySelector("#resultTitle"),
   resultList: document.querySelector("#resultList"),
   detailPanel: document.querySelector("#detailPanel"),
 };
+
+function loadFavorites() {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]");
+    return new Set(Array.isArray(stored) ? stored.filter((value) => typeof value === "string") : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function persistFavorites() {
+  try {
+    window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...state.favorites].sort()));
+  } catch {
+    // Favorites remain usable during this visit when browser storage is unavailable.
+  }
+}
+
+function isFavorite(record) {
+  return state.favorites.has(record.id);
+}
+
+function updateFavoriteControl() {
+  const count = state.favorites.size;
+  els.favoritesCount.textContent = formatNumber(count);
+  els.favoritesToggle.classList.toggle("active", state.favoritesOnly);
+  els.favoritesToggle.setAttribute("aria-pressed", String(state.favoritesOnly));
+  els.favoritesToggle.title = state.favoritesOnly ? "显示全部蓝图" : "仅显示我的蓝图";
+}
+
+function toggleFavorite(recordId) {
+  if (state.favorites.has(recordId)) state.favorites.delete(recordId);
+  else state.favorites.add(recordId);
+  persistFavorites();
+  updateFavoriteControl();
+  applyFilters();
+}
 
 function formatDataUpdatedAt(value) {
   if (!value) return "更新时间暂无";
@@ -247,9 +301,23 @@ function getFirstTier(record) {
 }
 
 function getAllMaterials(record) {
-  return getFirstTier(record).slots.flatMap((slot) =>
-    slot.options.map((option) => ({ ...option, slot: slot.name, slotZh: slot.nameZh })),
+  return getFirstTier(record).slots.flatMap((slot, slotIndex) =>
+    slot.options.map((option) => ({
+      ...option,
+      slot: slot.name,
+      slotZh: slot.nameZh,
+      slotIndex,
+      slotData: slot,
+    })),
   );
+}
+
+function getDismantleOutputs(record) {
+  return record.dismantle?.outputs || [];
+}
+
+function hasDismantleOutputs(record) {
+  return getDismantleOutputs(record).length > 0;
 }
 
 function recordName(record) {
@@ -308,6 +376,89 @@ function materialKind(item) {
 
 function materialSlot(item) {
   return preferZh(item.slotZh, item.slot);
+}
+
+function modifierName(modifier) {
+  return preferZh(modifier.propertyNameZh, modifier.propertyName);
+}
+
+function qualitySlotKey(record, slotIndex) {
+  return `${record.id}:${slotIndex}`;
+}
+
+function qualitySlotValue(record, slot, slotIndex) {
+  const key = qualitySlotKey(record, slotIndex);
+  const minimum = Math.max(0, ...slot.options.map((option) => Number(option.minQuality) || 0));
+  const stored = Number(state.qualityValues[key]);
+  if (Number.isFinite(stored)) return Math.max(minimum, Math.min(1000, stored));
+  return Math.max(minimum, 500);
+}
+
+function modifierFactor(modifier, quality) {
+  const start = Number(modifier.startQuality) || 0;
+  const end = Number(modifier.endQuality) || 1000;
+  const startValue = Number(modifier.modifierAtStart) || 0;
+  const endValue = Number(modifier.modifierAtEnd) || 0;
+  if (end <= start) return endValue;
+  const progress = Math.max(0, Math.min(1, (quality - start) / (end - start)));
+  return startValue + (endValue - startValue) * progress;
+}
+
+function renderQualityModifiers(slot, quality) {
+  const modifiers = slot.modifiers || [];
+  if (!modifiers.length) return "";
+  return `
+    <div class="quality-modifier-list">
+      ${modifiers
+        .map((modifier) => {
+          const value = modifierFactor(modifier, quality);
+          const valueLabel = modifier.additive ? `修正 ${formatNumber(value)}` : `系数 ${value.toFixed(2)}×`;
+          return `<span><strong>${escapeHtml(modifierName(modifier))}</strong><small>${escapeHtml(valueLabel)}</small></span>`;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function renderMaterialQuality(record, slot, slotIndex) {
+  if (!(slot?.modifiers || []).length) return "";
+  const quality = qualitySlotValue(record, slot, slotIndex);
+  const minimum = Math.max(0, ...slot.options.map((option) => Number(option.minQuality) || 0));
+  return `
+    <div class="material-quality" data-quality-slot="${escapeHtml(qualitySlotKey(record, slotIndex))}">
+      <div class="material-quality-control">
+        <input type="range" min="${minimum}" max="1000" step="1" value="${quality}" data-quality-input data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质" />
+        <output>品质 ${formatNumber(quality)}</output>
+      </div>
+      ${renderQualityModifiers(slot, quality)}
+    </div>
+  `;
+}
+
+function renderDismantle(record, standalone = false) {
+  const dismantle = record.dismantle || {};
+  const outputs = dismantle.outputs || [];
+  if (!outputs.length) return "";
+  return `
+    <section class="detail-section dismantle-section">
+      <h3>${standalone ? "拆解所得" : "拆解回收"}</h3>
+      <p class="detail-note">按当前 LIVE 拆解规则计算，仅显示可回收资源；实际结果以游戏版本为准。</p>
+      <div class="dismantle-summary">
+        <span>效率 ${Math.round((Number(dismantle.efficiency) || 0) * 100)}%</span>
+        <span>耗时 ${formatTime(dismantle.timeSeconds)}</span>
+      </div>
+      <div class="dismantle-output-list">
+        ${outputs
+          .map((output) => {
+            const amount = output.kind === "resource"
+              ? `${formatNumber(output.quantity)} SCU`
+              : `x${formatNumber(output.quantity)}`;
+            return `<div><strong>${escapeHtml(materialDisplayLabel(output.name, output.nameZh))}</strong><span>${escapeHtml(materialKind(output))} · 回收 ${escapeHtml(amount)}</span></div>`;
+          })
+          .join("")}
+      </div>
+    </section>
+  `;
 }
 
 const mineralLocationGroups = [
@@ -475,6 +626,7 @@ function recordMissionTypes(record) {
 
 function recordSearchText(record) {
   const materials = getAllMaterials(record).flatMap((item) => [item.name, item.nameZh, materialZhName(item), materialName(item)]);
+  const dismantleOutputs = getDismantleOutputs(record).flatMap((item) => [item.name, item.nameZh, materialZhName(item), materialName(item)]);
   const missionTypes = recordMissionTypes(record).flatMap((type) => [type.name, type.label]);
   const sourceFields = (record.sources || []).flatMap((source) => [
     source.poolName,
@@ -512,6 +664,7 @@ function recordSearchText(record) {
     record.stats?.grade ? gradeLabel(record.stats.grade) : "",
     recordComponentClass(record),
     ...materials,
+    ...dismantleOutputs,
     ...missionTypes,
     ...sourceFields,
   ];
@@ -536,7 +689,7 @@ function relevanceScore(record) {
   if (record.category.id === "ship_weapon") score += 14;
   if (record.category.id === "personal_weapon") score += 12;
   if (record.category.id === "weapon_attachment") score += 10;
-  score += Math.min(record.sourceCount || 0, 10);
+  score += Math.min(state.mode === "dismantle" ? getDismantleOutputs(record).length : (record.sourceCount || 0), 10);
   if (recordName(record).toLowerCase().includes(state.query.toLowerCase())) score += 20;
   return score;
 }
@@ -604,18 +757,24 @@ function syncShipComponentFilters() {
   }
 }
 
-function getPopularMaterials() {
+function modeRecords() {
+  return state.mode === "dismantle" ? state.records.filter(hasDismantleOutputs) : state.records;
+}
+
+function getPopularMaterials(records = modeRecords()) {
   const labelByName = new Map();
-  for (const record of state.records) {
-    for (const material of getAllMaterials(record)) {
+  const counts = new Map();
+  for (const record of records) {
+    const materials = state.mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record);
+    for (const material of materials) {
       if (!labelByName.has(material.name)) labelByName.set(material.name, materialZhName(material));
+      counts.set(material.name, (counts.get(material.name) || 0) + 1);
     }
   }
-  const counts = state.data.counts.materials || {};
   const ordered = flowcldMaterialOrder
-    .filter((name) => counts[name])
-    .map((name) => [name, labelByName.get(name) || flowcldMaterialLabels[name] || name, counts[name]]);
-  const remaining = Object.entries(counts)
+    .filter((name) => counts.has(name))
+    .map((name) => [name, labelByName.get(name) || flowcldMaterialLabels[name] || name, counts.get(name)]);
+  const remaining = [...counts.entries()]
     .filter(([name]) => !flowcldMaterialOrder.includes(name))
     .sort((a, b) => b[1] - a[1])
     .map(([name, count]) => [name, labelByName.get(name) || flowcldMaterialLabels[name] || name, count]);
@@ -643,23 +802,25 @@ function countMissionTypes(records) {
 }
 
 function initFilters() {
+  const records = modeRecords();
+  const categoryCounts = countBy(records, (record) => record.category.id);
   renderDropdown(els.categoryFilters, categoryOrder
-    .filter(([id]) => id === "all" || state.data.counts.categories[id])
+    .filter(([id]) => id === "all" || categoryCounts.has(id))
     .map(([id, label]) => {
-      const count = id === "all" ? state.records.length : state.data.counts.categories[id] || 0;
+      const count = id === "all" ? records.length : categoryCounts.get(id) || 0;
       return optionTag(id, label, count, state.category);
     })
     .join(""), state.category);
 
   renderDropdown(els.gradeFilters, gradeOrder
-    .filter(([id]) => id === "all" || state.records.some((record) => String(record.stats.grade || "") === id))
+    .filter(([id]) => id === "all" || records.some((record) => String(record.stats.grade || "") === id))
     .map(([id, label]) => {
-      const count = id === "all" ? state.records.length : state.records.filter((record) => String(record.stats.grade || "") === id).length;
+      const count = id === "all" ? records.length : records.filter((record) => String(record.stats.grade || "") === id).length;
       return optionTag(id, label, count, state.grade);
     })
     .join(""), state.grade);
 
-  const componentRecords = state.records.filter((record) => record.category.id === "ship_component");
+  const componentRecords = records.filter((record) => record.category.id === "ship_component");
   const componentTypeCounts = countBy(componentRecords, (record) => record.type);
   const componentTypeActive = state.category === "ship_component" ? state.componentType : "none";
   renderDropdown(els.componentTypeFilters, [
@@ -686,7 +847,7 @@ function initFilters() {
 
   const manufacturerLabel = new Map();
   const manufacturerTriggerLabel = new Map();
-  for (const record of state.records) {
+  for (const record of records) {
     if (!manufacturerLabel.has(record.manufacturer)) {
       const zh = recordManufacturer(record);
       const en = record.manufacturer;
@@ -695,30 +856,70 @@ function initFilters() {
     }
   }
   renderDropdown(els.manufacturerFilters, [
-    optionTag("all", "全部", state.records.length, state.manufacturer),
-    ...Object.entries(state.data.counts.manufacturers || {})
+    optionTag("all", "全部", records.length, state.manufacturer),
+    ...[...countBy(records, (record) => record.manufacturer).entries()]
       .sort((a, b) => b[1] - a[1])
       .map(([name, count]) => optionTag(name, manufacturerLabel.get(name) || name, count, state.manufacturer, manufacturerTriggerLabel.get(name) || name)),
   ].join(""), state.manufacturer);
 
   renderDropdown(els.materialFilters, [
-    optionTag("all", "全部", state.records.length, state.material),
-    ...getPopularMaterials().map(([name, label, count]) => {
+    optionTag("all", "全部", records.length, state.material),
+    ...getPopularMaterials(records).map(([name, label, count]) => {
       const display = materialDisplayLabel(name, label);
       return optionTag(name, display, count, state.material, display);
     }),
   ].join(""), state.material);
 
-  const missionTypeCounts = countMissionTypes(state.records);
+  const missionTypeCounts = countMissionTypes(records);
   renderDropdown(els.missionTypeFilters, missionTypeOrder
     .filter(([id]) => id === "all" || missionTypeCounts.has(id))
     .map(([id, label]) => {
-      const count = id === "all" ? state.records.filter((record) => recordMissionTypes(record).length).length : missionTypeCounts.get(id) || 0;
+      const count = id === "all" ? records.filter((record) => recordMissionTypes(record).length).length : missionTypeCounts.get(id) || 0;
       return optionTag(id, label, count, state.missionType);
     })
     .join(""), state.missionType);
 
   syncShipComponentFilters();
+}
+
+function updateModeUI() {
+  const dismantle = state.mode === "dismantle";
+  document.documentElement.dataset.queryMode = state.mode;
+  els.modeTabs.forEach((button) => {
+    const active = button.dataset.mode === state.mode;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+  els.filterTitle.textContent = dismantle ? "拆解物品" : "制造蓝图";
+  els.filterResultLabel.textContent = dismantle ? "可拆解物品" : "相关蓝图";
+  els.summaryLabel.textContent = dismantle ? "可拆解物品" : "蓝图索引";
+  els.categoryFilterLabel.textContent = dismantle ? "物品类型" : "类型";
+  els.materialFilterLabel.textContent = dismantle ? "回收物" : "材料";
+  els.resultMetaLabel.textContent = dismantle ? "回收" : "来源";
+  els.sourceSort.textContent = dismantle ? "回收种类" : "来源";
+  els.missionTypeGroup.hidden = dismantle;
+  els.sourceToggle.hidden = dismantle;
+  els.searchInput.placeholder = dismantle
+    ? "输入可拆解物品、类型、制造商或回收物"
+    : "输入蓝图、武器、组件、制造商或材料";
+}
+
+function setMode(mode) {
+  if (!['craft', 'dismantle'].includes(mode) || mode === state.mode) return;
+  state.mode = mode;
+  state.category = "all";
+  state.componentType = "none";
+  state.grade = "all";
+  state.componentClass = "none";
+  state.manufacturer = "all";
+  state.material = "all";
+  state.missionType = "all";
+  state.sourceOnly = false;
+  state.selectedId = null;
+  els.sourceOnly.checked = false;
+  updateModeUI();
+  initFilters();
+  applyFilters();
 }
 
 function resetFilters() {
@@ -816,8 +1017,18 @@ function bindEvents() {
   bindFilterSelect(els.materialFilters, "material");
   bindFilterSelect(els.missionTypeFilters, "missionType");
 
+  els.modeTabs.forEach((button) => {
+    button.addEventListener("click", () => setMode(button.dataset.mode));
+  });
+
   els.sourceOnly.addEventListener("change", (event) => {
     state.sourceOnly = event.target.checked;
+    applyFilters();
+  });
+
+  els.favoritesToggle.addEventListener("click", () => {
+    state.favoritesOnly = !state.favoritesOnly;
+    updateFavoriteControl();
     applyFilters();
   });
 
@@ -866,15 +1077,38 @@ function bindEvents() {
       return;
     }
 
+    const favoriteButton = event.target.closest("[data-toggle-favorite]");
+    if (favoriteButton) {
+      toggleFavorite(favoriteButton.dataset.toggleFavorite);
+      return;
+    }
+
     const mineral = event.target.closest("[data-mineral]");
     if (!mineral) return;
     openMineralInfo(mineral.dataset.mineral);
+  });
+
+  els.detailPanel.addEventListener("input", (event) => {
+    const input = event.target.closest("[data-quality-input]");
+    if (!input) return;
+    const record = state.records.find((item) => item.id === input.dataset.recordId);
+    if (!record) return;
+    const slotIndex = Number(input.dataset.slotIndex);
+    const slot = getFirstTier(record).slots?.[slotIndex];
+    if (!slot) return;
+    const quality = Number(input.value);
+    state.qualityValues[qualitySlotKey(record, slotIndex)] = quality;
+    const container = input.closest("[data-quality-slot]");
+    container.querySelector("output").textContent = `品质 ${formatNumber(quality)}`;
+    const existing = container.querySelector(".quality-modifier-list");
+    if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
   });
 }
 
 function materialMatches(record) {
   if (state.material === "all") return true;
-  return getAllMaterials(record).some((item) => item.name === state.material || item.nameZh === state.material);
+  const materials = state.mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record);
+  return materials.some((item) => item.name === state.material || item.nameZh === state.material);
 }
 
 function componentClassMatches(record) {
@@ -888,6 +1122,7 @@ function componentTypeMatches(record) {
 }
 
 function missionTypeMatches(record) {
+  if (state.mode === "dismantle") return true;
   return state.missionType === "all" || recordMissionTypes(record).some((type) => type.name === state.missionType);
 }
 
@@ -896,6 +1131,7 @@ function applyFilters() {
   syncShipComponentFilters();
 
   state.filtered = state.records.filter((record) => {
+    if (state.mode === "dismantle" && !hasDismantleOutputs(record)) return false;
     if (state.category !== "all" && record.category.id !== state.category) return false;
     if (!componentTypeMatches(record)) return false;
     if (state.grade !== "all" && String(record.stats.grade || "") !== state.grade) return false;
@@ -903,14 +1139,19 @@ function applyFilters() {
     if (state.manufacturer !== "all" && record.manufacturer !== state.manufacturer) return false;
     if (!materialMatches(record)) return false;
     if (!missionTypeMatches(record)) return false;
-    if (state.sourceOnly && !(record.sourceCount > 0)) return false;
+    if (state.mode === "craft" && state.sourceOnly && !(record.sourceCount > 0)) return false;
+    if (state.favoritesOnly && !isFavorite(record)) return false;
     if (query && !(record._searchText || recordSearchText(record)).includes(query)) return false;
     return true;
   });
 
   state.filtered.sort((a, b) => {
     if (state.sort === "name") return recordName(a).localeCompare(recordName(b), "zh-CN");
-    if (state.sort === "sources") return (b.sourceCount || 0) - (a.sourceCount || 0) || recordName(a).localeCompare(recordName(b), "zh-CN");
+    if (state.sort === "sources") {
+      const aCount = state.mode === "dismantle" ? getDismantleOutputs(a).length : (a.sourceCount || 0);
+      const bCount = state.mode === "dismantle" ? getDismantleOutputs(b).length : (b.sourceCount || 0);
+      return bCount - aCount || recordName(a).localeCompare(recordName(b), "zh-CN");
+    }
     return relevanceScore(b) - relevanceScore(a) || recordName(a).localeCompare(recordName(b), "zh-CN");
   });
 
@@ -925,9 +1166,10 @@ function applyFilters() {
 }
 
 function activeFilterCount() {
-  const values = [state.category, state.grade, state.manufacturer, state.material, state.missionType];
+  const values = [state.category, state.grade, state.manufacturer, state.material];
+  if (state.mode === "craft") values.push(state.missionType);
   if (state.category === "ship_component") values.push(state.componentType, state.componentClass);
-  return values.filter((value) => value !== "all").length + (state.sourceOnly ? 1 : 0);
+  return values.filter((value) => value !== "all").length + (state.mode === "craft" && state.sourceOnly ? 1 : 0) + (state.favoritesOnly ? 1 : 0);
 }
 
 function renderCounts() {
@@ -935,18 +1177,27 @@ function renderCounts() {
   els.resultTitle.textContent = `${formatNumber(count)} 个`;
   els.modalResultCount.textContent = formatNumber(count);
   els.filterCount.textContent = activeFilterCount();
+  updateFavoriteControl();
 }
 
 function renderResults() {
   if (!state.filtered.length) {
-    els.resultList.innerHTML = document.querySelector("#emptyTemplate").innerHTML;
+    els.resultList.innerHTML = `
+      <div class="empty-state">
+        <h3>${state.mode === "dismantle" ? "暂无可拆解物品" : "暂无蓝图"}</h3>
+        <p>无</p>
+      </div>
+    `;
     return;
   }
 
   const visibleRecords = state.filtered.slice(0, state.visibleResults);
   const cards = visibleRecords
     .map((record) => {
-      const sourceLabel = record.sourceCount > 0 ? "任务奖励" : "无任务来源";
+      const outputCount = getDismantleOutputs(record).length;
+      const sourceLabel = state.mode === "dismantle"
+        ? `${formatNumber(outputCount)} 种回收物`
+        : record.sourceCount > 0 ? "任务奖励" : "无任务来源";
       const size = sizeLabel(record.stats.size);
       const grade = record.stats.grade ? gradeLabel(record.stats.grade) : "未知等级";
       const componentClass = recordComponentClass(record);
@@ -960,7 +1211,7 @@ function renderResults() {
             <strong>${escapeHtml(recordName(record))}</strong>
             <small>${metaParts.filter(Boolean).map((part) => escapeHtml(part)).join(" · ")}</small>
           </span>
-          <span class="source-badge ${record.sourceCount > 0 ? "" : "muted"}">${sourceLabel}</span>
+          <span class="source-badge ${state.mode === "craft" && !(record.sourceCount > 0) ? "muted" : ""}">${sourceLabel}</span>
         </button>
       `;
     })
@@ -982,17 +1233,59 @@ function selectRecord(id) {
   renderDetail();
 }
 
+function renderDismantleDetail(record) {
+  const componentClass = recordComponentClass(record);
+  const componentType = record.category.id === "ship_component" ? recordComponentType(record) : recordType(record);
+  const outputs = getDismantleOutputs(record);
+  const specs = [
+    ["物品", record.category.label],
+    ["类型", componentType],
+    ["子类", recordSubtype(record) || "无"],
+    ["类别", componentClass || "无"],
+    ["厂商", recordManufacturer(record)],
+    ["尺寸", sizeLabel(record.stats.size)],
+    ["等级", record.stats.grade ? gradeLabel(record.stats.grade) : "未知"],
+  ];
+
+  els.detailPanel.innerHTML = `
+    <div class="detail-scroll dismantle-detail">
+      <div class="detail-head">
+        <span>拆解详情</span>
+        <span class="detail-head-actions">
+          <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏物品"}</button>
+          <strong>${formatNumber(outputs.length)} 种回收物</strong>
+        </span>
+      </div>
+      <h2>${escapeHtml(recordName(record))}</h2>
+
+      <section class="detail-section">
+        <h3>物品信息</h3>
+        <div class="dismantle-info-line">
+          ${specs.map(([label, value]) => `<span><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></span>`).join("")}
+        </div>
+      </section>
+
+      ${renderDismantle(record, true)}
+    </div>
+  `;
+}
+
 function renderDetail() {
   const record = state.records.find((item) => item.id === state.selectedId);
   if (!record) {
     els.detailPanel.innerHTML = `
       <div class="detail-scroll">
         <div class="empty-state">
-          <h3>选择一个蓝图</h3>
-          <p>左侧点击任意结果，查看制作材料和任务来源。</p>
+          <h3>${state.mode === "dismantle" ? "选择一个可拆解物品" : "选择一个蓝图"}</h3>
+          <p>${state.mode === "dismantle" ? "左侧点击任意物品，查看拆解后的回收材料。" : "左侧点击任意结果，查看制作材料和任务来源。"}</p>
         </div>
       </div>
     `;
+    return;
+  }
+
+  if (state.mode === "dismantle") {
+    renderDismantleDetail(record);
     return;
   }
 
@@ -1017,7 +1310,10 @@ function renderDetail() {
     <div class="detail-scroll">
       <div class="detail-head">
         <span>蓝图详情</span>
-        <strong>${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</strong>
+        <span class="detail-head-actions">
+          <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏蓝图"}</button>
+          <strong>${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</strong>
+        </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
       <div class="detail-tags">
@@ -1038,17 +1334,21 @@ function renderDetail() {
                     (item) => {
                       const locationInfo = mineralLocationInfo(item.name);
                       const locationLabel = locationInfo?.hasReliableLocations ? "矿点" : "暂无矿点";
+                      const hasQuality = Boolean(item.slotData?.modifiers?.length);
                       return `
-                    <button class="material-item material-item-button" type="button" data-mineral="${escapeHtml(item.name)}">
-                      <span>
-                        <strong>${escapeHtml(materialName(item))}</strong>
-                        <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""}</small>
-                      </span>
+                    <div class="material-item${hasQuality ? " has-quality" : ""}">
+                      <button class="material-summary material-item-button" type="button" data-mineral="${escapeHtml(item.name)}">
+                        <span>
+                          <strong>${escapeHtml(materialName(item))}</strong>
+                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""}</small>
+                        </span>
+                      </button>
+                      ${renderMaterialQuality(record, item.slotData, item.slotIndex)}
                       <span class="material-side">
-                        <span class="material-location-badge">${locationLabel}</span>
+                        <button class="material-location-badge" type="button" data-mineral="${escapeHtml(item.name)}">${locationLabel}</button>
                         <strong>x${formatNumber(item.quantity)}</strong>
                       </span>
-                    </button>
+                    </div>
                   `;
                     },
                   )
@@ -1127,6 +1427,7 @@ async function fetchJson(path) {
 }
 
 async function boot() {
+  state.favorites = loadFavorites();
   els.resultList.innerHTML = `<div class="loading-state"><div><h3>正在加载蓝图</h3><p>请稍候...</p></div></div>`;
   try {
     const [blueprintData, mineralData] = await Promise.all([
@@ -1145,6 +1446,7 @@ async function boot() {
       "aria-label",
       `${state.data.version}，${formatDataUpdatedAt(state.data.dataUpdatedAt)}，北京时间`,
     );
+    updateModeUI();
     initFilters();
     bindEvents();
     applyFilters();

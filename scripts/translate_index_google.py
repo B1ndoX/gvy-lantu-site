@@ -56,6 +56,8 @@ def collect_strings(index: dict[str, Any]) -> list[str]:
         for tier in record.get("tiers") or []:
             for slot in tier.get("slots") or []:
                 add_value(values, slot.get("name"))
+                for modifier in slot.get("modifiers") or []:
+                    add_value(values, modifier.get("propertyName"))
                 for option in slot.get("options") or []:
                     add_value(values, option.get("kind"))
                     add_value(values, option.get("name"))
@@ -176,12 +178,17 @@ def apply_translations(index: dict[str, Any], cache: dict[str, str]) -> None:
         for tier in record.get("tiers") or []:
             for slot in tier.get("slots") or []:
                 slot["nameZh"] = t(cache, slot.get("name"))
+                for modifier in slot.get("modifiers") or []:
+                    modifier["propertyNameZh"] = t(cache, modifier.get("propertyName"))
                 for option in slot.get("options") or []:
                     option["kindZh"] = t(cache, option.get("kind"))
                     option["nameZh"] = t(cache, option.get("name"))
         for material in record.get("materials") or []:
             material["kindZh"] = t(cache, material.get("kind"))
             material["nameZh"] = t(cache, material.get("name"))
+        for output in (record.get("dismantle") or {}).get("outputs") or []:
+            output["kindZh"] = t(cache, output.get("kind"))
+            output["nameZh"] = t(cache, output.get("name"))
         for source in record.get("sources") or []:
             source["poolNameZh"] = t(cache, source.get("poolName"))
             source["poolSourceZh"] = t(cache, source.get("poolSource"))
@@ -209,13 +216,14 @@ def main() -> int:
     parser.add_argument("--index", type=Path, default=Path(__file__).resolve().parents[1] / "data" / "blueprint-index.json")
     parser.add_argument("--cache", type=Path, default=Path(__file__).resolve().parents[1] / "data" / "google-translate-cache.json")
     parser.add_argument("--limit", type=int, help="Translate only N missing strings, for testing")
+    parser.add_argument("--cache-only", action="store_true", help="Apply the existing cache without contacting Google")
     args = parser.parse_args()
 
     index = load_json(args.index, {})
     cache = load_json(args.cache, {})
     strings = collect_strings(index)
     print(f"unique translatable strings: {len(strings)}; cached: {len(cache)}")
-    count = translate_missing(strings, cache, args.limit, args.cache)
+    count = 0 if args.cache_only else translate_missing(strings, cache, args.limit, args.cache)
     apply_translations(index, cache)
     save_json(args.cache, cache)
     with args.index.open("w", encoding="utf-8") as handle:

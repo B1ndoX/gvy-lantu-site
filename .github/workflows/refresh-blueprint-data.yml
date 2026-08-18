@@ -31,6 +31,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Test data refresh rules
         run: python -m unittest discover -s tests -v
 
@@ -42,8 +47,23 @@ jobs:
             python scripts/refresh_blueprint_data.py
           fi
 
+      - name: Refresh mineral locations if needed
+        run: |
+          if ! python scripts/refresh_mineral_locations.py; then
+            echo "::warning::UEX mineral location refresh failed validation; keeping the verified cached locations so LIVE blueprint publication can continue."
+          fi
+
       - name: Refresh mineral signals if needed
-        run: python scripts/refresh_mineral_signals.py
+        run: |
+          if ! python scripts/refresh_mineral_signals.py; then
+            echo "::warning::Mineral signal refresh failed; keeping the verified cached signals so LIVE blueprint publication can continue."
+          fi
+
+      - name: Validate production build
+        run: |
+          node --check assets/app.js
+          npm install --ignore-scripts
+          npm run build
 
       - name: Upload data backup
         uses: actions/upload-artifact@v4

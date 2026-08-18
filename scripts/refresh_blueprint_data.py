@@ -28,6 +28,10 @@ SCMDB_VERSIONS_URL = "https://scmdb.net/data/versions.json"
 OFFICIAL_LOCALIZATION_ASSETS = DATA_DIR / "official-localization"
 OFFICIAL_LOCALIZATION_SOURCE = "data/official-localization/localization/starcitizen"
 BACKUP_RETENTION_DAYS = 14
+MIN_BLUEPRINT_RECORDS = 1000
+MIN_OFFICIAL_LOCALIZATION_COUNT = 7000
+MIN_FLOWCLD_RECORDS = 1000
+MIN_FLOWCLD_LOCALIZED_RECORDS = 1000
 PUBLIC_RECORD_FIELDS_TO_REMOVE = {
     "search",
     "materials",
@@ -182,6 +186,26 @@ def annotate_refresh_metadata(index_path: Path, version: str, updated_at: dateti
     write_json_compact(index_path, index)
 
 
+def validate_flowcld_calibration(path: Path, cached_path: Path | None = None) -> None:
+    payload = load_json(path, {})
+    item_count = int(payload.get("itemCount") or len(payload.get("items") or []))
+    localized_count = int(payload.get("localizedCount") or 0)
+    if item_count < MIN_FLOWCLD_RECORDS or localized_count < MIN_FLOWCLD_LOCALIZED_RECORDS:
+        raise RuntimeError(
+            f"FlowCLD calibration coverage is too low: {item_count} records, {localized_count} localized"
+        )
+    if cached_path and cached_path.exists():
+        cached = load_json(cached_path, {})
+        cached_items = int(cached.get("itemCount") or len(cached.get("items") or []))
+        cached_localized = int(cached.get("localizedCount") or 0)
+        if cached_items and item_count < int(cached_items * 0.8):
+            raise RuntimeError(f"FlowCLD record coverage dropped unexpectedly: {cached_items} -> {item_count}")
+        if cached_localized and localized_count < int(cached_localized * 0.8):
+            raise RuntimeError(
+                f"FlowCLD localization coverage dropped unexpectedly: {cached_localized} -> {localized_count}"
+            )
+
+
 def compact_public_index(index_path: Path) -> int:
     """Remove pipeline-only fields after localization has finished."""
     index = load_json(index_path, {})
@@ -216,12 +240,27 @@ def validate_index(path: Path, expected_version: str) -> None:
         raise RuntimeError("generated index has no valid dataUpdatedAt timestamp") from error
     if parsed_updated_at.tzinfo is None:
         raise RuntimeError("generated index dataUpdatedAt must include a timezone")
-    if not records:
-        raise RuntimeError("generated blueprint index has no records")
+    if len(records) < MIN_BLUEPRINT_RECORDS:
+        raise RuntimeError(f"generated blueprint index has too few records: {len(records)}")
     if counts.get("blueprints") != len(records):
         raise RuntimeError("blueprint count does not match records length")
-    if int(localization.get("starCitizenLocalizationCount") or 0) <= 0:
-        raise RuntimeError("official Star Citizen localization was not applied")
+    record_ids = [str(record.get("id") or "") for record in records]
+    if any(not record_id for record_id in record_ids):
+        raise RuntimeError("generated blueprint index contains a record without an id")
+    if len(set(record_ids)) != len(record_ids):
+        raise RuntimeError("generated blueprint index contains duplicate record ids")
+    if sum((counts.get("categories") or {}).values()) != len(records):
+        raise RuntimeError("blueprint category counts do not match records length")
+    if any(not str(record.get("name") or "").strip() for record in records):
+        raise RuntimeError("generated blueprint index contains an unnamed record")
+    if any(
+        (record.get("sourceCount") or 0)
+        != sum((source.get("missionCount") or 0) for source in record.get("sources") or [])
+        for record in records
+    ):
+        raise RuntimeError("blueprint source counts do not match source missions")
+    if int(localization.get("starCitizenLocalizationCount") or 0) < MIN_OFFICIAL_LOCALIZATION_COUNT:
+        raise RuntimeError("official Star Citizen localization coverage is unexpectedly low")
 
 
 def refresh(force: bool) -> bool:
@@ -264,9 +303,20 @@ def refresh(force: bool) -> bool:
                 latest_version,
             ]
         )
-        run([sys.executable, "scripts/translate_index_google.py", "--index", str(index_path), "--cache", str(google_cache)])
+        translate_args = [
+            sys.executable,
+            "scripts/translate_index_google.py",
+            "--index",
+            str(index_path),
+            "--cache",
+            str(google_cache),
+        ]
+        if not run(translate_args, allow_failure=True):
+            print("warning: Google Translate unavailable; applying the existing fallback cache", file=sys.stderr)
+            run([*translate_args, "--cache-only"])
 
         fresh_flowcld = tmp / "flowcld-blueprint-calibration.fresh.json"
+        cached_flowcld = flowcld if flowcld.exists() else None
         if run(
             [
                 sys.executable,
@@ -278,7 +328,14 @@ def refresh(force: bool) -> bool:
             ],
             allow_failure=True,
         ):
-            shutil.move(str(fresh_flowcld), flowcld)
+            try:
+                validate_flowcld_calibration(fresh_flowcld, cached_flowcld)
+            except RuntimeError as error:
+                print(f"warning: {error}; keeping cached FlowCLD calibration", file=sys.stderr)
+                if cached_flowcld is None:
+                    raise
+            else:
+                shutil.move(str(fresh_flowcld), flowcld)
         elif not flowcld.exists():
             raise RuntimeError("FlowCLD refresh failed and no cached calibration exists")
 

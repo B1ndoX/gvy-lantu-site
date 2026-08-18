@@ -98,6 +98,33 @@ STAT_TERMS = {
     "missionitems": "任务物品",
 }
 
+PROPERTY_TERMS = {
+    "Damage Mitigation": "伤害减免",
+    "Min Temp": "最低耐温",
+    "Max Temp": "最高耐温",
+    "Radiation Dissipation": "辐射耗散",
+    "Integrity": "结构完整度",
+    "Coolant Rating": "冷却评级",
+    "Impact Force": "冲击力",
+    "Power Pips": "电力格",
+    "Quantum Speed": "量子航速",
+    "Quantum Fuel Burn": "量子燃料消耗",
+    "Min. Assist Distance": "最小辅助距离",
+    "Max. Assist Distance": "最大辅助距离",
+    "Efficiency": "效率",
+    "Radius": "半径",
+    "Speed": "速度",
+    "Max. Shield Strength": "最大护盾强度",
+    "Full Strength Dist.": "满强度距离",
+    "Max. Distance": "最大距离",
+    "Beam Force": "牵引束力量",
+    "Max. Volume": "最大体积",
+    "Recoil Smoothness": "后坐力平滑度",
+    "Recoil Handling": "后坐力操控",
+    "Recoil Kick": "后坐力冲击",
+    "Fire Rate": "射速",
+}
+
 SLOT_TERMS = {
     "Assembly": "总成",
     "Barrel": "炮管",
@@ -591,6 +618,13 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
                     slot["nameZh"] = SLOT_TERMS[raw_slot]
                 if slot.get("nameZh"):
                     slot["nameZh"] = polish_machine_text(str(slot["nameZh"]))
+                for modifier in slot.get("modifiers") or []:
+                    raw_property = str(modifier.get("propertyName") or "")
+                    if raw_property in PROPERTY_TERMS:
+                        modifier["propertyNameZh"] = PROPERTY_TERMS[raw_property]
+                        modifier["propertyNameSource"] = "local"
+                    elif modifier.get("propertyNameZh"):
+                        modifier["propertyNameZh"] = polish_machine_text(str(modifier["propertyNameZh"]))
                 for option in slot.get("options") or []:
                     raw_name = str(option.get("name") or "")
                     if raw_name in MATERIALS:
@@ -612,6 +646,17 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
             raw_kind = str(material.get("kind") or "")
             if raw_kind in STAT_TERMS:
                 material["kindZh"] = STAT_TERMS[raw_kind]
+
+        for output in (record.get("dismantle") or {}).get("outputs") or []:
+            raw_name = str(output.get("name") or "")
+            if raw_name in MATERIALS:
+                output["nameZh"] = MATERIALS[raw_name]
+                output["nameSource"] = "local"
+            elif output.get("nameZh"):
+                output["nameZh"] = polish_machine_text(str(output["nameZh"]))
+            raw_kind = str(output.get("kind") or "")
+            if raw_kind in STAT_TERMS:
+                output["kindZh"] = STAT_TERMS[raw_kind]
 
         for source in record.get("sources") or []:
             if source.get("poolNameZh"):

@@ -78,6 +78,18 @@ def category_for(blueprint: dict[str, Any], item: dict[str, Any] | None) -> dict
     return {"id": "other", "label": "其他蓝图"}
 
 
+def normalize_modifier(modifier: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "propertyKey": clean(modifier.get("propertyKey")),
+        "propertyName": clean(modifier.get("propertyName"), "Unknown property"),
+        "startQuality": modifier.get("startQuality", 0),
+        "endQuality": modifier.get("endQuality", 1000),
+        "modifierAtStart": modifier.get("modifierAtStart", 1),
+        "modifierAtEnd": modifier.get("modifierAtEnd", 1),
+        "additive": bool(modifier.get("additive")),
+    }
+
+
 def normalize_slot(slot: dict[str, Any]) -> dict[str, Any]:
     options = []
     for option in slot.get("options") or []:
@@ -90,7 +102,11 @@ def normalize_slot(slot: dict[str, Any]) -> dict[str, Any]:
                 "minQuality": option.get("minQuality", 0),
             }
         )
-    return {"name": clean(slot.get("name"), "Material slot"), "options": options}
+    return {
+        "name": clean(slot.get("name"), "Material slot"),
+        "options": options,
+        "modifiers": [normalize_modifier(modifier) for modifier in slot.get("modifiers") or []],
+    }
 
 
 def normalize_tiers(blueprint: dict[str, Any]) -> list[dict[str, Any]]:
@@ -107,6 +123,46 @@ def normalize_tiers(blueprint: dict[str, Any]) -> list[dict[str, Any]]:
             }
         )
     return tiers
+
+
+def normalize_dismantle_config(crafting: dict[str, Any]) -> dict[str, Any]:
+    raw = crafting.get("dismantle") or {}
+    return {
+        "efficiency": raw.get("efficiency", 0),
+        "timeSeconds": raw.get("dismantleTimeSeconds", 0),
+        "blacklistedResources": {
+            clean(resource.get("name")) for resource in raw.get("blacklistedResources") or [] if clean(resource.get("name"))
+        },
+        "blacklistedItems": {
+            clean(item.get("name")) for item in raw.get("blacklistedEntityClasses") or [] if clean(item.get("name"))
+        },
+    }
+
+
+def build_dismantle_outputs(tiers: list[dict[str, Any]], config: dict[str, Any]) -> dict[str, Any]:
+    efficiency = config.get("efficiency") or 0
+    outputs: dict[tuple[str, str], dict[str, Any]] = {}
+    first_tier = tiers[0] if tiers else {}
+    for slot in first_tier.get("slots") or []:
+        for option in slot.get("options") or []:
+            name = clean(option.get("name"))
+            kind = clean(option.get("kind"))
+            if not name or kind not in {"resource", "item"}:
+                continue
+            if kind == "resource" and name in config["blacklistedResources"]:
+                continue
+            if kind == "item" and name in config["blacklistedItems"]:
+                continue
+            quantity = (option.get("quantity") or 0) * efficiency
+            if quantity <= 0:
+                continue
+            output = outputs.setdefault((kind, name), {"name": name, "kind": kind, "quantity": 0})
+            output["quantity"] += quantity
+    return {
+        "efficiency": efficiency,
+        "timeSeconds": config.get("timeSeconds", 0),
+        "outputs": sorted(outputs.values(), key=lambda output: (output["kind"], output["name"].lower())),
+    }
 
 
 def faction_name(factions: dict[str, Any], guid: str | None) -> str:
@@ -178,6 +234,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
     item_by_entity = {item.get("entityClass"): item for item in items if item.get("entityClass")}
     item_by_name = {item.get("name"): item for item in items if item.get("name")}
     sources_by_record, pool_meta = build_source_maps(mission_data)
+    dismantle_config = normalize_dismantle_config(crafting)
 
     records = []
     category_counts: dict[str, int] = {}
@@ -189,6 +246,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
         item = item_by_entity.get(blueprint.get("productEntityClass")) or item_by_name.get(product_name)
         category = category_for(blueprint, item)
         tiers = normalize_tiers(blueprint)
+        dismantle = build_dismantle_outputs(tiers, dismantle_config)
         first_tier = tiers[0] if tiers else {"slots": []}
         materials = []
         for slot in first_tier.get("slots") or []:
@@ -240,6 +298,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
                 "gear": clean(blueprint.get("gear"), "unknown"),
                 "stats": stats,
                 "tiers": tiers,
+                "dismantle": dismantle,
                 "materials": materials,
                 "sources": sources,
                 "sourceCount": sum(source.get("missionCount", 0) for source in sources),
@@ -258,6 +317,10 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
             "manufacturers": manufacturer_counts,
             "materials": material_counts,
             "rewardPools": len(pool_meta),
+        },
+        "dismantle": {
+            "efficiency": dismantle_config["efficiency"],
+            "timeSeconds": dismantle_config["timeSeconds"],
         },
         "records": records,
     }
