@@ -582,7 +582,7 @@ function renderMineralInfo(name) {
           ${renderMineralLocationGroups(info)}
         </div>
         <footer class="mineral-source">
-          来源：UEX API 2.0 · 更新时间 ${escapeHtml(updatedAt)}
+          更新时间 ${escapeHtml(updatedAt)}
         </footer>
       </section>
     </div>
