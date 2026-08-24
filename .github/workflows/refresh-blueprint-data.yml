@@ -28,15 +28,15 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "24"
 
@@ -79,7 +79,7 @@ jobs:
             --mineral-signals-outcome "${{ steps.mineral_signals.outcome }}"
 
       - name: Upload data backup
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: gvy-lantu-data-backup
@@ -116,6 +116,16 @@ jobs:
             --timeout 900 \
             --interval 15
 
+      - name: Verify current EdgeOne production snapshot
+        id: production_snapshot
+        if: steps.commit_refresh.outputs.changed != 'true'
+        continue-on-error: true
+        run: |
+          python scripts/check_production_health.py \
+            --base-url "https://lantu.gvyvoyagers.vip" \
+            --timeout 0 \
+            --interval 1
+
       - name: Roll back an unhealthy automated refresh
         if: steps.production_health.outcome == 'failure' && steps.commit_refresh.outputs.changed == 'true'
         run: |
@@ -129,7 +139,7 @@ jobs:
             --interval 15
 
       - name: Report refresh source failure
-        if: steps.blueprint_refresh.outcome == 'failure' || steps.mineral_locations.outcome == 'failure' || steps.mineral_signals.outcome == 'failure' || steps.production_health.outcome == 'failure'
+        if: steps.blueprint_refresh.outcome == 'failure' || steps.mineral_locations.outcome == 'failure' || steps.mineral_signals.outcome == 'failure' || steps.production_health.outcome == 'failure' || steps.production_snapshot.outcome == 'failure'
         run: |
           echo "A refresh source or production deployment failed. Existing verified data was preserved or restored."
           exit 1
