@@ -512,7 +512,7 @@ function renderMineralLocationGroups(info) {
     return `
       <div class="mineral-empty">
         <strong>暂无可靠矿点</strong>
-        <span>UEX 当前没有公开地点数据，未做推断。</span>
+        <span>暂无地点数据</span>
       </div>
     `;
   }
