@@ -94,7 +94,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .github/refresh-heartbeat.json index.html assets/app.js data/blueprint-index.json data/mineral-locations.json data/google-translate-cache.json data/flowcld-blueprint-calibration.json data/local-polish-names.json
+          git add .github/refresh-heartbeat.json data/blueprint-index.json data/mineral-locations.json data/google-translate-cache.json data/flowcld-blueprint-calibration.json data/local-polish-names.json
           if git diff --cached --quiet; then
             echo "No blueprint data changes."
             echo "changed=false" >> "$GITHUB_OUTPUT"

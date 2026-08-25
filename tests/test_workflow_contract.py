@@ -27,6 +27,17 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("if: steps.commit_refresh.outputs.changed != 'true'", self.workflow)
         self.assertIn("steps.production_snapshot.outcome == 'failure'", self.workflow)
 
+    def test_refresh_commit_only_stages_generated_data(self) -> None:
+        git_add_line = next(
+            line.strip()
+            for line in self.workflow.splitlines()
+            if line.strip().startswith("git add ")
+        )
+        self.assertNotIn("index.html", git_add_line)
+        self.assertNotIn("assets/app.js", git_add_line)
+        self.assertIn("data/blueprint-index.json", git_add_line)
+        self.assertIn("data/mineral-locations.json", git_add_line)
+
 
 if __name__ == "__main__":
     unittest.main()

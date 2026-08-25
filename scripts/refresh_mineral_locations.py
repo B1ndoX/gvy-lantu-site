@@ -14,9 +14,6 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
-from refresh_blueprint_data import update_data_version
-
-
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "mineral-locations.json"
 BLUEPRINT_INDEX = ROOT / "data" / "blueprint-index.json"
@@ -580,8 +577,6 @@ def refresh(check_only: bool = False) -> bool:
 
     backup = backup_current_data(synced_at)
     write_json_atomic(DATA_PATH, candidate)
-    blueprint_version = str(load_json(BLUEPRINT_INDEX, {}).get("version") or "mineral-locations")
-    update_data_version(blueprint_version, synced_at)
     print(f"mineral locations updated; backup saved: {backup}")
     return True
 

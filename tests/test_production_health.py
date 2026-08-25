@@ -11,7 +11,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from check_production_health import extract_asset_revisions, fetch_gzip_json, validate_production_snapshot
+from check_production_health import (
+    build_data_revision,
+    extract_asset_revisions,
+    extract_data_revision,
+    fetch_gzip_json,
+    validate_production_snapshot,
+)
 from write_refresh_heartbeat import heartbeat_payload
 
 
@@ -48,6 +54,21 @@ class ProductionHealthTests(unittest.TestCase):
             {"styles.css": "abc123", "app.js": "def456"},
         )
 
+    def test_extracts_built_data_revision(self) -> None:
+        script = 'const DATA_VERSION = "data-0123456789abcdef";'
+        self.assertEqual(extract_data_revision(script), "data-0123456789abcdef")
+
+    def test_data_revision_changes_for_either_snapshot(self) -> None:
+        baseline = build_data_revision(b'{"blueprints":1}', b'{"minerals":1}')
+        changed_blueprints = build_data_revision(b'{"blueprints":2}', b'{"minerals":1}')
+        changed_minerals = build_data_revision(b'{"blueprints":1}', b'{"minerals":2}')
+        self.assertNotEqual(baseline, changed_blueprints)
+        self.assertNotEqual(baseline, changed_minerals)
+
+    def test_rejects_unbuilt_data_revision_placeholder(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "built data revision"):
+            extract_data_revision('const DATA_VERSION = "__BUILD_DATA_VERSION__";')
+
     def test_accepts_matching_production_snapshot(self) -> None:
         blueprints = self.blueprints()
         minerals = self.minerals()
@@ -64,6 +85,15 @@ class ProductionHealthTests(unittest.TestCase):
         production = self.blueprints()
         local = self.blueprints()
         production["records"][0]["id"] = "wrong"
+        minerals = self.minerals()
+        with self.assertRaisesRegex(RuntimeError, "does not match"):
+            validate_production_snapshot(production, local, minerals, minerals)
+
+    def test_rejects_stale_quality_enrichment(self) -> None:
+        production = self.blueprints()
+        local = self.blueprints()
+        production["records"][0]["qualityStats"] = {"integrity": 640}
+        local["records"][0]["qualityStats"] = {"integrity": 768}
         minerals = self.minerals()
         with self.assertRaisesRegex(RuntimeError, "does not match"):
             validate_production_snapshot(production, local, minerals, minerals)

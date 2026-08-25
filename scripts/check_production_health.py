@@ -26,11 +26,8 @@ MIN_RELIABLE_MINERALS = 25
 MIN_MINERAL_LOCATIONS = 100
 MIN_LOCATION_SIGNALS = 100
 ASSET_PATTERN = re.compile(r"(?:\./|/)?assets/(styles\.css|app\.js)\?v=([^\"'&]+)")
-
-
-def load_json(path: Path) -> dict[str, Any]:
-    with path.open("r", encoding="utf-8-sig") as handle:
-        return json.load(handle)
+DATA_VERSION_PATTERN = re.compile(r'const DATA_VERSION = "(data-[0-9a-f]{16})";')
+DATA_FILES = ("blueprint-index.json", "mineral-locations.json")
 
 
 def canonical_hash(payload: dict[str, Any]) -> str:
@@ -43,6 +40,22 @@ def extract_asset_revisions(html: str) -> dict[str, str]:
     if set(revisions) != {"styles.css", "app.js"}:
         raise RuntimeError("page does not reference both fingerprinted production assets")
     return revisions
+
+
+def build_data_revision(blueprint_bytes: bytes, mineral_bytes: bytes) -> str:
+    digest = hashlib.sha256()
+    for name, contents in zip(DATA_FILES, (blueprint_bytes, mineral_bytes)):
+        digest.update(name.encode("utf-8") + b"\0")
+        digest.update(contents)
+        digest.update(b"\0")
+    return f"data-{digest.hexdigest()[:16]}"
+
+
+def extract_data_revision(script: str) -> str:
+    match = DATA_VERSION_PATTERN.search(script)
+    if not match:
+        raise RuntimeError("app.js does not contain a built data revision")
+    return match.group(1)
 
 
 def mineral_coverage(payload: dict[str, Any]) -> tuple[int, int, int, int]:
@@ -107,6 +120,16 @@ def cache_busted_url(base_url: str, path: str, nonce: str) -> str:
     )
 
 
+def versioned_url(base_url: str, path: str, revision: str) -> str:
+    url = urllib.parse.urljoin(base_url.rstrip("/") + "/", path.lstrip("/"))
+    parsed = urllib.parse.urlsplit(url)
+    query = urllib.parse.parse_qsl(parsed.query, keep_blank_values=True)
+    query.append(("v", revision))
+    return urllib.parse.urlunsplit(
+        (parsed.scheme, parsed.netloc, parsed.path, urllib.parse.urlencode(query), parsed.fragment)
+    )
+
+
 def fetch_bytes(url: str, attempts: int = 3) -> bytes:
     last_error: Exception | None = None
     for attempt in range(1, attempts + 1):
@@ -144,6 +167,7 @@ def fetch_gzip_json(url: str) -> dict[str, Any]:
 def check_once(
     base_url: str,
     expected_assets: dict[str, str],
+    expected_data_revision: str,
     local_blueprints: dict[str, Any],
     local_minerals: dict[str, Any],
 ) -> None:
@@ -155,16 +179,26 @@ def check_once(
             f"EdgeOne is still serving a previous asset revision: {production_assets} != {expected_assets}"
         )
 
+    production_app = b""
     for name, revision in expected_assets.items():
-        asset = fetch_bytes(cache_busted_url(base_url, f"/assets/{name}?v={revision}", nonce))
+        asset = fetch_bytes(versioned_url(base_url, f"/assets/{name}", revision))
         if len(asset) < 100:
             raise RuntimeError(f"production asset is unexpectedly small: {name}")
+        if name == "app.js":
+            production_app = asset
+
+    production_data_revision = extract_data_revision(production_app.decode("utf-8"))
+    if production_data_revision != expected_data_revision:
+        raise RuntimeError(
+            "production app data revision does not match the committed data: "
+            f"{production_data_revision} != {expected_data_revision}"
+        )
 
     production_blueprints = fetch_gzip_json(
-        cache_busted_url(base_url, "/data/blueprint-index.json.gz", nonce)
+        versioned_url(base_url, "/data/blueprint-index.json.gz", production_data_revision)
     )
     production_minerals = fetch_gzip_json(
-        cache_busted_url(base_url, "/data/mineral-locations.json.gz", nonce)
+        versioned_url(base_url, "/data/mineral-locations.json.gz", production_data_revision)
     )
     validate_production_snapshot(
         production_blueprints,
@@ -173,23 +207,53 @@ def check_once(
         local_minerals,
     )
 
+    fallback_blueprints = fetch_json(
+        versioned_url(base_url, "/data/blueprint-index.json", production_data_revision)
+    )
+    fallback_minerals = fetch_json(
+        versioned_url(base_url, "/data/mineral-locations.json", production_data_revision)
+    )
+    validate_production_snapshot(
+        fallback_blueprints,
+        local_blueprints,
+        fallback_minerals,
+        local_minerals,
+    )
+
 
 def wait_for_production(base_url: str, timeout: int, interval: int) -> None:
     expected_assets = extract_asset_revisions((ROOT / "dist" / "index.html").read_text(encoding="utf-8"))
-    local_blueprints = load_json(ROOT / "data" / "blueprint-index.json")
-    local_minerals = load_json(ROOT / "data" / "mineral-locations.json")
+    blueprint_bytes = (ROOT / "data" / "blueprint-index.json").read_bytes()
+    mineral_bytes = (ROOT / "data" / "mineral-locations.json").read_bytes()
+    local_blueprints = json.loads(blueprint_bytes.decode("utf-8-sig"))
+    local_minerals = json.loads(mineral_bytes.decode("utf-8-sig"))
+    expected_data_revision = build_data_revision(blueprint_bytes, mineral_bytes)
+    built_data_revision = extract_data_revision(
+        (ROOT / "dist" / "assets" / "app.js").read_text(encoding="utf-8")
+    )
+    if built_data_revision != expected_data_revision:
+        raise RuntimeError(
+            "local production build embeds a stale data revision: "
+            f"{built_data_revision} != {expected_data_revision}"
+        )
     deadline = time.monotonic() + max(timeout, 0)
     last_error = "production check did not run"
     attempt = 0
     while True:
         attempt += 1
         try:
-            check_once(base_url, expected_assets, local_blueprints, local_minerals)
+            check_once(
+                base_url,
+                expected_assets,
+                expected_data_revision,
+                local_blueprints,
+                local_minerals,
+            )
             print(
                 "EdgeOne production verified: "
                 f"{local_blueprints.get('version')} / "
                 f"{len(local_blueprints.get('records') or [])} blueprints / "
-                f"assets {expected_assets}"
+                f"data {expected_data_revision} / assets {expected_assets}"
             )
             return
         except Exception as error:

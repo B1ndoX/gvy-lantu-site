@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import re
 import shutil
 import subprocess
 import sys
@@ -22,8 +21,6 @@ from scmdb_versions import is_live_version, select_latest_live_version, version_
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
-APP_JS = ROOT / "assets" / "app.js"
-INDEX_HTML = ROOT / "index.html"
 BACKUP_DIR = ROOT / ".data-backups"
 SCMDB_VERSIONS_URL = "https://scmdb.net/data/versions.json"
 OFFICIAL_LOCALIZATION_ASSETS = DATA_DIR / "official-localization"
@@ -150,25 +147,6 @@ def backup_current_data(current_version: str, now: datetime) -> Path:
     print(f"backup saved: {target}")
     prune_old_backups(now)
     return target
-
-
-def update_data_version(version: str, updated_at: datetime) -> None:
-    text = APP_JS.read_text(encoding="utf-8")
-    stamp = updated_at.astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    next_value = f"{stamp}-{version.replace('.', '-').replace('+', '-')}"
-    old = 'const DATA_VERSION = "'
-    start = text.find(old)
-    if start < 0:
-        raise RuntimeError("DATA_VERSION declaration not found in assets/app.js")
-    start += len(old)
-    end = text.find('"', start)
-    if end < 0:
-        raise RuntimeError("DATA_VERSION declaration is malformed")
-    APP_JS.write_text(text[:start] + next_value + text[end:], encoding="utf-8")
-
-    html = INDEX_HTML.read_text(encoding="utf-8")
-    html = re.sub(r"assets/app\.js\?v=[^\"']+", f"assets/app.js?v={next_value}", html)
-    INDEX_HTML.write_text(html, encoding="utf-8")
 
 
 def annotate_localization_metadata(index_path: Path) -> None:
@@ -333,7 +311,6 @@ def refresh(force: bool) -> bool:
                     validate_index(candidate, current_version)
                     backup_current_data(current_version, completed_at)
                     replace_if_exists(candidate, DATA_DIR / "blueprint-index.json")
-                    update_data_version(current_version, completed_at)
                     print("SCMDB version unchanged; added version-matched quality base stats.")
                     return True
                 print(
@@ -436,7 +413,6 @@ def refresh(force: bool) -> bool:
         replace_if_exists(google_cache, DATA_DIR / "google-translate-cache.json")
         replace_if_exists(flowcld, DATA_DIR / "flowcld-blueprint-calibration.json")
         replace_if_exists(local_names, DATA_DIR / "local-polish-names.json")
-        update_data_version(latest_version, completed_at)
 
     print(f"updated blueprint data to {latest_version}")
     return True
