@@ -386,12 +386,20 @@ function qualitySlotKey(record, slotIndex) {
   return `${record.id}:${slotIndex}`;
 }
 
+function qualitySlotMinimum(slot) {
+  return Math.max(0, ...(slot?.options || []).map((option) => Number(option.minQuality) || 0));
+}
+
+function qualitySlotBaseline(slot) {
+  return Math.max(qualitySlotMinimum(slot), 500);
+}
+
 function qualitySlotValue(record, slot, slotIndex) {
   const key = qualitySlotKey(record, slotIndex);
-  const minimum = Math.max(0, ...slot.options.map((option) => Number(option.minQuality) || 0));
+  const minimum = qualitySlotMinimum(slot);
   const stored = Number(state.qualityValues[key]);
   if (Number.isFinite(stored)) return Math.max(minimum, Math.min(1000, stored));
-  return Math.max(minimum, 500);
+  return qualitySlotBaseline(slot);
 }
 
 function modifierFactor(modifier, quality) {
@@ -404,15 +412,37 @@ function modifierFactor(modifier, quality) {
   return startValue + (endValue - startValue) * progress;
 }
 
+function modifierGroups(slot) {
+  const groups = new Map();
+  (slot?.modifiers || []).forEach((modifier) => {
+    const propertyKey = modifier.propertyKey || modifier.propertyName;
+    if (!propertyKey) return;
+    const key = `${propertyKey}:${modifier.additive ? "add" : "multiply"}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(modifier);
+  });
+  return [...groups.values()];
+}
+
+function modifierGroupValue(modifiers, quality) {
+  const segments = [...modifiers].sort((a, b) => (Number(a.startQuality) || 0) - (Number(b.startQuality) || 0));
+  if (!segments.length) return 0;
+  const exact = segments.find((segment) => quality >= Number(segment.startQuality) && quality <= Number(segment.endQuality));
+  if (exact) return modifierFactor(exact, quality);
+  if (quality < Number(segments[0].startQuality)) return modifierFactor(segments[0], quality);
+  return modifierFactor(segments[segments.length - 1], quality);
+}
+
 function renderQualityModifiers(slot, quality) {
-  const modifiers = slot.modifiers || [];
-  if (!modifiers.length) return "";
+  const groups = modifierGroups(slot);
+  if (!groups.length) return "";
   return `
     <div class="quality-modifier-list">
-      ${modifiers
-        .map((modifier) => {
-          const value = modifierFactor(modifier, quality);
-          const valueLabel = modifier.additive ? `修正 ${formatNumber(value)}` : `系数 ${value.toFixed(2)}×`;
+      ${groups
+        .map((group) => {
+          const modifier = group[0];
+          const value = modifierGroupValue(group, quality);
+          const valueLabel = modifier.additive ? `修正 ${value > 0 ? "+" : ""}${formatNumber(value)}` : `系数 ${value.toFixed(3).replace(/0+$/, "").replace(/\.$/, "")}×`;
           return `<span><strong>${escapeHtml(modifierName(modifier))}</strong><small>${escapeHtml(valueLabel)}</small></span>`;
         })
         .join("")}
@@ -423,7 +453,7 @@ function renderQualityModifiers(slot, quality) {
 function renderMaterialQuality(record, slot, slotIndex) {
   if (!(slot?.modifiers || []).length) return "";
   const quality = qualitySlotValue(record, slot, slotIndex);
-  const minimum = Math.max(0, ...slot.options.map((option) => Number(option.minQuality) || 0));
+  const minimum = qualitySlotMinimum(slot);
   return `
     <div class="material-quality" data-quality-slot="${escapeHtml(qualitySlotKey(record, slotIndex))}">
       <div class="material-quality-control">
@@ -432,6 +462,131 @@ function renderMaterialQuality(record, slot, slotIndex) {
       </div>
       ${renderQualityModifiers(slot, quality)}
     </div>
+  `;
+}
+
+function aggregateQualityEffects(record) {
+  const effects = new Map();
+  getFirstTier(record).slots.forEach((slot, slotIndex) => {
+    const quality = qualitySlotValue(record, slot, slotIndex);
+    const baseline = qualitySlotBaseline(slot);
+    modifierGroups(slot).forEach((group) => {
+      const modifier = group[0];
+      const propertyKey = modifier.propertyKey || modifier.propertyName;
+      if (!propertyKey) return;
+      if (!effects.has(propertyKey)) {
+        effects.set(propertyKey, {
+          propertyKey,
+          label: modifierName(modifier),
+          currentMultiplier: 1,
+          baselineMultiplier: 1,
+          currentAdditive: 0,
+          baselineAdditive: 0,
+          hasMultiplier: false,
+          hasAdditive: false,
+        });
+      }
+      const effect = effects.get(propertyKey);
+      const currentValue = modifierGroupValue(group, quality);
+      const baselineValue = modifierGroupValue(group, baseline);
+      if (modifier.additive) {
+        effect.currentAdditive += currentValue;
+        effect.baselineAdditive += baselineValue;
+        effect.hasAdditive = true;
+      } else {
+        effect.currentMultiplier *= currentValue;
+        effect.baselineMultiplier *= baselineValue;
+        effect.hasMultiplier = true;
+      }
+    });
+  });
+
+  effects.forEach((effect) => {
+    effect.ratio = effect.baselineMultiplier === 0 ? 1 : effect.currentMultiplier / effect.baselineMultiplier;
+    effect.additiveDelta = effect.currentAdditive - effect.baselineAdditive;
+  });
+  return effects;
+}
+
+function formatQualityValue(value, digits = 2, unit = "") {
+  const maximumFractionDigits = Math.max(0, Number(digits) || 0);
+  const text = new Intl.NumberFormat("zh-CN", {
+    maximumFractionDigits,
+    minimumFractionDigits: 0,
+  }).format(value);
+  return `${text}${unit ? ` ${unit}` : ""}`;
+}
+
+function signedQualityChange(value, suffix = "%") {
+  const rounded = Math.abs(value) < 0.005 ? 0 : value;
+  return `${rounded > 0 ? "+" : ""}${rounded.toFixed(2).replace(/\.00$/, "")}${suffix}`;
+}
+
+function qualityMetricValue(metric, effects) {
+  let value = Number(metric.value);
+  (metric.properties || []).forEach((propertyKey) => {
+    const effect = effects.get(propertyKey);
+    if (!effect) return;
+    if (effect.hasMultiplier) value *= effect.ratio;
+    if (effect.hasAdditive) value += effect.additiveDelta;
+  });
+  return value;
+}
+
+function renderQualitySummaryContent(record) {
+  const effects = aggregateQualityEffects(record);
+  const metrics = record.qualityStats || [];
+  const coveredProperties = new Set(metrics.flatMap((metric) => metric.properties || []));
+  const metricCards = metrics.map((metric) => {
+    const baseValue = Number(metric.value);
+    const finalValue = qualityMetricValue(metric, effects);
+    const percent = baseValue === 0 ? 0 : ((finalValue - baseValue) / Math.abs(baseValue)) * 100;
+    const changed = Math.abs(finalValue - baseValue) > 0.0005;
+    return `
+      <div class="quality-result-item${changed ? " changed" : ""}">
+        <strong>${escapeHtml(metric.label)}</strong>
+        <span class="quality-result-values">
+          <small>${escapeHtml(formatQualityValue(baseValue, metric.digits, metric.unit))}</small>
+          <i aria-hidden="true">→</i>
+          <b>${escapeHtml(formatQualityValue(finalValue, metric.digits, metric.unit))}</b>
+          <em>${escapeHtml(changed ? signedQualityChange(percent) : "无变化")}</em>
+        </span>
+      </div>
+    `;
+  });
+  const relativeCards = [...effects.values()]
+    .filter((effect) => !coveredProperties.has(effect.propertyKey))
+    .map((effect) => {
+      const change = effect.hasMultiplier ? (effect.ratio - 1) * 100 : effect.additiveDelta;
+      const changed = Math.abs(change) > 0.005;
+      const start = effect.hasMultiplier ? "100%" : "0";
+      const end = effect.hasMultiplier ? `${(effect.ratio * 100).toFixed(2).replace(/\.00$/, "")}%` : signedQualityChange(effect.additiveDelta, "");
+      return `
+        <div class="quality-result-item relative${changed ? " changed" : ""}">
+          <strong>${escapeHtml(effect.label)}</strong>
+          <span class="quality-result-values">
+            <small>${start}</small>
+            <i aria-hidden="true">→</i>
+            <b>${escapeHtml(end)}</b>
+            <em>${escapeHtml(changed ? signedQualityChange(change, effect.hasMultiplier ? "%" : "") : "无变化")}</em>
+          </span>
+        </div>
+      `;
+    });
+
+  return `<div class="quality-result-grid" data-quality-summary-content>${[...metricCards, ...relativeCards].join("")}</div>`;
+}
+
+function renderQualitySummary(record) {
+  if (!aggregateQualityEffects(record).size) return "";
+  return `
+    <section class="detail-section quality-result-section" data-quality-summary>
+      <div class="quality-result-heading">
+        <h3>成品品质效果</h3>
+        <span>Q500 标准</span>
+      </div>
+      ${renderQualitySummaryContent(record)}
+    </section>
   `;
 }
 
@@ -1107,6 +1262,8 @@ function bindEvents() {
     container.querySelector("output").textContent = `品质 ${formatNumber(quality)}`;
     const existing = container.querySelector(".quality-modifier-list");
     if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
+    const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
+    if (summary) summary.outerHTML = renderQualitySummaryContent(record);
   });
 }
 
@@ -1328,6 +1485,8 @@ function renderDetail() {
         ${componentClass ? `<span>${escapeHtml(componentClass)}</span>` : ""}
         <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
       </div>
+
+      ${renderQualitySummary(record)}
 
       <section class="detail-section">
         <h3>制作材料</h3>

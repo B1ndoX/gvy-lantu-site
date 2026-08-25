@@ -1131,6 +1131,94 @@ html[data-query-mode="dismantle"] .reset-button {
   font-weight: 840;
 }
 
+.quality-result-section {
+  padding: 8px 10px 9px;
+  border: 1px solid rgba(126, 221, 242, 0.2);
+  border-radius: 12px;
+  background: rgba(6, 24, 37, 0.42);
+}
+
+.quality-result-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.quality-result-heading h3 {
+  margin: 0;
+}
+
+.quality-result-heading > span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 21px;
+  padding: 0 7px;
+  border: 1px solid rgba(126, 221, 242, 0.22);
+  border-radius: 999px;
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 820;
+  white-space: nowrap;
+}
+
+.quality-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 18px;
+}
+
+.quality-result-item {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 27px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(17, 45, 61, 0.46);
+}
+
+.quality-result-item > strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 11px;
+  font-weight: 780;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.quality-result-values {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.quality-result-values small,
+.quality-result-values i,
+.quality-result-values em {
+  color: var(--muted);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.quality-result-values b {
+  color: var(--text-strong);
+  font-size: 11px;
+  font-weight: 840;
+}
+
+.quality-result-item.changed .quality-result-values b,
+.quality-result-item.changed .quality-result-values em {
+  color: var(--cyan);
+}
+
 .material-list,
 .source-list,
 .spec-grid,
@@ -1817,6 +1905,11 @@ html[data-query-mode="dismantle"] .reset-button {
 
   .spec-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quality-result-grid {
+    grid-template-columns: 1fr;
+    gap: 5px;
   }
 
   .dismantle-output-list {

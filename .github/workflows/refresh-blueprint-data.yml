@@ -46,6 +46,8 @@ jobs:
       - name: Refresh data if needed
         id: blueprint_refresh
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           if { [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; } || [ "${{ github.event.schedule }}" = "43 17 1,15 * *" ]; then
             python scripts/refresh_blueprint_data.py --force

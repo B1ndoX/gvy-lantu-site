@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import shutil
 import subprocess
@@ -261,6 +262,53 @@ def validate_index(path: Path, expected_version: str) -> None:
         raise RuntimeError("blueprint source counts do not match source missions")
     if int(localization.get("starCitizenLocalizationCount") or 0) < MIN_OFFICIAL_LOCALIZATION_COUNT:
         raise RuntimeError("official Star Citizen localization coverage is unexpectedly low")
+    quality_effects = index.get("qualityEffects")
+    if quality_effects:
+        quality_version = str(quality_effects.get("version") or "")
+        if quality_version.lower() != expected_version.lower():
+            raise RuntimeError(
+                f"quality base stats {quality_version} do not match blueprint version {expected_version}"
+            )
+        modifier_count = int(quality_effects.get("recordsWithModifiers") or 0)
+        matched_count = int(quality_effects.get("matchedItems") or 0)
+        base_count = int(quality_effects.get("recordsWithBaseStats") or 0)
+        if not (0 <= base_count <= matched_count <= modifier_count <= len(records)):
+            raise RuntimeError("quality coverage metadata is inconsistent")
+        actual_modifier_count = sum(
+            any(
+                slot.get("modifiers")
+                for slot in ((record.get("tiers") or [{}])[0].get("slots") or [])
+            )
+            for record in records
+        )
+        actual_base_count = sum(bool(record.get("qualityStats")) for record in records)
+        if actual_modifier_count != modifier_count or actual_base_count != base_count:
+            raise RuntimeError("quality coverage metadata does not match blueprint records")
+        if any(
+            isinstance(metric.get("value"), bool)
+            or not isinstance(metric.get("value"), (int, float))
+            or not math.isfinite(float(metric.get("value")))
+            for record in records
+            for metric in record.get("qualityStats") or []
+        ):
+            raise RuntimeError("quality base stats contain a non-numeric value")
+
+
+def quality_enrichment_is_current(index: dict[str, Any], version: str) -> bool:
+    metadata = index.get("qualityEffects") or {}
+    return str(metadata.get("version") or "").lower() == version.lower()
+
+
+def enrich_quality_stats(index_path: Path) -> bool:
+    return run(
+        [
+            sys.executable,
+            "scripts/enrich_quality_stats.py",
+            "--index",
+            str(index_path),
+        ],
+        allow_failure=True,
+    )
 
 
 def refresh(force: bool) -> bool:
@@ -275,6 +323,24 @@ def refresh(force: bool) -> bool:
         )
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
+        if not quality_enrichment_is_current(current, current_version):
+            with tempfile.TemporaryDirectory(prefix="gvy-lantu-quality-refresh-") as tmp_name:
+                candidate = Path(tmp_name) / "blueprint-index.json"
+                shutil.copy2(DATA_DIR / "blueprint-index.json", candidate)
+                if enrich_quality_stats(candidate):
+                    completed_at = datetime.now(timezone.utc)
+                    annotate_refresh_metadata(candidate, current_version, completed_at)
+                    validate_index(candidate, current_version)
+                    backup_current_data(current_version, completed_at)
+                    replace_if_exists(candidate, DATA_DIR / "blueprint-index.json")
+                    update_data_version(current_version, completed_at)
+                    print("SCMDB version unchanged; added version-matched quality base stats.")
+                    return True
+                print(
+                    "warning: version-matched quality base stats are not available yet; "
+                    "keeping relative quality effects and the existing LIVE cache",
+                    file=sys.stderr,
+                )
         if removed:
             print(f"SCMDB version unchanged; removed {removed} pipeline-only fields from the public index.")
         else:
@@ -303,6 +369,12 @@ def refresh(force: bool) -> bool:
                 latest_version,
             ]
         )
+        if not enrich_quality_stats(index_path):
+            print(
+                "warning: version-matched quality base stats are not available yet; "
+                "publishing the new LIVE blueprints with relative quality effects only",
+                file=sys.stderr,
+            )
         translate_args = [
             sys.executable,
             "scripts/translate_index_google.py",

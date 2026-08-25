@@ -67,6 +67,40 @@ class RefreshValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "coverage is unexpectedly low"):
             validate_index(self.write_index(payload), payload["version"])
 
+    def test_accepts_consistent_quality_metadata(self) -> None:
+        payload = self.valid_index()
+        payload["records"][0]["tiers"] = [{"slots": [{"modifiers": [{"propertyKey": "weapon_damage"}]}]}]
+        payload["records"][0]["qualityStats"] = [{"value": 10}]
+        payload["qualityEffects"] = {
+            "version": payload["version"].upper(),
+            "recordsWithModifiers": 1,
+            "matchedItems": 1,
+            "recordsWithBaseStats": 1,
+        }
+        validate_index(self.write_index(payload), payload["version"])
+
+    def test_rejects_cross_version_quality_metadata(self) -> None:
+        payload = self.valid_index()
+        payload["qualityEffects"] = {
+            "version": "4.9.1-LIVE.12399999",
+            "recordsWithModifiers": 0,
+            "matchedItems": 0,
+            "recordsWithBaseStats": 0,
+        }
+        with self.assertRaisesRegex(RuntimeError, "do not match blueprint version"):
+            validate_index(self.write_index(payload), payload["version"])
+
+    def test_rejects_quality_metadata_that_disagrees_with_records(self) -> None:
+        payload = self.valid_index()
+        payload["qualityEffects"] = {
+            "version": payload["version"],
+            "recordsWithModifiers": 1,
+            "matchedItems": 1,
+            "recordsWithBaseStats": 1,
+        }
+        with self.assertRaisesRegex(RuntimeError, "does not match blueprint records"):
+            validate_index(self.write_index(payload), payload["version"])
+
     def test_rejects_incomplete_flowcld_calibration(self) -> None:
         path = self.write_index({"itemCount": 40, "localizedCount": 20, "items": []})
         with self.assertRaisesRegex(RuntimeError, "coverage is too low"):

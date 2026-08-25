@@ -84,6 +84,8 @@ If a newer `LIVE` version exists, `scripts/refresh_blueprint_data.py` locks the 
 2. FlowCLD Chinese calibration
 3. Google Translate fallback cache
 
+The same staged build also attempts to attach compact base attributes from the community-maintained `StarCitizenWiki/scunpacked-data` item export. The source commit must declare the exact same `X.Y.Z-LIVE.build` version as the SCMDB blueprint index, and matching/base-stat coverage must pass minimum thresholds before those values are accepted. A temporary source outage or a lagging community release never blocks a newer verified LIVE blueprint release: the site publishes the SCMDB quality coefficients and relative effects first, then retries the version-matched base-stat enrichment on later six-hour runs. It never combines base attributes from one game build with quality coefficients from another.
+
 Before replacing data files, the script saves a local backup under `.data-backups/`.
 Local backups are retained for 14 days and are ignored by Git.
 In GitHub Actions, the backup folder is also uploaded as a workflow artifact with 14-day retention.
@@ -139,7 +141,11 @@ gh run list --workflow refresh-blueprint-data.yml --limit 12
 
 The `我的蓝图` filter is deliberately browser-local. A user can save or remove a blueprint with the detail-panel button; the saved IDs live in `localStorage` under `gvy-lantu-favorite-blueprints-v1`. There is no account, cloud profile, or cross-device synchronization, so the interface must never imply that a login is available or required.
 
-Each material card reads its slot's `modifiers` from the selected LIVE SCMDB crafting dataset and contains a compact quality slider plus the linearly interpolated property coefficient or additive adjustment. Quality is intentionally kept inside the corresponding material card rather than rendered as a separate section. It does not invent a final weapon/component stat, because the crafting source does not provide the complete base-stat model required for an exact aggregate calculation.
+Each material card reads its slot's `modifiers` from the selected LIVE SCMDB crafting dataset and contains a compact quality slider plus the active linearly interpolated property coefficient or additive adjustment. Multi-segment quality curves are grouped by property and only the segment containing the selected quality is evaluated. Values from separate material slots that affect the same multiplicative property are multiplied; additive properties are summed relative to Q500.
+
+The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version community item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
+
+Current 4.9.0 LIVE coverage is 1,540 blueprints with SCMDB quality modifiers, 1,530 exact item matches, and 1,508 blueprints with at least one compact base attribute. The remaining modifier-bearing records retain exact relative effects only. Known limitations are deliberate: recoil, damage mitigation, maximum tractor volume, and some newly introduced or unnamed items do not have a complete compact base panel; the preview models data values and cannot guarantee that the current in-game inventory UI displays every crafted adjustment correctly.
 
 Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 
