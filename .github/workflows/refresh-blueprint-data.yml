@@ -60,11 +60,6 @@ jobs:
         continue-on-error: true
         run: python scripts/refresh_mineral_locations.py
 
-      - name: Refresh mineral signals if needed
-        id: mineral_signals
-        continue-on-error: true
-        run: python scripts/refresh_mineral_signals.py
-
       - name: Validate production build
         run: |
           node --check assets/app.js
@@ -78,7 +73,7 @@ jobs:
             --commit "${{ github.sha }}" \
             --blueprint-outcome "${{ steps.blueprint_refresh.outcome }}" \
             --mineral-locations-outcome "${{ steps.mineral_locations.outcome }}" \
-            --mineral-signals-outcome "${{ steps.mineral_signals.outcome }}"
+            --mineral-signals-outcome "skipped"
 
       - name: Upload data backup
         uses: actions/upload-artifact@v7
@@ -141,7 +136,7 @@ jobs:
             --interval 15
 
       - name: Report refresh source failure
-        if: steps.blueprint_refresh.outcome == 'failure' || steps.mineral_locations.outcome == 'failure' || steps.mineral_signals.outcome == 'failure' || steps.production_health.outcome == 'failure' || steps.production_snapshot.outcome == 'failure'
+        if: steps.blueprint_refresh.outcome == 'failure' || steps.mineral_locations.outcome == 'failure' || steps.production_health.outcome == 'failure' || steps.production_snapshot.outcome == 'failure'
         run: |
           echo "A refresh source or production deployment failed. Existing verified data was preserved or restored."
           exit 1

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import re
 import shutil
@@ -72,8 +73,6 @@ def fetch_source_html(attempts: int = 3) -> str:
 
 def parse_signal_definitions(html: str) -> tuple[str, dict[str, dict[str, int]]]:
     version_match = re.search(r"RADAR\s+SIGNATURES\s+([0-9]+(?:\.[0-9]+)+)", html, flags=re.IGNORECASE)
-    if not version_match:
-        raise RuntimeError("mineral signal source has no version label")
 
     collector = ScriptCollector()
     collector.feed(html)
@@ -109,7 +108,13 @@ def parse_signal_definitions(html: str) -> tuple[str, dict[str, dict[str, int]]]
     missing = sorted(REQUIRED_MATERIALS - definitions.keys())
     if missing:
         raise RuntimeError(f"mineral signal source is missing required materials: {', '.join(missing)}")
-    return version_match.group(1), definitions
+
+    if version_match:
+        source_revision = version_match.group(1)
+    else:
+        normalized = json.dumps(definitions, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+        source_revision = f"content-{hashlib.sha256(normalized.encode('utf-8')).hexdigest()[:12]}"
+    return source_revision, definitions
 
 
 def expected_values(definition: dict[str, int]) -> list[int]:

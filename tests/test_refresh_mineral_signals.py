@@ -36,13 +36,14 @@ SOURCE_NAMES = [
 ]
 
 
-def source_html() -> str:
+def source_html(*, include_version: bool = True, base_offset: int = 0) -> str:
     rows = []
     for index, name in enumerate(SOURCE_NAMES):
-        rows.append(f"{{ name: '{name}', rs: {3170 + index * 15}, maxCluster: 5 }}")
+        rows.append(f"{{ name: '{name}', rs: {3170 + base_offset + index * 15}, maxCluster: 5 }}")
     rows.append("{ name: 'ROC Mineables', rs: 4000, maxCluster: 999, searchOnly: true }")
+    heading = "<div>RADAR SIGNATURES 4.9</div>" if include_version else "<div>Radar Signatures</div>"
     return f"""
-      <div>RADAR SIGNATURES 4.9</div>
+      {heading}
       <script>
       const RADAR_DATA = [
         {','.join(rows)}
@@ -58,6 +59,16 @@ class MineralSignalRefreshTests(unittest.TestCase):
         self.assertIn("Quantainium", definitions)
         self.assertNotIn("Quantanium", definitions)
         self.assertNotIn("ROC Mineables", definitions)
+
+    def test_parser_uses_stable_content_revision_when_version_label_is_missing(self):
+        revision, definitions = parse_signal_definitions(source_html(include_version=False))
+        repeated_revision, _ = parse_signal_definitions(source_html(include_version=False))
+        changed_revision, _ = parse_signal_definitions(source_html(include_version=False, base_offset=1))
+
+        self.assertRegex(revision, r"^content-[0-9a-f]{12}$")
+        self.assertEqual(revision, repeated_revision)
+        self.assertNotEqual(revision, changed_revision)
+        self.assertIn("Quantainium", definitions)
 
     def test_parser_rejects_incomplete_source(self):
         with self.assertRaisesRegex(RuntimeError, "only 1 definitions"):
