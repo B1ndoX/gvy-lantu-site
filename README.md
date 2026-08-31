@@ -12,7 +12,7 @@ Official fleet website content belongs in the separate `gvy-official-site` proje
 
 - This repository contains only the GVY blueprint query site.
 - The production domain is `https://lantu.gvyvoyagers.vip`.
-- The "GVY 主页" link must point to `https://www.gvyvoyagers.vip`.
+- The public fleet name is `星远舰队`; the "星远舰队" link must point to `https://www.gvyvoyagers.vip`.
 - The adjacent "维科洛查询" link must point to `https://wikelo.gvyvoyagers.vip`.
 - Do not modify or publish the fleet official site from this repository.
 - Do not use `blueprint-site` as a production directory.
@@ -66,7 +66,7 @@ The project deliberately has no runtime npm dependencies. EdgeOne uses its suppo
 
 After every automated data deployment, `scripts/check_production_health.py` polls the formal domain for up to 15 minutes. Runs with no repository change still perform an immediate production snapshot check, so an EdgeOne outage, stale deployment, or corrupted public payload cannot remain silently green between data releases. Updated and unchanged deployments are verified through the exact versioned CSS, JavaScript, compressed JSON, and uncompressed JSON URLs used by browsers. The checker requires the deployed asset fingerprints and embedded data revision to match the final repository checkout, verifies that the public blueprint payload is stable `LIVE`, compares its complete semantic hash with the committed payload, and performs the same complete comparison plus coverage checks for mineral locations and signals. If an automated refresh commit does not become healthy, the workflow reverts that exact machine commit, pushes the previous verified snapshot, and waits for production recovery. It never automatically reverts an unrelated manual commit. A successful Git push alone is not proof that production deployment has completed.
 
-For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `GVY 主页` and `维科洛查询` destinations.
+For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `星远舰队` and `维科洛查询` destinations.
 
 ## Data Refresh
 
