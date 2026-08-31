@@ -2,11 +2,300 @@
   "source": "https://flowcld.xyz/tools/blueprint",
   "endpoint": "https://flowcld.xyz/app-api/product/blueprint/page",
   "language": "CN",
-  "fetchedAt": "2026-08-26T20:02:11.916992+00:00",
-  "totalReported": 1594,
-  "itemCount": 1594,
-  "localizedCount": 1557,
+  "fetchedAt": "2026-08-31T22:48:53.616635+00:00",
+  "totalReported": 1604,
+  "itemCount": 1604,
+  "localizedCount": 1572,
   "items": [
+    {
+      "recordGuid": "6f0487ce-1696-4b62-abb4-587d30d0e6da",
+      "internalName": "nozzle_fuelgiver_grin_nozzlefast",
+      "blueprintName": "Nozzle Fuelgiver Grin Nozzlefast",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 63,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Refueling",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Refueling",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "990aa98f-0674-466f-9875-113d414d690b",
+      "internalName": "nozzle_fuelgiver_grin_nozzlesecure",
+      "blueprintName": "Nozzle Fuelgiver Grin Nozzlesecure",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 62,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Mercenary",
+        "Refueling",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵",
+        "Refueling",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "dbe5c153-2149-4843-9b03-297f3e66d092",
+      "internalName": "nozzle_fuelgiver_grin_nozzleveryfast",
+      "blueprintName": "Nozzle Fuelgiver Grin Nozzleveryfast",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 63,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Refueling",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Refueling",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "96566b51-4fed-4711-ae6e-9565f54a1ffa",
+      "internalName": "nozzle_fuelgiver_grin_nozzleverysecure",
+      "blueprintName": "Nozzle Fuelgiver Grin Nozzleverysecure",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 63,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Investigation",
+        "Mercenary",
+        "Refueling",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "调查",
+        "雇佣兵",
+        "Refueling",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "6d1117b4-6bc0-4279-acfc-a675da2dad3d",
+      "internalName": "nozzle_fuelgiver_misc_nozzlestandard",
+      "blueprintName": "Nozzle Fuelgiver Misc Nozzlestandard",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 62,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Mercenary",
+        "Refueling",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵",
+        "Refueling",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "40e0d74b-2449-4102-a856-514c4c62400b",
+      "internalName": "nozzle_fuelgiver_shin_nozzleexpensivefast",
+      "blueprintName": "Nozzle Fuelgiver Shin Nozzleexpensivefast",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 57,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Refueling"
+      ],
+      "rewardMissionTypesCn": [
+        "Refueling"
+      ]
+    },
+    {
+      "recordGuid": "52d84acb-6817-4fed-8741-e85ddba302cc",
+      "internalName": "nozzle_fuelgiver_shin_nozzleexpensivesecure",
+      "blueprintName": "Nozzle Fuelgiver Shin Nozzleexpensivesecure",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 57,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Refueling"
+      ],
+      "rewardMissionTypesCn": [
+        "Refueling"
+      ]
+    },
+    {
+      "recordGuid": "ff1d331e-dfb1-4864-8755-cbf187be5ae3",
+      "internalName": "nozzle_fuelgiver_shin_nozzlemostexpensive",
+      "blueprintName": "Nozzle Fuelgiver Shin Nozzlemostexpensive",
+      "categoryName": "Components",
+      "subcategory": "refuelling",
+      "manufacturer": "nozzle",
+      "isReward": true,
+      "rewardMissionCount": 57,
+      "craftTimeSeconds": 230,
+      "rewardMissionTypes": [
+        "Refueling"
+      ],
+      "rewardMissionTypesCn": [
+        "Refueling"
+      ]
+    },
+    {
+      "recordGuid": "4e834db6-9b0e-461a-8465-ec90847bd7e5",
+      "internalName": "salvage_modifier_scraper_large",
+      "blueprintName": "Salvage Modifier Scraper Large",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 27,
+      "craftTimeSeconds": 300,
+      "rewardMissionTypes": [
+        "Collection",
+        "Salvage"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "Salvage"
+      ]
+    },
+    {
+      "recordGuid": "22782818-beab-4e09-90c4-306c17192c06",
+      "internalName": "salvage_modifier_scraper_medium",
+      "blueprintName": "Salvage Modifier Scraper Medium",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "f35d8068-b232-43d5-a8bb-744a1295c79c",
+      "internalName": "salvage_modifier_scraper_salvation_medium",
+      "blueprintName": "Salvage Modifier Scraper Salvation Medium",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "b4160c11-75f9-4699-8aab-7b21abf75bc6",
+      "internalName": "salvage_modifier_scraper_salvation_small",
+      "blueprintName": "Salvage Modifier Scraper Salvation Small",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 180,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
+      "recordGuid": "57a536c1-cd88-4b2c-8fab-5b871fffa458",
+      "internalName": "salvage_modifier_scraper_small",
+      "blueprintName": "Salvage Modifier Scraper Small",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 180,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
     {
       "recordGuid": "a97e0f32-9098-4b83-a54a-ddccc4820fd6",
       "internalName": "grin_tractorbeam_s1",
@@ -91,306 +380,6 @@
       "craftTimeSeconds": 420
     },
     {
-      "recordGuid": "9a1c4693-322a-4f64-9a34-88ab9140f63a",
-      "internalName": "wep_tractorbeam_s3_utility_2",
-      "blueprintName": "Wep Tractorbeam S3 Utility",
-      "categoryName": "Components",
-      "subcategory": "tractorbeam",
-      "manufacturer": "wep",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 540
-    },
-    {
-      "recordGuid": "6f0487ce-1696-4b62-abb4-587d30d0e6da",
-      "internalName": "nozzle_fuelgiver_grin_nozzlefast",
-      "blueprintName": "Nozzle Fuelgiver Grin Nozzlefast",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 29,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Refueling",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Refueling",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "990aa98f-0674-466f-9875-113d414d690b",
-      "internalName": "nozzle_fuelgiver_grin_nozzlesecure",
-      "blueprintName": "Nozzle Fuelgiver Grin Nozzlesecure",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 29,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Mercenary",
-        "Refueling",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵",
-        "Refueling",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "dbe5c153-2149-4843-9b03-297f3e66d092",
-      "internalName": "nozzle_fuelgiver_grin_nozzleveryfast",
-      "blueprintName": "Nozzle Fuelgiver Grin Nozzleveryfast",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 29,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Refueling",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Refueling",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "96566b51-4fed-4711-ae6e-9565f54a1ffa",
-      "internalName": "nozzle_fuelgiver_grin_nozzleverysecure",
-      "blueprintName": "Nozzle Fuelgiver Grin Nozzleverysecure",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 29,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Investigation",
-        "Mercenary",
-        "Refueling",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "调查",
-        "雇佣兵",
-        "Refueling",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "6d1117b4-6bc0-4279-acfc-a675da2dad3d",
-      "internalName": "nozzle_fuelgiver_misc_nozzlestandard",
-      "blueprintName": "Nozzle Fuelgiver Misc Nozzlestandard",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 29,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Mercenary",
-        "Refueling",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵",
-        "Refueling",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "40e0d74b-2449-4102-a856-514c4c62400b",
-      "internalName": "nozzle_fuelgiver_shin_nozzleexpensivefast",
-      "blueprintName": "Nozzle Fuelgiver Shin Nozzleexpensivefast",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 21,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Refueling"
-      ],
-      "rewardMissionTypesCn": [
-        "Refueling"
-      ]
-    },
-    {
-      "recordGuid": "52d84acb-6817-4fed-8741-e85ddba302cc",
-      "internalName": "nozzle_fuelgiver_shin_nozzleexpensivesecure",
-      "blueprintName": "Nozzle Fuelgiver Shin Nozzleexpensivesecure",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 21,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Refueling"
-      ],
-      "rewardMissionTypesCn": [
-        "Refueling"
-      ]
-    },
-    {
-      "recordGuid": "ff1d331e-dfb1-4864-8755-cbf187be5ae3",
-      "internalName": "nozzle_fuelgiver_shin_nozzlemostexpensive",
-      "blueprintName": "Nozzle Fuelgiver Shin Nozzlemostexpensive",
-      "categoryName": "Components",
-      "subcategory": "refuelling",
-      "manufacturer": "nozzle",
-      "isReward": true,
-      "rewardMissionCount": 21,
-      "craftTimeSeconds": 230,
-      "rewardMissionTypes": [
-        "Refueling"
-      ],
-      "rewardMissionTypesCn": [
-        "Refueling"
-      ]
-    },
-    {
-      "recordGuid": "4e834db6-9b0e-461a-8465-ec90847bd7e5",
-      "internalName": "salvage_modifier_scraper_large",
-      "blueprintName": "Salvage Modifier Scraper Large",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 27,
-      "craftTimeSeconds": 300,
-      "rewardMissionTypes": [
-        "Collection",
-        "Salvage"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "Salvage"
-      ]
-    },
-    {
-      "recordGuid": "22782818-beab-4e09-90c4-306c17192c06",
-      "internalName": "salvage_modifier_scraper_medium",
-      "blueprintName": "Salvage Modifier Scraper Medium",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 40,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "f35d8068-b232-43d5-a8bb-744a1295c79c",
-      "internalName": "salvage_modifier_scraper_salvation_medium",
-      "blueprintName": "Salvage Modifier Scraper Salvation Medium",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 40,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "b4160c11-75f9-4699-8aab-7b21abf75bc6",
-      "internalName": "salvage_modifier_scraper_salvation_small",
-      "blueprintName": "Salvage Modifier Scraper Salvation Small",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 40,
-      "craftTimeSeconds": 180,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "57a536c1-cd88-4b2c-8fab-5b871fffa458",
-      "internalName": "salvage_modifier_scraper_small",
-      "blueprintName": "Salvage Modifier Scraper Small",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 40,
-      "craftTimeSeconds": 180,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
       "recordGuid": "39e6a987-6b8f-4a75-95da-945522219147",
       "internalName": "wep_tractorbeam_s2_utility_1",
       "blueprintName": "Wep Tractorbeam S2 Utility",
@@ -406,6 +395,28 @@
       "rewardMissionTypesCn": [
         "其他"
       ]
+    },
+    {
+      "recordGuid": "a5874efc-ac6d-4832-9359-edaa39d224dd",
+      "internalName": "wep_tractorbeam_s2_utility_2",
+      "blueprintName": "Wep Tractorbeam S2 Utility",
+      "categoryName": "Components",
+      "subcategory": "tractorbeam",
+      "manufacturer": "wep",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 420
+    },
+    {
+      "recordGuid": "14ef0bfc-2c60-41d4-a2b7-36bb43027816",
+      "internalName": "wep_tractorbeam_s3_military_1",
+      "blueprintName": "Wep Tractorbeam S3 Military",
+      "categoryName": "Components",
+      "subcategory": "tractorbeam",
+      "manufacturer": "wep",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 540
     },
     {
       "recordGuid": "a0060a30-6f2e-4fdc-ba5f-ef03c067412c",
@@ -425,26 +436,15 @@
       ]
     },
     {
-      "recordGuid": "14ef0bfc-2c60-41d4-a2b7-36bb43027816",
-      "internalName": "wep_tractorbeam_s3_military_1",
-      "blueprintName": "Wep Tractorbeam S3 Military",
+      "recordGuid": "9a1c4693-322a-4f64-9a34-88ab9140f63a",
+      "internalName": "wep_tractorbeam_s3_utility_2",
+      "blueprintName": "Wep Tractorbeam S3 Utility",
       "categoryName": "Components",
       "subcategory": "tractorbeam",
       "manufacturer": "wep",
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 540
-    },
-    {
-      "recordGuid": "a5874efc-ac6d-4832-9359-edaa39d224dd",
-      "internalName": "wep_tractorbeam_s2_utility_2",
-      "blueprintName": "Wep Tractorbeam S2 Utility",
-      "categoryName": "Components",
-      "subcategory": "tractorbeam",
-      "manufacturer": "wep",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 420
     },
     {
       "recordGuid": "093d67a2-c4d2-4141-9b9e-8dd9978e96b2",
@@ -537,88 +537,6 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 1020
-    },
-    {
-      "recordGuid": "3ac19a05-1b4c-4c10-bfd4-78b8a44a59be",
-      "internalName": "cds_undersuit_01_02_02",
-      "blueprintName": "Cds Undersuit",
-      "categoryName": "FPSArmours",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 90,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "82cec6d6-7716-4318-bd49-39002e5dfa96",
-      "internalName": "cds_combat_superheavy_backpack_01_03_01",
-      "blueprintName": "Cds Combat Superheavy Backpack",
-      "categoryName": "FPSArmours",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 210,
-      "rewardMissionTypes": [
-        "Collection"
-      ],
-      "rewardMissionTypesCn": [
-        "采集"
-      ]
-    },
-    {
-      "recordGuid": "c2bc06a3-5e08-47a2-b27b-dc8b9da187c0",
-      "internalName": "cds_combat_superheavy_helmet_01_03_01",
-      "blueprintName": "Cds Combat Superheavy Helmet",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 210,
-      "rewardMissionTypes": [
-        "Collection"
-      ],
-      "rewardMissionTypesCn": [
-        "采集"
-      ]
-    },
-    {
-      "recordGuid": "eaa1307a-211a-4927-9af2-41296a1e8c4e",
-      "internalName": "cds_combat_superheavy_suit_01_03_01",
-      "blueprintName": "Cds Combat Superheavy Suit",
-      "categoryName": "FPSArmours",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 1,
-      "craftTimeSeconds": 210,
-      "rewardMissionTypes": [
-        "Collection"
-      ],
-      "rewardMissionTypesCn": [
-        "采集"
-      ]
-    },
-    {
-      "recordGuid": "b7c1c3e2-7c74-4219-830c-7a75c4d13f80",
-      "internalName": "cds_combat_heavy_helmet_01_02_02",
-      "blueprintName": "Cds Combat Heavy Helmet",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "cds",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
     },
     {
       "recordGuid": "b04aff42-d892-4ca9-991e-101c869a7caa",
@@ -1845,6 +1763,24 @@
       "craftTimeSeconds": 240
     },
     {
+      "recordGuid": "b7c1c3e2-7c74-4219-830c-7a75c4d13f80",
+      "internalName": "cds_combat_heavy_helmet_01_02_02",
+      "blueprintName": "ADP-mk4 Helmet SecondWind",
+      "blueprintNameCn": "ADP-mk4 头盔 回生之息",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "33c91dc9-c6fe-4f38-ac17-4e5ebefcc7b9",
       "internalName": "cds_armor_heavy_helmet_01_01_01",
       "blueprintName": "ADP-mk4 Helmet Woodland",
@@ -2079,6 +2015,24 @@
       ]
     },
     {
+      "recordGuid": "c2bc06a3-5e08-47a2-b27b-dc8b9da187c0",
+      "internalName": "cds_combat_superheavy_helmet_01_03_01",
+      "blueprintName": "BUL-H4 Helmet Snow Camo",
+      "blueprintNameCn": "BUL-H4 头盔 雪地迷彩",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 210,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
       "recordGuid": "305aeac5-543f-463e-b2ae-f04a9cdbef8c",
       "internalName": "cds_combat_superheavy_suit_01_01_01",
       "blueprintName": "BUL-H4 Armor",
@@ -2093,6 +2047,23 @@
       ],
       "rewardMissionTypesCn": [
         "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "eaa1307a-211a-4927-9af2-41296a1e8c4e",
+      "internalName": "cds_combat_superheavy_suit_01_03_01",
+      "blueprintName": "BUL-H4 Armor Snow Camo",
+      "blueprintNameCn": "BUL-H4 护甲 雪地迷彩",
+      "categoryName": "FPSArmours",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 210,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
       ]
     },
     {
@@ -2440,7 +2411,7 @@
       "subcategory": "laser",
       "manufacturer": "klwe",
       "isReward": true,
-      "rewardMissionCount": 13,
+      "rewardMissionCount": 11,
       "craftTimeSeconds": 540,
       "rewardMissionTypes": [
         "Delivery",
@@ -2484,7 +2455,7 @@
       "subcategory": "laser",
       "manufacturer": "klwe",
       "isReward": true,
-      "rewardMissionCount": 13,
+      "rewardMissionCount": 11,
       "craftTimeSeconds": 960,
       "rewardMissionTypes": [
         "Delivery",
@@ -2528,7 +2499,7 @@
       "subcategory": "laser",
       "manufacturer": "klwe",
       "isReward": true,
-      "rewardMissionCount": 13,
+      "rewardMissionCount": 11,
       "craftTimeSeconds": 1680,
       "rewardMissionTypes": [
         "Delivery",
@@ -2883,6 +2854,23 @@
       "isReward": true,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 120,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
+      "recordGuid": "3ac19a05-1b4c-4c10-bfd4-78b8a44a59be",
+      "internalName": "cds_undersuit_01_02_02",
+      "blueprintName": "FBL-8u Undersuit SecondWind",
+      "blueprintNameCn": "FBL-8u 基底服 回生之息",
+      "categoryName": "FPSArmours",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 90,
       "rewardMissionTypes": [
         "Other"
       ],
@@ -3397,6 +3385,23 @@
       ],
       "rewardMissionTypesCn": [
         "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "82cec6d6-7716-4318-bd49-39002e5dfa96",
+      "internalName": "cds_combat_superheavy_backpack_01_03_01",
+      "blueprintName": "H4-PBF Ammo Carrier Snow Camo",
+      "blueprintNameCn": "H4-PBF 弹药携行具 雪地迷彩",
+      "categoryName": "FPSArmours",
+      "manufacturer": "cds",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 210,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
       ]
     },
     {
@@ -6428,7 +6433,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 60,
+      "rewardMissionCount": 57,
       "craftTimeSeconds": 240,
       "rewardMissionTypes": [
         "Collection",
@@ -6450,7 +6455,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 60,
+      "rewardMissionCount": 58,
       "craftTimeSeconds": 240,
       "rewardMissionTypes": [
         "Collection",
@@ -7712,7 +7717,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 109,
+      "rewardMissionCount": 107,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -8033,7 +8038,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 109,
+      "rewardMissionCount": 107,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -8119,6 +8124,24 @@
       ]
     },
     {
+      "recordGuid": "ef5d60fc-37a2-47c2-a958-d788d6cb7fcb",
+      "internalName": "mining_modules_active_clearcut",
+      "blueprintName": "Clearcut Module",
+      "blueprintNameCn": "净采 模组",
+      "categoryName": "Components",
+      "subcategory": "mininglaser",
+      "manufacturer": "mining",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "Battaglia"
+      ],
+      "rewardMissionTypesCn": [
+        "Battaglia"
+      ]
+    },
+    {
       "recordGuid": "7f553855-0712-42cc-8d2a-1bc301b63ea4",
       "internalName": "cool_wcpr_s00_kelvid_scitem",
       "blueprintName": "Kelvid",
@@ -8167,7 +8190,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 109,
+      "rewardMissionCount": 107,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -8646,7 +8669,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 60,
+      "rewardMissionCount": 57,
       "craftTimeSeconds": 240,
       "rewardMissionTypes": [
         "Collection",
@@ -8800,6 +8823,17 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 660
+    },
+    {
+      "recordGuid": "8378085b-f334-4c8e-934f-dde839c8714b",
+      "internalName": "cargo_shipmining_pod_mole",
+      "blueprintName": "Argo Ore Pod",
+      "blueprintNameCn": "南船座 矿石吊舱 (鼹鼠飞船)",
+      "categoryName": "Components",
+      "manufacturer": "cargo",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 95
     },
     {
       "recordGuid": "ac477c55-78c8-4f7b-acc8-b9b6a6df2837",
@@ -10045,24 +10079,6 @@
       ]
     },
     {
-      "recordGuid": "2487dc3a-6a2e-4071-a165-f140d0c8b20d",
-      "internalName": "qrt_specialist_heavy_helmet_01_01_12",
-      "blueprintName": "Antium Core Jet",
-      "blueprintNameCn": "安腾 头盔 乌玉",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "qrt",
-      "isReward": true,
-      "rewardMissionCount": 12,
-      "craftTimeSeconds": 270,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
       "recordGuid": "0b0a3761-23b6-459c-94ca-992c5464e258",
       "internalName": "qrt_specialist_heavy_helmet_01_03_01",
       "blueprintName": "Antium Helmet Midnight Sun",
@@ -10083,7 +10099,7 @@
       "subcategory": "helmet",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10123,7 +10139,7 @@
       "subcategory": "helmet",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10211,7 +10227,7 @@
       "subcategory": "core",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10251,7 +10267,7 @@
       "subcategory": "core",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10339,7 +10355,7 @@
       "subcategory": "legs",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10379,7 +10395,7 @@
       "subcategory": "legs",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10485,7 +10501,7 @@
       "subcategory": "arms",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -10517,15 +10533,33 @@
       ]
     },
     {
+      "recordGuid": "2487dc3a-6a2e-4071-a165-f140d0c8b20d",
+      "internalName": "qrt_specialist_heavy_helmet_01_01_12",
+      "blueprintName": "Antium Helmet Jet",
+      "blueprintNameCn": "安藤 头盔 乌玉",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "qrt",
+      "isReward": true,
+      "rewardMissionCount": 12,
+      "craftTimeSeconds": 270,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
       "recordGuid": "cdd236fa-56b9-4913-90cf-be7f4e6ca5a7",
       "internalName": "qrt_specialist_heavy_arms_01_01_13",
-      "blueprintName": "Antium Helmet Jet",
-      "blueprintNameCn": "安藤 臂甲 乌玉",
+      "blueprintName": "Antium Arms Maroon",
+      "blueprintNameCn": "安藤 臂甲 栗红",
       "categoryName": "FPSArmours",
       "subcategory": "arms",
       "manufacturer": "qrt",
       "isReward": true,
-      "rewardMissionCount": 18,
+      "rewardMissionCount": 28,
       "craftTimeSeconds": 270,
       "rewardMissionTypes": [
         "Bounty Hunter",
@@ -11843,7 +11877,7 @@
       "subcategory": "helmet",
       "manufacturer": "fta",
       "isReward": true,
-      "rewardMissionCount": 8,
+      "rewardMissionCount": 6,
       "craftTimeSeconds": 200,
       "rewardMissionTypes": [
         "Investigation",
@@ -11977,7 +12011,7 @@
       "categoryName": "FPSArmours",
       "manufacturer": "grin",
       "isReward": true,
-      "rewardMissionCount": 8,
+      "rewardMissionCount": 6,
       "craftTimeSeconds": 90,
       "rewardMissionTypes": [
         "Investigation",
@@ -12017,7 +12051,7 @@
       "subcategory": "core",
       "manufacturer": "grin",
       "isReward": true,
-      "rewardMissionCount": 8,
+      "rewardMissionCount": 6,
       "craftTimeSeconds": 200,
       "rewardMissionTypes": [
         "Investigation",
@@ -12105,7 +12139,7 @@
       "subcategory": "legs",
       "manufacturer": "grin",
       "isReward": true,
-      "rewardMissionCount": 8,
+      "rewardMissionCount": 6,
       "craftTimeSeconds": 200,
       "rewardMissionTypes": [
         "Investigation",
@@ -12193,7 +12227,7 @@
       "subcategory": "arms",
       "manufacturer": "grin",
       "isReward": true,
-      "rewardMissionCount": 8,
+      "rewardMissionCount": 6,
       "craftTimeSeconds": 200,
       "rewardMissionTypes": [
         "Investigation",
@@ -14082,6 +14116,17 @@
       "craftTimeSeconds": 10
     },
     {
+      "recordGuid": "19b32f89-8ea6-4338-8410-fd219fc0a8b8",
+      "internalName": "cargo_shipmining_pod_golem",
+      "blueprintName": "Drake Ore Pod",
+      "blueprintNameCn": "德雷克 矿石吊舱",
+      "categoryName": "Components",
+      "manufacturer": "cargo",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 95
+    },
+    {
       "recordGuid": "389088f8-c2ae-48d0-bf8c-0b0024b01744",
       "internalName": "shld_asas_s02_sheut_scitem",
       "blueprintName": "Sheut",
@@ -15756,6 +15801,40 @@
       ]
     },
     {
+      "recordGuid": "c2d44927-b79d-4d43-b46e-274d16cf6b2d",
+      "internalName": "cargo_shipmining_pod_moleprospector_btgl",
+      "blueprintName": "MISC Enhanced Ore Pod",
+      "blueprintNameCn": "武藏 增强型 矿石吊舱 (鼹鼠飞船)",
+      "categoryName": "Components",
+      "manufacturer": "cargo",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "local"
+      ],
+      "rewardMissionTypesCn": [
+        "local"
+      ]
+    },
+    {
+      "recordGuid": "8d811596-73c2-4baf-b5cc-eb0235adee58",
+      "internalName": "cargo_shipmining_pod_prospector",
+      "blueprintName": "MISC Ore Pod",
+      "blueprintNameCn": "武藏 矿石吊舱 (勘探者飞船)",
+      "categoryName": "Components",
+      "manufacturer": "cargo",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "950e8099-037e-4d73-86fe-6266a08b02d1",
       "internalName": "none_shotgun_ballistic_01",
       "blueprintName": "Deadrig Shotgun",
@@ -16123,6 +16202,42 @@
       "craftTimeSeconds": 660
     },
     {
+      "recordGuid": "69b3ab1d-034c-4432-b8fb-099f19a3680d",
+      "internalName": "mining_modules_passive_deluge",
+      "blueprintName": "Deluge Module",
+      "blueprintNameCn": "洪暴 模组",
+      "categoryName": "Components",
+      "subcategory": "mininglaser",
+      "manufacturer": "mining",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "local"
+      ],
+      "rewardMissionTypesCn": [
+        "local"
+      ]
+    },
+    {
+      "recordGuid": "38f9d428-75dd-4fcd-834c-c4ff876c9b3f",
+      "internalName": "mining_modules_passive_torrent_mk3",
+      "blueprintName": "Torrent III Module",
+      "blueprintNameCn": "洪流III 模组",
+      "categoryName": "Components",
+      "subcategory": "mininglaser",
+      "manufacturer": "mining",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "8d09eac2-30e7-4787-b9d0-0ddf270c7dbd",
       "internalName": "powr_lplt_s01_zapjet_scitem",
       "blueprintName": "ZapJet",
@@ -16451,6 +16566,24 @@
       ],
       "rewardMissionTypesCn": [
         "调查"
+      ]
+    },
+    {
+      "recordGuid": "f32efc4e-4ed6-4f26-b774-58cf754bfe27",
+      "internalName": "mining_modules_active_stampede",
+      "blueprintName": "Stampede Module",
+      "blueprintNameCn": "热潮 模组",
+      "categoryName": "Components",
+      "subcategory": "mininglaser",
+      "manufacturer": "mining",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
       ]
     },
     {
@@ -17853,7 +17986,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 104,
+      "rewardMissionCount": 102,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -20731,7 +20864,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 109,
+      "rewardMissionCount": 107,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -21406,6 +21539,24 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 1740
+    },
+    {
+      "recordGuid": "8c60d61b-9c97-4f85-b41a-aa0d7960dfbf",
+      "internalName": "mining_modules_passive_overrun",
+      "blueprintName": "Overrun Module",
+      "blueprintNameCn": "超限 模组",
+      "categoryName": "Components",
+      "subcategory": "mininglaser",
+      "manufacturer": "mining",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "local"
+      ],
+      "rewardMissionTypesCn": [
+        "local"
+      ]
     },
     {
       "recordGuid": "2783ac7f-337e-4998-b77e-f8004bdb498f",
@@ -23021,7 +23172,7 @@
       "subcategory": "mininglaser",
       "manufacturer": "mining",
       "isReward": true,
-      "rewardMissionCount": 109,
+      "rewardMissionCount": 107,
       "craftTimeSeconds": 300,
       "rewardMissionTypes": [
         "Collection",
@@ -23654,6 +23805,23 @@
       ],
       "rewardMissionTypesCn": [
         "赏金猎人"
+      ]
+    },
+    {
+      "recordGuid": "dc671104-f50a-41df-b922-e4d529c6ced7",
+      "internalName": "cargo_shipmining_pod_golem_btgl",
+      "blueprintName": "GOLEM MC-4 Ore Pod",
+      "blueprintNameCn": "魔像 MC-4 矿石吊舱",
+      "categoryName": "Components",
+      "manufacturer": "cargo",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 95,
+      "rewardMissionTypes": [
+        "local"
+      ],
+      "rewardMissionTypesCn": [
+        "local"
       ]
     },
     {
