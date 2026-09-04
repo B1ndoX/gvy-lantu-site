@@ -12,7 +12,7 @@ Official fleet website content belongs in the separate `gvy-official-site` proje
 
 - This repository contains only the GVY blueprint query site.
 - The production domain is `https://lantu.gvyvoyagers.vip`.
-- The public fleet name is `星远舰队`; the "星远舰队" link must point to `https://www.gvyvoyagers.vip`.
+- The formal fleet name and logo lockup use `星远`; the public-facing "星远舰队" link must point to `https://www.gvyvoyagers.vip`.
 - The adjacent "维科洛查询" link must point to `https://wikelo.gvyvoyagers.vip`.
 - Do not modify or publish the fleet official site from this repository.
 - Do not use `blueprint-site` as a production directory.
