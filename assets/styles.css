@@ -816,13 +816,13 @@ html[data-query-mode="dismantle"] .reset-button {
 .footer-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   flex: 0 0 auto;
 }
 
 .footer-brand img {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
