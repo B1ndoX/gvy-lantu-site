@@ -1746,9 +1746,18 @@ html[data-query-mode="dismantle"] .reset-button {
 }
 
 .mineral-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
   padding: 12px 18px 14px;
   border-top: 1px solid rgba(126, 221, 242, 0.18);
   color: var(--muted);
+}
+
+.mineral-author {
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .source-missions {

@@ -737,7 +737,8 @@ function renderMineralInfo(name) {
           ${renderMineralLocationGroups(info)}
         </div>
         <footer class="mineral-source">
-          更新时间 ${escapeHtml(updatedAt)}
+          <span>更新时间 ${escapeHtml(updatedAt)}</span>
+          <span class="mineral-author">制作：Ayuan</span>
         </footer>
       </section>
     </div>

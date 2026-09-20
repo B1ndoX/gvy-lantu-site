@@ -8,6 +8,14 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_creator_credit_is_consistent(self) -> None:
+        homepage = (ROOT / "index.html").read_text(encoding="utf-8")
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('<span class="author-line">制作：Ayuan</span>', homepage)
+        self.assertIn('<span class="mineral-author">制作：Ayuan</span>', app)
+        for text in (homepage, app):
+            self.assertNotIn("by: A Yuan", text)
+
     def test_public_fleet_brand_uses_xingyuan_name(self) -> None:
         homepage = (ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn(">星远舰队</a>", homepage)
