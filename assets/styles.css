@@ -824,6 +824,7 @@ html[data-query-mode="dismantle"] .reset-button {
   width: 34px;
   height: 34px;
   object-fit: contain;
+  transform: translateY(-1px);
 }
 
 .footer-brand p {
