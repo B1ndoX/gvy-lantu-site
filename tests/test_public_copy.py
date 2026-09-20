@@ -8,6 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_mineral_footer_labels_data_update_not_check_time(self) -> None:
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        footer = app.split('<footer class="mineral-source">', 1)[1].split("</footer>", 1)[0]
+        self.assertIn("数据更新 ${escapeHtml(updatedAt)}", footer)
+        self.assertNotIn("更新时间", footer)
+        self.assertNotIn("最近检查", footer)
+
     def test_creator_credit_is_consistent(self) -> None:
         homepage = (ROOT / "index.html").read_text(encoding="utf-8")
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
