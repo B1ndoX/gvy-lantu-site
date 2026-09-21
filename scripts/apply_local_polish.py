@@ -8,6 +8,7 @@ import json
 import re
 from pathlib import Path
 from typing import Any
+from official_localization import apply_verified_names
 
 
 MANUFACTURERS = {
@@ -691,7 +692,7 @@ def main() -> int:
     parser.add_argument(
         "--bot-assets",
         type=Path,
-        default=Path(__file__).resolve().parents[2] / "work" / "sc-spectrum-qq-bot-handoff" / "sc-spectrum-qq-bot" / "assets",
+        default=Path(__file__).resolve().parents[1] / "data" / "official-localization",
     )
     parser.add_argument(
         "--local-names",
@@ -708,6 +709,11 @@ def main() -> int:
     local_names = load_names(args.bot_assets, args.local_names)
     flowcld_calibration = load_flowcld_calibration(args.flowcld_calibration)
     apply(index, local_names, flowcld_calibration, args.bot_assets)
+    report = apply_verified_names(index, args.bot_assets / "localization/starcitizen/nas-keyed-names.json")
+    print(f"NAS keyed calibration: {len(report['changes'])} field changes; {len(report['unresolved'])} distinct labels without an unambiguous key")
+    for change in report["changes"][:40]:
+        print(json.dumps(change, ensure_ascii=False))
+    print("Unresolved exact labels (retained fallbacks): " + json.dumps(report["unresolved"], ensure_ascii=False))
     with args.index.open("w", encoding="utf-8") as handle:
         json.dump(index, handle, ensure_ascii=False, separators=(",", ":"))
     print(

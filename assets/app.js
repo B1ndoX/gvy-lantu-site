@@ -355,7 +355,7 @@ function sizeLabel(value) {
 }
 
 function materialZhName(item) {
-  return flowcldMaterialLabels[item.name] || preferZh(item.nameZh, item.name);
+  return item.nameZh || flowcldMaterialLabels[item.name] || item.name;
 }
 
 function materialDisplayLabel(name, zh) {
@@ -702,7 +702,7 @@ function renderMineralLocationGroups(info) {
 
 function renderMineralInfo(name) {
   const info = mineralLocationInfo(name);
-  const displayName = materialDisplayLabel(name, flowcldMaterialLabels[name]);
+  const displayName = materialDisplayLabel(name, info?.nameZh || flowcldMaterialLabels[name]);
   const commodity = info?.commodityName && info.commodityName !== name ? info.commodityName : "";
   const hasLocationSignals = mineralLocationGroups.some(([key]) =>
     (info?.locations?.[key] || []).some((location) => (location.signal?.values || []).length),

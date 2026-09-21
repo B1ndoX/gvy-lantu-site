@@ -13,6 +13,7 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+from official_localization import OfficialNames, load_snapshot, validate_snapshot
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_PATH = ROOT / "data" / "mineral-locations.json"
@@ -448,7 +449,11 @@ def build_candidate(current: dict[str, Any], synced_at: datetime) -> dict[str, A
             "Empty entries are shown as no reliable mining location instead of inferred locations."
         ),
     }
-    return {"metadata": metadata, "materials": materials}
+    candidate = {"metadata": metadata, "materials": materials}
+    official = load_snapshot()
+    validate_snapshot(official, load_json(BLUEPRINT_INDEX, {})["version"])
+    OfficialNames(official).apply_minerals(candidate)
+    return candidate
 
 
 def payload_counts(payload: dict[str, Any]) -> tuple[int, int, int, int]:
