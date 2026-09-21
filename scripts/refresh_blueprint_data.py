@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from scmdb_versions import is_live_version, select_latest_live_version, version_sort_key
+from official_localization import SNAPSHOT, refresh_snapshot
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,6 +132,7 @@ def backup_current_data(current_version: str, now: datetime) -> Path:
         "local-polish-names.json",
     ):
         copy_if_exists(DATA_DIR / relative, target / relative)
+    copy_if_exists(SNAPSHOT, target / SNAPSHOT.name)
     (target / "backup-meta.json").write_text(
         json.dumps(
             {
@@ -152,7 +154,7 @@ def backup_current_data(current_version: str, now: datetime) -> Path:
 def annotate_localization_metadata(index_path: Path) -> None:
     index = load_json(index_path, {})
     localization = index.setdefault("localization", {})
-    localization["priority"] = ["本地官方汉化总包", "FlowCLD 中文校准", "Google Translate 兜底"]
+    localization["priority"] = ["NAS 官方汉化精确 key 快照", "旧汉化及 FlowCLD 校准回退", "Google Translate 兜底"]
     localization["officialLocalizationSource"] = OFFICIAL_LOCALIZATION_SOURCE
     write_json_compact(index_path, index)
 
@@ -299,6 +301,9 @@ def refresh(force: bool) -> bool:
         raise RuntimeError(
             f"refusing LIVE rollback from {current_version} to stale manifest version {latest_version}"
         )
+    official_snapshot, snapshot_changed = refresh_snapshot(latest_version)
+    applied_hash = ((current.get("localization") or {}).get("nasOfficial") or {}).get("sourceSha256")
+    force = force or snapshot_changed or applied_hash != official_snapshot["metadata"]["sourceSha256"]
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
         if not quality_enrichment_is_current(current, current_version):
@@ -331,6 +336,10 @@ def refresh(force: bool) -> bool:
         google_cache = tmp / "google-translate-cache.json"
         flowcld = tmp / "flowcld-blueprint-calibration.json"
         local_names = tmp / "local-polish-names.json"
+        official_assets = tmp / "official-localization"
+        shutil.copytree(OFFICIAL_LOCALIZATION_ASSETS, official_assets)
+        staged_snapshot = official_assets / "localization/starcitizen" / SNAPSHOT.name
+        write_json_compact(staged_snapshot, official_snapshot)
 
         copy_if_exists(DATA_DIR / "google-translate-cache.json", google_cache)
         copy_if_exists(DATA_DIR / "flowcld-blueprint-calibration.json", flowcld)
@@ -395,7 +404,7 @@ def refresh(force: bool) -> bool:
                 "--index",
                 str(index_path),
                 "--bot-assets",
-                str(OFFICIAL_LOCALIZATION_ASSETS),
+                str(official_assets),
                 "--local-names",
                 str(local_names),
                 "--flowcld-calibration",
@@ -409,6 +418,7 @@ def refresh(force: bool) -> bool:
         validate_index(index_path, latest_version)
 
         backup_current_data(current_version or "none", datetime.now(timezone.utc))
+        replace_if_exists(staged_snapshot, SNAPSHOT)
         replace_if_exists(index_path, DATA_DIR / "blueprint-index.json")
         replace_if_exists(google_cache, DATA_DIR / "google-translate-cache.json")
         replace_if_exists(flowcld, DATA_DIR / "flowcld-blueprint-calibration.json")

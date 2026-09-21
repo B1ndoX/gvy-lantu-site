@@ -8,7 +8,7 @@
     "signalUpdatedAt": "2026-08-16",
     "signalSourceVersion": "4.9",
     "signalSyncedAt": "2026-08-16T11:49:57.585632Z",
-    "retrievedAt": "2026-08-26T20:02:14.019290+00:00",
+    "retrievedAt": "2026-09-21T07:40:35.734463+00:00",
     "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
   },
   "materials": {
@@ -26,7 +26,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -35,7 +36,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -59,7 +61,9 @@
               ],
               "probability": 14.2,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -83,7 +87,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "CEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 25,
@@ -105,7 +112,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "DAY"
-            }
+            },
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 73,
@@ -127,7 +137,10 @@
               ],
               "probability": 14.2,
               "sourceLocation": "VUU"
-            }
+            },
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 75,
@@ -149,7 +162,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "YEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [
@@ -160,13 +176,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "ARC-L3",
+            "zh": "弧 L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -184,11 +201,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ARC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 333,
-            "zh": "CRU-L5",
+            "zh": "十 L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -206,11 +225,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "CRU-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -228,7 +249,9 @@
               ],
               "probability": 28.5,
               "sourceLocation": "MIC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -244,7 +267,9 @@
         "base": 3885,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "艾格瑞金属",
+      "nameLocalizationKey": "items_commodities_agricium"
     },
     "Aluminum": {
       "commodityId": 6,
@@ -260,7 +285,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -269,7 +295,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -278,7 +305,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -304,7 +332,10 @@
               ],
               "probability": 29.7,
               "sourceLocation": "ABE"
-            }
+            },
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 4,
@@ -327,7 +358,10 @@
               ],
               "probability": 22,
               "sourceLocation": "ARI"
-            }
+            },
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 45,
@@ -350,7 +384,10 @@
               ],
               "probability": 34.7,
               "sourceLocation": "ITA"
-            }
+            },
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 51,
@@ -373,7 +410,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "MAG"
-            }
+            },
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [
@@ -398,11 +438,13 @@
               ],
               "probability": 10.3,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -421,11 +463,13 @@
               "maxCluster": 6,
               "probability": 13.8,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -444,7 +488,9 @@
               "maxCluster": 6,
               "probability": 13.8,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 270,
@@ -453,13 +499,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧L1 广袤森林站",
+            "zh": "弧 L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -478,11 +525,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 327,
-            "zh": "ARC-L2",
+            "zh": "弧 L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -501,11 +550,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 334,
-            "zh": "赫L1 绿色林地",
+            "zh": "赫 L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -524,11 +575,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "HUR-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 335,
-            "zh": "赫L2 坚贞梦想站",
+            "zh": "赫 L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -547,11 +600,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 337,
-            "zh": "赫L4 旋律领域站",
+            "zh": "赫 L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -570,11 +625,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "HUR-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 338,
-            "zh": "HUR-L5",
+            "zh": "赫 L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -593,20 +650,24 @@
               ],
               "probability": 23.9,
               "sourceLocation": "HUR-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 339,
-            "zh": "INS Jericho",
+            "zh": "INS 杰里科 (Jericho)",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton4_l1_navystation_name",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 340,
-            "zh": "微L2 长林站",
+            "zh": "微 L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -625,11 +686,13 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 343,
-            "zh": "微L5 现代伊卡洛斯站",
+            "zh": "微 L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -648,7 +711,9 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 373,
@@ -657,7 +722,8 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -674,7 +740,9 @@
         "base": 4285,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "铝",
+      "nameLocalizationKey": "items_commodities_aluminum"
     },
     "Aphorite": {
       "commodityId": 8,
@@ -690,7 +758,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -699,7 +768,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -708,7 +778,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -719,7 +790,9 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 242,
@@ -728,7 +801,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 325,
@@ -737,7 +812,9 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "delamar",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 116,
@@ -746,16 +823,20 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 241,
@@ -764,7 +845,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 240,
@@ -773,7 +856,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -782,7 +867,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -791,7 +878,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -802,7 +891,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 2,
@@ -811,7 +903,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 4,
@@ -820,7 +915,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 16,
@@ -828,8 +926,11 @@
             "en": "Calliope",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 18,
@@ -838,7 +939,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 23,
@@ -846,8 +950,11 @@
             "en": "Clio",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 25,
@@ -856,7 +963,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 34,
@@ -864,8 +974,11 @@
             "en": "Euterpe",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 35,
@@ -874,7 +987,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 36,
@@ -883,7 +999,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 43,
@@ -892,7 +1011,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 45,
@@ -901,7 +1023,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 50,
@@ -910,7 +1035,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "弧光星",
-            "parentEn": "ArcCorp"
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 51,
@@ -919,7 +1047,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 69,
@@ -928,7 +1059,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 73,
@@ -937,7 +1071,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 74,
@@ -946,7 +1083,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "弧光星",
-            "parentEn": "ArcCorp"
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 75,
@@ -955,14 +1095,19 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "紫钠水晶",
+      "nameLocalizationKey": "items_commodities_aphorite"
     },
     "Aslarite": {
       "commodityId": 199,
@@ -978,7 +1123,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -987,7 +1133,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -1012,7 +1159,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "FUE"
-            }
+            },
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 45,
@@ -1034,7 +1184,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ITA"
-            }
+            },
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 51,
@@ -1056,7 +1209,10 @@
               ],
               "probability": 14.2,
               "sourceLocation": "MAG"
-            }
+            },
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 73,
@@ -1078,7 +1234,10 @@
               ],
               "probability": 14.2,
               "sourceLocation": "VUU"
-            }
+            },
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -1102,7 +1261,9 @@
               ],
               "probability": 14.2,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 270,
@@ -1111,13 +1272,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 330,
-            "zh": "ARC-L5",
+            "zh": "弧 L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1135,11 +1297,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ARC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 332,
-            "zh": "十L4 轻浅田野站",
+            "zh": "十 L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1157,16 +1321,20 @@
               ],
               "probability": 28.5,
               "sourceLocation": "CRU-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -1182,7 +1350,9 @@
         "base": 3840,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "阿斯莱晶体",
+      "nameLocalizationKey": "items_commodities_aslarite"
     },
     "Beradom": {
       "commodityId": 167,
@@ -1198,7 +1368,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           }
         ],
         "planets": [
@@ -1209,7 +1380,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 242,
@@ -1218,7 +1391,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [],
@@ -1226,7 +1401,9 @@
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "冰蓝珀",
+      "nameLocalizationKey": "items_commodities_beradom"
     },
     "Beryl": {
       "commodityId": 12,
@@ -1242,7 +1419,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -1251,7 +1429,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -1275,7 +1454,10 @@
               ],
               "probability": 18,
               "sourceLocation": "WAL"
-            }
+            },
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           }
         ],
         "pointsOfInterest": [
@@ -1298,7 +1480,9 @@
               ],
               "probability": 18.0,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 270,
@@ -1307,13 +1491,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "ARC-L3",
+            "zh": "弧 L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1330,11 +1515,13 @@
               ],
               "probability": 18,
               "sourceLocation": "ARC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 333,
-            "zh": "CRU-L5",
+            "zh": "十 L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1351,11 +1538,13 @@
               ],
               "probability": 18,
               "sourceLocation": "CRU-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1372,7 +1561,9 @@
               ],
               "probability": 18,
               "sourceLocation": "MIC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -1387,7 +1578,9 @@
         "base": 3540,
         "maxCluster": 4
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "绿柱石",
+      "nameLocalizationKey": "items_commodities_beryl"
     },
     "Bexalite": {
       "commodityId": 14,
@@ -1403,7 +1596,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -1412,7 +1606,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -1421,7 +1616,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -1445,7 +1641,10 @@
               ],
               "probability": 9,
               "sourceLocation": "FAI"
-            }
+            },
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 36,
@@ -1466,7 +1665,10 @@
               ],
               "probability": 9,
               "sourceLocation": "FUE"
-            }
+            },
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 73,
@@ -1487,13 +1689,16 @@
               ],
               "probability": 18,
               "sourceLocation": "VUU"
-            }
+            },
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -1510,11 +1715,13 @@
               ],
               "probability": 18,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -1531,7 +1738,9 @@
               ],
               "probability": 18,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 270,
@@ -1540,13 +1749,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 331,
-            "zh": "十L1 雄心伟梦站",
+            "zh": "十 L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1563,11 +1773,13 @@
               ],
               "probability": 18,
               "sourceLocation": "CRU-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 336,
-            "zh": "HUR-L3",
+            "zh": "赫 L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1584,7 +1796,9 @@
               ],
               "probability": 18,
               "sourceLocation": "HUR-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 372,
@@ -1605,7 +1819,8 @@
               ],
               "probability": 18,
               "sourceLocation": "CRU-L2"
-            }
+            },
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -1620,7 +1835,9 @@
         "base": 3600,
         "maxCluster": 4
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "贝沙电气石",
+      "nameLocalizationKey": "items_commodities_bexalite"
     },
     "Borase": {
       "commodityId": 16,
@@ -1636,7 +1853,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -1645,7 +1863,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -1668,7 +1887,9 @@
               ],
               "probability": 18,
               "sourceLocation": "BLO"
-            }
+            },
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -1689,7 +1910,9 @@
               ],
               "probability": 18,
               "sourceLocation": "PY4"
-            }
+            },
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -1712,7 +1935,10 @@
               ],
               "probability": 18,
               "sourceLocation": "ADI"
-            }
+            },
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 36,
@@ -1733,7 +1959,10 @@
               ],
               "probability": 9,
               "sourceLocation": "FUE"
-            }
+            },
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -1744,13 +1973,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 334,
-            "zh": "赫L1 绿色林地",
+            "zh": "赫 L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1767,11 +1997,13 @@
               ],
               "probability": 18,
               "sourceLocation": "HUR-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 337,
-            "zh": "赫L4 旋律领域站",
+            "zh": "赫 L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1788,16 +2020,20 @@
               ],
               "probability": 18,
               "sourceLocation": "HUR-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 338,
-            "zh": "HUR-L5",
+            "zh": "赫 L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "rr_hur_l5",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -1812,7 +2048,9 @@
         "base": 3570,
         "maxCluster": 4
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "波射石",
+      "nameLocalizationKey": "items_commodities_borase"
     },
     "Carinite": {
       "commodityId": 178,
@@ -1827,7 +2065,9 @@
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": false
+      "hasReliableLocations": false,
+      "nameZh": "科力晶",
+      "nameLocalizationKey": "items_commodities_carinite"
     },
     "Copper": {
       "commodityId": 21,
@@ -1843,7 +2083,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -1852,7 +2093,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -1877,7 +2119,9 @@
               ],
               "probability": 32.6,
               "sourceLocation": "PY1"
-            }
+            },
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -1900,7 +2144,9 @@
               ],
               "probability": 25.7,
               "sourceLocation": "PY4"
-            }
+            },
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -1923,7 +2169,9 @@
               ],
               "probability": 20.8,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -1933,7 +2181,7 @@
             "en": "Clio",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4240,
@@ -1948,7 +2196,10 @@
               ],
               "probability": 40,
               "sourceLocation": "CLI"
-            }
+            },
+            "zhLocalizationKey": "stanton4b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 34,
@@ -1956,7 +2207,7 @@
             "en": "Euterpe",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4240,
@@ -1971,7 +2222,10 @@
               ],
               "probability": 40,
               "sourceLocation": "EUT"
-            }
+            },
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 50,
@@ -1994,7 +2248,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "LYR"
-            }
+            },
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 74,
@@ -2017,7 +2274,10 @@
               ],
               "probability": 25.8,
               "sourceLocation": "WAL"
-            }
+            },
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           }
         ],
         "pointsOfInterest": [
@@ -2042,7 +2302,9 @@
               ],
               "probability": 10.3,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 270,
@@ -2065,7 +2327,8 @@
               ],
               "probability": 14.9,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -2074,7 +2337,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 273,
@@ -2097,13 +2362,15 @@
               ],
               "probability": 20.5,
               "sourceLocation": "YELB"
-            }
+            },
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "ARC-L3",
+            "zh": "弧 L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2122,11 +2389,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 330,
-            "zh": "ARC-L5",
+            "zh": "弧 L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2145,11 +2414,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 331,
-            "zh": "十L1 雄心伟梦站",
+            "zh": "十 L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2168,11 +2439,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "CRU-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 332,
-            "zh": "十L4 轻浅田野站",
+            "zh": "十 L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2191,11 +2464,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "CRU-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 333,
-            "zh": "CRU-L5",
+            "zh": "十 L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2214,11 +2489,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "CRU-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 341,
-            "zh": "MIC-L3",
+            "zh": "微 L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2237,11 +2514,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "MIC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2260,7 +2539,9 @@
               ],
               "probability": 17.8,
               "sourceLocation": "MIC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 372,
@@ -2283,7 +2564,8 @@
               ],
               "probability": 17.8,
               "sourceLocation": "CRU-L2"
-            }
+            },
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -2300,7 +2582,9 @@
         "base": 4240,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "铜",
+      "nameLocalizationKey": "items_commodities_copper"
     },
     "Corundum": {
       "commodityId": 23,
@@ -2316,7 +2600,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -2325,7 +2610,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -2336,7 +2622,9 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           }
         ],
         "moons": [
@@ -2361,7 +2649,10 @@
               ],
               "probability": 29.8,
               "sourceLocation": "ABE"
-            }
+            },
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 4,
@@ -2384,7 +2675,10 @@
               ],
               "probability": 22,
               "sourceLocation": "ARI"
-            }
+            },
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [
@@ -2395,13 +2689,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧L1 广袤森林站",
+            "zh": "弧 L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2420,11 +2715,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "ARC-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 327,
-            "zh": "ARC-L2",
+            "zh": "弧 L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2443,11 +2740,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "ARC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 329,
-            "zh": "ARC-L4",
+            "zh": "弧 L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2466,11 +2765,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "ARC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 334,
-            "zh": "赫L1 绿色林地",
+            "zh": "赫 L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2489,11 +2790,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 335,
-            "zh": "赫L2 坚贞梦想站",
+            "zh": "赫 L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2512,11 +2815,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "HUR-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 337,
-            "zh": "赫L4 旋律领域站",
+            "zh": "赫 L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2535,11 +2840,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 338,
-            "zh": "HUR-L5",
+            "zh": "赫 L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2558,20 +2865,24 @@
               ],
               "probability": 23.9,
               "sourceLocation": "HUR-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 339,
-            "zh": "INS Jericho",
+            "zh": "INS 杰里科 (Jericho)",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton4_l1_navystation_name",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 340,
-            "zh": "微L2 长林站",
+            "zh": "微 L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2590,11 +2901,13 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 343,
-            "zh": "微L5 现代伊卡洛斯站",
+            "zh": "微 L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2613,7 +2926,9 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 373,
@@ -2622,7 +2937,8 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -2639,7 +2955,9 @@
         "base": 4225,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "刚玉Corundom",
+      "nameLocalizationKey": "items_commodities_corundum"
     },
     "Dolivine": {
       "commodityId": 28,
@@ -2655,7 +2973,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -2664,7 +2983,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -2673,7 +2993,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -2684,7 +3005,9 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 242,
@@ -2693,7 +3016,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 325,
@@ -2702,7 +3027,9 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "delamar",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 116,
@@ -2711,16 +3038,20 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 241,
@@ -2729,7 +3060,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 240,
@@ -2738,7 +3071,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -2747,7 +3082,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -2756,7 +3093,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [],
@@ -2764,7 +3103,9 @@
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "暗橄榄石",
+      "nameLocalizationKey": "items_commodities_dolivine"
     },
     "Feynmaline": {
       "commodityId": 169,
@@ -2780,7 +3121,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -2789,7 +3131,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -2800,7 +3143,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -2811,14 +3156,19 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "熵瞬晶",
+      "nameLocalizationKey": "items_commodities_feynmaline"
     },
     "Glacosite": {
       "commodityId": 168,
@@ -2834,7 +3184,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -2843,7 +3194,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -2854,7 +3206,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -2865,14 +3219,19 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "冰碛棉",
+      "nameLocalizationKey": "items_commodities_glacosite"
     },
     "Gold": {
       "commodityId": 34,
@@ -2888,7 +3247,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -2897,7 +3257,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -2920,7 +3281,9 @@
               ],
               "probability": 18.0,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -2943,7 +3306,10 @@
               ],
               "probability": 9,
               "sourceLocation": "FAI"
-            }
+            },
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 43,
@@ -2964,7 +3330,10 @@
               ],
               "probability": 18,
               "sourceLocation": "IGN"
-            }
+            },
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 69,
@@ -2985,7 +3354,10 @@
               ],
               "probability": 18,
               "sourceLocation": "VAT"
-            }
+            },
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -2996,13 +3368,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 330,
-            "zh": "ARC-L5",
+            "zh": "弧 L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3019,11 +3392,13 @@
               ],
               "probability": 18,
               "sourceLocation": "ARC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 332,
-            "zh": "十L4 轻浅田野站",
+            "zh": "十 L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3040,11 +3415,13 @@
               ],
               "probability": 18,
               "sourceLocation": "CRU-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 341,
-            "zh": "MIC-L3",
+            "zh": "微 L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3061,7 +3438,9 @@
               ],
               "probability": 18,
               "sourceLocation": "MIC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l3",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -3076,7 +3455,9 @@
         "base": 3585,
         "maxCluster": 4
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "金",
+      "nameLocalizationKey": "items_commodities_gold"
     },
     "Hadanite": {
       "commodityId": 36,
@@ -3092,7 +3473,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -3101,7 +3483,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -3110,7 +3493,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -3121,7 +3505,9 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 242,
@@ -3130,7 +3516,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 325,
@@ -3139,7 +3527,9 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "delamar",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 116,
@@ -3148,16 +3538,20 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 241,
@@ -3166,7 +3560,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 240,
@@ -3175,7 +3571,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -3184,7 +3582,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -3193,7 +3593,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -3204,7 +3606,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 2,
@@ -3213,7 +3618,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 4,
@@ -3222,7 +3630,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 16,
@@ -3230,8 +3641,11 @@
             "en": "Calliope",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 18,
@@ -3240,7 +3654,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 23,
@@ -3248,8 +3665,11 @@
             "en": "Clio",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 25,
@@ -3258,7 +3678,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 34,
@@ -3266,8 +3689,11 @@
             "en": "Euterpe",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
-            "parentEn": "MicroTech"
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 35,
@@ -3276,7 +3702,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 36,
@@ -3285,7 +3714,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 43,
@@ -3294,7 +3726,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 45,
@@ -3303,7 +3738,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 50,
@@ -3312,7 +3750,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "弧光星",
-            "parentEn": "ArcCorp"
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 51,
@@ -3321,7 +3762,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 69,
@@ -3330,7 +3774,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 73,
@@ -3339,7 +3786,10 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "派罗 V",
-            "parentEn": "Pyro V"
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 74,
@@ -3348,7 +3798,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "弧光星",
-            "parentEn": "ArcCorp"
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 75,
@@ -3357,14 +3810,19 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "哈丹水晶",
+      "nameLocalizationKey": "items_commodities_hadanite"
     },
     "Hephaestanite": {
       "commodityId": 40,
@@ -3380,7 +3838,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -3389,13 +3848,14 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3414,7 +3874,9 @@
               ],
               "probability": 32.7,
               "sourceLocation": "MIC"
-            }
+            },
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 241,
@@ -3437,7 +3899,9 @@
               ],
               "probability": 32.7,
               "sourceLocation": "MON"
-            }
+            },
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -3462,7 +3926,10 @@
               ],
               "probability": 22,
               "sourceLocation": "ARI"
-            }
+            },
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 16,
@@ -3470,7 +3937,7 @@
             "en": "Calliope",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4180,
@@ -3485,7 +3952,10 @@
               ],
               "probability": 32.6,
               "sourceLocation": "CAL"
-            }
+            },
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 36,
@@ -3508,7 +3978,10 @@
               ],
               "probability": 26.7,
               "sourceLocation": "FUE"
-            }
+            },
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 73,
@@ -3531,7 +4004,10 @@
               ],
               "probability": 26.8,
               "sourceLocation": "VUU"
-            }
+            },
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -3542,13 +4018,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧L1 广袤森林站",
+            "zh": "弧 L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3567,11 +4044,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 327,
-            "zh": "ARC-L2",
+            "zh": "弧 L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3590,11 +4069,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 329,
-            "zh": "ARC-L4",
+            "zh": "弧 L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3613,11 +4094,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 334,
-            "zh": "赫L1 绿色林地",
+            "zh": "赫 L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3636,11 +4119,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 335,
-            "zh": "赫L2 坚贞梦想站",
+            "zh": "赫 L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3659,11 +4144,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 337,
-            "zh": "赫L4 旋律领域站",
+            "zh": "赫 L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3682,11 +4169,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 338,
-            "zh": "HUR-L5",
+            "zh": "赫 L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3705,20 +4194,24 @@
               ],
               "probability": 23.9,
               "sourceLocation": "HUR-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 339,
-            "zh": "INS Jericho",
+            "zh": "INS 杰里科 (Jericho)",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton4_l1_navystation_name",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 340,
-            "zh": "微L2 长林站",
+            "zh": "微 L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3737,11 +4230,13 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 343,
-            "zh": "微L5 现代伊卡洛斯站",
+            "zh": "微 L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3760,7 +4255,9 @@
               ],
               "probability": 23.9,
               "sourceLocation": "MIC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 373,
@@ -3769,7 +4266,8 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -3786,7 +4284,9 @@
         "base": 4180,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "火神石",
+      "nameLocalizationKey": "items_commodities_hephaestanite"
     },
     "Iron": {
       "commodityId": 45,
@@ -3802,7 +4302,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -3811,7 +4312,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -3820,13 +4322,14 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3845,7 +4348,9 @@
               ],
               "probability": 32.6,
               "sourceLocation": "MIC"
-            }
+            },
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 240,
@@ -3868,7 +4373,9 @@
               ],
               "probability": 32.7,
               "sourceLocation": "PY1"
-            }
+            },
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 241,
@@ -3891,7 +4398,9 @@
               ],
               "probability": 32.6,
               "sourceLocation": "MON"
-            }
+            },
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 242,
@@ -3914,7 +4423,9 @@
               ],
               "probability": 35,
               "sourceLocation": "BLO"
-            }
+            },
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -3937,7 +4448,9 @@
               ],
               "probability": 25.7,
               "sourceLocation": "PY4"
-            }
+            },
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -3962,7 +4475,10 @@
               ],
               "probability": 43.5,
               "sourceLocation": "ADI"
-            }
+            },
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 16,
@@ -3970,7 +4486,7 @@
             "en": "Calliope",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4270,
@@ -3985,7 +4501,10 @@
               ],
               "probability": 32.7,
               "sourceLocation": "CAL"
-            }
+            },
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 35,
@@ -4008,7 +4527,10 @@
               ],
               "probability": 26.7,
               "sourceLocation": "FAI"
-            }
+            },
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 36,
@@ -4031,7 +4553,10 @@
               ],
               "probability": 26.8,
               "sourceLocation": "FUE"
-            }
+            },
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 50,
@@ -4054,7 +4579,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "LYR"
-            }
+            },
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 51,
@@ -4077,7 +4605,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "MAG"
-            }
+            },
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 69,
@@ -4100,7 +4631,10 @@
               ],
               "probability": 36,
               "sourceLocation": "VAT"
-            }
+            },
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 73,
@@ -4123,7 +4657,10 @@
               ],
               "probability": 26.8,
               "sourceLocation": "VUU"
-            }
+            },
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 74,
@@ -4146,7 +4683,10 @@
               ],
               "probability": 25.7,
               "sourceLocation": "WAL"
-            }
+            },
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           }
         ],
         "pointsOfInterest": [
@@ -4171,11 +4711,13 @@
               ],
               "probability": 10.3,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -4194,11 +4736,13 @@
               ],
               "probability": 20.8,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -4217,7 +4761,9 @@
               ],
               "probability": 20.8,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 270,
@@ -4226,7 +4772,8 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -4235,7 +4782,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 273,
@@ -4258,13 +4807,15 @@
               ],
               "probability": 20.5,
               "sourceLocation": "YELB"
-            }
+            },
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "ARC-L3",
+            "zh": "弧 L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4283,11 +4834,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "ARC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 330,
-            "zh": "ARC-L5",
+            "zh": "弧 L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4306,11 +4859,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "ARC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 331,
-            "zh": "十L1 雄心伟梦站",
+            "zh": "十 L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4329,11 +4884,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "CRU-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 332,
-            "zh": "十L4 轻浅田野站",
+            "zh": "十 L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4352,11 +4909,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "CRU-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 333,
-            "zh": "CRU-L5",
+            "zh": "十 L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4375,11 +4934,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "CRU-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 336,
-            "zh": "HUR-L3",
+            "zh": "赫 L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4398,11 +4959,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "HUR-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 341,
-            "zh": "MIC-L3",
+            "zh": "微 L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4421,11 +4984,13 @@
               ],
               "probability": 17.9,
               "sourceLocation": "MIC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4444,7 +5009,9 @@
               ],
               "probability": 17.9,
               "sourceLocation": "MIC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 372,
@@ -4467,7 +5034,8 @@
               ],
               "probability": 17.9,
               "sourceLocation": "CRU-L2"
-            }
+            },
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -4484,7 +5052,9 @@
         "base": 4270,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "铁",
+      "nameLocalizationKey": "items_commodities_iron,p"
     },
     "Janalite": {
       "commodityId": 46,
@@ -4500,7 +5070,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -4511,7 +5082,9 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           }
         ],
         "moons": [
@@ -4522,7 +5095,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "十字军",
-            "parentEn": "Crusader"
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 45,
@@ -4531,7 +5107,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 51,
@@ -4540,7 +5119,10 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "赫斯顿",
-            "parentEn": "Hurston"
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 74,
@@ -4549,14 +5131,19 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "弧光星",
-            "parentEn": "ArcCorp"
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "加纳石",
+      "nameLocalizationKey": "items_commodities_janalite"
     },
     "Laranite": {
       "commodityId": 48,
@@ -4572,7 +5159,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -4581,7 +5169,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -4605,7 +5194,9 @@
               ],
               "probability": 28.5,
               "sourceLocation": "PY4"
-            }
+            },
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -4629,7 +5220,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "LYR"
-            }
+            },
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           },
           {
             "id": 74,
@@ -4651,14 +5245,17 @@
               ],
               "probability": 28.5,
               "sourceLocation": "WAL"
-            }
+            },
+            "zhLocalizationKey": "stanton3b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
           }
         ],
         "pointsOfInterest": [],
         "lagrangePoints": [
           {
             "id": 334,
-            "zh": "赫L1 绿色林地",
+            "zh": "赫 L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4676,11 +5273,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "HUR-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 337,
-            "zh": "赫L4 旋律领域站",
+            "zh": "赫 L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4698,16 +5297,20 @@
               ],
               "probability": 28.5,
               "sourceLocation": "HUR-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 338,
-            "zh": "HUR-L5",
+            "zh": "赫 L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "rr_hur_l5",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -4723,7 +5326,9 @@
         "base": 3825,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "砬兰石",
+      "nameLocalizationKey": "items_commodities_laranite"
     },
     "Lindinium": {
       "commodityId": 185,
@@ -4739,7 +5344,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           }
         ],
         "planets": [],
@@ -4747,7 +5353,7 @@
         "pointsOfInterest": [
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -4763,11 +5369,13 @@
               ],
               "probability": 10,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -4783,7 +5391,9 @@
               ],
               "probability": 10,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           }
         ],
         "lagrangePoints": []
@@ -4798,7 +5408,9 @@
         "base": 3400,
         "maxCluster": 3
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "林登金",
+      "nameLocalizationKey": "items_commodities_lindinium"
     },
     "Ouratite": {
       "commodityId": 210,
@@ -4814,7 +5426,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -4836,7 +5449,9 @@
               ],
               "probability": 10,
               "sourceLocation": "HUR"
-            }
+            },
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           }
         ],
         "moons": [
@@ -4858,7 +5473,10 @@
               ],
               "probability": 10,
               "sourceLocation": "ABE"
-            }
+            },
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 4,
@@ -4878,7 +5496,10 @@
               ],
               "probability": 10,
               "sourceLocation": "ARI"
-            }
+            },
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [
@@ -4900,7 +5521,9 @@
               ],
               "probability": 10.0,
               "sourceLocation": "YELB"
-            }
+            },
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "lagrangePoints": []
@@ -4915,7 +5538,9 @@
         "base": 3370,
         "maxCluster": 3
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "欧拉特烃",
+      "nameLocalizationKey": "items_commodities_ouratite"
     },
     "Pressurized Ice": {
       "commodityId": 125,
@@ -4931,7 +5556,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -4940,7 +5566,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -4949,13 +5576,14 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
           {
             "id": 190,
-            "zh": "微科星",
+            "zh": "微科公司",
             "en": "MicroTech",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4974,7 +5602,9 @@
               ],
               "probability": 32.7,
               "sourceLocation": "MIC"
-            }
+            },
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
           }
         ],
         "moons": [
@@ -4984,7 +5614,7 @@
             "en": "Calliope",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4300,
@@ -4999,7 +5629,10 @@
               ],
               "probability": 32.6,
               "sourceLocation": "CAL"
-            }
+            },
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 23,
@@ -5007,7 +5640,7 @@
             "en": "Clio",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4300,
@@ -5022,7 +5655,10 @@
               ],
               "probability": 40,
               "sourceLocation": "CLI"
-            }
+            },
+            "zhLocalizationKey": "stanton4b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 34,
@@ -5030,7 +5666,7 @@
             "en": "Euterpe",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 4300,
@@ -5045,7 +5681,10 @@
               ],
               "probability": 40,
               "sourceLocation": "EUT"
-            }
+            },
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           }
         ],
         "pointsOfInterest": [
@@ -5070,11 +5709,13 @@
               ],
               "probability": 10.4,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -5093,11 +5734,13 @@
               ],
               "probability": 20.8,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -5116,7 +5759,9 @@
               ],
               "probability": 20.8,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 270,
@@ -5139,7 +5784,8 @@
               ],
               "probability": 14.9,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -5148,7 +5794,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 273,
@@ -5171,13 +5819,15 @@
               ],
               "probability": 20.5,
               "sourceLocation": "YELB"
-            }
+            },
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "ARC-L3",
+            "zh": "弧 L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5196,11 +5846,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 330,
-            "zh": "ARC-L5",
+            "zh": "弧 L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5219,11 +5871,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "ARC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 336,
-            "zh": "HUR-L3",
+            "zh": "赫 L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5242,11 +5896,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "HUR-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 341,
-            "zh": "MIC-L3",
+            "zh": "微 L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5265,11 +5921,13 @@
               ],
               "probability": 17.8,
               "sourceLocation": "MIC-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 342,
-            "zh": "MIC-L4",
+            "zh": "微 L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5288,7 +5946,9 @@
               ],
               "probability": 17.8,
               "sourceLocation": "MIC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l4",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -5305,7 +5965,9 @@
         "base": 4300,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "压缩冰",
+      "nameLocalizationKey": "items_commodities_pressurized_ice,p"
     },
     "Quantainium": {
       "commodityId": 59,
@@ -5321,7 +5983,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -5338,7 +6001,9 @@
         "base": 3170,
         "maxCluster": 2
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "量子矿物",
+      "nameLocalizationKey": "items_commodities_quantainium"
     },
     "Quartz": {
       "commodityId": 61,
@@ -5354,7 +6019,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -5363,7 +6029,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -5388,7 +6055,9 @@
               ],
               "probability": 35,
               "sourceLocation": "BLO"
-            }
+            },
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -5413,7 +6082,10 @@
               ],
               "probability": 25.7,
               "sourceLocation": "CEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 25,
@@ -5436,7 +6108,10 @@
               ],
               "probability": 34.7,
               "sourceLocation": "DAY"
-            }
+            },
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 75,
@@ -5459,7 +6134,10 @@
               ],
               "probability": 25.7,
               "sourceLocation": "YEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [
@@ -5470,7 +6148,8 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": []
@@ -5488,7 +6167,9 @@
         "base": 4210,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "石英",
+      "nameLocalizationKey": "items_commodities_quartz"
     },
     "Riccite": {
       "commodityId": 163,
@@ -5504,7 +6185,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           }
         ],
         "planets": [
@@ -5526,7 +6208,9 @@
               ],
               "probability": 10,
               "sourceLocation": "BLO"
-            }
+            },
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -5546,7 +6230,9 @@
               ],
               "probability": 10.0,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -5568,7 +6254,10 @@
               ],
               "probability": 10,
               "sourceLocation": "ADI"
-            }
+            },
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 43,
@@ -5588,7 +6277,10 @@
               ],
               "probability": 10,
               "sourceLocation": "IGN"
-            }
+            },
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 69,
@@ -5608,7 +6300,10 @@
               ],
               "probability": 10,
               "sourceLocation": "VAT"
-            }
+            },
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -5630,7 +6325,8 @@
               ],
               "probability": 10.0,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -5639,7 +6335,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": []
@@ -5654,7 +6352,9 @@
         "base": 3385,
         "maxCluster": 3
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "愈金",
+      "nameLocalizationKey": "items_commodities_riccite"
     },
     "Sadaryx": {
       "commodityId": 212,
@@ -5670,7 +6370,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           }
         ],
         "planets": [],
@@ -5683,13 +6384,16 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "nyx"
           }
         ],
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "萨达瑞晶",
+      "nameLocalizationKey": "items_commodities_sadaryx"
     },
     "Saldynium (Ore)": {
       "commodityId": 172,
@@ -5704,7 +6408,9 @@
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": false
+      "hasReliableLocations": false,
+      "nameZh": "烁迪银矿石",
+      "nameLocalizationKey": "items_commodities_saldynium_ore"
     },
     "Savrilium": {
       "commodityId": 187,
@@ -5720,7 +6426,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           }
         ],
         "planets": [],
@@ -5728,7 +6435,7 @@
         "pointsOfInterest": [
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -5743,11 +6450,13 @@
               ],
               "probability": 2,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -5762,7 +6471,9 @@
               ],
               "probability": 2,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 271,
@@ -5771,7 +6482,8 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "nyx"
           }
         ],
         "lagrangePoints": []
@@ -5785,7 +6497,9 @@
         "base": 3200,
         "maxCluster": 2
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "萨维里金属",
+      "nameLocalizationKey": "items_commodities_savrilium"
     },
     "Silicon": {
       "commodityId": 161,
@@ -5801,7 +6515,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -5810,7 +6525,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -5836,7 +6552,10 @@
               ],
               "probability": 25.8,
               "sourceLocation": "CEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 25,
@@ -5859,7 +6578,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "DAY"
-            }
+            },
+            "zhLocalizationKey": "stanton2b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 35,
@@ -5882,7 +6604,10 @@
               ],
               "probability": 26.8,
               "sourceLocation": "FAI"
-            }
+            },
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 43,
@@ -5905,7 +6630,10 @@
               ],
               "probability": 36,
               "sourceLocation": "IGN"
-            }
+            },
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 69,
@@ -5928,7 +6656,10 @@
               ],
               "probability": 36,
               "sourceLocation": "VAT"
-            }
+            },
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 75,
@@ -5951,7 +6682,10 @@
               ],
               "probability": 25.8,
               "sourceLocation": "YEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [
@@ -5976,7 +6710,9 @@
               ],
               "probability": 10.3,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 270,
@@ -5999,7 +6735,8 @@
               ],
               "probability": 14.9,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -6008,7 +6745,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": []
@@ -6026,7 +6765,9 @@
         "base": 4255,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "硅",
+      "nameLocalizationKey": "items_commodities_silicon"
     },
     "Stileron": {
       "commodityId": 162,
@@ -6042,7 +6783,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           }
         ],
         "planets": [
@@ -6063,7 +6805,9 @@
               ],
               "probability": 2,
               "sourceLocation": "PY1"
-            }
+            },
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 241,
@@ -6082,7 +6826,9 @@
               ],
               "probability": 2,
               "sourceLocation": "MON"
-            }
+            },
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 242,
@@ -6101,7 +6847,9 @@
               ],
               "probability": 2,
               "sourceLocation": "BLO"
-            }
+            },
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 243,
@@ -6120,7 +6868,9 @@
               ],
               "probability": 2,
               "sourceLocation": "PY4"
-            }
+            },
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 244,
@@ -6129,7 +6879,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro5",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 245,
@@ -6148,7 +6900,9 @@
               ],
               "probability": 2.0,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [],
@@ -6170,7 +6924,8 @@
               ],
               "probability": 2.0,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 272,
@@ -6179,7 +6934,9 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": []
@@ -6193,7 +6950,9 @@
         "base": 3185,
         "maxCluster": 2
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "稀钛铁",
+      "nameLocalizationKey": "items_commodities_stileron"
     },
     "Taranite": {
       "commodityId": 74,
@@ -6209,7 +6968,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -6218,7 +6978,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -6242,7 +7003,10 @@
               ],
               "probability": 18,
               "sourceLocation": "CEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           },
           {
             "id": 23,
@@ -6250,7 +7014,7 @@
             "en": "Clio",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 3555,
@@ -6263,7 +7027,10 @@
               ],
               "probability": 18,
               "sourceLocation": "CLI"
-            }
+            },
+            "zhLocalizationKey": "stanton4b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 34,
@@ -6271,7 +7038,7 @@
             "en": "Euterpe",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
-            "parentZh": "微科星",
+            "parentZh": "微科公司",
             "parentEn": "MicroTech",
             "signal": {
               "base": 3555,
@@ -6284,7 +7051,10 @@
               ],
               "probability": 18,
               "sourceLocation": "EUT"
-            }
+            },
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
           },
           {
             "id": 75,
@@ -6305,7 +7075,10 @@
               ],
               "probability": 18,
               "sourceLocation": "YEL"
-            }
+            },
+            "zhLocalizationKey": "stanton2c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "pointsOfInterest": [
@@ -6316,13 +7089,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧L1 广袤森林站",
+            "zh": "弧 L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6339,11 +7113,13 @@
               ],
               "probability": 18,
               "sourceLocation": "ARC-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 327,
-            "zh": "ARC-L2",
+            "zh": "弧 L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6360,11 +7136,13 @@
               ],
               "probability": 18,
               "sourceLocation": "ARC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 329,
-            "zh": "ARC-L4",
+            "zh": "弧 L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6381,11 +7159,13 @@
               ],
               "probability": 18,
               "sourceLocation": "ARC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 335,
-            "zh": "赫L2 坚贞梦想站",
+            "zh": "赫 L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6402,7 +7182,9 @@
               ],
               "probability": 18,
               "sourceLocation": "HUR-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l2",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -6417,7 +7199,9 @@
         "base": 3555,
         "maxCluster": 4
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "塔兰导电石",
+      "nameLocalizationKey": "items_commodities_taranite"
     },
     "Tin": {
       "commodityId": 176,
@@ -6433,7 +7217,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -6442,7 +7227,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -6467,7 +7253,9 @@
               ],
               "probability": 44,
               "sourceLocation": "HUR"
-            }
+            },
+            "zhLocalizationKey": "stanton1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 240,
@@ -6490,7 +7278,9 @@
               ],
               "probability": 32.6,
               "sourceLocation": "PY1"
-            }
+            },
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 241,
@@ -6513,7 +7303,9 @@
               ],
               "probability": 32.6,
               "sourceLocation": "MON"
-            }
+            },
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -6538,7 +7330,10 @@
               ],
               "probability": 22,
               "sourceLocation": "ARI"
-            }
+            },
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 43,
@@ -6561,7 +7356,10 @@
               ],
               "probability": 36,
               "sourceLocation": "IGN"
-            }
+            },
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 45,
@@ -6584,7 +7382,10 @@
               ],
               "probability": 34.8,
               "sourceLocation": "ITA"
-            }
+            },
+            "zhLocalizationKey": "stanton1d",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [
@@ -6609,7 +7410,8 @@
               ],
               "probability": 14.8,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": []
@@ -6627,7 +7429,9 @@
         "base": 4195,
         "maxCluster": 6
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "锡",
+      "nameLocalizationKey": "items_commodities_tin"
     },
     "Titanium": {
       "commodityId": 76,
@@ -6643,7 +7447,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -6652,7 +7457,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [
@@ -6676,7 +7482,9 @@
               ],
               "probability": 14.2,
               "sourceLocation": "TER"
-            }
+            },
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
@@ -6700,7 +7508,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ABE"
-            }
+            },
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           },
           {
             "id": 51,
@@ -6722,7 +7533,10 @@
               ],
               "probability": 14.2,
               "sourceLocation": "MAG"
-            }
+            },
+            "zhLocalizationKey": "stanton1c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
           }
         ],
         "pointsOfInterest": [
@@ -6746,7 +7560,9 @@
               ],
               "probability": 14.2,
               "sourceLocation": "AARON_HALO"
-            }
+            },
+            "zhLocalizationKey": "aaronhalo",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 270,
@@ -6755,7 +7571,8 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 273,
@@ -6777,13 +7594,15 @@
               ],
               "probability": 28.5,
               "sourceLocation": "YELB"
-            }
+            },
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
           }
         ],
         "lagrangePoints": [
           {
             "id": 331,
-            "zh": "十L1 雄心伟梦站",
+            "zh": "十 L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6801,11 +7620,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "CRU-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_cru_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 336,
-            "zh": "HUR-L3",
+            "zh": "赫 L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -6823,7 +7644,9 @@
               ],
               "probability": 28.5,
               "sourceLocation": "HUR-L3"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l3",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 372,
@@ -6845,7 +7668,8 @@
               ],
               "probability": 28.5,
               "sourceLocation": "CRU-L2"
-            }
+            },
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -6861,7 +7685,9 @@
         "base": 3855,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "钛",
+      "nameLocalizationKey": "items_commodities_titanium"
     },
     "Torite": {
       "commodityId": 189,
@@ -6877,7 +7703,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "nyx"
           },
           {
             "id": 64,
@@ -6886,7 +7713,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -6895,7 +7723,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -6903,7 +7732,7 @@
         "pointsOfInterest": [
           {
             "id": 225,
-            "zh": "基格带",
+            "zh": "基格小行星带",
             "en": "Keeger Belt",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -6921,11 +7750,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "GLACIUM_KEEGER"
-            }
+            },
+            "zhLocalizationKey": "nyx_asteroidbelt2",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 226,
-            "zh": "冰川环",
+            "zh": "冰川环带",
             "en": "Glaciem Ring",
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
@@ -6943,7 +7774,9 @@
               ],
               "probability": 28.5,
               "sourceLocation": "GLACIUM"
-            }
+            },
+            "zhLocalizationKey": "mission_location_nyx_008",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 270,
@@ -6965,7 +7798,8 @@
               ],
               "probability": 28.5,
               "sourceLocation": "PYRO_DEEP"
-            }
+            },
+            "systemZhLocalizationKey": "pyro"
           },
           {
             "id": 271,
@@ -6974,7 +7808,8 @@
             "systemZh": "尼克斯",
             "systemEn": "Nyx",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "nyx"
           },
           {
             "id": 272,
@@ -6983,22 +7818,26 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro_asteroidbelta",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 339,
-            "zh": "INS Jericho",
+            "zh": "INS 杰里科 (Jericho)",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton4_l1_navystation_name",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 340,
-            "zh": "微L2 长林站",
+            "zh": "微 L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7016,11 +7855,13 @@
               ],
               "probability": 28.4,
               "sourceLocation": "MIC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 343,
-            "zh": "微L5 现代伊卡洛斯站",
+            "zh": "微 L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7038,7 +7879,9 @@
               ],
               "probability": 28.4,
               "sourceLocation": "MIC-L5"
-            }
+            },
+            "zhLocalizationKey": "rr_mic_l5",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 373,
@@ -7047,7 +7890,8 @@
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -7063,7 +7907,9 @@
         "base": 3900,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "托瑞特金属",
+      "nameLocalizationKey": "items_commodities_torite"
     },
     "Tungsten": {
       "commodityId": 78,
@@ -7079,7 +7925,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
           },
           {
             "id": 68,
@@ -7088,7 +7935,8 @@
             "systemZh": "未知",
             "systemEn": "",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "zhLocalizationKey": "stanton"
           }
         ],
         "planets": [],
@@ -7113,7 +7961,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ADI"
-            }
+            },
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 35,
@@ -7135,7 +7986,10 @@
               ],
               "probability": 28.5,
               "sourceLocation": "FAI"
-            }
+            },
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           }
         ],
         "pointsOfInterest": [
@@ -7146,13 +8000,14 @@
             "systemZh": "派罗",
             "systemEn": "Pyro",
             "parentZh": "未知",
-            "parentEn": ""
+            "parentEn": "",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧L1 广袤森林站",
+            "zh": "弧 L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7170,11 +8025,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ARC-L1"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l1",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 327,
-            "zh": "ARC-L2",
+            "zh": "弧 L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7192,11 +8049,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ARC-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l2",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 329,
-            "zh": "ARC-L4",
+            "zh": "弧 L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7214,11 +8073,13 @@
               ],
               "probability": 28.5,
               "sourceLocation": "ARC-L4"
-            }
+            },
+            "zhLocalizationKey": "rr_arc_l4",
+            "systemZhLocalizationKey": "stanton"
           },
           {
             "id": 335,
-            "zh": "赫L2 坚贞梦想站",
+            "zh": "赫 L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7236,7 +8097,9 @@
               ],
               "probability": 28.5,
               "sourceLocation": "HUR-L2"
-            }
+            },
+            "zhLocalizationKey": "rr_hur_l2",
+            "systemZhLocalizationKey": "stanton"
           }
         ]
       },
@@ -7252,7 +8115,9 @@
         "base": 3870,
         "maxCluster": 5
       },
-      "hasReliableLocations": true
+      "hasReliableLocations": true,
+      "nameZh": "钨",
+      "nameLocalizationKey": "items_commodities_tungsten"
     },
     "Yormandi Eye": {
       "commodityId": null,
@@ -7267,7 +8132,9 @@
         "lagrangePoints": []
       },
       "signal": {},
-      "hasReliableLocations": false
+      "hasReliableLocations": false,
+      "nameZh": "约曼迪之眼",
+      "nameLocalizationKey": "items_commodities_yormandi_eye"
     }
   }
 }

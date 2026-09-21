@@ -2,10 +2,10 @@
   "source": "https://flowcld.xyz/tools/blueprint",
   "endpoint": "https://flowcld.xyz/app-api/product/blueprint/page",
   "language": "CN",
-  "fetchedAt": "2026-09-16T21:16:02.135829+00:00",
+  "fetchedAt": "2026-09-21T07:45:15.082835+00:00",
   "totalReported": 1604,
   "itemCount": 1604,
-  "localizedCount": 1572,
+  "localizedCount": 1584,
   "items": [
     {
       "recordGuid": "6f0487ce-1696-4b62-abb4-587d30d0e6da",
@@ -170,166 +170,6 @@
       ]
     },
     {
-      "recordGuid": "4e834db6-9b0e-461a-8465-ec90847bd7e5",
-      "internalName": "salvage_modifier_scraper_large",
-      "blueprintName": "Salvage Modifier Scraper Large",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 27,
-      "craftTimeSeconds": 300,
-      "rewardMissionTypes": [
-        "Collection",
-        "Salvage"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "Salvage"
-      ]
-    },
-    {
-      "recordGuid": "22782818-beab-4e09-90c4-306c17192c06",
-      "internalName": "salvage_modifier_scraper_medium",
-      "blueprintName": "Salvage Modifier Scraper Medium",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 38,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "f35d8068-b232-43d5-a8bb-744a1295c79c",
-      "internalName": "salvage_modifier_scraper_salvation_medium",
-      "blueprintName": "Salvage Modifier Scraper Salvation Medium",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 38,
-      "craftTimeSeconds": 240,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "b4160c11-75f9-4699-8aab-7b21abf75bc6",
-      "internalName": "salvage_modifier_scraper_salvation_small",
-      "blueprintName": "Salvage Modifier Scraper Salvation Small",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 38,
-      "craftTimeSeconds": 180,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "57a536c1-cd88-4b2c-8fab-5b871fffa458",
-      "internalName": "salvage_modifier_scraper_small",
-      "blueprintName": "Salvage Modifier Scraper Small",
-      "categoryName": "Components",
-      "subcategory": "salvage",
-      "manufacturer": "salvage",
-      "isReward": true,
-      "rewardMissionCount": 38,
-      "craftTimeSeconds": 180,
-      "rewardMissionTypes": [
-        "Collection",
-        "Delivery",
-        "Investigation",
-        "Mercenary",
-        "Salvage",
-        "Search"
-      ],
-      "rewardMissionTypesCn": [
-        "采集",
-        "运送",
-        "调查",
-        "雇佣兵",
-        "Salvage",
-        "Search"
-      ]
-    },
-    {
-      "recordGuid": "a97e0f32-9098-4b83-a54a-ddccc4820fd6",
-      "internalName": "grin_tractorbeam_s1",
-      "blueprintName": "Grin Tractorbeam S1",
-      "categoryName": "Components",
-      "subcategory": "tractorbeam",
-      "manufacturer": "grin",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 300
-    },
-    {
-      "recordGuid": "49fcf2ef-6123-4ab5-805e-c3aa730c5831",
-      "internalName": "grin_tractorbeam_s2",
-      "blueprintName": "Grin Tractorbeam S2",
-      "categoryName": "Components",
-      "subcategory": "tractorbeam",
-      "manufacturer": "grin",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 420
-    },
-    {
-      "recordGuid": "e102bf88-6b8e-44b9-a7b6-2f350880b926",
-      "internalName": "grin_tractorbeam_s3",
-      "blueprintName": "Grin Tractorbeam S3",
-      "categoryName": "Components",
-      "subcategory": "tractorbeam",
-      "manufacturer": "grin",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 540
-    },
-    {
       "recordGuid": "91beb199-b167-4b5a-b7f8-a1f6e8b9e4e9",
       "internalName": "wep_tractorbeam_s1_military_1",
       "blueprintName": "Wep Tractorbeam S1 Military",
@@ -447,49 +287,6 @@
       "craftTimeSeconds": 540
     },
     {
-      "recordGuid": "093d67a2-c4d2-4141-9b9e-8dd9978e96b2",
-      "internalName": "powr_orig_s04_890j_scitem",
-      "blueprintName": "Powr Orig S04 890J Scitem",
-      "categoryName": "Components",
-      "subcategory": "powerplant",
-      "manufacturer": "powr",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 2460
-    },
-    {
-      "recordGuid": "ea3c2e6f-5dbb-4a98-b2c2-491cde65201d",
-      "internalName": "carryable_2h_fl_missionitem_microsatellite_a",
-      "blueprintName": "Carryable 2H Fl Missionitem Microsatellite A",
-      "categoryName": "MissionItems",
-      "manufacturer": "carryable",
-      "isReward": true,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 10,
-      "rewardMissionTypes": [
-        "Other"
-      ],
-      "rewardMissionTypesCn": [
-        "其他"
-      ]
-    },
-    {
-      "recordGuid": "00eabb01-d628-49f5-a1f6-7c9df4ad9259",
-      "internalName": "carryable_2h_fl_missionitem_prototype_ship_component_2_a",
-      "blueprintName": "Carryable 2H Fl Missionitem Prototype Ship Component 2 A",
-      "categoryName": "MissionItems",
-      "manufacturer": "carryable",
-      "isReward": true,
-      "rewardMissionCount": 3,
-      "craftTimeSeconds": 10,
-      "rewardMissionTypes": [
-        "Collection"
-      ],
-      "rewardMissionTypesCn": [
-        "采集"
-      ]
-    },
-    {
       "recordGuid": "d31e71e2-38f1-4773-8c4f-2507ca0470db",
       "internalName": "carryable_2h_sq_collectormaterial_002",
       "blueprintName": "Carryable 2H Sq Collectormaterial",
@@ -515,17 +312,6 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 1140
-    },
-    {
-      "recordGuid": "fd3b2ad5-e25f-4a51-b9c3-aaa4da9db252",
-      "internalName": "cool_rsi_s04_polaris_scitem",
-      "blueprintName": "Cool Rsi S04 Polaris Scitem",
-      "categoryName": "Components",
-      "subcategory": "cooler",
-      "manufacturer": "cool",
-      "isReward": false,
-      "rewardMissionCount": 0,
-      "craftTimeSeconds": 1020
     },
     {
       "recordGuid": "d7f3ad24-fca7-4393-b026-f55675cfe820",
@@ -6320,7 +6106,7 @@
     {
       "recordGuid": "8a4f43a8-5f3d-4557-9756-01e1e77fbc2c",
       "internalName": "radr_gnrp_s03_idris_temp",
-      "blueprintName": "Radr Gnrp S03 Idris Temp",
+      "blueprintName": "@item_Name_RADR_GNRP_S03_Idris",
       "blueprintNameCn": "RADR_GNRP_S03_Idris_TEMP (S03尺寸 伊德里斯)",
       "categoryName": "Components",
       "subcategory": "radar",
@@ -6333,7 +6119,7 @@
     {
       "recordGuid": "c0226b4d-3829-487c-8bf0-7d47f36ae867",
       "internalName": "radr_rsi_s04_polaris",
-      "blueprintName": "Radr Rsi S04 Polaris",
+      "blueprintName": "@item_Name_RADR_RSI_S04_Polaris",
       "blueprintNameCn": "RADR_RSI_S04_Polaris (S04尺寸)",
       "categoryName": "Components",
       "subcategory": "radar",
@@ -6346,7 +6132,7 @@
     {
       "recordGuid": "7ab8c5b1-2b1c-4388-8931-ad2aefa812e3",
       "internalName": "radr_wlop_s03_lephari",
-      "blueprintName": "Radr Wlop S03 Lephari",
+      "blueprintName": "@item_Name_RADR_WLOP_S03_Lephari",
       "blueprintNameCn": "RADR_WLOP_S03_Lephari (S03尺寸)",
       "categoryName": "Components",
       "subcategory": "radar",
@@ -6696,6 +6482,23 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 90
+    },
+    {
+      "recordGuid": "00eabb01-d628-49f5-a1f6-7c9df4ad9259",
+      "internalName": "carryable_2h_fl_missionitem_prototype_ship_component_2_a",
+      "blueprintName": "TH-01 Propulsor",
+      "blueprintNameCn": "TH-01 推进器",
+      "categoryName": "MissionItems",
+      "manufacturer": "carryable",
+      "isReward": true,
+      "rewardMissionCount": 3,
+      "craftTimeSeconds": 10,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
     },
     {
       "recordGuid": "8842e26b-09cb-48fa-a5bb-e51d7bdaa225",
@@ -7968,6 +7771,18 @@
       ]
     },
     {
+      "recordGuid": "fd3b2ad5-e25f-4a51-b9c3-aaa4da9db252",
+      "internalName": "cool_rsi_s04_polaris_scitem",
+      "blueprintName": "Serac",
+      "blueprintNameCn": "冰塔",
+      "categoryName": "Components",
+      "subcategory": "cooler",
+      "manufacturer": "cool",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 1020
+    },
+    {
       "recordGuid": "93d6786c-83fa-4d42-8c7b-87c87adb2b13",
       "internalName": "cool_orig_s04_890j_scitem",
       "blueprintName": "Serac",
@@ -9166,6 +8981,34 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 660
+    },
+    {
+      "recordGuid": "b4160c11-75f9-4699-8aab-7b21abf75bc6",
+      "internalName": "salvage_modifier_scraper_salvation_small",
+      "blueprintName": "Hart Scraper Module",
+      "blueprintNameCn": "哈特 刮削模块",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 180,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
     },
     {
       "recordGuid": "76438070-9e7d-4518-999a-1965162ec5b4",
@@ -14510,6 +14353,26 @@
       "craftTimeSeconds": 90
     },
     {
+      "recordGuid": "4e834db6-9b0e-461a-8465-ec90847bd7e5",
+      "internalName": "salvage_modifier_scraper_large",
+      "blueprintName": "Trawler Scraper Module",
+      "blueprintNameCn": "拖网 刮削模块",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 27,
+      "craftTimeSeconds": 300,
+      "rewardMissionTypes": [
+        "Collection",
+        "Salvage"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "Salvage"
+      ]
+    },
+    {
       "recordGuid": "3f68723c-a32c-4b03-b300-14fec1dc025d",
       "internalName": "omc_utility_heavy_helmet_01_01_01",
       "blueprintName": "Corbel Helmet Smolder",
@@ -14912,6 +14775,23 @@
       "craftTimeSeconds": 720
     },
     {
+      "recordGuid": "ea3c2e6f-5dbb-4a98-b2c2-491cde65201d",
+      "internalName": "carryable_2h_fl_missionitem_microsatellite_a",
+      "blueprintName": "Probe",
+      "blueprintNameCn": "探测器",
+      "categoryName": "MissionItems",
+      "manufacturer": "carryable",
+      "isReward": true,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 10,
+      "rewardMissionTypes": [
+        "Other"
+      ],
+      "rewardMissionTypesCn": [
+        "其他"
+      ]
+    },
+    {
       "recordGuid": "462c8d67-52fd-49fb-8bf8-0c89d1e06918",
       "internalName": "rsi_explorer_undersuit_01_01_01",
       "blueprintName": "Venture Undersuit Base",
@@ -15249,6 +15129,18 @@
       "isReward": false,
       "rewardMissionCount": 0,
       "craftTimeSeconds": 1140
+    },
+    {
+      "recordGuid": "093d67a2-c4d2-4141-9b9e-8dd9978e96b2",
+      "internalName": "powr_orig_s04_890j_scitem",
+      "blueprintName": "Stellate",
+      "blueprintNameCn": "星状",
+      "categoryName": "Components",
+      "subcategory": "powerplant",
+      "manufacturer": "powr",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 2460
     },
     {
       "recordGuid": "e87c8612-28ed-45b1-a03a-7941984c93fe",
@@ -18104,6 +17996,34 @@
       ]
     },
     {
+      "recordGuid": "22782818-beab-4e09-90c4-306c17192c06",
+      "internalName": "salvage_modifier_scraper_medium",
+      "blueprintName": "Abrade Scraper Module",
+      "blueprintNameCn": "研磨 刮削模块",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
       "recordGuid": "f2947ab8-56b3-43e6-9ef6-6301070a1846",
       "internalName": "ksar_shotgun_energy_01",
       "blueprintName": "Devastator Shotgun",
@@ -18448,6 +18368,34 @@
       ]
     },
     {
+      "recordGuid": "f35d8068-b232-43d5-a8bb-744a1295c79c",
+      "internalName": "salvage_modifier_scraper_salvation_medium",
+      "blueprintName": "Comer Scraper Module",
+      "blueprintNameCn": "科莫 刮削模块",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
       "recordGuid": "c1d17db7-413a-48b7-83be-7f3dd47231ce",
       "internalName": "cool_wcpr_s02_aufeis_scitem",
       "blueprintName": "Aufeis",
@@ -18757,6 +18705,34 @@
       "craftTimeSeconds": 720
     },
     {
+      "recordGuid": "57a536c1-cd88-4b2c-8fab-5b871fffa458",
+      "internalName": "salvage_modifier_scraper_small",
+      "blueprintName": "Cinch Scraper Module",
+      "blueprintNameCn": "紧固 刮削模块",
+      "categoryName": "Components",
+      "subcategory": "salvage",
+      "manufacturer": "salvage",
+      "isReward": true,
+      "rewardMissionCount": 38,
+      "craftTimeSeconds": 180,
+      "rewardMissionTypes": [
+        "Collection",
+        "Delivery",
+        "Investigation",
+        "Mercenary",
+        "Salvage",
+        "Search"
+      ],
+      "rewardMissionTypesCn": [
+        "采集",
+        "运送",
+        "调查",
+        "雇佣兵",
+        "Salvage",
+        "Search"
+      ]
+    },
+    {
       "recordGuid": "d6d9b647-15a8-4240-ad56-bce7fa1c9ddf",
       "internalName": "apar_massdriver_s2",
       "blueprintName": "Strife Mass Driver Cannon",
@@ -18905,6 +18881,42 @@
       "rewardMissionTypesCn": [
         "雇佣兵"
       ]
+    },
+    {
+      "recordGuid": "a97e0f32-9098-4b83-a54a-ddccc4820fd6",
+      "internalName": "grin_tractorbeam_s1",
+      "blueprintName": "SureGrip S1 Tractor Beam",
+      "blueprintNameCn": "绝对牵引 S1 牵引光束",
+      "categoryName": "Components",
+      "subcategory": "tractorbeam",
+      "manufacturer": "grin",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 300
+    },
+    {
+      "recordGuid": "49fcf2ef-6123-4ab5-805e-c3aa730c5831",
+      "internalName": "grin_tractorbeam_s2",
+      "blueprintName": "SureGrip S2 Tractor Beam",
+      "blueprintNameCn": "绝对牵引 S2 牵引光束",
+      "categoryName": "Components",
+      "subcategory": "tractorbeam",
+      "manufacturer": "grin",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 420
+    },
+    {
+      "recordGuid": "e102bf88-6b8e-44b9-a7b6-2f350880b926",
+      "internalName": "grin_tractorbeam_s3",
+      "blueprintName": "SureGrip S3 Tractor Beam",
+      "blueprintNameCn": "绝对牵引 S3 牵引光束",
+      "categoryName": "Components",
+      "subcategory": "tractorbeam",
+      "manufacturer": "grin",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 540
     },
     {
       "recordGuid": "479a96c4-0b36-48f3-9ff6-5f4d7645dec3",
