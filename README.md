@@ -45,6 +45,16 @@ Responsive behavior:
 - 621-720 px: three-column grid so long menus still open to the right without leaving the viewport.
 - Up to 620 px: compact two-column mobile grid with no horizontal page overflow.
 
+## Detail Text Layout
+
+The seven dismantling information fields remain separate compact boxes with centered labels and values. Grid children must stretch to the cell width, not retain an overflowing intrinsic width. Values wrap completely inside their boxes, including uninterrupted English identifiers; do not shorten official manufacturer names or hide them behind an ellipsis. Box height follows the content.
+
+Desktop keeps seven columns. Up to 620 px, use four columns with the fifth field (manufacturer) spanning two: four fields in the first row, then manufacturer, size and grade in the second row. Keep that field order when maintaining the markup.
+
+Manufacturing specification values, detail titles and recovered-material names also allow long tokens to wrap. Quality-result rows and their value groups wrap when space is insufficient, preserving the displayed numbers and units. Compact result-list summaries and closed filter controls retain their intentional ellipsis behavior.
+
+When names or layout rules change, inspect actual text bounds inside each box, not only the page's total scroll width: an overflowing centered value may leave the page width unchanged. Include long manufacturers, English specification identifiers and large quality values at 320/390 px, responsive breakpoints, 16:9 desktop, 2K and ultrawide.
+
 ## Local Preview
 
 ```bash
