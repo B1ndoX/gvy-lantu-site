@@ -43,6 +43,20 @@ class OfficialLocalizationTests(unittest.TestCase):
                     with self.assertRaises(RuntimeError):
                         loc.read_github_source("4.10.1-live.12660092")
 
+    def test_github_accepts_official_alpha_label_without_rewriting_source(self):
+        raw, manifest = self.source()
+        raw = raw.replace(b"4.10: Test", "Alpha 4.10：奥里森之围".encode())
+        manifest.update(sha256=hashlib.sha256(raw).hexdigest(), byteLength=len(raw),
+                        versionLabel="Alpha 4.10：奥里森之围")
+        with patch.object(loc, "fetch_bytes", side_effect=[json.dumps({"object": {"sha": "a" * 40}}).encode(),
+                          json.dumps(manifest).encode(), gzip.compress(raw)]):
+            result, _ = loc.read_github_source("4.10.1-live.12660092")
+        self.assertEqual(result, raw)
+        self.assertEqual(loc.series(manifest["versionLabel"]), "4.10")
+        for invalid in ("Alpha", "Alpha 4", "Unknown 4.10", "Alpha 4.x"):
+            with self.assertRaises(RuntimeError):
+                loc.series(invalid)
+
     def test_manifest_label_must_equal_ini_label(self):
         raw, manifest = self.source()
         manifest["versionLabel"] = "4.10: Other"
@@ -62,6 +76,25 @@ class OfficialLocalizationTests(unittest.TestCase):
         self.assertEqual(loc.clean_label("FR-66", "FR-66"), "FR-66")
         self.assertEqual(loc.clean_label("=错误", "Test"), "")
         self.assertEqual(loc.clean_label("目标<EM4>[蓝图]</EM4>", "Target"), "目标[蓝图]")
+
+    def test_bilingual_labels_choose_chinese_in_either_order(self):
+        for text in ("Borase\\n波射石", "波射石\\nBorase", "Borase\n波射石"):
+            with self.subTest(text=text):
+                self.assertEqual(loc.clean_label(text, "Borase"), "波射石")
+        self.assertEqual(loc.clean_label("Agricium\\n艾格瑞金属", "Agricium"), "艾格瑞金属")
+        self.assertEqual(loc.clean_label("Fixed Mav Thruster\\n联合式机动推进器", "Fixed Mav Thruster"), "联合式机动推进器")
+        self.assertEqual(loc.clean_label("Pyro [派罗]", "Pyro"), "派罗")
+        self.assertEqual(loc.clean_label("Delamar\\n德拉玛(Delamar)", "Delamar"), "德拉玛")
+        self.assertEqual(loc.clean_label("<EM4>Borase</EM4>\\n<EM4>波射石</EM4>", "Borase"), "波射石")
+
+    def test_bilingual_labels_keep_models_and_skip_untranslated_duplicates(self):
+        self.assertEqual(loc.clean_label("Constellation Mk IV Nightbreak Livery\\n星座 Mk IV 夜影涂装", "Constellation Mk IV Nightbreak Livery"), "星座 Mk IV 夜影涂装")
+        self.assertEqual(loc.clean_label("柳叶刀MH1 采矿激光器", "Lancet MH1 Mining Laser"), "柳叶刀MH1 采矿激光器")
+        self.assertEqual(loc.clean_label("蓝三角股份有限公司", "Blue Triangle Inc."), "蓝三角股份有限公司")
+        self.assertEqual(loc.clean_label("FR-66 [FR-66]", "FR-66"), "FR-66")
+        self.assertEqual(loc.clean_label("Monolith Armor Core\\nMonolith Armor Core", "Monolith Armor Core"), "")
+        self.assertEqual(loc.clean_label("DCSR2\\nDCSR2", "DCSR2"), "")
+        self.assertEqual(loc.clean_label("<-=MISSING=->\\n<-=MISSING=->", "Missing"), "")
 
     def test_ambiguous_labels_are_not_guessed_and_stable_keys_win(self):
         names = loc.OfficialNames({"entries": {
@@ -121,6 +154,61 @@ class OfficialLocalizationTests(unittest.TestCase):
             self.assertIs(snapshot, current)
             self.assertFalse(changed)
             fetch.assert_not_called()
+
+    def test_new_source_or_adapter_revision_rebuilds_snapshot(self):
+        raw, manifest = self.source()
+        for source_hash, adapter in (("0" * 64, loc.ADAPTER_VERSION),
+                                     (manifest["sha256"], loc.ADAPTER_VERSION - 1)):
+            with self.subTest(source_hash=source_hash, adapter=adapter):
+                current = {"metadata": {"sourceSha256": source_hash, "adapterVersion": adapter}}
+                candidate = {"metadata": {}}
+                with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}), \
+                        patch.object(loc, "load_snapshot", return_value=current), \
+                        patch.object(loc, "read_github_source", return_value=(raw, {"inputCommit": "a" * 40})), \
+                        patch.object(loc, "fetch_bytes", return_value=b"{}"), \
+                        patch("enrich_quality_stats.source_sha_from_commit", return_value="b" * 40), \
+                        patch("enrich_quality_stats.source_version_from_commit", return_value="4.10.1-live.1"), \
+                        patch.object(loc, "build_snapshot", return_value=candidate) as build, \
+                        patch.object(loc, "validate_snapshot"):
+                    result, changed = loc.refresh_snapshot("4.10.2-live.12881860")
+                self.assertTrue(changed)
+                self.assertIs(result, candidate)
+                self.assertEqual(result["metadata"]["inputCommit"], "a" * 40)
+                build.assert_called_once()
+
+    def test_enhanced_bilingual_enhanced_round_trip_uses_current_hash_only(self):
+        enhanced = "Frontend_PU_Version=4.10: Test\nitems_commodities_borase=波射石Borase\n".encode()
+        bilingual = "Frontend_PU_Version=Alpha 4.10: Test\nitems_commodities_borase=Borase\\n波射石\n".encode()
+        current = {}
+
+        def build(raw, labels, version, **kwargs):
+            return {"metadata": {"adapterVersion": loc.ADAPTER_VERSION,
+                                 "sourceSha256": hashlib.sha256(raw).hexdigest(),
+                                 "importedAt": "preserved"},
+                    "entries": {"items_commodities_borase": {"chinese": loc.clean_label(
+                        loc.parse_ini(raw)["items_commodities_borase"], "Borase")}}}
+
+        for raw in (enhanced, bilingual, enhanced):
+            with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}), \
+                    patch.object(loc, "load_snapshot", return_value=current), \
+                    patch.object(loc, "read_github_source", return_value=(raw, {})), \
+                    patch.object(loc, "fetch_bytes", return_value=b"{}"), \
+                    patch("enrich_quality_stats.source_sha_from_commit", return_value="a" * 40), \
+                    patch("enrich_quality_stats.source_version_from_commit", return_value="4.10.1-live.1"), \
+                    patch.object(loc, "build_snapshot", side_effect=build), \
+                    patch.object(loc, "validate_snapshot"):
+                current, changed = loc.refresh_snapshot("4.10.2-live.12881860")
+            self.assertTrue(changed)
+            self.assertEqual(current["entries"]["items_commodities_borase"]["chinese"], "波射石")
+        with patch.dict(os.environ, {"GITHUB_ACTIONS": "true"}), \
+                patch.object(loc, "load_snapshot", return_value=current), \
+                patch.object(loc, "read_github_source", return_value=(enhanced, {"sourceUpdatedAt": "new-mtime"})), \
+                patch.object(loc, "validate_snapshot"), patch.object(loc, "fetch_bytes") as fetch:
+            unchanged, changed = loc.refresh_snapshot("4.10.2-live.12881860")
+        self.assertFalse(changed)
+        self.assertIs(unchanged, current)
+        self.assertEqual(unchanged["metadata"]["importedAt"], "preserved")
+        fetch.assert_not_called()
 
     def test_snapshot_hash_and_series_must_be_valid(self):
         entries = {f"item_name_{i}": {"english": f"Item {i}", "chinese": "物品", "domain": "item"} for i in range(7000)}

@@ -25,7 +25,7 @@ LABEL_URL = f"https://raw.githubusercontent.com/StarCitizenWiki/scunpacked-data/
 SOURCE_REPO = "B1ndoX/gvy-lantu-site"
 SOURCE_BRANCH = "nas-localization"
 MAX_SOURCE_BYTES = 20 * 1024 * 1024
-ADAPTER_VERSION = 3
+ADAPTER_VERSION = 4
 
 
 def fetch_bytes(url: str, limit: int = MAX_SOURCE_BYTES) -> bytes:
@@ -71,7 +71,7 @@ def read_github_source(version: str) -> tuple[bytes, dict]:
 
 
 def series(version: str) -> str:
-    match = re.match(r"(\d+\.\d+)(?:\D|$)", version)
+    match = re.match(r"(?:Alpha\s+)?(\d+\.\d+)(?:\D|$)", version, flags=re.IGNORECASE)
     if not match:
         raise RuntimeError(f"localization version is not identifiable: {version}")
     return match[1]
@@ -91,16 +91,30 @@ def parse_ini(raw: bytes) -> dict[str, str]:
 
 
 def clean_label(text: str, english: str) -> str:
-    text = text.replace("\\n", "\n").splitlines()[0].strip() if text else ""
-    text = re.sub(r"</?EM\d+>", "", text, flags=re.IGNORECASE)
-    if not text or text.startswith(("[PH]", "(PH)", "<-=", "=", "@")):
-        return ""
-    # The NAS package often appends the exact English label to its Chinese name.
-    if re.search(r"[\u3400-\u9fff]", text):
-        for suffix in (f"({english})", f"（{english}）", english):
-            if suffix and text.endswith(suffix):
-                text = text[:-len(suffix)].strip()
-                break
+    lines = [re.sub(r"</?EM\d+>", "", line, flags=re.IGNORECASE).strip()
+             for line in (text or "").replace("\\n", "\n").splitlines()]
+    lines = [line for line in lines if line and not line.startswith(("[PH]", "(PH)", "<-=", "=", "@"))]
+    chinese_lines = [line for line in lines if re.search(r"[\u3400-\u9fff]", line)]
+    if not chinese_lines:
+        # Keep single official model/brand labels, not untranslated bilingual duplicates.
+        if len(lines) != 1:
+            return ""
+        text = lines[0]
+        if any(text == f"{english} {opening}{english}{closing}"
+               for opening, closing in (("[", "]"), ("(", ")"), ("（", "）"))):
+            return english
+        return text
+    text = chinese_lines[0]
+    for opening, closing in (("[", "]"), ("(", ")"), ("（", "）")):
+        if text.startswith(english) and text.endswith(closing):
+            remainder = text[len(english):].strip()
+            if remainder.startswith(opening):
+                return remainder[len(opening):-len(closing)].strip()
+    # Strip only an exact English label; retain mixed-language model and brand tokens.
+    for suffix in (f"({english})", f"（{english}）", f"[{english}]", english):
+        if suffix and text.endswith(suffix):
+            text = text[:-len(suffix)].strip()
+            break
     return text
 
 

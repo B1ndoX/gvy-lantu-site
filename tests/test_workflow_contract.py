@@ -27,6 +27,12 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("if: steps.commit_refresh.outputs.changed != 'true'", self.workflow)
         self.assertIn("steps.production_snapshot.outcome == 'failure'", self.workflow)
 
+    def test_backup_upload_includes_hidden_directory_with_two_week_retention(self) -> None:
+        upload = self.workflow.split("- name: Upload data backup", 1)[1].split("- name:", 1)[0]
+        self.assertIn("path: .data-backups/", upload)
+        self.assertIn("include-hidden-files: true", upload)
+        self.assertIn("retention-days: 14", upload)
+
     def test_refresh_commit_only_stages_generated_data(self) -> None:
         git_add_line = next(
             line.strip()

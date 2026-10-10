@@ -8,6 +8,19 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+Official localization version labels may start with a numeric series or the
+official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
+preserves the original INI and manifest label, verifies their complete bytes,
+and still requires the same major/minor series as the selected stable LIVE.
+Both the enhanced Chinese pack and the official bilingual pack are supported:
+Chinese name lines take priority regardless of Chinese/English line order.
+Only exact English label wrappers or suffixes are removed; official model and
+brand tokens are retained. Untranslated English/English duplicates do not claim
+a Chinese match, and INI keys (including flags) remain unchanged.
+Detection uses each value's structure, not a pack name or known hash. Switching
+back to a previously used pack rebuilds whenever it differs from the currently
+applied content; touching an identical source does not advance data timestamps.
+
 ## Project Boundaries
 
 - This repository contains only the GVY blueprint query site.
@@ -111,6 +124,8 @@ The same staged build also attempts to attach compact base attributes from the c
 Before replacing data files, the script saves a local backup under `.data-backups/`.
 Local backups are retained for 14 days and are ignored by Git.
 In GitHub Actions, the backup folder is also uploaded as a workflow artifact with 14-day retention.
+The upload must enable `include-hidden-files: true` for `.data-backups/`; validate
+an actual artifact after a changed-data run, not just the workflow's conclusion.
 All staged public files are validated before same-filesystem atomic replacement. Transient SCMDB network failures are retried up to three times; if refresh still fails, the existing LIVE cache and its displayed update time remain unchanged.
 
 The same six-hour workflow then runs `scripts/refresh_mineral_locations.py`. It fetches the current commodity/location relationships from UEX API 2.0, rebuilds all five supported location groups, applies the verified NAS location localization, and preserves the calibrated Chinese fallbacks that are absent from that package. The candidate must retain at least 30 materials, 25 materials with reliable locations, 100 total locations, and 100 location-specific signal mappings. It is also compared with the last verified cache, and large coverage drops are rejected. If the source data is unchanged, `retrievedAt` is not advanced and no commit is created.
