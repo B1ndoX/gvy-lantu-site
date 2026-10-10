@@ -8,7 +8,7 @@
     "signalUpdatedAt": "2026-08-16",
     "signalSourceVersion": "4.9",
     "signalSyncedAt": "2026-08-16T11:49:57.585632Z",
-    "retrievedAt": "2026-09-21T07:40:35.734463+00:00",
+    "retrievedAt": "2026-10-10T13:28:27.504540+00:00",
     "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
   },
   "materials": {
@@ -183,7 +183,7 @@
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "弧 L3 摩登快车站",
+            "zh": "弧-L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -207,7 +207,7 @@
           },
           {
             "id": 333,
-            "zh": "十 L5 美丽峡谷站",
+            "zh": "十-L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -231,7 +231,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -506,7 +506,7 @@
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧 L1 广袤森林站",
+            "zh": "弧-L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -531,7 +531,7 @@
           },
           {
             "id": 327,
-            "zh": "弧 L2 活力小径站",
+            "zh": "弧-L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -556,7 +556,7 @@
           },
           {
             "id": 334,
-            "zh": "赫 L1 绿色林地站",
+            "zh": "赫-L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -581,7 +581,7 @@
           },
           {
             "id": 335,
-            "zh": "赫 L2 坚贞梦想站",
+            "zh": "赫-L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -606,7 +606,7 @@
           },
           {
             "id": 337,
-            "zh": "赫 L4 旋律领域站",
+            "zh": "赫-L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -631,7 +631,7 @@
           },
           {
             "id": 338,
-            "zh": "赫 L5 高速路线站",
+            "zh": "赫-L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -656,7 +656,7 @@
           },
           {
             "id": 339,
-            "zh": "INS 杰里科 (Jericho)",
+            "zh": "INS-杰里科",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -667,7 +667,7 @@
           },
           {
             "id": 340,
-            "zh": "微 L2 长林站",
+            "zh": "微-L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -692,7 +692,7 @@
           },
           {
             "id": 343,
-            "zh": "微 L5 现代伊卡洛斯站",
+            "zh": "微-L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1279,7 +1279,7 @@
         "lagrangePoints": [
           {
             "id": 330,
-            "zh": "弧 L5 黄色核心站",
+            "zh": "弧-L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1303,7 +1303,7 @@
           },
           {
             "id": 332,
-            "zh": "十 L4 轻浅田野站",
+            "zh": "十-L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1327,7 +1327,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1498,7 +1498,7 @@
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "弧 L3 摩登快车站",
+            "zh": "弧-L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1521,7 +1521,7 @@
           },
           {
             "id": 333,
-            "zh": "十 L5 美丽峡谷站",
+            "zh": "十-L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1544,7 +1544,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1756,7 +1756,7 @@
         "lagrangePoints": [
           {
             "id": 331,
-            "zh": "十 L1 雄心伟梦站",
+            "zh": "十-L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1779,7 +1779,7 @@
           },
           {
             "id": 336,
-            "zh": "赫 L3 雷霆快车站",
+            "zh": "赫-L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -1980,7 +1980,7 @@
         "lagrangePoints": [
           {
             "id": 334,
-            "zh": "赫 L1 绿色林地站",
+            "zh": "赫-L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2003,7 +2003,7 @@
           },
           {
             "id": 337,
-            "zh": "赫 L4 旋律领域站",
+            "zh": "赫-L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2026,7 +2026,7 @@
           },
           {
             "id": 338,
-            "zh": "赫 L5 高速路线站",
+            "zh": "赫-L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2370,7 +2370,7 @@
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "弧 L3 摩登快车站",
+            "zh": "弧-L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2395,7 +2395,7 @@
           },
           {
             "id": 330,
-            "zh": "弧 L5 黄色核心站",
+            "zh": "弧-L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2420,7 +2420,7 @@
           },
           {
             "id": 331,
-            "zh": "十 L1 雄心伟梦站",
+            "zh": "十-L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2445,7 +2445,7 @@
           },
           {
             "id": 332,
-            "zh": "十 L4 轻浅田野站",
+            "zh": "十-L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2470,7 +2470,7 @@
           },
           {
             "id": 333,
-            "zh": "十 L5 美丽峡谷站",
+            "zh": "十-L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2495,7 +2495,7 @@
           },
           {
             "id": 341,
-            "zh": "微 L3 无尽漫游站",
+            "zh": "微-L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2520,7 +2520,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2696,7 +2696,7 @@
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧 L1 广袤森林站",
+            "zh": "弧-L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2721,7 +2721,7 @@
           },
           {
             "id": 327,
-            "zh": "弧 L2 活力小径站",
+            "zh": "弧-L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2746,7 +2746,7 @@
           },
           {
             "id": 329,
-            "zh": "弧 L4 黯淡幽谷站",
+            "zh": "弧-L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2771,7 +2771,7 @@
           },
           {
             "id": 334,
-            "zh": "赫 L1 绿色林地站",
+            "zh": "赫-L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2796,7 +2796,7 @@
           },
           {
             "id": 335,
-            "zh": "赫 L2 坚贞梦想站",
+            "zh": "赫-L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2821,7 +2821,7 @@
           },
           {
             "id": 337,
-            "zh": "赫 L4 旋律领域站",
+            "zh": "赫-L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2846,7 +2846,7 @@
           },
           {
             "id": 338,
-            "zh": "赫 L5 高速路线站",
+            "zh": "赫-L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2871,7 +2871,7 @@
           },
           {
             "id": 339,
-            "zh": "INS 杰里科 (Jericho)",
+            "zh": "INS-杰里科",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2882,7 +2882,7 @@
           },
           {
             "id": 340,
-            "zh": "微 L2 长林站",
+            "zh": "微-L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2907,7 +2907,7 @@
           },
           {
             "id": 343,
-            "zh": "微 L5 现代伊卡洛斯站",
+            "zh": "微-L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -2956,7 +2956,7 @@
         "maxCluster": 6
       },
       "hasReliableLocations": true,
-      "nameZh": "刚玉Corundom",
+      "nameZh": "刚玉",
       "nameLocalizationKey": "items_commodities_corundum"
     },
     "Dolivine": {
@@ -3375,7 +3375,7 @@
         "lagrangePoints": [
           {
             "id": 330,
-            "zh": "弧 L5 黄色核心站",
+            "zh": "弧-L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3398,7 +3398,7 @@
           },
           {
             "id": 332,
-            "zh": "十 L4 轻浅田野站",
+            "zh": "十-L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -3421,7 +3421,7 @@
           },
           {
             "id": 341,
-            "zh": "微 L3 无尽漫游站",
+            "zh": "微-L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4025,7 +4025,7 @@
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧 L1 广袤森林站",
+            "zh": "弧-L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4050,7 +4050,7 @@
           },
           {
             "id": 327,
-            "zh": "弧 L2 活力小径站",
+            "zh": "弧-L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4075,7 +4075,7 @@
           },
           {
             "id": 329,
-            "zh": "弧 L4 黯淡幽谷站",
+            "zh": "弧-L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4100,7 +4100,7 @@
           },
           {
             "id": 334,
-            "zh": "赫 L1 绿色林地站",
+            "zh": "赫-L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4125,7 +4125,7 @@
           },
           {
             "id": 335,
-            "zh": "赫 L2 坚贞梦想站",
+            "zh": "赫-L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4150,7 +4150,7 @@
           },
           {
             "id": 337,
-            "zh": "赫 L4 旋律领域站",
+            "zh": "赫-L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4175,7 +4175,7 @@
           },
           {
             "id": 338,
-            "zh": "赫 L5 高速路线站",
+            "zh": "赫-L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4200,7 +4200,7 @@
           },
           {
             "id": 339,
-            "zh": "INS 杰里科 (Jericho)",
+            "zh": "INS-杰里科",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4211,7 +4211,7 @@
           },
           {
             "id": 340,
-            "zh": "微 L2 长林站",
+            "zh": "微-L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4236,7 +4236,7 @@
           },
           {
             "id": 343,
-            "zh": "微 L5 现代伊卡洛斯站",
+            "zh": "微-L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4815,7 +4815,7 @@
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "弧 L3 摩登快车站",
+            "zh": "弧-L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4840,7 +4840,7 @@
           },
           {
             "id": 330,
-            "zh": "弧 L5 黄色核心站",
+            "zh": "弧-L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4865,7 +4865,7 @@
           },
           {
             "id": 331,
-            "zh": "十 L1 雄心伟梦站",
+            "zh": "十-L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4890,7 +4890,7 @@
           },
           {
             "id": 332,
-            "zh": "十 L4 轻浅田野站",
+            "zh": "十-L4 轻浅田野站",
             "en": "CRU-L4 Shallow Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4915,7 +4915,7 @@
           },
           {
             "id": 333,
-            "zh": "十 L5 美丽峡谷站",
+            "zh": "十-L5 美丽峡谷站",
             "en": "CRU-L5 Beautiful Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4940,7 +4940,7 @@
           },
           {
             "id": 336,
-            "zh": "赫 L3 雷霆快车站",
+            "zh": "赫-L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4965,7 +4965,7 @@
           },
           {
             "id": 341,
-            "zh": "微 L3 无尽漫游站",
+            "zh": "微-L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -4990,7 +4990,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5255,7 +5255,7 @@
         "lagrangePoints": [
           {
             "id": 334,
-            "zh": "赫 L1 绿色林地站",
+            "zh": "赫-L1 绿色林地站",
             "en": "HUR-L1 Green Glade Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5279,7 +5279,7 @@
           },
           {
             "id": 337,
-            "zh": "赫 L4 旋律领域站",
+            "zh": "赫-L4 旋律领域站",
             "en": "HUR-L4 Melodic Fields Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5303,7 +5303,7 @@
           },
           {
             "id": 338,
-            "zh": "赫 L5 高速路线站",
+            "zh": "赫-L5 高速路线站",
             "en": "HUR-L5 High Course Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5827,7 +5827,7 @@
         "lagrangePoints": [
           {
             "id": 328,
-            "zh": "弧 L3 摩登快车站",
+            "zh": "弧-L3 摩登快车站",
             "en": "ARC-L3 Modern Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5852,7 +5852,7 @@
           },
           {
             "id": 330,
-            "zh": "弧 L5 黄色核心站",
+            "zh": "弧-L5 黄色核心站",
             "en": "ARC-L5 Yellow Core Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5877,7 +5877,7 @@
           },
           {
             "id": 336,
-            "zh": "赫 L3 雷霆快车站",
+            "zh": "赫-L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5902,7 +5902,7 @@
           },
           {
             "id": 341,
-            "zh": "微 L3 无尽漫游站",
+            "zh": "微-L3 无尽漫游站",
             "en": "MIC-L3 Endless Odyssey Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5927,7 +5927,7 @@
           },
           {
             "id": 342,
-            "zh": "微 L4 红色十字路口站",
+            "zh": "微-L4 红色十字路口站",
             "en": "MIC-L4 Red Crossroads Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -5966,7 +5966,7 @@
         "maxCluster": 6
       },
       "hasReliableLocations": true,
-      "nameZh": "压缩冰",
+      "nameZh": "高压冰",
       "nameLocalizationKey": "items_commodities_pressurized_ice,p"
     },
     "Quantainium": {
@@ -6002,7 +6002,7 @@
         "maxCluster": 2
       },
       "hasReliableLocations": true,
-      "nameZh": "量子矿物",
+      "nameZh": "量子矿",
       "nameLocalizationKey": "items_commodities_quantainium"
     },
     "Quartz": {
@@ -7096,7 +7096,7 @@
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧 L1 广袤森林站",
+            "zh": "弧-L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7119,7 +7119,7 @@
           },
           {
             "id": 327,
-            "zh": "弧 L2 活力小径站",
+            "zh": "弧-L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7142,7 +7142,7 @@
           },
           {
             "id": 329,
-            "zh": "弧 L4 黯淡幽谷站",
+            "zh": "弧-L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7165,7 +7165,7 @@
           },
           {
             "id": 335,
-            "zh": "赫 L2 坚贞梦想站",
+            "zh": "赫-L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7602,7 +7602,7 @@
         "lagrangePoints": [
           {
             "id": 331,
-            "zh": "十 L1 雄心伟梦站",
+            "zh": "十-L1 雄心伟梦站",
             "en": "CRU-L1 Ambitious Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7626,7 +7626,7 @@
           },
           {
             "id": 336,
-            "zh": "赫 L3 雷霆快车站",
+            "zh": "赫-L3 雷霆快车站",
             "en": "HUR-L3 Thundering Express Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7826,7 +7826,7 @@
         "lagrangePoints": [
           {
             "id": 339,
-            "zh": "INS 杰里科 (Jericho)",
+            "zh": "INS-杰里科",
             "en": "INS Jericho",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7837,7 +7837,7 @@
           },
           {
             "id": 340,
-            "zh": "微 L2 长林站",
+            "zh": "微-L2 长林站",
             "en": "MIC-L2 Long Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -7861,7 +7861,7 @@
           },
           {
             "id": 343,
-            "zh": "微 L5 现代伊卡洛斯站",
+            "zh": "微-L5 现代伊卡洛斯站",
             "en": "MIC-L5 Modern Icarus Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -8007,7 +8007,7 @@
         "lagrangePoints": [
           {
             "id": 326,
-            "zh": "弧 L1 广袤森林站",
+            "zh": "弧-L1 广袤森林站",
             "en": "ARC-L1 Wide Forest Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -8031,7 +8031,7 @@
           },
           {
             "id": 327,
-            "zh": "弧 L2 活力小径站",
+            "zh": "弧-L2 活力小径站",
             "en": "ARC-L2 Lively Pathway Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -8055,7 +8055,7 @@
           },
           {
             "id": 329,
-            "zh": "弧 L4 黯淡幽谷站",
+            "zh": "弧-L4 黯淡幽谷站",
             "en": "ARC-L4 Faint Glen Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -8079,7 +8079,7 @@
           },
           {
             "id": 335,
-            "zh": "赫 L2 坚贞梦想站",
+            "zh": "赫-L2 坚贞梦想站",
             "en": "HUR-L2 Faithful Dream Station",
             "systemZh": "斯坦顿",
             "systemEn": "Stanton",
@@ -8133,7 +8133,7 @@
       },
       "signal": {},
       "hasReliableLocations": false,
-      "nameZh": "约曼迪之眼",
+      "nameZh": "约曼迪眼",
       "nameLocalizationKey": "items_commodities_yormandi_eye"
     }
   }
