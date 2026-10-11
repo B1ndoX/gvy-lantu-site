@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "sourcePath": "/volume1/docker/starcitizen-shared-input/localization/data/localization/chinese_(simplified)/global.ini",
-  "sha256": "ddbc1bdeba2085dc3d1e608187cee83c3f0253943fbbd0c81e009b1ef107e280",
-  "byteLength": 10566868,
-  "versionLabel": "Alpha 4.10：奥里森之围",
+  "sha256": "19c6e78aeec18ed2f055a2555af9449ffd16fc0152e51f8cee04de169ac97bd7",
+  "byteLength": 10793044,
+  "versionLabel": "4.10.2",
   "versionPrecision": "major-minor-only",
-  "sourceUpdatedAt": "2026-10-10T13:03:46+00:00"
+  "sourceUpdatedAt": "2026-10-11T02:34:31+00:00"
 }
