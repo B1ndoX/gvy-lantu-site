@@ -2,10 +2,10 @@
   "source": "https://flowcld.xyz/tools/blueprint",
   "endpoint": "https://flowcld.xyz/app-api/product/blueprint/page",
   "language": "CN",
-  "fetchedAt": "2026-10-10T13:28:24.779286+00:00",
-  "totalReported": 1604,
-  "itemCount": 1604,
-  "localizedCount": 1584,
+  "fetchedAt": "2026-10-11T04:29:37.704411+00:00",
+  "totalReported": 1617,
+  "itemCount": 1617,
+  "localizedCount": 1597,
   "items": [
     {
       "recordGuid": "6f0487ce-1696-4b62-abb4-587d30d0e6da",
@@ -2504,6 +2504,24 @@
       "craftTimeSeconds": 960
     },
     {
+      "recordGuid": "d5e951bf-f079-4dfb-9b95-39676059fdf1",
+      "internalName": "gmni_lmg_ballistic_01_collector02",
+      "blueprintName": "F55 \"Shadowflux\" LMG",
+      "blueprintNameCn": "F55 \"Shadowflux\" LMG (收藏版 实弹)",
+      "categoryName": "FPSWeapons",
+      "subcategory": "lmg",
+      "manufacturer": "gmni",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
       "recordGuid": "c9d98450-88f4-4f0d-a9aa-41e4cc1c06c6",
       "internalName": "gmni_lmg_ballistic_01_firerats01",
       "blueprintName": "F55 \"Scorched\" LMG",
@@ -3500,6 +3518,154 @@
       "rewardMissionTypesCn": [
         "赏金猎人",
         "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "e0583206-e742-482e-9f11-da869ae2ac06",
+      "internalName": "kap_combat_heavy_arms_01_01_01",
+      "blueprintName": "Monolith Armor Arms",
+      "blueprintNameCn": "Monolith Armor Arms",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
+      "manufacturer": "kap",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 240
+    },
+    {
+      "recordGuid": "7985ff3c-ab96-4bed-8358-9de570b2c7cf",
+      "internalName": "kap_combat_heavy_arms_01_04_01",
+      "blueprintName": "Monolith Armor Arms Shadowflux",
+      "blueprintNameCn": "Monolith Armor Arms Shadowflux",
+      "categoryName": "FPSArmours",
+      "subcategory": "arms",
+      "manufacturer": "kap",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 240,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
+      "recordGuid": "09816997-514c-4dce-afb0-f663a1e5d922",
+      "internalName": "kap_combat_heavy_core_01_01_01",
+      "blueprintName": "Monolith Armor Core",
+      "blueprintNameCn": "Monolith Armor Core",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "kap",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 250
+    },
+    {
+      "recordGuid": "4d28a0a6-4626-457e-b4f6-171dab12cdac",
+      "internalName": "kap_combat_heavy_core_01_04_01",
+      "blueprintName": "Monolith Armor Core Shadowflux",
+      "blueprintNameCn": "Monolith Armor Core Shadowflux",
+      "categoryName": "FPSArmours",
+      "subcategory": "core",
+      "manufacturer": "kap",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 250,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
+      "recordGuid": "eee81318-049f-4c08-912d-ef940b7e3ca9",
+      "internalName": "kap_combat_heavy_legs_01_01_01",
+      "blueprintName": "Monolith Armor Legs",
+      "blueprintNameCn": "Monolith Armor Legs",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "kap",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 250
+    },
+    {
+      "recordGuid": "b0183159-9bf0-4b53-8bc0-643a258a7032",
+      "internalName": "kap_combat_heavy_legs_01_04_01",
+      "blueprintName": "Monolith Armor Legs Shadowflux",
+      "blueprintNameCn": "Monolith Armor Legs Shadowflux",
+      "categoryName": "FPSArmours",
+      "subcategory": "legs",
+      "manufacturer": "kap",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 250,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
+      "recordGuid": "12c76130-5690-4a84-8e75-e8938e482e55",
+      "internalName": "kap_combat_heavy_backpack_01_01_01",
+      "blueprintName": "Monolith Backpack",
+      "blueprintNameCn": "Monolith Backpack",
+      "categoryName": "FPSArmours",
+      "manufacturer": "kap",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 105
+    },
+    {
+      "recordGuid": "16c6b960-827d-45e9-9967-ad07982d7ad4",
+      "internalName": "kap_combat_heavy_backpack_01_04_01",
+      "blueprintName": "Monolith Backpack Shadowflux",
+      "blueprintNameCn": "Monolith Backpack Shadowflux",
+      "categoryName": "FPSArmours",
+      "manufacturer": "kap",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 105,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
+      ]
+    },
+    {
+      "recordGuid": "108b503e-8b7a-4994-98fe-fd2d65e46e3c",
+      "internalName": "kap_combat_heavy_helmet_01_01_01",
+      "blueprintName": "Monolith Helmet",
+      "blueprintNameCn": "Monolith Helmet",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "kap",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 250
+    },
+    {
+      "recordGuid": "129eaa5c-b5a5-4ce6-809f-c90949178625",
+      "internalName": "kap_combat_heavy_helmet_01_04_01",
+      "blueprintName": "Monolith Helmet Shadowflux",
+      "blueprintNameCn": "Monolith Helmet Shadowflux",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "kap",
+      "isReward": true,
+      "rewardMissionCount": 1,
+      "craftTimeSeconds": 250,
+      "rewardMissionTypes": [
+        "Collection"
+      ],
+      "rewardMissionTypesCn": [
+        "采集"
       ]
     },
     {
@@ -6491,7 +6657,7 @@
       "categoryName": "MissionItems",
       "manufacturer": "carryable",
       "isReward": true,
-      "rewardMissionCount": 3,
+      "rewardMissionCount": 1,
       "craftTimeSeconds": 10,
       "rewardMissionTypes": [
         "Collection"
@@ -9011,6 +9177,20 @@
       ]
     },
     {
+      "recordGuid": "d0d47aec-82ae-4a0b-866c-df86f5fba6d3",
+      "internalName": "qdrv_just_s01_goliath_scitem",
+      "blueprintName": "Goliath",
+      "blueprintNameCn": "哥利亚 (S01尺寸)",
+      "categoryName": "Components",
+      "subcategory": "quantumdrive",
+      "manufacturer": "qdrv",
+      "grade": 3,
+      "itemClass": "Industrial",
+      "isReward": false,
+      "rewardMissionCount": 0,
+      "craftTimeSeconds": 780
+    },
+    {
       "recordGuid": "76438070-9e7d-4518-999a-1965162ec5b4",
       "internalName": "vgl_utility_light_helmet_01_01_01",
       "blueprintName": "Chiron Helmet",
@@ -9922,6 +10102,24 @@
       ]
     },
     {
+      "recordGuid": "2487dc3a-6a2e-4071-a165-f140d0c8b20d",
+      "internalName": "qrt_specialist_heavy_helmet_01_01_12",
+      "blueprintName": "Antium Core Jet",
+      "blueprintNameCn": "安腾 头盔 乌玉",
+      "categoryName": "FPSArmours",
+      "subcategory": "helmet",
+      "manufacturer": "qrt",
+      "isReward": true,
+      "rewardMissionCount": 12,
+      "craftTimeSeconds": 270,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
       "recordGuid": "0b0a3761-23b6-459c-94ca-992c5464e258",
       "internalName": "qrt_specialist_heavy_helmet_01_03_01",
       "blueprintName": "Antium Helmet Midnight Sun",
@@ -10376,28 +10574,10 @@
       ]
     },
     {
-      "recordGuid": "2487dc3a-6a2e-4071-a165-f140d0c8b20d",
-      "internalName": "qrt_specialist_heavy_helmet_01_01_12",
-      "blueprintName": "Antium Helmet Jet",
-      "blueprintNameCn": "安藤 头盔 乌玉",
-      "categoryName": "FPSArmours",
-      "subcategory": "helmet",
-      "manufacturer": "qrt",
-      "isReward": true,
-      "rewardMissionCount": 12,
-      "craftTimeSeconds": 270,
-      "rewardMissionTypes": [
-        "Mercenary"
-      ],
-      "rewardMissionTypesCn": [
-        "雇佣兵"
-      ]
-    },
-    {
       "recordGuid": "cdd236fa-56b9-4913-90cf-be7f4e6ca5a7",
       "internalName": "qrt_specialist_heavy_arms_01_01_13",
-      "blueprintName": "Antium Arms Maroon",
-      "blueprintNameCn": "安藤 臂甲 栗红",
+      "blueprintName": "Antium Helmet Jet",
+      "blueprintNameCn": "安藤 臂甲 乌玉",
       "categoryName": "FPSArmours",
       "subcategory": "arms",
       "manufacturer": "qrt",
@@ -18172,6 +18352,26 @@
       "isReward": true,
       "rewardMissionCount": 7,
       "craftTimeSeconds": 10,
+      "rewardMissionTypes": [
+        "Mercenary"
+      ],
+      "rewardMissionTypesCn": [
+        "雇佣兵"
+      ]
+    },
+    {
+      "recordGuid": "fa5951a5-5063-49c8-8f4c-a6b341801aea",
+      "internalName": "powr_sasu_s02_daybreak_scitem",
+      "blueprintName": "DayBreak",
+      "blueprintNameCn": "破晓 (S02尺寸)",
+      "categoryName": "Components",
+      "subcategory": "powerplant",
+      "manufacturer": "powr",
+      "grade": 3,
+      "itemClass": "Civilian",
+      "isReward": true,
+      "rewardMissionCount": 6,
+      "craftTimeSeconds": 1080,
       "rewardMissionTypes": [
         "Mercenary"
       ],
