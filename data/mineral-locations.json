@@ -8,7 +8,7 @@
     "signalUpdatedAt": "2026-08-16",
     "signalSourceVersion": "4.9",
     "signalSyncedAt": "2026-08-16T11:49:57.585632Z",
-    "retrievedAt": "2026-10-11T04:29:39.897659+00:00",
+    "retrievedAt": "2026-10-12T15:16:30.953791+00:00",
     "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
   },
   "materials": {
@@ -1412,16 +1412,6 @@
       "sourceUrl": "https://uexcorp.space/mining/locations/commodity/beryl-raw/",
       "locations": {
         "starSystems": [
-          {
-            "id": 64,
-            "zh": "派罗",
-            "en": "Pyro",
-            "systemZh": "未知",
-            "systemEn": "",
-            "parentZh": "未知",
-            "parentEn": "",
-            "zhLocalizationKey": "pyro"
-          },
           {
             "id": 68,
             "zh": "斯坦顿",
