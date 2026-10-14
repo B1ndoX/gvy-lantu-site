@@ -23,6 +23,7 @@ The handoff document is written for a person or AI with no prior context. Do not
 ## Data And Cache Safety
 
 - Official Chinese localization now comes from the NAS `starcitizen-shared-input/localization/data/localization/chinese_(simplified)/global.ini`, not Documents/data. GitHub consumes the NAS publisher's input-only `nas-localization` branch at one immutable commit; validate gzip length, SHA256, manifest and version series. Keep this inside the existing refresh command and schedules, with no separate weekly audit or sync flow. Do not deploy or change NAS credentials/services from this project.
+- Accept only the current NAS official enhanced Chinese or fully Chinese pack for production localization. The former official English-first bilingual pack is no longer a production source or fallback. Keep historical Git/backups for traceability, never silently restore that pack. Content-based policy checks must preserve ordinary English names/model codes and Chinese-first enhanced annotations, without pinning a known source hash or version.
 - Match official names by verified game keys and explicit context. Do not fuzzy-match same-name ships/components or planets/companies. Unresolved entries retain labeled fallbacks. The package's major/minor version is not exact LIVE-build verification, and English name bridges must never authorize cross-build gameplay stats.
 
 - Data refresh scripts may update only validated data and calibration files. They must not write cache timestamps or versions into `assets/app.js` or `index.html`.

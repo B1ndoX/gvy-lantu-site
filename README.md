@@ -12,14 +12,29 @@ Official localization version labels may start with a numeric series or the
 official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
 preserves the original INI and manifest label, verifies their complete bytes,
 and still requires the same major/minor series as the selected stable LIVE.
-Both the enhanced Chinese pack and the official bilingual pack are supported:
-Chinese name lines take priority regardless of Chinese/English line order.
+Production localization accepts only the current NAS official enhanced Chinese
+pack or fully Chinese pack. The former official English-first bilingual pack
+is no longer a permitted production source or historical fallback. Its archived
+bytes remain in Git/backups for diagnosis, not production calibration.
+An English-first bilingual majority across verified name keys fails closed;
+ordinary English item names, model codes and Chinese-first enhanced annotations
+are not banned. Detection uses contents, not known hashes or version labels.
+Chinese name lines take priority after specification annotations are excluded.
 Only exact English label wrappers or suffixes are removed; official model and
 brand tokens are retained. Untranslated English/English duplicates do not claim
 a Chinese match, and INI keys (including flags) remain unchanged.
 Detection uses each value's structure, not a pack name or known hash. Switching
-back to a previously used pack rebuilds whenever it differs from the currently
+between permitted Chinese packs rebuilds whenever it differs from the currently
 applied content; touching an identical source does not advance data timestamps.
+For item names, standalone bracketed size/class/grade or percentage-modifier
+annotations are not name lines. English model names such as VK-00 and FR-66
+remain the name when the pack adds only a Chinese specification on another line.
+Repeated English tails may use the verified full name, its quoted nickname, a
+size-prefix-free model, or its exact Mining Laser/Module name. Only case and
+space/hyphen differences are accepted; unmatched tails and legitimate model
+tokens remain intact. Snapshot validation rejects annotation-only item names.
+Do not remove an English tail if it is the only place that carries the model or
+variant identifier, even when the tail otherwise matches a verified alias.
 
 ## Project Boundaries
 
