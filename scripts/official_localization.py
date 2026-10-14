@@ -25,7 +25,8 @@ LABEL_URL = f"https://raw.githubusercontent.com/StarCitizenWiki/scunpacked-data/
 SOURCE_REPO = "B1ndoX/gvy-lantu-site"
 SOURCE_BRANCH = "nas-localization"
 MAX_SOURCE_BYTES = 20 * 1024 * 1024
-ADAPTER_VERSION = 4
+ADAPTER_VERSION = 5
+SOURCE_POLICY = "nas-chinese-only-v1"
 
 
 def fetch_bytes(url: str, limit: int = MAX_SOURCE_BYTES) -> bytes:
@@ -90,10 +91,42 @@ def parse_ini(raw: bytes) -> dict[str, str]:
     return entries
 
 
-def clean_label(text: str, english: str) -> str:
+def is_item_annotation(text: str) -> bool:
+    match = re.fullmatch(r"[\[\u3010]([^\]\u3011]+)[\]\u3011]", text)
+    if not match:
+        return False
+    content = match[1]
+    return bool(re.search(r"\bS\d+\b.*\s[A-D]$", content, flags=re.IGNORECASE)
+                or ("|" in content and re.search(r"[%\uff05]", content)))
+
+
+def item_name_aliases(english: str) -> list[str]:
+    aliases = [english]
+    for suffix in (" Mining Laser", " Module"):
+        if english.endswith(suffix):
+            aliases.append(english[:-len(suffix)])
+    if match := re.fullmatch(r"S\d+\s+(.+)", english):
+        aliases.append(match[1])
+    if match := re.fullmatch(r".+\s['\"]([^'\"]+)['\"]", english):
+        aliases.append(match[1])
+    return sorted(set(aliases), key=len, reverse=True)
+
+
+def preserves_item_codes(before: str, alias: str, *, variants: bool = False) -> bool:
+    tokens = re.findall(r"[A-Za-z0-9]+", alias)
+    codes = [token for token in tokens if any(character.isdigit() for character in token)
+             or re.fullmatch(r"I{1,3}|IV|VI{0,3}|IX|X", token)
+             or (variants and token in ("SL", "EX", "XL", "MHV", "MT", "MX", "Pro", "Max"))]
+    return all(re.search(rf"(?<![A-Za-z0-9]){re.escape(code)}(?![A-Za-z0-9])", before,
+                         flags=re.IGNORECASE) for code in codes)
+
+
+def clean_label(text: str, english: str, *, group: str = "other") -> str:
     lines = [re.sub(r"</?EM\d+>", "", line, flags=re.IGNORECASE).strip()
              for line in (text or "").replace("\\n", "\n").splitlines()]
     lines = [line for line in lines if line and not line.startswith(("[PH]", "(PH)", "<-=", "=", "@"))]
+    if group == "item":
+        lines = [line for line in lines if not is_item_annotation(line)]
     chinese_lines = [line for line in lines if re.search(r"[\u3400-\u9fff]", line)]
     if not chinese_lines:
         # Keep single official model/brand labels, not untranslated bilingual duplicates.
@@ -113,8 +146,25 @@ def clean_label(text: str, english: str) -> str:
     # Strip only an exact English label; retain mixed-language model and brand tokens.
     for suffix in (f"({english})", f"（{english}）", f"[{english}]", english):
         if suffix and text.endswith(suffix):
+            before = text[:-len(suffix)]
+            if group == "item" and suffix == english and re.search(r"[A-Za-z0-9_]$", before):
+                continue
+            if group == "item" and not preserves_item_codes(before, english):
+                continue
             text = text[:-len(suffix)].strip()
             break
+    if group == "item":
+        # Match the same verified name/model, allowing only case and separators to differ.
+        for alias in item_name_aliases(english):
+            if not re.fullmatch(r"[A-Za-z0-9 -]+", alias):
+                continue
+            pattern = r"[ -]*".join(re.escape(token) for token in re.split(r"[ -]+", alias))
+            match = re.search(rf"(?<![A-Za-z0-9_])(?:\({pattern}\)|\uff08{pattern}\uff09|\[{pattern}\]|{pattern})$",
+                              text, flags=re.IGNORECASE)
+            if (match and re.search(r"[\u3400-\u9fff]", text[:match.start()])
+                    and preserves_item_codes(text[:match.start()], alias, variants=True)):
+                text = text[:match.start()].strip()
+                break
     return text
 
 
@@ -141,6 +191,26 @@ def entries_hash(entries: dict) -> str:
     return hashlib.sha256(json.dumps(entries, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
 
+def validate_chinese_source(chinese: dict, labels: dict) -> dict[str, int]:
+    named = english_first = 0
+    for key, english in labels.items():
+        key = key.lstrip("\ufeff").casefold()
+        if (domain(key) == "other" or "desc" in key or not isinstance(english, str)
+                or not english.strip() or len(english) > 160 or "\n" in english or "\\n" in english):
+            continue
+        lines = [re.sub(r"</?EM\d+>", "", line, flags=re.IGNORECASE).strip()
+                 for line in chinese.get(key, "").replace("\\n", "\n").splitlines()]
+        lines = [line for line in lines if line and not is_item_annotation(line)]
+        if not lines or not any(re.search(r"[\u3400-\u9fff]", line) for line in lines):
+            continue
+        named += 1
+        if len(lines) > 1 and lines[0] == english.strip():
+            english_first += 1
+    if english_first >= 100 and english_first * 2 >= named:
+        raise RuntimeError("English-first bilingual localization is not a permitted NAS Chinese source; keeping verified cache")
+    return {"chineseNameCount": named, "englishFirstBilingualCount": english_first}
+
+
 def build_snapshot(raw: bytes, labels: dict, version: str, *, label_commit: str = LABEL_COMMIT, label_version: str = LABEL_VERSION) -> dict:
     chinese = parse_ini(raw)
     declared = chinese.get("frontend_pu_version", "")
@@ -148,6 +218,7 @@ def build_snapshot(raw: bytes, labels: dict, version: str, *, label_commit: str 
         raise RuntimeError("NAS/English-key bridge series does not match the selected LIVE; no files replaced")
     if len(chinese) < 70000:
         raise RuntimeError("NAS localization coverage is unexpectedly low")
+    source_format = validate_chinese_source(chinese, labels)
     entries = {}
     for key, english in labels.items():
         key = key.lstrip("\ufeff").casefold()
@@ -155,13 +226,16 @@ def build_snapshot(raw: bytes, labels: dict, version: str, *, label_commit: str 
             continue
         if "\n" in english or "\\n" in english or "desc" in key:
             continue
-        translated = clean_label(chinese.get(key, ""), english.strip())
+        group = domain(key)
+        translated = clean_label(chinese.get(key, ""), english.strip(), group=group)
         if translated:
-            entries[key] = {"english": english.strip(), "chinese": translated, "domain": domain(key)}
+            entries[key] = {"english": english.strip(), "chinese": translated, "domain": group}
     if sum(entry["domain"] == "item" for entry in entries.values()) < 7000:
         raise RuntimeError("NAS keyed item coverage is unexpectedly low")
     return {"metadata": {
         "adapterVersion": ADAPTER_VERSION,
+        "sourcePolicy": SOURCE_POLICY,
+        "sourceFormatCounts": source_format,
         "sourcePath": NAS_PATH,
         "sourceSha256": hashlib.sha256(raw).hexdigest(),
         "sourceVersionLabel": declared,
@@ -187,6 +261,11 @@ def validate_snapshot(snapshot: dict, version: str) -> None:
         raise RuntimeError("NAS snapshot has no verified source hash")
     if len(entries) < 7000 or entries_hash(entries) != metadata.get("entriesSha256"):
         raise RuntimeError("NAS snapshot entries are incomplete or their hash is invalid")
+    if any(entry.get("domain") == "item" and is_item_annotation(entry.get("chinese", ""))
+           for entry in entries.values()):
+        raise RuntimeError("NAS item name contains only a component specification or modifier annotation")
+    if metadata.get("adapterVersion") == ADAPTER_VERSION and metadata.get("sourcePolicy") != SOURCE_POLICY:
+        raise RuntimeError("NAS snapshot has not passed the current Chinese-source policy")
 
 
 def load_snapshot(path: Path = SNAPSHOT) -> dict:
@@ -296,7 +375,8 @@ class OfficialNames:
                     assign(mission, "factionZh", mission.get("faction", ""), "manufacturer")
         metadata = self.snapshot.get("metadata") or {}
         index.setdefault("localization", {})["nasOfficial"] = {
-            key: metadata[key] for key in ("sourceSha256", "sourceVersionLabel", "versionPrecision", "exactBuildVerified", "englishKeyCommit")
+            key: metadata[key] for key in ("sourceSha256", "sourceVersionLabel", "versionPrecision", "exactBuildVerified", "englishKeyCommit", "sourcePolicy")
+            if key in metadata
         }
         return {"changes": changes, "unresolved": sorted(unresolved)}
 
