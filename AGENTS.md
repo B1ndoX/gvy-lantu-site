@@ -31,6 +31,7 @@ The handoff document is written for a person or AI with no prior context. Do not
 - `npm run build` must derive the production data revision from the exact bytes of both public JSON snapshots and fingerprint the transformed application.
 - Production health checks must verify the exact versioned URLs used by browsers for CSS, JavaScript, compressed JSON, and uncompressed JSON. Do not substitute a random health-check query parameter for the real client cache key.
 - Preserve stable-LIVE selection, coverage thresholds, atomic replacement, 14-day backups, heartbeat commits, changed and unchanged production checks, and automatic rollback of only the workflow's own unhealthy refresh commit.
+- Production health checks give transient transport errors a bounded recovery window (300 seconds without a deployment; inside the existing 900-second deployment window otherwise). Recovery must rerun the full exact-client-URL check. Never treat a snapshot mismatch as a network success, reset deadlines indefinitely, mute failure notifications, or skip persistent failures/rollback reporting.
 - Mineral radar signals are manual-only. The scheduled GitHub Actions workflow must not run `scripts/refresh_mineral_signals.py`; run it only after the user explicitly requests a signal refresh, then validate, back up, commit, and deploy the resulting snapshot normally.
 
 ## Verification And Release

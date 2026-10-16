@@ -104,6 +104,28 @@ The project deliberately has no runtime npm dependencies. EdgeOne uses its suppo
 
 After every automated data deployment, `scripts/check_production_health.py` polls the formal domain for up to 15 minutes. Runs with no repository change still perform an immediate production snapshot check, so an EdgeOne outage, stale deployment, or corrupted public payload cannot remain silently green between data releases. Updated and unchanged deployments are verified through the exact versioned CSS, JavaScript, compressed JSON, and uncompressed JSON URLs used by browsers. The checker requires the deployed asset fingerprints and embedded data revision to match the final repository checkout, verifies that the public blueprint payload is stable `LIVE`, compares its complete semantic hash with the committed payload, and performs the same complete comparison plus coverage checks for mineral locations and signals. If an automated refresh commit does not become healthy, the workflow reverts that exact machine commit, pushes the previous verified snapshot, and waits for production recovery. It never automatically reverts an unrelated manual commit. A successful Git push alone is not proof that production deployment has completed.
 
+Production checks distinguish transient transport failures from snapshot failures.
+`--network-timeout 300` (also the default) permits five minutes of recovery for
+timeouts, DNS/connection failures, interrupted transfers and allowlisted temporary
+HTTP responses (408, 429, selected 5xx). Probes back off by 5, 10, 20, then at most
+30 seconds; socket timeouts are capped at 15 seconds and the remaining request
+budget. Every retry restarts the complete production check. Success is reported
+only after both JSON forms and all required assets match, never merely because
+the homepage responds again. A recovered transient failure stays in the logs
+but does not fail the job or trigger its failure-email notification.
+
+The recovery deadlines are fixed when checking starts and never reset after
+partial progress. An unchanged run uses `--timeout 0`: network-only failures
+receive the five-minute grace, but content/hash errors, invalid JSON, certificate
+failures and non-retryable HTTP responses do not. Changed deployments and rollback
+verification retain `--timeout 900`; the network grace is inside, not appended to,
+that 15-minute window. `--network-timeout 0 --timeout 0` explicitly disables
+recovery retries. Persistent connectivity failures and real deployment mismatches
+still exit nonzero, preserve the existing rollback rules, and reach the final
+failure-reporting step. Notifications are not muted or reconfigured. The final
+report identifies source and production outcomes separately. This does not alter
+NAS/source validation, data timestamps, refresh schedules, or manual-only signals.
+
 For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `星远舰队` and `维科洛查询` destinations.
 
 ## Data Refresh

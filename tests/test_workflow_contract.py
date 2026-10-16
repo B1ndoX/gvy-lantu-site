@@ -27,6 +27,21 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("if: steps.commit_refresh.outputs.changed != 'true'", self.workflow)
         self.assertIn("steps.production_snapshot.outcome == 'failure'", self.workflow)
 
+    def test_network_grace_preserves_deployment_checks_and_failure_reporting(self) -> None:
+        for name, timeout in (
+            ("Verify current EdgeOne production snapshot", 0),
+            ("Verify EdgeOne production deployment", 900),
+            ("Roll back an unhealthy automated refresh", 900),
+        ):
+            step = self.workflow.split(f"- name: {name}", 1)[1].split("- name:", 1)[0]
+            self.assertIn(f"--timeout {timeout}", step)
+            self.assertIn("--network-timeout 300", step)
+        report = self.workflow.split("- name: Report refresh source failure", 1)[1]
+        for step in ("blueprint_refresh", "mineral_locations", "production_health", "production_snapshot"):
+            self.assertIn(f"steps.{step}.outcome == 'failure'", report)
+        self.assertIn("exit 1", report)
+        self.assertIn('git revert --no-edit "${{ steps.commit_refresh.outputs.commit_sha }}"', self.workflow)
+
     def test_backup_upload_includes_hidden_directory_with_two_week_retention(self) -> None:
         upload = self.workflow.split("- name: Upload data backup", 1)[1].split("- name:", 1)[0]
         self.assertIn("path: .data-backups/", upload)
