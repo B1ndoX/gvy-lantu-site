@@ -8,7 +8,7 @@
     "signalUpdatedAt": "2026-08-16",
     "signalSourceVersion": "4.9",
     "signalSyncedAt": "2026-08-16T11:49:57.585632Z",
-    "retrievedAt": "2026-10-12T15:16:30.953791+00:00",
+    "retrievedAt": "2026-10-16T16:35:03.401275+00:00",
     "note": "UEX data is community-maintained and may not reflect live servers. Empty entries are shown as no reliable mining location instead of inferred locations."
   },
   "materials": {
@@ -5054,6 +5054,16 @@
       "locations": {
         "starSystems": [
           {
+            "id": 64,
+            "zh": "派罗",
+            "en": "Pyro",
+            "systemZh": "未知",
+            "systemEn": "",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro"
+          },
+          {
             "id": 68,
             "zh": "斯坦顿",
             "en": "Stanton",
@@ -5066,6 +5076,17 @@
         ],
         "planets": [
           {
+            "id": 242,
+            "zh": "盛放星",
+            "en": "Bloom",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro3",
+            "systemZhLocalizationKey": "pyro"
+          },
+          {
             "id": 116,
             "zh": "赫斯顿",
             "en": "Hurston",
@@ -5075,9 +5096,124 @@
             "parentEn": "",
             "zhLocalizationKey": "stanton1",
             "systemZhLocalizationKey": "stanton"
+          },
+          {
+            "id": 190,
+            "zh": "微科公司",
+            "en": "MicroTech",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "gobling_microtech_recovercargo_from",
+            "systemZhLocalizationKey": "stanton"
+          },
+          {
+            "id": 241,
+            "zh": "殁氧星",
+            "en": "Monox",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro2",
+            "systemZhLocalizationKey": "pyro"
+          },
+          {
+            "id": 240,
+            "zh": "派罗 I",
+            "en": "Pyro I",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro1",
+            "systemZhLocalizationKey": "pyro"
+          },
+          {
+            "id": 243,
+            "zh": "派罗 IV",
+            "en": "Pyro IV",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro4",
+            "systemZhLocalizationKey": "pyro"
+          },
+          {
+            "id": 245,
+            "zh": "端点星",
+            "en": "Terminus",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "未知",
+            "parentEn": "",
+            "zhLocalizationKey": "pyro6",
+            "systemZhLocalizationKey": "pyro"
           }
         ],
         "moons": [
+          {
+            "id": 1,
+            "zh": "阿伯丁",
+            "en": "Aberdeen",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "赫斯顿",
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1b",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
+          },
+          {
+            "id": 2,
+            "zh": "阿迪尔",
+            "en": "Adir",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5c_adir",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
+          },
+          {
+            "id": 4,
+            "zh": "艾瑞尔",
+            "en": "Arial",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "赫斯顿",
+            "parentEn": "Hurston",
+            "zhLocalizationKey": "stanton1a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton1"
+          },
+          {
+            "id": 16,
+            "zh": "卡利俄佩",
+            "en": "Calliope",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
+          },
+          {
+            "id": 18,
+            "zh": "赛琳",
+            "en": "Cellin",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "十字军",
+            "parentEn": "Crusader",
+            "zhLocalizationKey": "stanton2a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton2"
+          },
           {
             "id": 25,
             "zh": "戴玛尔",
@@ -5089,6 +5225,54 @@
             "zhLocalizationKey": "stanton2b",
             "systemZhLocalizationKey": "stanton",
             "parentZhLocalizationKey": "stanton2"
+          },
+          {
+            "id": 34,
+            "zh": "欧忒耳佩",
+            "en": "Euterpe",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "微科公司",
+            "parentEn": "MicroTech",
+            "zhLocalizationKey": "stanton4c",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "gobling_microtech_recovercargo_from"
+          },
+          {
+            "id": 35,
+            "zh": "法伊罗",
+            "en": "Fairo",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5d_fairo",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
+          },
+          {
+            "id": 36,
+            "zh": "弗果",
+            "en": "Fuego",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5e_fuego",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
+          },
+          {
+            "id": 43,
+            "zh": "伊格尼斯",
+            "en": "Ignis",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5a_ignis",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 45,
@@ -5103,6 +5287,18 @@
             "parentZhLocalizationKey": "stanton1"
           },
           {
+            "id": 50,
+            "zh": "莉瑞雅",
+            "en": "Lyria",
+            "systemZh": "斯坦顿",
+            "systemEn": "Stanton",
+            "parentZh": "弧光星",
+            "parentEn": "ArcCorp",
+            "zhLocalizationKey": "stanton3a",
+            "systemZhLocalizationKey": "stanton",
+            "parentZhLocalizationKey": "stanton3"
+          },
+          {
             "id": 51,
             "zh": "玛格达",
             "en": "Magda",
@@ -5113,6 +5309,30 @@
             "zhLocalizationKey": "stanton1c",
             "systemZhLocalizationKey": "stanton",
             "parentZhLocalizationKey": "stanton1"
+          },
+          {
+            "id": 69,
+            "zh": "瓦塔拉",
+            "en": "Vatra",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5b_vatra",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
+          },
+          {
+            "id": 73,
+            "zh": "伏尔",
+            "en": "Vuur",
+            "systemZh": "派罗",
+            "systemEn": "Pyro",
+            "parentZh": "派罗 V",
+            "parentEn": "Pyro V",
+            "zhLocalizationKey": "pyro5f_vuur",
+            "systemZhLocalizationKey": "pyro",
+            "parentZhLocalizationKey": "pyro5"
           },
           {
             "id": 74,
