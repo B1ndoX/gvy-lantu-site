@@ -340,9 +340,9 @@ test("mixed signals keep the primary signature, prioritize the searched primary,
   assert.match(panel,/aria-label="4 块：16,960"><b>16,960<\/b>/);
   assert.match(panel,/aria-label="5 块：21,200"><b>21,200<\/b>/);
   assert.match(panel,/aria-label="6 块：25,170"><b>25,170<\/b>/);
-  assert.match(panel,/矿簇配置：4 \/ 5 \/ 6 块/);
+  assert.doesNotMatch(panel,/矿簇配置|mineral-cluster-counts/);
   assert.equal((panel.match(/混合矿体使用主矿信号/g) || []).length, 1);
-  assert.ok(panel.indexOf('class="mineral-signal-note"') > panel.lastIndexOf('class="mineral-cluster-counts"'));
+  assert.ok(panel.indexOf('class="mineral-signal-note"') > panel.lastIndexOf('class="mineral-signal-values"'));
   assert.equal(JSON.stringify(location), before);
   assert.equal(api.renderLocationSignals({en: "Empty"}, "Copper", 1).button, "");
 });
@@ -399,8 +399,9 @@ test("signal capsules preserve count gaps and mining modes without generating ta
   assert.match(panel, /手采 ·/);
   assert.match(panel, /ROC ·/);
   assert.doesNotMatch(panel, /舰采矿体|手采矿体|ROC 矿体/);
-  assert.match(panel, /矿簇配置：4 \/ 6 块/);
-  assert.match(panel, /矿簇配置：5 \/ 6 块/);
+  assert.match(panel, /aria-label="4 块：16,000"/);
+  assert.match(panel, /aria-label="6 块：24,000"/);
+  assert.doesNotMatch(panel, /矿簇配置|单矿信号|mineral-cluster-counts/);
   assert.doesNotMatch(panel, /<table|<th|<td|[1238] 块|10 块|24,0000|30,000/);
   assert.equal((panel.match(/关闭信号/g) || []).length, 1);
 });
@@ -411,7 +412,7 @@ test("many cluster configurations remain ordinary capsules in their own reported
   const {panel} = api.renderLocationSignals({en: "Many", signals: [{mode: "ship", primaryMaterial: "Copper",
     clusterKnown: true, clusterCounts: counts, values: counts.map(count => count * 4240)}]}, "Copper", 99);
   assert.equal((panel.match(/<span aria-label=/g) || []).length, counts.length);
-  assert.match(panel, /矿簇配置：2 \/ 4 \/ 6 \/ 8 \/ 10 \/ 12 \/ 14 \/ 16 \/ 18 \/ 20 \/ 22 \/ 24 块/);
+  assert.doesNotMatch(panel, /矿簇配置|mineral-cluster-counts/);
   assert.match(panel, /aria-label="24 块：101,760"><b>101,760<\/b>/);
   assert.doesNotMatch(panel, /<table|grid-template|colspan|—/);
 });

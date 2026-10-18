@@ -2,6 +2,15 @@
 
 final result: passed
 
+## Latest Compacting Override
+
+- Scope: remove all visible cluster-configuration rows and let the signal layer size itself to its contents. Actual count/value pairs, shared per-rock rules, the gold capsule style and one smaller bottom note remain unchanged.
+- The user explicitly withdrew the signal-button occlusion work. The trial side/height-avoidance code and its regression test were manually removed. `mineralSignalBounds` matches the prior checkpoint; this report does not claim that button occlusion is fixed. It is a known deferred issue outside this acceptance scope.
+- Current desktop evidence: `/tmp/gvy-mineral-trigger-clear-desktop-20261019.png`; focused signal evidence: `/tmp/gvy-mineral-trigger-clear-signal-20261019.png`. The temporary harness/file name reflects an earlier trial, not a claim of trigger-clearance verification. The final run no longer asserts trigger overlap; it checks the requested compacting and normal boundaries.
+- 37 minerals at 320/390/620/621/880/1920/2560/3440px: 4248 signal instances and 11216 capsules render without the removed text, table columns, row resizing, horizontal overflow or viewport escape. Data serialization is unchanged; hover transition, pointer exit and keyboard Escape pass with no relevant console warnings/errors.
+- At 1920px the real cached signals naturally measure 222-360px wide and 136-198px tall. These are measurements, not hardcoded sizes. The original 360/400 maximums remain. Current syntax/build/version-pair checks, 136 Python tests and 29 Node subtests pass.
+- Earlier sections below describe the previous visual checkpoint; visible configuration rows in those reference images are superseded by the latest written request. The old gold capsule references remain the style target, not permission to restore removed copy.
+
 ## Visual Truth
 
 - Outer layout: `/Users/bindox/.codex/generated_images/019ec6a8-7788-76e3-ae3c-ae7a03b52189/exec-a052bc2c-ee77-4f08-8463-4321a4f6a40a.png`.

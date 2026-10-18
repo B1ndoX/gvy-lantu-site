@@ -369,12 +369,15 @@ signal layer before the mineral dialog, and Tab remains within the dialog.
 Filtering, scrolling the location list, resizing and closing the dialog remove
 the old popover. The portal is outside the scrolling card, clamped to the dialog
 and viewport, with internal scrolling for unusually long signal content.
+Both dimensions follow the contents; 360px width and 400px height are upper
+limits, not fixed sizes. Signal-button occlusion was explicitly deferred by the
+user, so this compacting change leaves the original positioning helper intact.
 
 Prioritize the searched primary mineral and explicitly label secondary matches.
 Signal readings use the original gold capsules in a wrapping flex row, never
-columns generated from cluster counts. Each deposit shows its actual cluster
-configuration below, in matching order; each capsule also has an accessible
-count/value label. More readings wrap naturally without widening the popover.
+columns generated from cluster counts. Visible cluster-configuration lines are
+omitted; the underlying actual count/value pairs remain in the data and each
+capsule's accessible label. More readings wrap naturally without widening the popover.
 Shared FPS/ROC values stay per-rock readings in their own labeled groups.
 Explanatory signal notes appear once in smaller text at the bottom of the layer,
 not repeatedly between each group heading and its readings.

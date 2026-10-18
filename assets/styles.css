@@ -1796,7 +1796,6 @@ html[data-query-mode="dismantle"] .reset-button {
   background: var(--orange);
 }
 .mineral-signal-values b { font-size: 12px; font-weight: 880; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-.mineral-cluster-counts { margin: 5px 0 0; color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
 .mineral-distribution-note { margin: 0; color: var(--muted); font-size: 10px; }
 .mineral-system-filter button:focus-visible,
 .mineral-signal-badge:focus-visible,

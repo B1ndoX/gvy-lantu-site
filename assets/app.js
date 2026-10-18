@@ -889,8 +889,7 @@ function renderLocationSignals(location, name, index) {
       return `<span aria-label="${escapeHtml(label)}：${escapeHtml(formatNumber(value))}"><b>${escapeHtml(formatNumber(value))}</b></span>`;
     }).join("");
     return `<div class="mineral-signal-entry"><strong>${escapeHtml(multipleModes && mode ? `${mode} · ${relation}` : relation)}</strong>
-      <div class="mineral-signal-values">${values}</div>
-      <p class="mineral-cluster-counts">${paired ? `矿簇配置：${signal.clusterCounts.map(count => escapeHtml(count)).join(" / ")} 块` : signal.shared ? "单矿信号" : "矿簇配置未提供"}</p></div>`;
+      <div class="mineral-signal-values">${values}</div></div>`;
   }).join("");
   const panel = `<template id="${id}-content"><header class="mineral-signal-head"><div><strong id="${id}-title">${escapeHtml(mineralLocationLabel(location))}</strong><small>${escapeHtml(mineralLocationSubline(location))}</small></div><button type="button" data-close-signal aria-label="关闭信号">×</button></header>
     <div class="mineral-signal-content" tabindex="0" role="region" aria-label="矿体信号">${entries}
@@ -940,7 +939,8 @@ function showLocationSignals(button, mode = "hover") {
     bounds.top = Math.max(8, card.top + 8);
     bounds.bottom = Math.min(window.innerHeight - 8, card.bottom - 8);
   }
-  panel.style.width = `${Math.min(360, bounds.right - bounds.left)}px`;
+  panel.style.width = "max-content";
+  panel.style.maxWidth = `${Math.min(360, bounds.right - bounds.left)}px`;
   panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
   const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
   panel.style.left = `${position.left}px`;
