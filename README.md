@@ -101,6 +101,26 @@ Clickable task names are white without underlines, with an arrow and visible
 hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
 reward dialog still keeps its independent pools separate.
 
+Reward candidates and result-list summaries show verified compact class/grade
+labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,
+combined with A-D only when the data provides a valid grade. Missing classes do
+not become military; a weapon with grade A but no class shows only A. The main
+list puts this label immediately after the category so it survives narrow-screen
+ellipsis; detail specification boxes retain full class and grade fields.
+
+Ship weapons use their primary SCMDB subtype plus an explicit family from an
+exact tag or canonical English type suffix: cannon, repeater, gatling, scattergun
+or mass driver. Never relabel every laser weapon as a cannon or override the
+primary subtype with a conflicting legacy calibration/tag. Unknown families keep
+their existing subtype. Full types also appear in detailed manufacturing and
+dismantling information and participate in search, as do compact class/grades.
+Summary rows try the full type, measure actual width and line height, and fall
+back to the original subtype if it would overflow or wrap. Recheck after result
+rendering, dialog opening and a frame-debounced window resize. Wider layouts
+restore full names. Keep fonts, colors, row styling and responsive columns intact;
+do not shrink text or hide names to force a full type to fit. Main-list trailing
+manufacturer text retains its existing intentional ellipsis and full tooltip.
+
 Reward lookup uses the exact contract ID and its explicit pool IDs, not a task
 name, faction or a transitive shared-blueprint association. Same-title tasks in
 different systems remain separate. Following SCMDB's mission reward display,

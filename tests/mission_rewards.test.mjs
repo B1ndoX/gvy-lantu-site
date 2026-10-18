@@ -5,8 +5,8 @@ import test from "node:test";
 
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
-  const context = { document };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions };`, context);
+  const context = { document, window: { getComputedStyle: () => ({ lineHeight: "14px" }) } };
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -120,7 +120,7 @@ test("direct and grouped item rewards preserve quantities and ownership conditio
 test("mission dialog explains independent draws without hiding verified pools as unconfirmed", () => {
   let html = "";
   let shown = false;
-  const dialog = { addEventListener() {}, showModal() { shown = true; } };
+  const dialog = { addEventListener() {}, querySelectorAll() { return []; }, showModal() { shown = true; } };
   const api = app({
     querySelector: (selector) => selector === ".mission-dialog" ? (html ? dialog : null) : {},
     querySelectorAll: () => [],
@@ -137,6 +137,63 @@ test("mission dialog explains independent draws without hiding verified pools as
   assert.match(html, /池触发概率不等于单张蓝图的掉率/);
   assert.match(html, /不保证 N 次集齐/);
   assert.doesNotMatch(html, /范围未确认|非已确认掉落清单|<details/);
+});
+
+test("compact class-grade labels preserve verified classes without inventing a weapon class", () => {
+  const api = app();
+  for (const [itemClass, grade, expected] of [["Military",1,"军A"],["Stealth",1,"隐A"],["Industrial",3,"工C"],["Civilian",2,"民B"],["Competition",4,"竞D"],
+    [undefined,1,"A"],["Unknown",2,"B"],["Military",null,"军"],[undefined,null,""]]) {
+    assert.equal(api.recordClassGrade({flowcld:{itemClass},stats:{grade}}),expected);
+  }
+});
+
+test("specific ship weapon types use the primary subtype and a verified family, never a generic laser cannon for every weapon", () => {
+  const api=app();
+  const weapon=(name,subtype,label,tags="")=>({name,category:{id:"ship_weapon",label:"舰船武器"},subtype,zh:{subtype:label},stats:{tags}});
+  for(const [name,subtype,label,tags,expected] of [
+    ["M7A Cannon","laser","激光","LaserCannon","激光加农炮"],
+    ["Singe Cannon (S1)","tachyon","快子","BANU_TachyonCannon","快子加农炮"],
+    ["Attrition-1 Repeater","laser","激光","LaserRepeater","激光速射炮"],
+    ["Tigerstrike T-19P","ballistic","实弹","BallisticGatling","实弹加特林"],
+    ["Dominance-1 Scattergun","laser","激光","ScatterGun","激光霰弹炮"],
+    ["NN-13 Cannon","neutron","中子","NeutronCannon","中子加农炮"],
+    ["Sledge I Mass Driver Cannon","ballistic","实弹","MassDriver","质量驱动炮"],
+    ["FL-22 Cannon","laser","激光","DistortionCannon","激光加农炮"],
+    ["Unknown Model","laser","激光","","激光"],
+    ["Unknown Cannon","new-subtype","新类型","LaserCannon","新类型"],
+  ]) {
+    const record=weapon(name,subtype,label,tags);
+    assert.equal(api.recordWeaponType(record),expected,name);
+    assert.equal(api.recordType(record),expected,name);
+  }
+  assert.equal(api.recordWeaponType({name:"Laser Rifle",category:{id:"personal_weapon"},subtype:"rifle",zh:{subtype:"步枪"}}),"步枪");
+});
+
+test("reward and result summaries show compact grades, escape text and index both full and short types", () => {
+  const api=app();
+  const cooler={name:"Cooler",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,grade:1},flowcld:{itemClass:"Stealth"}};
+  assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · S1 · 隐A");
+  const weapon={name:"M7A Cannon",category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"<Maker>",subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1,tags:"LaserCannon"}};
+  const html=api.renderRecordSummary(weapon,true);
+  assert.match(html,/data-summary-full="舰船武器 · A · 激光加农炮 · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/data-summary-short="舰船武器 · A · 激光 · S5 · &lt;Maker&gt;"/);
+  assert.doesNotMatch(html,/<Maker>|军A/);
+  assert.match(api.recordSearchText(weapon),/激光加农炮/);
+  assert.match(api.recordSearchText(cooler),/隐a/);
+});
+
+test("summary fitting falls back on overflow or a second line and restores full names when space returns", () => {
+  const api=app();
+  const small={dataset:{summaryFull:"full type",summaryShort:"short"},textContent:"short",clientWidth:120,
+    get scrollWidth(){return this.textContent==="full type"?150:50;},getBoundingClientRect(){return {height:14};}};
+  const root={querySelectorAll:()=>[small]};
+  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
+  small.clientWidth=200;
+  api.fitRecordSummaries(root);assert.equal(small.textContent,"full type");
+  small.getBoundingClientRect=()=>({height:28});
+  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
+  small.clientWidth=0;small.textContent="hidden";
+  api.fitRecordSummaries(root);assert.equal(small.textContent,"hidden");
 });
 
 test("requirements keep optional entry points, distinct locations, false flags and zero XP", () => {

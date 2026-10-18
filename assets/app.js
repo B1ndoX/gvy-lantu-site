@@ -30,6 +30,7 @@ const SOURCE_TASK_PREVIEW_LIMIT = 12;
 const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 let searchInputTimer = 0;
+let summaryResizeFrame = 0;
 
 const els = {
   dataStatus: document.querySelector("#dataStatus"),
@@ -333,6 +334,7 @@ function recordManufacturer(record) {
 }
 
 function recordType(record) {
+  if (record.category.id === "ship_weapon") return recordWeaponType(record);
   return preferZh(record.zh?.type, record.type);
 }
 
@@ -881,7 +883,7 @@ function renderMissionPools(rewardPools) {
       </header>
       <div class="mission-blueprint-list">${records.map((record) => `
         <button type="button" class="mission-blueprint-row" data-mission-blueprint="${escapeHtml(record.id)}" title="查看${escapeHtml(recordName(record))}蓝图">
-          <span><strong>${escapeHtml(recordName(record))}</strong><small>${escapeHtml([record.category.label, record.category.id === "ship_component" ? recordComponentType(record) : recordSubtype(record), sizeLabel(record.stats.size)].filter(Boolean).join(" · "))}</small></span>
+          <span><strong>${escapeHtml(recordName(record))}</strong>${renderRecordSummary(record)}</span>
           <span class="mission-reward-marker">${record.id === state.selectedId ? "当前蓝图" : "查看蓝图"}<i aria-hidden="true">›</i></span>
         </button>`).join("") || '<p class="mission-empty">暂无已收录的蓝图</p>'}</div>
     </section>`;
@@ -946,6 +948,7 @@ function openMissionInfo(id, opener) {
     if (event.target.closest("[data-close-mission]") || outside) dialog.close();
   });
   dialog.showModal();
+  fitRecordSummaries(dialog);
 }
 
 function missionFaction(mission) {
@@ -963,6 +966,54 @@ function recordComponentClass(record) {
 
 function recordComponentType(record) {
   return componentTypeOrder.find(([id]) => id === record.type)?.[1] || recordType(record);
+}
+
+function recordWeaponType(record) {
+  const subtype = recordSubtype(record);
+  if (record.category.id !== "ship_weapon") return subtype;
+  const tags = new Set(String(record.stats?.tags || "").split(/\s+/));
+  const families = [
+    [["MassDriver"], /\bMass Driver Cannon(?:\s*\(S\d+\))?$/i, "质量驱动炮"],
+    [["ScatterGun"], /\bScattergun(?:\s*\(S\d+\))?$/i, "霰弹炮"],
+    [["BallisticGatling", "LaserGatling"], /\bGatling(?:\s*\(S\d+\))?$/i, "加特林"],
+    [["LaserRepeater", "BallisticRepeater", "DistortionRepeater"], /\bRepeater(?:\s*\(S\d+\))?$/i, "速射炮"],
+    [["LaserCannon", "BallisticCannon", "DistortionCannon", "NeutronCannon", "BANU_TachyonCannon"], /\bCannon(?:\s*\(S\d+\))?$/i, "加农炮"],
+  ];
+  const family = families.find(([tokens, pattern]) => tokens.some(token => tags.has(token)) || pattern.test(record.name || ""))?.[2];
+  if (!family || !["laser", "ballistic", "distortion", "neutron", "tachyon", "plasma", "electron"].includes(record.subtype)) return subtype;
+  return family === "质量驱动炮" ? family : `${subtype}${family}`;
+}
+
+function recordClassGrade(record) {
+  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordFlowcld(record).itemClass] || "";
+  const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
+  return `${abbreviation}${grade}`;
+}
+
+function recordSummary(record, fullType = false, manufacturer = false) {
+  const type = record.category.id === "ship_component" ? recordComponentType(record)
+    : fullType ? recordWeaponType(record) : recordSubtype(record);
+  const parts = manufacturer
+    ? [record.category.label, recordClassGrade(record), type, sizeLabel(record.stats?.size), recordManufacturer(record)]
+    : [record.category.label, type, sizeLabel(record.stats?.size), recordClassGrade(record)];
+  return parts.filter(Boolean).join(" · ");
+}
+
+function renderRecordSummary(record, manufacturer = false) {
+  const short = recordSummary(record, false, manufacturer);
+  const full = recordSummary(record, true, manufacturer);
+  const description = [full, recordComponentClass(record), record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
+  const adaptive = full !== short ? ` data-summary-full="${escapeHtml(full)}" data-summary-short="${escapeHtml(short)}"` : "";
+  return `<small${adaptive} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
+}
+
+function fitRecordSummaries(root) {
+  const candidates = [...root.querySelectorAll("[data-summary-full]")].filter(el => el.clientWidth);
+  candidates.forEach(el => { el.textContent = el.dataset.summaryFull; });
+  // Measure every full label before writes, so narrow rows fall back in one pass.
+  const compact = candidates.filter(el => el.scrollWidth > el.clientWidth + 1
+    || el.getBoundingClientRect().height > parseFloat(window.getComputedStyle(el).lineHeight) + 1);
+  compact.forEach(el => { el.textContent = el.dataset.summaryShort; });
 }
 
 function recordMissionTypes(record) {
@@ -1006,6 +1057,7 @@ function recordSearchText(record) {
     recordComponentType(record),
     record.subtype,
     recordSubtype(record),
+    recordWeaponType(record),
     record.manufacturer,
     recordManufacturer(record),
     recordGear(record),
@@ -1016,6 +1068,7 @@ function recordSearchText(record) {
     sizeLabel(record.stats?.size),
     record.stats?.grade ? gradeLabel(record.stats.grade) : "",
     recordComponentClass(record),
+    recordClassGrade(record),
     ...materials,
     ...dismantleOutputs,
     ...missionTypes,
@@ -1348,6 +1401,10 @@ function bindFilterSelect(select, key) {
 }
 
 function bindEvents() {
+  window.addEventListener("resize", () => {
+    window.cancelAnimationFrame(summaryResizeFrame);
+    summaryResizeFrame = window.requestAnimationFrame(() => fitRecordSummaries(document));
+  });
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
 
   els.searchInput.addEventListener("input", (event) => {
@@ -1558,18 +1615,12 @@ function renderResults() {
       const sourceLabel = state.mode === "dismantle"
         ? `${formatNumber(outputCount)} 种回收物`
         : record.sourceCount > 0 ? "任务奖励" : "无任务来源";
-      const size = sizeLabel(record.stats.size);
-      const grade = record.stats.grade ? gradeLabel(record.stats.grade) : "未知等级";
-      const componentClass = recordComponentClass(record);
-      const metaParts = record.category.id === "ship_component"
-        ? [record.category.label, recordComponentType(record), recordManufacturer(record), componentClass, size, grade]
-        : [record.category.label, recordManufacturer(record), recordSubtype(record), size, grade];
       return `
         <button class="result-card ${escapeHtml(record.category.id)}${record.id === state.selectedId ? " active" : ""}" type="button" data-id="${escapeHtml(record.id)}" aria-current="${record.id === state.selectedId ? "true" : "false"}">
           <span class="row-dot"></span>
           <span class="row-main">
             <strong>${escapeHtml(recordName(record))}</strong>
-            <small>${metaParts.filter(Boolean).map((part) => escapeHtml(part)).join(" · ")}</small>
+            ${renderRecordSummary(record, true)}
           </span>
           <span class="source-badge ${state.mode === "craft" && !(record.sourceCount > 0) ? "muted" : ""}">${sourceLabel}</span>
         </button>
@@ -1581,6 +1632,7 @@ function renderResults() {
     ? `<button class="load-more-results" type="button" data-load-more>继续加载 <strong>${formatNumber(state.visibleResults)}</strong> / ${formatNumber(state.filtered.length)}</button>`
     : "";
   els.resultList.innerHTML = cards + loadMore;
+  fitRecordSummaries(els.resultList);
 }
 
 function selectRecord(id) {
