@@ -79,6 +79,16 @@ test("source pools share one compact task list, deduplicated by ID with twelve i
   assert.doesNotMatch(html, /<details[^>]* open/);
 });
 
+test("mission source titles highlight only the literal blueprint marker without changing text or trusting HTML", () => {
+  const api = app();
+  api.state.data.missionRewards.missions.one = { pools: [] };
+  const html = api.renderSources({sources:[{missions:[{id:"one",title:"<script>[LOCATION][蓝图]</script>[目标]蓝图",systems:["Pyro"]}]}]});
+  assert.match(html, /&lt;script&gt;\[地点\]<span class="mission-blueprint-tag">\[蓝图\]<\/span>&lt;\/script&gt;\[目标\]蓝图/);
+  assert.equal((html.match(/class="mission-blueprint-tag"/g) || []).length, 1);
+  assert.match(html, /<b>派罗 \(Pyro\)<\/b>/);
+  assert.doesNotMatch(html, /<script>/);
+});
+
 test("small task tails are shown directly, never hidden behind a two-row expansion", () => {
   const api = app();
   for (const count of [8, 10, 11, 12, 14, 15, 16, 96]) {
@@ -126,10 +136,11 @@ test("mission dialog explains independent draws without hiding verified pools as
     querySelectorAll: () => [],
     body: { style: {}, insertAdjacentHTML: (_, value) => { html = value; } },
   });
-  api.state.missions.set("mission", { title: "Same", systems: ["Nyx"] });
+  api.state.missions.set("mission", { title: "Same[蓝图]<script>", systems: ["Nyx"] });
   api.state.data.missionRewards.missions.mission = { pools: [{ id: "first" }, { id: "second" }], items: [] };
   api.openMissionInfo("mission");
   assert.equal(shown, true);
+  assert.match(html, /<h2 id="missionDialogTitle">Same<span class="mission-blueprint-tag">\[蓝图\]<\/span>&lt;script&gt;<\/h2>/);
   assert.match(html, /本任务含 2 个蓝图奖励池/);
   assert.match(html, /各池独立按对应条件及触发概率发放 1 张蓝图/);
   assert.match(html, /已集齐的池不再发放/);
@@ -137,6 +148,17 @@ test("mission dialog explains independent draws without hiding verified pools as
   assert.match(html, /池触发概率不等于单张蓝图的掉率/);
   assert.match(html, /不保证 N 次集齐/);
   assert.doesNotMatch(html, /范围未确认|非已确认掉落清单|<details/);
+});
+
+test("prerequisite and excluded mission titles share the blueprint marker without dropping their conditions", () => {
+  const api = app();
+  const title = {title:"<task>[蓝图]"};
+  const html = api.renderMissionRequirements({requiredIntros:[title],linkedIntros:[title],completedContracts:{requiredCount:1,candidates:[title]},excludedContracts:{candidates:[title]}});
+  assert.equal((html.match(/class="mission-blueprint-tag"/g)||[]).length,4);
+  assert.match(html, /&lt;task&gt;<span class="mission-blueprint-tag">\[蓝图\]<\/span>/);
+  assert.match(html, /前置完成标记/);
+  assert.match(html, /已完成标记排除/);
+  assert.doesNotMatch(html, /<task>/);
 });
 
 test("compact class-grade labels preserve verified classes without inventing a weapon class", () => {
@@ -172,11 +194,11 @@ test("specific ship weapon types use the primary subtype and a verified family, 
 test("reward and result summaries show compact grades, escape text and index both full and short types", () => {
   const api=app();
   const cooler={name:"Cooler",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,grade:1},flowcld:{itemClass:"Stealth"}};
-  assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · S1 · 隐A");
+  assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · 隐A · S1");
   const weapon={name:"M7A Cannon",category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"<Maker>",subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1,tags:"LaserCannon"}};
   const html=api.renderRecordSummary(weapon,true);
-  assert.match(html,/data-summary-full="舰船武器 · A · 激光加农炮 · S5 · &lt;Maker&gt;"/);
-  assert.match(html,/data-summary-short="舰船武器 · A · 激光 · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/data-summary-full="舰船武器 · 激光加农炮 · A · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/data-summary-short="舰船武器 · 激光 · A · S5 · &lt;Maker&gt;"/);
   assert.doesNotMatch(html,/<Maker>|军A/);
   assert.match(api.recordSearchText(weapon),/激光加农炮/);
   assert.match(api.recordSearchText(cooler),/隐a/);
@@ -263,6 +285,9 @@ test("quality controls preserve the original compact slider and expose only a co
   assert.match(html,/data-quality-number/);
   assert.match(html,/min="600" max="1000" step="1" value="" placeholder="600"/);
   assert.match(html,/data-confirmed="false"/);
+  assert.match(html,/style="--quality-digits: 3"><span>品质<\/span>/);
+  assert.match(html,/<div class="quality-number"/);
+  assert.doesNotMatch(html,/<label/);
   assert.match(html,/点击输入品质 · 600–1000/);
   assert.match(html,/aria-describedby="qualityHint-a:0"/);
   assert.doesNotMatch(html,/data-quality-preset/);

@@ -100,13 +100,23 @@ Use the native disclosure only when at least four rows remain hidden.
 Clickable task names are white without underlines, with an arrow and visible
 hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
 reward dialog still keeps its independent pools separate.
+Only the literal `[蓝图]` marker within source-row, reward-dialog and prerequisite
+task titles uses light blue `#b8c9f1`, distinct from cyan star systems. Keep the remaining title,
+text content, search and wrapping unchanged; escape title text before marking it.
+This suffix comes from the current Chinese localization, not a generated reward
+flag. Some verified blueprint-source missions lack it; never use it to decide
+whether a task awards blueprints or to calculate a drop chance.
 
 Reward candidates and result-list summaries show verified compact class/grade
 labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,
 combined with A-D only when the data provides a valid grade. Missing classes do
-not become military; a weapon with grade A but no class shows only A. The main
-list puts this label immediately after the category so it survives narrow-screen
-ellipsis; detail specification boxes retain full class and grade fields.
+not become military; a weapon with grade A but no class shows only A. Summary
+order is category, component/weapon type, compact class/grade, size, and optional
+manufacturer (for example, 舰船组件 · 冷却器 · 隐C · S1 · 制造商).
+Keep class/grade before trailing size/manufacturer text and verify actual visible
+bounds on narrow screens; detail boxes retain full class and grade fields.
+At 360px and below, reduce only the result-card column gaps and horizontal
+padding so this order remains readable without shrinking text or moving grade first.
 
 Ship weapons use their primary SCMDB subtype plus an explicit family from an
 exact tag or canonical English type suffix: cannon, repeater, gatling, scattergun
@@ -213,7 +223,12 @@ exact-LIVE item table supplies the primary panel; unsupported absolute metrics
 retain their relative effects. Component class and mission type also come from
 the same primary tables, not the secondary blueprint site's metadata.
 
-Quality inputs retain the original 23px pill beside each slider. The initial
+Quality inputs retain a stable 72px by 23px pill beside each slider. The label
+and numeric field are centered together; the field uses tabular-digit width
+for its current value/placeholder and the same 14px line box as the label.
+Only a pointer click within the capsule activates its numeric input; the tooltip
+and surrounding empty area must not activate it. Keyboard Tab focus still works.
+The initial
 500 (or higher recipe minimum) is a semi-transparent gray placeholder, not
 prefilled input text; focusing starts an empty draft. Leaving it empty preserves
 the effective quality. Editing or moving the slider changes it to cyan.

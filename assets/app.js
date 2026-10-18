@@ -118,6 +118,7 @@ function setSlotQuality(record, slotIndex, value) {
   if (!container) return;
   container.querySelectorAll("[data-quality-input], [data-quality-number]").forEach(input => { input.value = quality; });
   container.querySelector(".quality-number").dataset.confirmed = "true";
+  container.querySelector(".quality-number").style.setProperty("--quality-digits", String(quality).length);
   container.querySelector("[data-quality-number]").placeholder = quality;
   const existing = container.querySelector(".quality-modifier-list");
   if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
@@ -639,7 +640,7 @@ function renderMaterialQuality(record, slot, slotIndex) {
     <div class="material-quality" data-quality-slot="${escapeHtml(qualitySlotKey(record, slotIndex))}">
       <div class="material-quality-control">
         <input type="range" min="${minimum}" max="1000" step="1" value="${quality}" data-quality-input data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质" />
-        <label class="quality-number" data-confirmed="${confirmed}">品质 <input type="number" inputmode="numeric" min="${minimum}" max="1000" step="1" value="${confirmed ? quality : ""}" placeholder="${quality}" data-quality-number data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质数值" aria-describedby="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" /><span class="quality-input-hint" id="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" role="tooltip">点击输入品质 · ${minimum}–1000</span></label>
+        <div class="quality-number" data-confirmed="${confirmed}" style="--quality-digits: ${String(quality).length}"><span>品质</span><input type="number" inputmode="numeric" min="${minimum}" max="1000" step="1" value="${confirmed ? quality : ""}" placeholder="${quality}" data-quality-number data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质数值" aria-describedby="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" /><span class="quality-input-hint" id="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" role="tooltip">点击输入品质 · ${minimum}–1000</span></div>
       </div>
       ${renderQualityModifiers(slot, quality)}
     </div>
@@ -974,6 +975,10 @@ function missionTitle(mission) {
   return preferZh(mission.titleZh, mission.title).replace(/\[LOCATION\]/gi, "[地点]");
 }
 
+function renderBlueprintText(text) {
+  return escapeHtml(text).replaceAll("[蓝图]", '<span class="mission-blueprint-tag">[蓝图]</span>');
+}
+
 function initMissionRewards() {
   state.missions = new Map();
   state.rewardPools = new Map();
@@ -1023,7 +1028,7 @@ function renderMissionItems(rewards) {
 function renderMissionRequirements(requirements) {
   if (!requirements) return '<p class="mission-reward-meta">接取条件未记录；请以游戏内任务为准。</p>';
   const rows = [];
-  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`);
+  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${renderBlueprintText(value)}</dd></div>`);
   for (const [field, label] of [["minStanding", "最低声望"], ["maxStanding", "最高声望"]]) {
     const standing = requirements[field];
     if (standing) add(label, `${preferZh(standing.nameZh, standing.name)}${standing.minReputation != null ? ` · 该级起始 ${formatNumber(standing.minReputation)} XP` : ""}${requirements.canBeShared !== true ? "" : standing.includeWhenSharing === true ? " · 共享时同样要求" : standing.includeWhenSharing === false ? " · 不限制共享接收者" : ""}`);
@@ -1099,7 +1104,7 @@ function openMissionInfo(id, opener) {
   document.body.insertAdjacentHTML("beforeend", `
     <dialog class="mission-dialog" aria-labelledby="missionDialogTitle">
       <header class="mission-dialog-head">
-        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${escapeHtml(missionTitle(mission))}</h2>
+        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${renderBlueprintText(missionTitle(mission))}</h2>
           <p>${escapeHtml(missionSystemLabels(mission))}</p>
           <small>${escapeHtml([missionFaction(mission), mission.rewardUEC != null ? `${formatNumber(mission.rewardUEC)} aUEC` : ""].filter(Boolean).join(" · "))}</small>
         </div>
@@ -1197,9 +1202,8 @@ function recordClassGrade(record) {
 function recordSummary(record, fullType = false, manufacturer = false) {
   const type = record.category.id === "ship_component" ? recordComponentType(record)
     : fullType ? recordWeaponType(record) : recordSubtype(record);
-  const parts = manufacturer
-    ? [record.category.label, recordClassGrade(record), type, sizeLabel(record.stats?.size), recordManufacturer(record)]
-    : [record.category.label, type, sizeLabel(record.stats?.size), recordClassGrade(record)];
+  const parts = [record.category.label, type, recordClassGrade(record), sizeLabel(record.stats?.size)];
+  if (manufacturer) parts.push(recordManufacturer(record));
   return parts.filter(Boolean).join(" · ");
 }
 
@@ -1692,6 +1696,14 @@ function bindEvents() {
   });
 
   els.detailPanel.addEventListener("click", (event) => {
+    const qualityCapsule = event.target.closest(".quality-number");
+    if (qualityCapsule) {
+      const bounds = qualityCapsule.getBoundingClientRect();
+      if (event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+        qualityCapsule.querySelector("[data-quality-number]").focus();
+      }
+      return;
+    }
     const signalButton = event.target.closest("[data-signal-trigger]");
     if (signalButton) {
       showSignalTooltip(signalButton);
@@ -1732,6 +1744,7 @@ function bindEvents() {
     const slotIndex = Number(input.dataset.slotIndex);
     const slot = getFirstTier(record).slots?.[slotIndex];
     if (!slot) return;
+    if (input.matches("[data-quality-number]")) input.closest(".quality-number").style.setProperty("--quality-digits", (input.value || input.placeholder).length);
     const quality = Number(input.value);
     if (!input.value.trim()) {
       if (input.validity?.badInput) { input.value = qualitySlotValue(record, slot, slotIndex); return; }
@@ -2088,7 +2101,7 @@ function renderSources(record) {
     const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
     const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
     const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
-    const content = `<strong>${escapeHtml(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    const content = `<strong>${renderBlueprintText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
     return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
   });
   const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN

@@ -1095,7 +1095,8 @@ html[data-query-mode="dismantle"] .reset-button {
 
 .detail-tools { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
 [data-share-blueprint] { min-width: 72px; }
-.quality-number input { width: 4.2ch; min-width: 0; min-height: 0; height: 19px; padding: 0; border: 0; border-radius: 0; color: inherit; background: transparent; font: inherit; text-align: center; appearance: textfield; -moz-appearance: textfield; }
+.quality-number input { flex: 0 0 auto; width: calc(var(--quality-digits, 3) * 1ch); min-width: 0; min-height: 0; height: 14px; padding: 0; border: 0; border-radius: 0; color: inherit; background: transparent; font: inherit; font-variant-numeric: tabular-nums; line-height: 14px; text-align: center; appearance: textfield; -moz-appearance: textfield; }
+.quality-number > span:first-child { line-height: 14px; }
 .quality-number input::-webkit-inner-spin-button, .quality-number input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .quality-number input:focus { box-shadow: none; }
 .plan-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
@@ -1420,7 +1421,7 @@ html[data-query-mode="dismantle"] .reset-button {
   white-space: nowrap;
 }
 
-.material-quality .quality-number { position: relative; flex: 0 0 auto; gap: 4px; color: rgba(172, 183, 191, 0.6); cursor: text; }
+.material-quality .quality-number { position: relative; flex: 0 0 72px; width: 72px; justify-content: center; gap: 4px; padding-inline: 6px; color: rgba(172, 183, 191, 0.6); cursor: text; }
 .material-quality .quality-number[data-confirmed="true"] { color: var(--cyan); }
 .material-quality .quality-number:hover, .material-quality .quality-number:focus-within { border-color: var(--cyan); }
 .quality-number input::placeholder { color: inherit; opacity: 1; }
@@ -1852,6 +1853,7 @@ html[data-query-mode="dismantle"] .reset-button {
 }
 
 .source-mission-button small b { color: var(--cyan); }
+.mission-blueprint-tag { color: #b8c9f1; }
 .source-mission-button[data-mission-id] strong {
   color: var(--text-strong);
   text-decoration: none;
@@ -2240,4 +2242,8 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
     justify-self: center;
     width: min(180px, 100%);
   }
+}
+
+@media (max-width: 360px) {
+  .result-card { column-gap: 6px; padding-inline: 8px; }
 }
