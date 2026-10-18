@@ -8,6 +8,78 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_sort_options_live_in_the_filter_header_with_clear_default_label(self) -> None:
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        summary = html.split('<section class="summary-strip">', 1)[1].split('</section>', 1)[0]
+        header = html.split('<header class="filter-head">', 1)[1].split('</header>', 1)[0]
+        self.assertNotIn('class="sort-group"', summary)
+        self.assertIn('class="sort-group" role="group" aria-label="排序方式"', header)
+        for value, label in [("relevance", "默认"), ("name", "名称"), ("sources", "来源")]:
+            self.assertRegex(header, rf'data-sort="{value}"[^>]*>{label}</button>')
+        self.assertLess(header.index('class="sort-group"'), header.index('class="filter-result-badge"'))
+        self.assertNotIn('>推荐</button>', html)
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        self.assertIn('.filter-head .sort-group { grid-column: 1 / -1; grid-row: 2; }', styles)
+
+    def test_detail_actions_are_grouped_in_add_favorite_share_order(self) -> None:
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        detail = app.split("function renderDetail() {", 1)[1].split("function recordMissions", 1)[0]
+        header = detail.split('<div class="detail-head">', 1)[1].split('</div>', 1)[0]
+        self.assertIn('class="detail-head-labels">蓝图详情 · ', header)
+        self.assertNotIn('<strong>', header.split('class="detail-head-actions"', 1)[0])
+        self.assertLess(header.index('data-add-plan='), header.index('data-toggle-favorite='))
+        self.assertLess(header.index('data-toggle-favorite='), header.index('data-share-blueprint='))
+        self.assertEqual(detail.count('data-add-plan='), 1)
+        self.assertEqual(detail.count('data-share-blueprint='), 1)
+        self.assertNotIn('detail-tools', detail)
+        dismantle = app.split("function renderDismantleDetail(record) {", 1)[1].split("function renderDetail()", 1)[0]
+        self.assertIn('class="detail-head-labels"><span>拆解详情</span><strong>', dismantle)
+        self.assertLess(dismantle.index('data-toggle-favorite='), dismantle.index('data-share-blueprint='))
+        self.assertNotIn('data-add-plan=', dismantle)
+
+    def test_result_header_is_readable_and_matches_card_insets(self) -> None:
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        header = styles.split(".result-head {", 1)[1].split("}", 1)[0]
+        self.assertIn("font-size: 12px", header)
+        self.assertIn("padding: 5px 23px", header)
+        self.assertIn("gap: 10px", header)
+        self.assertIn("物品名称 / 规格", html)
+        self.assertIn(".result-head > span:last-child { text-align: center; }", styles)
+        self.assertIn(".result-head { column-gap: 6px; padding-inline: 21px; }", styles)
+
+    def test_plan_and_favorites_entries_are_larger_and_distinct_from_detail_actions(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        entry = styles.split(".favorites-toggle {", 1)[1].split("}", 1)[0]
+        self.assertIn("min-height: 42px", entry)
+        self.assertIn("font-size: 15px", entry)
+        self.assertIn("color: darkorange", entry)
+        self.assertNotIn("border-radius:", entry)
+        count = styles.split(".summary-controls .favorites-toggle strong {", 1)[1].split("}", 1)[0]
+        self.assertIn("font-size: 15px", count)
+        self.assertIn("color: inherit", count)
+        self.assertIn("margin: 0", count)
+        self.assertNotIn("border-left", count)
+        self.assertNotIn("background:", count)
+
+    def test_ship_weapon_summaries_wrap_complete_types_without_measured_abbreviations(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        summary = styles.split(".row-main small.weapon-summary {", 1)[1].split("}", 1)[0]
+        self.assertIn("white-space: normal", summary)
+        self.assertIn("overflow: visible", summary)
+        self.assertIn("overflow-wrap: anywhere", summary)
+        self.assertNotIn("fitRecordSummaries", app)
+        self.assertNotIn("data-summary-short", app)
+
+    def test_task_source_badges_use_a_separate_color_without_changing_other_badges(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        badge = styles.split('html[data-query-mode="craft"] .source-badge:not(.muted) {', 1)[1].split("}", 1)[0]
+        self.assertIn("color: #9cccf5", badge)
+        self.assertIn("rgba(156, 204, 245, 0.36)", badge)
+        default = styles.split(".source-badge {", 1)[1].split("}", 1)[0]
+        self.assertIn("color: var(--orange)", default)
+
     def test_planner_has_scoped_compact_layout_and_independent_explanation_spacing(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         self.assertIn(".mission-dialog.planner-dialog { width: min(640px,", styles)

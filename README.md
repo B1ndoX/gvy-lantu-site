@@ -94,6 +94,29 @@ Responsive behavior:
 
 ## Detail Text Layout
 
+Sorting uses the `默认 / 名称 / 来源` options beside the filter heading and
+result count, not the upper summary toolbar. These are sorting options, not
+filters or personalized recommendations; the existing default relevance score
+is unchanged. Dismantling labels the last option `回收种类`. Above 620px they
+share one header row; phones put the options below the heading/count.
+
+The upper `制作清单` and `我的蓝图` entries retain their original rounded
+shape and plain inline counts. Only enlarge labels/counts to 15px and minimum
+height to 42px, and use plain CSS `darkorange` for text/outline/states.
+Counts remain 15px on phones. Do not restore the canceled count compartments,
+dividers, square corners, exact screenshot color matching or blue/gold alternatives;
+detail actions stay unchanged. No new color-setting or sampling logic is needed.
+
+Manufacturing starts with the plain 14px label `蓝图详情 · 任务奖励` (or
+`暂无任务来源`), without a yellow badge. Its actions are grouped in order:
+`加入制作清单 / 收藏蓝图 / 分享蓝图`, wrapping without overlap on phones.
+Dismantling places its recovery count by its detail label, then favorite/share
+actions in that order. Item names remain larger and primary. The result-list
+header uses 12px `物品名称 / 规格` and a centered source heading, aligned with
+the actual result-card columns, including their compact 320px padding. Only
+manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
+missing-source gray and dismantling's recovery badges keep their colors.
+
 The seven dismantling information fields remain separate compact boxes with centered labels and values. Grid children must stretch to the cell width, not retain an overflowing intrinsic width. Values wrap completely inside their boxes, including uninterrupted English identifiers; do not shorten official manufacturer names or hide them behind an ellipsis. Box height follows the content.
 
 Desktop keeps seven columns. Up to 620 px, use four columns with the fifth field (manufacturer) spanning two: four fields in the first row, then manufacturer, size and grade in the second row. Keep that field order when maintaining the markup.
@@ -146,12 +169,12 @@ or mass driver. Never relabel every laser weapon as a cannon or override the
 primary subtype with a conflicting legacy calibration/tag. Unknown families keep
 their existing subtype. Full types also appear in detailed manufacturing and
 dismantling information and participate in search, as do compact class/grades.
-Summary rows try the full type, measure actual width and line height, and fall
-back to the original subtype if it would overflow or wrap. Recheck after result
-rendering, dialog opening and a frame-debounced window resize. Wider layouts
-restore full names. Keep fonts, colors, row styling and responsive columns intact;
-do not shrink text or hide names to force a full type to fit. Main-list trailing
-manufacturer text retains its existing intentional ellipsis and full tooltip.
+Ship-weapon summaries now always retain the complete known type in main lists
+and reward pools. Their smaller text wraps naturally when narrow; a long
+manufacturer must not downgrade `激光加农炮` to `激光` or `实弹加特林` to
+`实弹`. This latest user correction supersedes the former measured abbreviation
+fallback, whose resize/measurement code has been removed. Keep the existing
+fonts, colors and columns; other categories retain their compact ellipsis.
 
 Reward lookup uses the exact contract ID and its explicit pool IDs, not a task
 name, faction or a transitive shared-blueprint association. Same-title tasks in
@@ -276,9 +299,12 @@ synchronization is implied.
 
 The plan dialog stays content-height driven and at most 640px wide. Planned item
 names come first at 16px in the existing soft gold, ahead of material requirements.
-Their following parentheses show `category · size · compact class/grade` at 12px
+Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
 fields; without a recognized class omit the grade too, rather than showing a bare A-D.
+Ship components include their verified type, such as 冷却器、量子驱动 or 采矿激光;
+ship weapons reuse the complete known weapon type from the result/reward helper.
+Other categories do not gain unrelated subtype fields.
 Each row places its single-item craft duration to the left of the quantity
 controls, separated by 16px. This is secondary 12px muted text, not multiplied
 by the row count; narrow screens let its label/value wrap within that left area.
@@ -491,7 +517,7 @@ The manufacturing detail panel contains a compact `成品品质效果` summary a
 
 The validated 4.10.2 LIVE snapshot has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; these calculations cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
-Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
+Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and plan/favorites entries. Sorting options live in the filter header below. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 
 Production builds fingerprint `assets/styles.css` and the transformed `assets/app.js` in the generated `dist/index.html`. During that build, `DATA_VERSION` is generated from the combined content hash of `data/blueprint-index.json` and `data/mineral-locations.json`; the generated revision also changes the application fingerprint. This is required because EdgeOne serves assets with a long immutable cache lifetime. Blueprint and mineral JSON requests use that content-derived query key and retain the previous verified cache when refresh validation fails. Refresh scripts must only update validated data files; they must never write a timestamp or version string into `assets/app.js` or `index.html`.
 

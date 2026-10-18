@@ -34,7 +34,6 @@ const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 const PLAN_STORAGE_KEY = "gvy-lantu-craft-plan-v1";
 let searchInputTimer = 0;
-let summaryResizeFrame = 0;
 let mineralOpener = null;
 let mineralPreviousOverflow = "";
 let mineralSignal = null;
@@ -208,7 +207,9 @@ function renderPlanBody() {
       const record = state.records.find(item => item.id === row.recordId);
       const tier = record ? getFirstTier(record) : null;
       const size = record?.stats?.size;
-      const specification = record ? [record.category?.label, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ") : "";
+      const type = record?.category?.id === "ship_component" ? recordComponentType(record)
+        : record?.category?.id === "ship_weapon" ? recordWeaponType(record) : "";
+      const specification = record ? [record.category?.label, type, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ") : "";
       return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}${specification ? `<small class="plan-item-meta">（${escapeHtml(specification)}）</small>` : ""}</strong>
         <div class="plan-controls"><div class="plan-unit-time"><span>单件耗时</span><span>${escapeHtml(formatTime(tier?.craftTimeSeconds))}</span></div>
         <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
@@ -1278,7 +1279,6 @@ function openMissionInfo(id, opener) {
     if (event.target.closest("[data-close-mission]") || outside) dialog.close();
   });
   dialog.showModal();
-  fitRecordSummaries(dialog);
 }
 
 function missionFaction(mission) {
@@ -1324,29 +1324,18 @@ function recordClassGrade(record) {
   return abbreviation ? `${abbreviation}${grade}` : "";
 }
 
-function recordSummary(record, fullType = false, manufacturer = false) {
+function recordSummary(record, manufacturer = false) {
   const type = record.category.id === "ship_component" ? recordComponentType(record)
-    : fullType ? recordWeaponType(record) : recordSubtype(record);
+    : recordWeaponType(record);
   const parts = [record.category.label, type, recordClassGrade(record), sizeLabel(record.stats?.size)];
   if (manufacturer) parts.push(recordManufacturer(record));
   return parts.filter(Boolean).join(" · ");
 }
 
 function renderRecordSummary(record, manufacturer = false) {
-  const short = recordSummary(record, false, manufacturer);
-  const full = recordSummary(record, true, manufacturer);
+  const full = recordSummary(record, manufacturer);
   const description = [full, recordComponentClass(record), recordComponentClass(record) && record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
-  const adaptive = full !== short ? ` data-summary-full="${escapeHtml(full)}" data-summary-short="${escapeHtml(short)}"` : "";
-  return `<small${adaptive} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
-}
-
-function fitRecordSummaries(root) {
-  const candidates = [...root.querySelectorAll("[data-summary-full]")].filter(el => el.clientWidth);
-  candidates.forEach(el => { el.textContent = el.dataset.summaryFull; });
-  // Measure every full label before writes, so narrow rows fall back in one pass.
-  const compact = candidates.filter(el => el.scrollWidth > el.clientWidth + 1
-    || el.getBoundingClientRect().height > parseFloat(window.getComputedStyle(el).lineHeight) + 1);
-  compact.forEach(el => { el.textContent = el.dataset.summaryShort; });
+  return `<small${record.category.id === "ship_weapon" ? ' class="weapon-summary"' : ""} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
 }
 
 function recordMissionTypes(record) {
@@ -1740,10 +1729,6 @@ function bindFilterSelect(select, key) {
 function bindEvents() {
   document.querySelector("#openPlan")?.addEventListener("click", event => openCraftPlan(event.currentTarget));
   window.addEventListener("hashchange", restoreSharedBlueprint);
-  window.addEventListener("resize", () => {
-    window.cancelAnimationFrame(summaryResizeFrame);
-    summaryResizeFrame = window.requestAnimationFrame(() => fitRecordSummaries(document));
-  });
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
 
   els.searchInput.addEventListener("input", (event) => {
@@ -2080,7 +2065,6 @@ function renderResults() {
     ? `<button class="load-more-results" type="button" data-load-more>继续加载 <strong>${formatNumber(state.visibleResults)}</strong> / ${formatNumber(state.filtered.length)}</button>`
     : "";
   els.resultList.innerHTML = cards + loadMore;
-  fitRecordSummaries(els.resultList);
 }
 
 function selectRecord(id) {
@@ -2111,11 +2095,10 @@ function renderDismantleDetail(record) {
   els.detailPanel.innerHTML = `
     <div class="detail-scroll dismantle-detail">
       <div class="detail-head">
-        <span>拆解详情</span>
-        <span class="detail-head-actions">
-          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
+        <span class="detail-head-labels"><span>拆解详情</span><strong>${formatNumber(outputs.length)} 种回收物</strong></span>
+        <span class="detail-head-actions" role="group" aria-label="物品操作">
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏物品"}</button>
-          <strong>${formatNumber(outputs.length)} 种回收物</strong>
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
         </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
@@ -2172,10 +2155,11 @@ function renderDetail() {
   els.detailPanel.innerHTML = `
     <div class="detail-scroll">
       <div class="detail-head">
-        <span>蓝图详情</span>
-        <span class="detail-head-actions">
+        <span class="detail-head-labels">蓝图详情 · ${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</span>
+        <span class="detail-head-actions" role="group" aria-label="蓝图操作">
+          <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏蓝图"}</button>
-          <strong>${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</strong>
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
         </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
@@ -2185,11 +2169,6 @@ function renderDetail() {
         <span>${escapeHtml(recordManufacturer(record))}</span>
         ${componentClass ? `<span>${escapeHtml(componentClass)}</span>` : ""}
         <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
-      </div>
-
-      <div class="detail-tools">
-        <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
-        <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
       </div>
 
       ${renderQualitySummary(record)}

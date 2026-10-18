@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -197,32 +197,28 @@ test("specific ship weapon types use the primary subtype and a verified family, 
   assert.equal(api.recordWeaponType({name:"Laser Rifle",category:{id:"personal_weapon"},subtype:"rifle",zh:{subtype:"步枪"}}),"步枪");
 });
 
-test("reward and result summaries show compact grades, escape text and index both full and short types", () => {
+test("reward and result summaries retain complete weapon types, escape text and omit bare grades", () => {
   const api=app();
   const cooler={name:"Cooler",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,grade:1},flowcld:{itemClass:"Stealth"}};
   assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · 隐A · S1");
   const weapon={name:"M7A Cannon",category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"<Maker>",subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1,tags:"LaserCannon"}};
   const html=api.renderRecordSummary(weapon,true);
-  assert.match(html,/data-summary-full="舰船武器 · 激光加农炮 · S5 · &lt;Maker&gt;"/);
-  assert.match(html,/data-summary-short="舰船武器 · 激光 · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/<small class="weapon-summary"/);
+  assert.match(html,/>舰船武器 · 激光加农炮 · S5 · &lt;Maker&gt;<\/small>/);
+  assert.doesNotMatch(html,/data-summary-(?:full|short)/);
   assert.doesNotMatch(html,/ · A(?: 级)?(?: ·|&quot;|")/);
   assert.doesNotMatch(html,/<Maker>|军A/);
   assert.match(api.recordSearchText(weapon),/激光加农炮/);
   assert.match(api.recordSearchText(cooler),/隐a/);
 });
 
-test("summary fitting falls back on overflow or a second line and restores full names when space returns", () => {
+test("long manufacturers cannot replace complete weapon types with generic ammunition labels", () => {
   const api=app();
-  const small={dataset:{summaryFull:"full type",summaryShort:"short"},textContent:"short",clientWidth:120,
-    get scrollWidth(){return this.textContent==="full type"?150:50;},getBoundingClientRect(){return {height:14};}};
-  const root={querySelectorAll:()=>[small]};
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
-  small.clientWidth=200;
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"full type");
-  small.getBoundingClientRect=()=>({height:28});
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
-  small.clientWidth=0;small.textContent="hidden";
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"hidden");
+  for(const [name,subtype,label,type] of [["Cannon","laser","激光","激光加农炮"],["Repeater","laser","激光","激光速射炮"],["Gatling","ballistic","实弹","实弹加特林"]]) {
+    const record={name,subtype,zh:{subtype:label},category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"Very long manufacturer ".repeat(8),stats:{size:2}};
+    assert.match(api.renderRecordSummary(record,true),new RegExp(`>舰船武器 · ${type} · S2 · Very long`));
+    assert.equal(api.recordSummary(record),`舰船武器 · ${type} · S2`);
+  }
 });
 
 test("requirements keep optional entry points, distinct locations, false flags and zero XP", () => {
@@ -368,18 +364,18 @@ test("planner shows per-item unit time left of quantity without multiplying it b
   assert.match(api.renderPlanBody(),/单件耗时<\/span><span>未知/);
 });
 
-test("planner appends smaller category, size and verified compact class-grade metadata", () => {
+test("planner appends category, specific component or weapon type, size and verified class-grade metadata", () => {
   const api=app();
   api.state.records=[
-    {id:"military",name:"Military",category:{label:"舰船组件"},stats:{size:0,componentClass:"Military",grade:1}},
-    {id:"stealth",name:"SnowBlind",category:{label:"舰船组件"},stats:{size:1,componentClass:"Stealth",grade:1}},
-    {id:"weapon",name:"Weapon",category:{label:"舰船武器"},stats:{size:5,grade:1}},
+    {id:"military",name:"Military",category:{id:"ship_component",label:"舰船组件"},type:"powerplant",stats:{size:0,componentClass:"Military",grade:1}},
+    {id:"stealth",name:"SnowBlind",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,componentClass:"Stealth",grade:1}},
+    {id:"weapon",name:"Weapon Cannon",category:{id:"ship_weapon",label:"舰船武器"},subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1}},
     {id:"partial",name:"Partial",category:{label:"<unsafe>"},stats:{size:""}},
     {id:"empty",name:"Empty"},
   ];
   api.state.craftPlan=api.state.records.map(r=>({recordId:r.id,quantity:1,choices:{}}));
   const html=api.renderPlanBody();
-  for(const text of ["舰船组件 · S0 · 军A","舰船组件 · S1 · 隐A","舰船武器 · S5","&lt;unsafe&gt;"]) {
+  for(const text of ["舰船组件 · 电源 · S0 · 军A","舰船组件 · 冷却器 · S1 · 隐A","舰船武器 · 激光加农炮 · S5","&lt;unsafe&gt;"]) {
     assert.ok(html.includes(`<small class="plan-item-meta">（${text}）</small>`));
   }
   assert.equal((html.match(/class="plan-item-meta"/g)||[]).length,4);
