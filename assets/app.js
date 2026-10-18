@@ -1318,6 +1318,35 @@ function recordWeaponType(record) {
   return family === "质量驱动炮" ? family : `${subtype}${family}`;
 }
 
+function recordSpecificationType(record) {
+  if (record.category.id === "ship_component") return recordComponentType(record);
+  if (record.category.id === "ship_weapon") return recordWeaponType(record);
+  if (record.category.id === "armor") {
+    if (record.stats?.attachType === "Char_Clothing_Feet") return "鞋履";
+    return preferZh(record.stats?.zh?.attachType) || recordType(record);
+  }
+  if (record.category.id === "personal_weapon") {
+    return {sniper: "狙击步枪", shotgun: "霰弹枪"}[record.subtype] || recordSubtype(record) || recordType(record);
+  }
+  if (record.category.id === "weapon_attachment" && record.type === "ammo") {
+    return `${record.subtype && record.subtype !== "unknown" ? recordSubtype(record) : ""}弹药`;
+  }
+  return recordType(record);
+}
+
+function manufacturingSpecifications(record) {
+  const missionTypes = recordMissionTypes(record);
+  const classGrade = recordClassGrade(record);
+  return [
+    ["分类", record.category.label],
+    ["类型", recordSpecificationType(record)],
+    ["尺寸", sizeLabel(record.stats?.size)],
+    ...(classGrade ? [["等级", classGrade]] : []),
+    ["任务类型", missionTypes.length ? missionTypes.map(type => type.label).join(" / ") : "未注明"],
+    ["单件制作耗时", formatTime(getFirstTier(record).craftTimeSeconds)],
+  ];
+}
+
 function recordClassGrade(record) {
   const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
   const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
@@ -2135,22 +2164,8 @@ function renderDetail() {
     return;
   }
 
-  const tier = getFirstTier(record);
   const materials = getAllMaterials(record);
-  const componentClass = recordComponentClass(record);
-  const componentType = record.category.id === "ship_component" ? recordComponentType(record) : recordType(record);
-  const missionTypes = recordMissionTypes(record);
-  const specs = [
-    ["分类", record.category.label],
-    ["类型", componentType],
-    ["子类", recordSubtype(record)],
-    ["组件类别", componentClass || "无"],
-    ["装备域", recordGear(record)],
-    ["挂点", statZh(record, "attachType") || "未知"],
-    ["尺寸", sizeLabel(record.stats.size)],
-    ["等级", record.stats.grade ? gradeLabel(record.stats.grade) : "未知"],
-    ["任务类型", missionTypes.length ? missionTypes.map((type) => type.label).join(" / ") : "无"],
-  ];
+  const specs = manufacturingSpecifications(record);
 
   els.detailPanel.innerHTML = `
     <div class="detail-scroll">
@@ -2163,16 +2178,15 @@ function renderDetail() {
         </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
-      <div class="detail-tags">
-        <span>${escapeHtml(record.category.label)}</span>
-        ${record.category.id === "ship_component" ? `<span>${escapeHtml(componentType)}</span>` : ""}
-        <span>${escapeHtml(recordManufacturer(record))}</span>
-        ${componentClass ? `<span>${escapeHtml(componentClass)}</span>` : ""}
-        <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
-      </div>
+      <section class="detail-section craft-spec-section">
+        <h3>规格</h3>
+        <dl class="craft-specs" aria-label="蓝图规格">
+          ${specs.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}
+        </dl>
+      </section>
 
-      ${renderQualitySummary(record)}
       ${renderBaseStats(record)}
+      ${renderQualitySummary(record)}
 
       <section class="detail-section">
         <h3>制作材料</h3>
@@ -2211,13 +2225,6 @@ function renderDetail() {
       <section class="detail-section">
         <h3>获取方法</h3>
         <div class="source-list">${renderSources(record)}</div>
-      </section>
-
-      <section class="detail-section">
-        <h3>规格</h3>
-        <div class="spec-grid">
-          ${specs.map(([label, value]) => `<div class="spec-item"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(value)}</span></div>`).join("")}
-        </div>
       </section>
     </div>
   `;

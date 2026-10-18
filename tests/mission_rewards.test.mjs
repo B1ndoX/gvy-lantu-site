@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordSpecificationType, manufacturingSpecifications, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -221,6 +221,40 @@ test("long manufacturers cannot replace complete weapon types with generic ammun
   }
 });
 
+test("manufacturing specification types distinguish components, weapons, armor slots and ammunition without name guesses", () => {
+  const api=app();
+  for(const [record,expected] of [
+    [{category:{id:"ship_component"},type:"quantumdrive"},"量子驱动"],
+    [{category:{id:"ship_weapon"},name:"Repeater",subtype:"laser",zh:{subtype:"激光"}},"激光速射炮"],
+    [{category:{id:"ship_weapon"},name:"Unknown",subtype:"laser",zh:{subtype:"激光"}},"激光"],
+    [{category:{id:"personal_weapon"},subtype:"smg",zh:{subtype:"冲锋枪"}},"冲锋枪"],
+    [{category:{id:"personal_weapon"},subtype:"sniper"},"狙击步枪"],
+    [{category:{id:"personal_weapon"},subtype:"shotgun"},"霰弹枪"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Char_Armor_Helmet",zh:{attachType:"头盔"}}},"头盔"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Char_Armor_Torso",zh:{attachType:"胸甲"}}},"胸甲"],
+    [{category:{id:"armor"},type:"armour",stats:{attachType:"Char_Clothing_Feet",zh:{attachType:"角色服装脚"}}},"鞋履"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Unknown_Internal_Slot"}},"护甲"],
+    [{category:{id:"weapon_attachment"},type:"ammo",subtype:"ballistic",zh:{subtype:"实弹"}},"实弹弹药"],
+    [{category:{id:"weapon_attachment"},type:"ammo",subtype:"unknown"},"弹药"],
+    [{category:{id:"other"},type:"unknown",zh:{type:"未知"},name:"Laser Cannon Helmet"},"未知"],
+  ]) assert.equal(api.recordSpecificationType(record),expected);
+});
+
+test("manufacturing specifications retain only approved fields, exact unit time and known class grades", () => {
+  const api=app();
+  const record={category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:0,componentClass:"Stealth",grade:3},tiers:[{craftTimeSeconds:570}],sources:[{missions:[{missionType:"Refueling"}]}]};
+  assert.equal(JSON.stringify(api.manufacturingSpecifications(record)),JSON.stringify([
+    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐C"],["任务类型","加油"],["单件制作耗时","9 分 30 秒"]
+  ]));
+  record.stats.componentClass=null;
+  assert.ok(!api.manufacturingSpecifications(record).some(([label])=>label==="等级"));
+  record.tiers[0].craftTimeSeconds=0;record.sources=[];
+  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"0 秒");
+  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="任务类型")[1],"未注明");
+  delete record.tiers;
+  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"未知");
+});
+
 test("requirements keep optional entry points, distinct locations, false flags and zero XP", () => {
   const api = app();
   api.state.data.missionRewards.locations = { site: { name: "Checkmate", nameZh: "死局空间站", system: "Pyro", systemZh: "派罗" } };
@@ -246,6 +280,8 @@ test("base stats preserve exact units and escape labels, while dismantling inclu
   const api = app();
   const html = api.renderBaseStats({ baseStats: [{ id: "speed", label: "<speed>", value: 1234.5, unit: "m/s", digits: 1 }], baseStatNotes: ["<note>"] });
   assert.match(html, /Q500 基准/);
+  assert.match(html, /<details class="detail-section base-stats">/);
+  assert.doesNotMatch(html, /<details[^>]*\bopen\b/);
   assert.match(html, /1,234.5 m\/s/);
   assert.match(html, /&lt;speed&gt;/);
   assert.doesNotMatch(html, /<note>/);

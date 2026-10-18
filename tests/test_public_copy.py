@@ -8,6 +8,50 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_craft_specs_replace_tags_and_footer_before_collapsed_base_then_quality(self) -> None:
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        detail = app.split("function renderDetail() {", 1)[1].split("function recordMissions", 1)[0]
+        self.assertIn('const specs = manufacturingSpecifications(record);', detail)
+        self.assertIn('<dl class="craft-specs" aria-label="蓝图规格">', detail)
+        self.assertIn('<dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd>', detail)
+        self.assertLess(detail.index('<h2>'), detail.index('<h3>规格</h3>'))
+        self.assertLess(detail.index('<h3>规格</h3>'), detail.index('<dl class="craft-specs"'))
+        self.assertLess(detail.index('<dl class="craft-specs"'), detail.index('${renderBaseStats(record)}'))
+        self.assertLess(detail.index('${renderBaseStats(record)}'), detail.index('${renderQualitySummary(record)}'))
+        self.assertLess(detail.index('${renderQualitySummary(record)}'), detail.index('<h3>制作材料</h3>'))
+        self.assertNotIn('detail-tags', detail)
+        self.assertEqual(detail.count('<h3>规格</h3>'), 1)
+        self.assertNotIn('recordManufacturer(record)', detail)
+
+    def test_craft_specs_have_scoped_compact_columns_and_wrapping_values(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        grid = styles.split('.craft-specs {', 1)[1].split('}', 1)[0]
+        self.assertIn('grid-auto-flow: column', grid)
+        self.assertIn('grid-auto-columns: minmax(0, 1fr)', grid)
+        self.assertIn('gap: 6px', grid)
+        self.assertIn('.craft-specs { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }', styles)
+        value = styles.split('.craft-specs dd {', 1)[1].split('}', 1)[0]
+        self.assertIn('overflow-wrap: anywhere', value)
+        self.assertIn('font-size: 12px', value)
+
+    def test_craft_material_names_are_larger_soft_green_and_wrap_without_changing_other_labels(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        name = styles.split('.material-item .material-summary strong {', 1)[1].split('}', 1)[0]
+        self.assertIn('color: #9de2bf', name)
+        self.assertIn('font-size: 15px', name)
+        self.assertIn('white-space: normal', name)
+        self.assertIn('overflow-wrap: anywhere', name)
+        self.assertIn('.material-item-button:hover strong {', styles)
+
+    def test_dialog_crosses_use_shared_centering_without_native_button_padding(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        cross = styles.split('.mission-close,\n.mineral-close,\n.mineral-signal-head button,\n.plan-remove {', 1)[1].split('}', 1)[0]
+        self.assertIn('display: grid', cross)
+        self.assertIn('place-items: center', cross)
+        self.assertIn('padding: 0', cross)
+        self.assertIn('font-family: Arial, sans-serif', cross)
+        self.assertIn('line-height: 1', cross)
+
     def test_sort_options_live_in_the_filter_header_with_clear_default_label(self) -> None:
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         summary = html.split('<section class="summary-strip">', 1)[1].split('</section>', 1)[0]
@@ -53,7 +97,9 @@ class PublicCopyTests(unittest.TestCase):
         entry = styles.split(".favorites-toggle {", 1)[1].split("}", 1)[0]
         self.assertIn("min-height: 42px", entry)
         self.assertIn("font-size: 15px", entry)
-        self.assertIn("color: darkorange", entry)
+        self.assertNotIn("color:", entry)
+        shared = styles.split(".favorites-toggle,", 1)[1].split("}", 1)[0]
+        self.assertIn("color: var(--orange)", shared)
         self.assertNotIn("border-radius:", entry)
         count = styles.split(".summary-controls .favorites-toggle strong {", 1)[1].split("}", 1)[0]
         self.assertIn("font-size: 15px", count)

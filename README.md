@@ -102,9 +102,10 @@ share one header row; phones put the options below the heading/count.
 
 The upper `制作清单` and `我的蓝图` entries retain their original rounded
 shape and plain inline counts. Only enlarge labels/counts to 15px and minimum
-height to 42px, and use plain CSS `darkorange` for text/outline/states.
+height to 42px. The latest correction uses the existing softer yellow-orange
+`var(--orange)` for text/outline/states, not the earlier saturated `darkorange`.
 Counts remain 15px on phones. Do not restore the canceled count compartments,
-dividers, square corners, exact screenshot color matching or blue/gold alternatives;
+dividers, square corners, exact screenshot color matching or other experimental effects;
 detail actions stay unchanged. No new color-setting or sampling logic is needed.
 
 Manufacturing starts with the plain 14px label `蓝图详情 · 任务奖励` (or
@@ -116,6 +117,30 @@ header uses 12px `物品名称 / 规格` and a centered source heading, aligned 
 the actual result-card columns, including their compact 320px padding. Only
 manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
 missing-source gray and dismantling's recovery badges keep their colors.
+
+Manufacturing places one compact specification grid directly under the name:
+category, specific type, size, verified compact class/grade (only when available),
+mission type and single-item craft duration, with a visible `规格` heading.
+Above 620px keep all five/six compact fields in one row; phones use two columns,
+preserving full wrapping values and the existing muted labels,
+border and background. Remove the repeated name-tag row and bottom specification
+section, including manufacturer, gear and redundant subtype/mount fields from
+this view only; original data, search, filters and dismantling stay intact.
+Specific types retain component types and complete ship-weapon families; personal
+weapons use their gun subtype, armor uses its localized slot, and ammunition keeps
+its reported subtype. Missing evidence never authorizes a name-based guess.
+The sequence is specifications, collapsed-by-default base attributes, quality
+effects, crafting materials, then acquisition methods. No extra toggle state is
+stored. Missing base/quality data keep their existing omission behavior.
+Crafting-material names alone are 15px soft mint `#9de2bf`, wrapping completely
+inside their existing rows. Descriptions, quality controls, units/amounts, plan
+names and dismantling outputs keep their own typography/colors; material hover
+and keyboard focus feedback remain available.
+
+Dialog close crosses (task, crafting plan, share link, mineral and signal) and
+plan-row remove crosses share zero-padding grid centering, unit line height and
+an Arial glyph. Keep each control's existing dimensions, border, color, accessible
+name, focus behavior and action; do not compensate by moving the whole button.
 
 The seven dismantling information fields remain separate compact boxes with centered labels and values. Grid children must stretch to the cell width, not retain an overflowing intrinsic width. Values wrap completely inside their boxes, including uninterrupted English identifiers; do not shorten official manufacturer names or hide them behind an ellipsis. Box height follows the content.
 
