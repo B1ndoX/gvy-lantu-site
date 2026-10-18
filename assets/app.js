@@ -37,6 +37,9 @@ let searchInputTimer = 0;
 let summaryResizeFrame = 0;
 let mineralOpener = null;
 let mineralPreviousOverflow = "";
+let mineralSignal = null;
+let mineralSignalCloseTimer = 0;
+let mineralPointerType = "mouse";
 
 const els = {
   dataStatus: document.querySelector("#dataStatus"),
@@ -856,9 +859,9 @@ function renderMineralSystems(info) {
   const systems = mineralSystems(info);
   if (!systems.length) return "";
   if (systems.length === 1) return `<p class="mineral-system-label">${escapeHtml(systems[0].en === "unknown" ? systems[0].zh : mineralLocationLabel(systems[0]))}</p>`;
-  return `<div class="mineral-system-filter" role="group" aria-label="分布星系">
-    <button type="button" data-mineral-system="all" aria-pressed="true">全部星系</button>
-    ${systems.map(system => `<button type="button" data-mineral-system="${escapeHtml(system.en)}" aria-pressed="false">${escapeHtml(system.en === "unknown" ? system.zh : mineralLocationLabel(system))}</button>`).join("")}
+  return `<div class="mineral-system-filter" role="group" aria-label="分布星系" style="--system-count:${systems.length + 1}">
+    <button type="button" data-mineral-system="all" aria-pressed="true">全部</button>
+    ${systems.map(system => `<button type="button" data-mineral-system="${escapeHtml(system.en)}" aria-pressed="false" title="${escapeHtml(mineralLocationLabel(system))}">${escapeHtml(system.zh || system.en)}</button>`).join("")}
   </div>`;
 }
 
@@ -873,33 +876,87 @@ function renderLocationSignals(location, name, index) {
   if (!signals.length) return {button: "", panel: ""};
   const id = `mineralSignal-${index}`;
   const material = mineralLocationInfo(name)?.nameZh || name;
-  const button = `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-controls="${id}" aria-label="查看${escapeHtml(location.zh || location.en)}信号">信号 <span aria-hidden="true">⌄</span></button>`;
-  const panel = `<div class="mineral-location-signals" id="${id}" hidden>
-    ${signals.map(signal => {
-      const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "矿体";
-      const primary = signal.primaryMaterialZh || signal.primaryMaterial;
-      const relation = signal.shared ? "共通信号" : primary
-        ? `${primary}为主矿${signal.primaryMaterial !== name ? `，伴生${material}` : ""}` : "信号参考";
-      const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
-      return `<div class="mineral-signal-entry">
-        <strong>${escapeHtml(`${mode} · ${relation}`)}</strong>
-        <div class="mineral-signal-values">${signal.values.map((value, valueIndex) => `<span><small>${signal.shared ? "单矿" : paired ? `${escapeHtml(signal.clusterCounts[valueIndex])} 块` : signal.values.length === 1 ? "单矿参考" : "信号参考"}</small><b>${escapeHtml(formatNumber(value))}</b></span>`).join("")}</div>
-      </div>`;
-    }).join("")}
-    <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。" : ""}</p>
-  </div>`;
+  const multipleModes = new Set(signals.map(signal => signal.mode)).size > 1;
+  const button = `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-controls="${id}" aria-haspopup="dialog" aria-label="查看${escapeHtml(location.zh || location.en)}信号">信号</button>`;
+  const entries = signals.map(signal => {
+    const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
+    const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "";
+    const primary = signal.primaryMaterialZh || signal.primaryMaterial;
+    const relation = signal.shared ? "共通信号" : primary
+      ? `${primary}为主矿${signal.primaryMaterial !== name ? `，伴生${material}` : ""}` : "信号参考";
+    const values = signal.values.map((value, i) => {
+      const label = signal.shared ? "单矿" : paired ? `${signal.clusterCounts[i]} 块` : "单矿参考";
+      return `<span aria-label="${escapeHtml(label)}：${escapeHtml(formatNumber(value))}"><b>${escapeHtml(formatNumber(value))}</b></span>`;
+    }).join("");
+    return `<div class="mineral-signal-entry"><strong>${escapeHtml(multipleModes && mode ? `${mode} · ${relation}` : relation)}</strong>
+      <div class="mineral-signal-values">${values}</div>
+      <p class="mineral-cluster-counts">${paired ? `矿簇配置：${signal.clusterCounts.map(count => escapeHtml(count)).join(" / ")} 块` : signal.shared ? "单矿信号" : "矿簇配置未提供"}</p></div>`;
+  }).join("");
+  const panel = `<template id="${id}-content"><header class="mineral-signal-head"><div><strong id="${id}-title">${escapeHtml(mineralLocationLabel(location))}</strong><small>${escapeHtml(mineralLocationSubline(location))}</small></div><button type="button" data-close-signal aria-label="关闭信号">×</button></header>
+    <div class="mineral-signal-content" tabindex="0" role="region" aria-label="矿体信号">${entries}
+      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。" : ""}</p>
+    </div>
+  </template>`;
   return {button, panel};
 }
 
-function toggleLocationSignals(button) {
+function closeLocationSignals(restoreFocus = false) {
+  clearTimeout(mineralSignalCloseTimer);
+  if (!mineralSignal) return;
+  const {button, panel} = mineralSignal;
+  mineralSignal = null;
+  button.setAttribute("aria-expanded", "false");
+  panel.remove();
+  if (restoreFocus && button.isConnected) button.focus({preventScroll: true});
+}
+
+function mineralSignalBounds(anchor, size, bounds) {
+  const left = Math.max(bounds.left, Math.min(anchor.right - size.width, bounds.right - size.width));
+  const below = anchor.bottom + 8;
+  const top = below + size.height <= bounds.bottom ? below : Math.max(bounds.top, anchor.top - size.height - 8);
+  return {left, top: Math.min(top, bounds.bottom - size.height)};
+}
+
+function showLocationSignals(button, mode = "hover") {
+  clearTimeout(mineralSignalCloseTimer);
+  if (mineralSignal?.button === button) {
+    mineralSignal.mode = mode;
+    return;
+  }
   const overlay = button.closest(".mineral-overlay");
-  const panel = button.closest(".mineral-location-item")?.querySelector(".mineral-location-signals");
-  if (!overlay || !panel) return;
-  const expanded = button.getAttribute("aria-expanded") === "true";
-  overlay.querySelectorAll("[data-signal-trigger]").forEach(trigger => trigger.setAttribute("aria-expanded", "false"));
-  overlay.querySelectorAll(".mineral-location-signals").forEach(item => { item.hidden = true; });
-  panel.hidden = expanded;
-  button.setAttribute("aria-expanded", String(!expanded));
+  const id = button.getAttribute("aria-controls");
+  const template = overlay?.querySelector(`#${id}-content`);
+  if (!template) return;
+  closeLocationSignals();
+  overlay.insertAdjacentHTML("beforeend", `<section class="mineral-signal-popover" id="${id}" role="dialog" aria-labelledby="${id}-title">${template.innerHTML}</section>`);
+  const panel = overlay.querySelector(".mineral-signal-popover");
+  const card = overlay.querySelector(".mineral-card").getBoundingClientRect();
+  const body = overlay.querySelector(".mineral-card-body").getBoundingClientRect();
+  const footer = overlay.querySelector(".mineral-source").getBoundingClientRect();
+  const bounds = {left: Math.max(8, card.left + 8), right: Math.min(window.innerWidth - 8, card.right - 8),
+    top: Math.max(8, card.top + 8, body.top), bottom: Math.min(window.innerHeight - 8, card.bottom - 8, footer.top - 4)};
+  // Short dialogs still need room for a readable, scrollable signal layer.
+  if (bounds.bottom - bounds.top < 180) {
+    bounds.top = Math.max(8, card.top + 8);
+    bounds.bottom = Math.min(window.innerHeight - 8, card.bottom - 8);
+  }
+  panel.style.width = `${Math.min(360, bounds.right - bounds.left)}px`;
+  panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
+  const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
+  panel.style.left = `${position.left}px`;
+  panel.style.top = `${position.top}px`;
+  button.setAttribute("aria-expanded", "true");
+  mineralSignal = {button, panel, mode};
+}
+
+function mineralSignalContains(target) {
+  return !!target && !!mineralSignal && (mineralSignal.button.contains(target) || mineralSignal.panel.contains(target));
+}
+
+function deferCloseLocationSignals(target) {
+  if (!mineralSignal || mineralSignal.mode !== "hover" || mineralSignalContains(target)) return;
+  clearTimeout(mineralSignalCloseTimer);
+  mineralSignalCloseTimer = setTimeout(() => closeLocationSignals(), 140);
 }
 
 function renderMineralLocationGroups(info, name, system = "all") {
@@ -923,13 +980,12 @@ function renderMineralLocationGroups(info, name, system = "all") {
     const modes = (location.modes || []).map(mode => ({ship: "舰采", roc: "ROC", fps: "手采"}[mode] || mode));
     return `<div class="mineral-location-item" data-mineral-location="${escapeHtml(location.id || location.en)}" data-location-system="${escapeHtml(location.systemEn || "unknown")}">
       <div class="mineral-location-heading"><strong>${escapeHtml(mineralLocationLabel(location))}</strong>${signals.button}</div>
-      ${subline ? `<small class="mineral-location-path">${escapeHtml(subline)}</small>` : ""}
-      <small>${escapeHtml([type, ...modes, ...(!signals.button ? ["信号未提供"] : [])].join(" · "))}</small>
+      <small class="mineral-location-path">${escapeHtml([subline, type, ...modes, ...(!signals.button ? ["信号未提供"] : [])].filter(Boolean).join(" · "))}</small>
       ${signals.panel}
     </div>`;
   }).join("")}</div>`;
-  return `${areas.length ? `<section class="mineral-location-group"><h4>分布地区</h4>${renderEntries(areas)}</section>` : ""}
-    ${templates.length ? `<details class="mineral-location-group mineral-template-group"${!areas.length ? " open" : ""}><summary>通用区域模板 <small>（${templates.length} 项）</small></summary>${renderEntries(templates)}</details>` : ""}`;
+  return `${areas.length ? `<section class="mineral-location-group" aria-label="分布地区">${renderEntries(areas)}</section>` : ""}
+    ${templates.length ? `<details class="mineral-location-group mineral-template-group"${!areas.length ? " open" : ""}><summary>通用区域模板 <small>非精确地点 · ${templates.length} 项</small></summary>${renderEntries(templates)}</details>` : ""}`;
 }
 
 function filterMineralSystem(button) {
@@ -937,6 +993,7 @@ function filterMineralSystem(button) {
   const info = mineralLocationInfo(overlay?.dataset.mineralName);
   const system = button.dataset.mineralSystem;
   if (!info || (system !== "all" && !mineralSystems(info).some(item => item.en === system))) return;
+  closeLocationSignals();
   overlay.querySelectorAll("[data-mineral-system]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
   overlay.querySelector("[data-mineral-locations]").innerHTML = renderMineralLocationGroups(info, overlay.dataset.mineralName, system);
 }
@@ -973,9 +1030,9 @@ function renderMineralInfo(name) {
           <button type="button" class="mineral-close" data-close-mineral aria-label="关闭矿点详情">×</button>
         </header>
         <div class="mineral-card-body">
-          ${info?.hasReliableLocations && mineralMetadata.schemaVersion === 2 ? '<p class="detail-note">以下为当前版本的产出区域，不保证固定刷新。未提供可验证的地表坐标；区域模板不对应某个指定空间站。</p>' : ""}
           ${renderMineralSystems(info)}
           <div data-mineral-locations>${renderMineralLocationGroups(info, name)}</div>
+          ${info?.hasReliableLocations && mineralMetadata.schemaVersion === 2 ? '<p class="mineral-distribution-note">当前版本产出区域，不保证固定刷新；未提供可验证坐标，区域模板不对应指定空间站。</p>' : ""}
         </div>
         <footer class="mineral-source">
           <span>数据更新 ${escapeHtml(updatedAt)}</span>
@@ -998,6 +1055,7 @@ function openMineralInfo(name, opener = document.activeElement) {
 function closeMineralInfo(restoreFocus = true) {
   const overlay = els.detailPanel.querySelector(".mineral-overlay");
   if (!overlay) return;
+  closeLocationSignals();
   overlay.remove();
   document.body.style.overflow = mineralPreviousOverflow;
   if (restoreFocus && mineralOpener?.isConnected) mineralOpener.focus({preventScroll: true});
@@ -1700,10 +1758,21 @@ function bindEvents() {
     const mineral = els.detailPanel.querySelector(".mineral-overlay");
     if (mineral && event.key === "Escape") {
       event.preventDefault();
-      closeMineralInfo();
+      if (mineralSignal) closeLocationSignals(true);
+      else closeMineralInfo();
       return;
     }
     if (mineral && event.key === "Tab") {
+      if (mineralSignal?.mode === "keyboard" && document.activeElement === mineralSignal.button && !event.shiftKey) {
+        event.preventDefault();
+        mineralSignal.panel.querySelector("[data-close-signal]").focus();
+        return;
+      }
+      if (mineralSignal?.mode === "keyboard" && document.activeElement.matches("[data-close-signal]") && event.shiftKey) {
+        event.preventDefault();
+        closeLocationSignals(true);
+        return;
+      }
       const controls = [...mineral.querySelectorAll('button, summary, [href], input, select, textarea, [tabindex="0"]')]
         .filter(control => !control.disabled && control.getClientRects().length
           && (!control.closest("details:not([open])") || control.matches("summary")));
@@ -1745,7 +1814,33 @@ function bindEvents() {
     selectRecord(card.dataset.id);
   });
 
+  els.detailPanel.addEventListener("pointerdown", event => { mineralPointerType = event.pointerType; });
+  els.detailPanel.addEventListener("pointerover", event => {
+    if (event.pointerType === "touch") return;
+    if (mineralSignal?.panel.contains(event.target)) { clearTimeout(mineralSignalCloseTimer); return; }
+    const button = event.target.closest("[data-signal-trigger]");
+    if (button) showLocationSignals(button);
+  });
+  els.detailPanel.addEventListener("pointerout", event => {
+    if (mineralSignalContains(event.target)) deferCloseLocationSignals(event.relatedTarget);
+  });
+  els.detailPanel.addEventListener("focusin", event => {
+    if (mineralSignalContains(event.target)) clearTimeout(mineralSignalCloseTimer);
+  });
+  els.detailPanel.addEventListener("focusout", event => {
+    if (mineralSignal?.mode === "keyboard" && mineralSignalContains(event.target) && !mineralSignalContains(event.relatedTarget)) closeLocationSignals();
+  });
+  els.detailPanel.addEventListener("toggle", event => {
+    if (!event.target.open && mineralSignal && event.target.contains(mineralSignal.button)) closeLocationSignals();
+  }, true);
+  document.addEventListener("scroll", event => {
+    if (mineralSignal && !mineralSignal.panel.contains(event.target)) closeLocationSignals();
+  }, true);
+  window.addEventListener("resize", () => closeLocationSignals());
+
   els.detailPanel.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close-signal]")) { closeLocationSignals(true); return; }
+    if (mineralSignal && !mineralSignalContains(event.target)) closeLocationSignals();
     const qualityCapsule = event.target.closest(".quality-number");
     if (qualityCapsule) {
       const bounds = qualityCapsule.getBoundingClientRect();
@@ -1756,7 +1851,9 @@ function bindEvents() {
     }
     const signalButton = event.target.closest("[data-signal-trigger]");
     if (signalButton) {
-      toggleLocationSignals(signalButton);
+      const mode = event.detail === 0 ? "keyboard" : mineralPointerType === "touch" ? "touch" : "hover";
+      if (mode !== "hover" && mineralSignal?.button === signalButton) closeLocationSignals();
+      else showLocationSignals(signalButton, mode);
       return;
     }
     const mineralSystem = event.target.closest("[data-mineral-system]");

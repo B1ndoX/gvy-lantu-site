@@ -359,14 +359,31 @@ location identities; known system/parent paths remain visible. Named distributio
 areas are separate from generic region templates. Templates start collapsed when
 named areas exist, or expanded when they are the only available locations.
 
-Signals expand inline within their location, never in a hover portal. Clicking
-again collapses them, and opening another location closes the previous signal
-panel. Prioritize deposits whose primary mineral is the searched material, label
-secondary-material matches explicitly, and keep each actual cluster count beside
-its corresponding reading. Shared FPS/ROC values stay per-rock readings. Filtering
-clears the old expansion. The dialog captures keyboard focus, closes with Escape
-or its close/backdrop controls, and restores the opening control and prior body
-scroll setting. Closed template contents must not enter the focus loop.
+Signals use one compact, gold-bordered popover anchored to the signal button,
+without expanding or rearranging location rows. Desktop hover opens it; leaving
+both the button and popover closes it after a short pointer-transition grace
+period, even when the button still has mouse focus. Touch taps toggle it; tapping
+outside or its close control dismisses it. The rest of the location is not a
+signal trigger. Enter/Space opens it for keyboard users, Escape dismisses the
+signal layer before the mineral dialog, and Tab remains within the dialog.
+Filtering, scrolling the location list, resizing and closing the dialog remove
+the old popover. The portal is outside the scrolling card, clamped to the dialog
+and viewport, with internal scrolling for unusually long signal content.
+
+Prioritize the searched primary mineral and explicitly label secondary matches.
+Signal readings use the original gold capsules in a wrapping flex row, never
+columns generated from cluster counts. Each deposit shows its actual cluster
+configuration below, in matching order; each capsule also has an accessible
+count/value label. More readings wrap naturally without widening the popover.
+Shared FPS/ROC values stay per-rock readings in their own labeled groups.
+Explanatory signal notes appear once in smaller text at the bottom of the layer,
+not repeatedly between each group heading and its readings.
+Single-mode headings omit the mode already shown outside; only genuinely mixed
+signal modes retain their compact labels, without the redundant mineral-body suffix.
+Generic templates are marked as
+non-exact locations. The dialog restores focus and the prior body scroll setting;
+closed template contents must not enter the focus loop. This locally approved
+popover design supersedes the earlier inline-only presentation, not its data rules.
 
 Distributions and signals share a 14-day backup and atomic file replacement. `--validate-only` performs offline coverage/schema and blueprint/mining version-pair checks before building and again after workflow rebase, before push. A changed blueprint build with incompatible cached mining cannot be published. Production checks enforce the same pair and full hashes. The combined data fingerprint and existing failure/rollback behavior are retained. No new runtime API, schedule or credential is needed.
 

@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, toggleLocationSignals, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -319,10 +319,11 @@ test("signal entries distinguish shared per-rock readings and expose keyboard-ac
   const html = button + panel;
   assert.match(html,/type="button" class="mineral-signal-badge"/);
   assert.match(button,/aria-expanded="false" aria-controls="mineralSignal-3"/);
-  assert.match(panel,/id="mineralSignal-3" hidden/);
-  assert.match(panel,/>单矿<\/small><b>3,000<\/b>/);
+  assert.match(button,/aria-haspopup="dialog"/);
+  assert.match(panel,/<template id="mineralSignal-3-content">/);
+  assert.match(panel,/aria-label="单矿：3,000"><b>3,000<\/b>/);
   assert.match(html,/同类共通信号/);assert.match(html,/不按矿簇数量叠加/);
-  assert.doesNotMatch(html,/33,000|10 块|11 块|伴生|产出权重|<location>|role="tooltip"|<template/);
+  assert.doesNotMatch(html,/33,000|10 块|11 块|伴生|产出权重|<location>|role="tooltip"/);
 });
 
 test("mixed signals keep the primary signature, prioritize the searched primary, and pair actual counts", () => {
@@ -335,10 +336,13 @@ test("mixed signals keep the primary signature, prioritize the searched primary,
   const before = JSON.stringify(location);
   const {panel} = api.renderLocationSignals(location, "Copper", 0);
   assert.ok(panel.indexOf("铜为主矿") < panel.indexOf("锡为主矿，伴生铜"));
-  assert.match(panel,/>4 块<\/small><b>16,960<\/b>/);
-  assert.match(panel,/>5 块<\/small><b>21,200<\/b>/);
-  assert.match(panel,/>6 块<\/small><b>25,170<\/b>/);
+  assert.doesNotMatch(panel, /舰采矿体|舰采 ·/);
+  assert.match(panel,/aria-label="4 块：16,960"><b>16,960<\/b>/);
+  assert.match(panel,/aria-label="5 块：21,200"><b>21,200<\/b>/);
+  assert.match(panel,/aria-label="6 块：25,170"><b>25,170<\/b>/);
+  assert.match(panel,/矿簇配置：4 \/ 5 \/ 6 块/);
   assert.equal((panel.match(/混合矿体使用主矿信号/g) || []).length, 1);
+  assert.ok(panel.indexOf('class="mineral-signal-note"') > panel.lastIndexOf('class="mineral-cluster-counts"'));
   assert.equal(JSON.stringify(location), before);
   assert.equal(api.renderLocationSignals({en: "Empty"}, "Copper", 1).button, "");
 });
@@ -373,21 +377,43 @@ test("mineral location and mixed-material labels escape untrusted text", () => {
   assert.doesNotMatch(button + panel, /<location>|<Tin>|<铜>/);
 });
 
-test("only one inline signal panel opens and a second activation collapses it", () => {
+test("signal popovers fit the dialog bounds and flip above their anchor when needed", () => {
   const api = app();
-  const panels = [{hidden: true}, {hidden: true}];
-  const buttons = panels.map((panel) => ({
-    expanded: "false", getAttribute() {return this.expanded;}, setAttribute(key, value) {this.expanded = value;},
-    closest(selector) {return selector === ".mineral-overlay" ? overlay : {querySelector: () => panel};},
-  }));
-  const overlay = {querySelectorAll: selector => selector === "[data-signal-trigger]" ? buttons : panels};
-  api.toggleLocationSignals(buttons[0]);
-  assert.deepEqual(panels.map(panel => panel.hidden), [false, true]);
-  api.toggleLocationSignals(buttons[1]);
-  assert.deepEqual(panels.map(panel => panel.hidden), [true, false]);
-  assert.equal(buttons[0].expanded, "false");
-  api.toggleLocationSignals(buttons[1]);
-  assert.deepEqual(panels.map(panel => panel.hidden), [true, true]);
+  const bounds = {left: 30, right: 730, top: 100, bottom: 650};
+  const size = {width: 360, height: 200};
+  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 30, top: 152}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 740, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 370, top: 372}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 50, top: 105, bottom: 129}, {width: 360, height: 540}, bounds)), JSON.stringify({left: 30, top: 100}));
+});
+
+test("signal capsules preserve count gaps and mining modes without generating table columns", () => {
+  const api = app();
+  const {panel} = api.renderLocationSignals({en: "Test", signals: [
+    {mode: "ship", primaryMaterial: "Copper", clusterKnown: true, clusterCounts: [4, 6], values: [16000, 24000]},
+    {mode: "ship", primaryMaterial: "Tin", clusterKnown: true, clusterCounts: [5, 6], values: [21000, 25000]},
+    {mode: "fps", shared: true, clusterKnown: true, clusterCounts: [8, 10], values: [3000]},
+    {mode: "roc", shared: true, values: [1720]},
+  ]}, "Copper", 2);
+  assert.equal((panel.match(/class="mineral-signal-entry"/g) || []).length, 4);
+  assert.match(panel, /舰采 ·/);
+  assert.match(panel, /手采 ·/);
+  assert.match(panel, /ROC ·/);
+  assert.doesNotMatch(panel, /舰采矿体|手采矿体|ROC 矿体/);
+  assert.match(panel, /矿簇配置：4 \/ 6 块/);
+  assert.match(panel, /矿簇配置：5 \/ 6 块/);
+  assert.doesNotMatch(panel, /<table|<th|<td|[1238] 块|10 块|24,0000|30,000/);
+  assert.equal((panel.match(/关闭信号/g) || []).length, 1);
+});
+
+test("many cluster configurations remain ordinary capsules in their own reported order", () => {
+  const api = app();
+  const counts = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24];
+  const {panel} = api.renderLocationSignals({en: "Many", signals: [{mode: "ship", primaryMaterial: "Copper",
+    clusterKnown: true, clusterCounts: counts, values: counts.map(count => count * 4240)}]}, "Copper", 99);
+  assert.equal((panel.match(/<span aria-label=/g) || []).length, counts.length);
+  assert.match(panel, /矿簇配置：2 \/ 4 \/ 6 \/ 8 \/ 10 \/ 12 \/ 14 \/ 16 \/ 18 \/ 20 \/ 22 \/ 24 块/);
+  assert.match(panel, /aria-label="24 块：101,760"><b>101,760<\/b>/);
+  assert.doesNotMatch(panel, /<table|grid-template|colspan|—/);
 });
 
 test("every cached mineral location remains in all/system-filtered views without mutating data", () => {
