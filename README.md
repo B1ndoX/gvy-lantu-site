@@ -288,8 +288,9 @@ Open `http://127.0.0.1:8002/`.
 
 When the user requests local-only review, keep the preview available and do not
 push, open a release PR, trigger Actions or deploy. Keep preview data separate
-from release code commits; later publish the code first and rebuild data through
-the original cloud pipeline so its backup and production checks are not bypassed.
+from release code commits. For later publication, use the original workflow's
+non-publishing preparation mode, review its cloud candidate, and merge code and
+data together so backup and production checks are not bypassed.
 
 ## Build
 
@@ -458,7 +459,7 @@ Each material card reads its slot's `modifiers` from the selected LIVE SCMDB cra
 
 The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version primary item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
 
-The unpublished 4.10.2 LIVE preview has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; the preview cannot guarantee that the in-game UI displays every crafted adjustment identically.
+The validated 4.10.2 LIVE snapshot has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; these calculations cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
 Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 

@@ -2,6 +2,16 @@
 
 final result: passed
 
+## Reviewed Release Candidate, 2026-10-19
+
+- The user has now authorized review and safe deployment. Earlier local-only statements below describe historical checkpoints, not a continuing publication ban.
+- Ten code checkpoints were picked onto the production baseline; four local preview-data commits were excluded. The candidate data comes from successful cloud preparation run `39166743008`, head `81d6eb60d9fefdd99c5f6747c74faafe84c738b0`, with a verified 14-day backup matching all six original production inputs. Preparation skipped publishing and production-health steps by design.
+- Candidate revision `data-0f6906d31548ddd6`, exact stable LIVE `4.10.2-live.12913470`: 1618 blueprint records, 672 tasks, 37 materials, 36 located, 603 location associations and 531 signal associations. Recipe numeric values match the production baseline. Reviewed preview records, reward gameplay fields, item metrics and mineral contents are unchanged; six reward items gained Chinese fallback names.
+- 137 Python tests (including 29 Node checks), standalone Node checks, JavaScript syntax, YAML parsing, diff checks, build and paired-version validation pass. Full candidate rendering at 320/390/1920/2560/3440 checks all 1618 manufacturing and 1596 dismantling records without text overflow or quality-capsule sizing errors; all 672 task dialogs pass at 390px, including the newly translated reward names.
+- Pointer, keyboard and touch-enabled Chromium checks cover quality limits/fresh typing, clipboard-denied sharing, missing IDs, plan persistence/quantity scaling, independent 17/7 pools, signal opening/dismissal/filter/template/resize cleanup and focus restoration. Browser plugin/skill not available; existing Playwright used under prior explicit authorization. No dependencies were installed; physical iOS, QQ and Safari remain untested.
+- Candidate evidence: `/tmp/gvy-release-desktop.png`, `/tmp/gvy-release-mobile.png`, `/tmp/gvy-primary-quality-1920-20261019.png`, `/tmp/gvy-mineral-popover-touch-390-20261019.png`. Formal deployment acceptance is recorded in the required external handoff after merge; preparation or localhost success alone is not production proof.
+- Signal-button occlusion remains explicitly deferred. No trigger-avoidance placement or count-based table is introduced by this release.
+
 ## Latest Compacting Override
 
 - Scope: remove all visible cluster-configuration rows and let the signal layer size itself to its contents. Actual count/value pairs, shared per-rock rules, the gold capsule style and one smaller bottom note remain unchanged.
@@ -61,4 +71,4 @@ No actionable P0/P1/P2 visual or interaction findings remain within the tested s
 ## Follow-Up Polish
 
 - The mock's decorative anchor pointer and divider are not introduced into the inherited UI. The active signal border and anchored placement identify the owner without adding custom-drawn assets. This does not block the approved interaction.
-- Runtime screenshots and temporary QA harnesses live outside the site and are not production assets. The code is a local-only checkpoint awaiting user inspection, not a production release.
+- Runtime screenshots and temporary QA harnesses live outside the site and are not production assets. The local-only acceptance below is historical; publication now follows the reviewed cloud-candidate procedure above and separate formal-domain verification.
