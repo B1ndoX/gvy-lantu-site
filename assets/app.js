@@ -917,7 +917,7 @@ function renderLocationSignals(location, name, index) {
     const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
     const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "";
     const primary = signal.primaryMaterialZh || signal.primaryMaterial;
-    const relation = signal.shared ? "共通信号" : primary
+    const relation = signal.shared ? "扫描信号" : primary
       ? `${primary}为主矿${signal.primaryMaterial !== name ? `，伴生${material}` : ""}` : "信号参考";
     const values = signal.values.map((value, i) => {
       const label = signal.shared ? "单矿" : paired ? `${signal.clusterCounts[i]} 块` : "单矿参考";
@@ -928,7 +928,7 @@ function renderLocationSignals(location, name, index) {
   }).join("");
   const panel = `<template id="${id}-content"><header class="mineral-signal-head"><div><strong id="${id}-title">${escapeHtml(mineralLocationLabel(location))}</strong><small>${escapeHtml(mineralLocationSubline(location))}</small></div><button type="button" data-close-signal aria-label="关闭信号">×</button></header>
     <div class="mineral-signal-content" tabindex="0" role="region" aria-label="矿体信号">${entries}
-      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。" : ""}</p>
+      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "多种矿物信号相同，按单矿计。" : ""}</p>
     </div>
   </template>`;
   return {button, panel};
@@ -946,9 +946,20 @@ function closeLocationSignals(restoreFocus = false) {
 
 function mineralSignalBounds(anchor, size, bounds) {
   const left = Math.max(bounds.left, Math.min(anchor.right - size.width, bounds.right - size.width));
-  const below = anchor.bottom + 8;
-  const top = below + size.height <= bounds.bottom ? below : Math.max(bounds.top, anchor.top - size.height - 8);
-  return {left, top: Math.min(top, bounds.bottom - size.height)};
+  const below = Math.max(bounds.top, anchor.bottom + 8);
+  const above = Math.min(bounds.bottom, anchor.top - 8);
+  if (below + size.height <= bounds.bottom) return {left, top: below};
+  if (above - size.height >= bounds.top) return {left, top: above - size.height};
+
+  const top = Math.max(bounds.top, Math.min(anchor.top, bounds.bottom - size.height));
+  if (anchor.left - size.width - 8 >= bounds.left) return {left: anchor.left - size.width - 8, top};
+  if (anchor.right + size.width + 8 <= bounds.right) return {left: anchor.right + 8, top};
+
+  // Preserve the trigger gap even when only a shortened scrolling layer fits.
+  const belowSpace = Math.max(0, bounds.bottom - below);
+  const aboveSpace = Math.max(0, above - bounds.top);
+  const maxHeight = Math.min(size.height, Math.max(belowSpace, aboveSpace));
+  return {left, top: belowSpace >= aboveSpace ? below : above - maxHeight, maxHeight};
 }
 
 function showLocationSignals(button, mode = "hover") {
@@ -978,6 +989,7 @@ function showLocationSignals(button, mode = "hover") {
   panel.style.maxWidth = `${Math.min(360, bounds.right - bounds.left)}px`;
   panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
   const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
+  if (position.maxHeight !== undefined) panel.style.maxHeight = `${position.maxHeight}px`;
   panel.style.left = `${position.left}px`;
   panel.style.top = `${position.top}px`;
   button.setAttribute("aria-expanded", "true");
@@ -1336,7 +1348,7 @@ function recordSpecificationType(record) {
 
 function manufacturingSpecifications(record) {
   const missionTypes = recordMissionTypes(record);
-  const classGrade = recordClassGrade(record);
+  const classGrade = recordClassGrade(record, true);
   return [
     ["分类", record.category.label],
     ["类型", recordSpecificationType(record)],
@@ -1347,10 +1359,10 @@ function manufacturingSpecifications(record) {
   ];
 }
 
-function recordClassGrade(record) {
-  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
+function recordClassGrade(record, fullClass = false) {
+  const classLabel = fullClass ? recordComponentClass(record) : { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
   const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
-  return abbreviation ? `${abbreviation}${grade}` : "";
+  return classLabel ? `${classLabel}${grade}` : "";
 }
 
 function recordSummary(record, manufacturer = false) {

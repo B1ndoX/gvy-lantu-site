@@ -244,10 +244,16 @@ test("manufacturing specifications retain only approved fields, exact unit time 
   const api=app();
   const record={category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:0,componentClass:"Stealth",grade:3},tiers:[{craftTimeSeconds:570}],sources:[{missions:[{missionType:"Refueling"}]}]};
   assert.equal(JSON.stringify(api.manufacturingSpecifications(record)),JSON.stringify([
-    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐C"],["任务类型","加油"],["单件制作耗时","9 分 30 秒"]
+    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐形C"],["任务类型","加油"],["单件制作耗时","9 分 30 秒"]
   ]));
+  for (const [name,full,compact] of [["Military","军用C","军C"],["Industrial","工业C","工C"],["Civilian","民用C","民C"],["Competition","竞赛C","竞C"]]) {
+    record.stats.componentClass=name;
+    assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="等级")[1],full);
+    assert.equal(api.recordClassGrade(record),compact);
+  }
   record.stats.componentClass=null;
   assert.ok(!api.manufacturingSpecifications(record).some(([label])=>label==="等级"));
+  assert.equal(api.recordClassGrade(record,true),"");
   record.tiers[0].craftTimeSeconds=0;record.sources=[];
   assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"0 秒");
   assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="任务类型")[1],"未注明");
@@ -457,7 +463,8 @@ test("signal entries distinguish shared per-rock readings and expose keyboard-ac
   assert.match(button,/aria-haspopup="dialog"/);
   assert.match(panel,/<template id="mineralSignal-3-content">/);
   assert.match(panel,/aria-label="单矿：3,000"><b>3,000<\/b>/);
-  assert.match(html,/同类共通信号/);assert.match(html,/不按矿簇数量叠加/);
+  assert.match(html,/扫描信号/);assert.match(html,/多种矿物信号相同，按单矿计。/);
+  assert.doesNotMatch(html,/同类共通|不按矿簇数量叠加/);
   assert.doesNotMatch(html,/33,000|10 块|11 块|伴生|产出权重|<location>|role="tooltip"/);
 });
 
@@ -512,13 +519,34 @@ test("mineral location and mixed-material labels escape untrusted text", () => {
   assert.doesNotMatch(button + panel, /<location>|<Tin>|<铜>/);
 });
 
-test("signal popovers fit the dialog bounds and flip above their anchor when needed", () => {
+test("signal popovers prefer below, above, left then right without covering their trigger", () => {
   const api = app();
   const bounds = {left: 30, right: 730, top: 100, bottom: 650};
   const size = {width: 360, height: 200};
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 30, top: 152}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 740, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 370, top: 372}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 50, top: 105, bottom: 129}, {width: 360, height: 540}, bounds)), JSON.stringify({left: 30, top: 100}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 322, right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 30, top: 152}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 692, right: 730, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 370, top: 372}));
+  const shortBounds = {...bounds, bottom: 350};
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 680, right: 718, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 312, top: 150}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 40, right: 78, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 86, top: 150}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 342, right: 380, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 30, top: 232, maxHeight: 118}));
+});
+
+test("signal placement stays bounded and separated for narrow, short and large content cases", () => {
+  const api = app();
+  for (const width of [280, 350, 700, 1500]) for (const height of [160, 250, 550]) {
+    const bounds = {left: 20, right: 20 + width, top: 80, bottom: 80 + height};
+    for (const x of [20, 20 + width / 2 - 19, bounds.right - 38]) for (const y of [80, 80 + height / 2 - 12, bounds.bottom - 24]) {
+      const anchor = {left: x, right: x + 38, top: y, bottom: y + 24};
+      for (const contentHeight of [100, 200, 400]) {
+        const size = {width: Math.min(360, width), height: Math.min(contentHeight, height)};
+        const p = api.mineralSignalBounds(anchor, size, bounds);
+        const actualHeight = p.maxHeight ?? size.height;
+        assert.ok(p.left >= bounds.left && p.left + size.width <= bounds.right);
+        assert.ok(p.top >= bounds.top && p.top + actualHeight <= bounds.bottom);
+        assert.ok(p.left + size.width <= anchor.left - 8 || p.left >= anchor.right + 8 || p.top + actualHeight <= anchor.top - 8 || p.top >= anchor.bottom + 8);
+      }
+    }
+  }
 });
 
 test("signal capsules preserve count gaps and mining modes without generating table columns", () => {

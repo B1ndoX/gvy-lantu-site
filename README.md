@@ -119,8 +119,10 @@ manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
 missing-source gray and dismantling's recovery badges keep their colors.
 
 Manufacturing places one compact specification grid directly under the name:
-category, specific type, size, verified compact class/grade (only when available),
+category, specific type, size, verified full class/grade (only when available),
 mission type and single-item craft duration, with a visible `规格` heading.
+The detail grade spells out its class, such as `军用A`, `工业A` or `隐形C`;
+lists, plans and reward summaries retain compact class/grade labels.
 Above 620px keep all five/six compact fields in one row; phones use two columns,
 preserving full wrapping values and the existing muted labels,
 border and background. Remove the repeated name-tag row and bottom specification
@@ -471,8 +473,11 @@ Filtering, scrolling the location list, resizing and closing the dialog remove
 the old popover. The portal is outside the scrolling card, clamped to the dialog
 and viewport, with internal scrolling for unusually long signal content.
 Both dimensions follow the contents; 360px width and 400px height are upper
-limits, not fixed sizes. Signal-button occlusion was explicitly deferred by the
-user, so this compacting change leaves the original positioning helper intact.
+limits, not fixed sizes. The user has now reauthorized trigger avoidance:
+try below, above, left, then right within the dialog/viewport bounds, always with
+an 8px gap from the active signal button. When no side fits, limit height to the
+larger vertical space and scroll internally instead of clamping over the trigger.
+Other background location rows can still be covered by this overlay.
 
 Prioritize the searched primary mineral and explicitly label secondary matches.
 Signal readings use the original gold capsules in a wrapping flex row, never
@@ -482,6 +487,9 @@ capsule's accessible label. More readings wrap naturally without widening the po
 Shared FPS/ROC values stay per-rock readings in their own labeled groups.
 Explanatory signal notes appear once in smaller text at the bottom of the layer,
 not repeatedly between each group heading and its readings.
+Shared FPS/ROC headings say `扫描信号`, with the shorter note
+`多种矿物信号相同，按单矿计。` This means a reading cannot identify one mineral
+uniquely, not that all those minerals necessarily spawn together at this location.
 Single-mode headings omit the mode already shown outside; only genuinely mixed
 signal modes retain their compact labels, without the redundant mineral-body suffix.
 Generic templates are marked as
