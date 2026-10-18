@@ -352,6 +352,22 @@ This automatic policy supersedes the former manual-only signal rule. The old `re
 
 Mixed deposits show their primary mineral's signal, not the searched secondary material's global signature. Actual possible cluster counts are preserved. FPS/ROC signatures are shared per-rock readings and are not multiplied into invented cluster totals. Named areas retain system/parent context; generic Lagrange or asteroid templates are explicitly regions, never expanded into named stations. The export does not provide validated surface coordinates, so none are invented.
 
+The mineral dialog retains its existing styling and content-driven height, capped
+by the viewport. Location lists use two columns above 620 px and one column on
+phones. Compact star-system controls filter exact reported systems without merging
+location identities; known system/parent paths remain visible. Named distribution
+areas are separate from generic region templates. Templates start collapsed when
+named areas exist, or expanded when they are the only available locations.
+
+Signals expand inline within their location, never in a hover portal. Clicking
+again collapses them, and opening another location closes the previous signal
+panel. Prioritize deposits whose primary mineral is the searched material, label
+secondary-material matches explicitly, and keep each actual cluster count beside
+its corresponding reading. Shared FPS/ROC values stay per-rock readings. Filtering
+clears the old expansion. The dialog captures keyboard focus, closes with Escape
+or its close/backdrop controls, and restores the opening control and prior body
+scroll setting. Closed template contents must not enter the focus loop.
+
 Distributions and signals share a 14-day backup and atomic file replacement. `--validate-only` performs offline coverage/schema and blueprint/mining version-pair checks before building and again after workflow rebase, before push. A changed blueprint build with incompatible cached mining cannot be published. Production checks enforce the same pair and full hashes. The combined data fingerprint and existing failure/rollback behavior are retained. No new runtime API, schedule or credential is needed.
 
 ## Long-Term Unattended Operation

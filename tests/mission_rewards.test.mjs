@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignalTooltip, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, toggleLocationSignals, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -315,8 +315,95 @@ test("share URLs are bounded to the current origin and contain only blueprint an
 
 test("signal entries distinguish shared per-rock readings and expose keyboard-accessible buttons", () => {
   const api=app();
-  const html=api.renderLocationSignalTooltip({en:"<location>",signals:[{mode:"fps",primaryMaterialZh:"宝石",shared:true,base:3000,values:[3000],clusterKnown:true,clusterCounts:[10,11]}]});
+  const {button, panel}=api.renderLocationSignals({en:"<location>",signals:[{mode:"fps",primaryMaterialZh:"宝石",shared:true,base:3000,values:[3000],clusterKnown:true,clusterCounts:[10,11]}]}, "Hadanite", 3);
+  const html = button + panel;
   assert.match(html,/type="button" class="mineral-signal-badge"/);
+  assert.match(button,/aria-expanded="false" aria-controls="mineralSignal-3"/);
+  assert.match(panel,/id="mineralSignal-3" hidden/);
+  assert.match(panel,/>单矿<\/small><b>3,000<\/b>/);
   assert.match(html,/同类共通信号/);assert.match(html,/不按矿簇数量叠加/);
-  assert.match(html,/>3,000<\/b>/);assert.doesNotMatch(html,/33,000|产出权重|<location>/);
+  assert.doesNotMatch(html,/33,000|10 块|11 块|伴生|产出权重|<location>|role="tooltip"|<template/);
+});
+
+test("mixed signals keep the primary signature, prioritize the searched primary, and pair actual counts", () => {
+  const api = app();
+  api.state.mineralLocations.materials.Copper = {nameZh: "铜"};
+  const location = {en: "Pyro I", signals: [
+    {mode: "ship", primaryMaterial: "Tin", primaryMaterialZh: "锡", base: 4195, clusterKnown: true, clusterCounts: [4, 6], values: [16780, 25170]},
+    {mode: "ship", primaryMaterial: "Copper", primaryMaterialZh: "铜", base: 4240, clusterKnown: true, clusterCounts: [4, 5, 6], values: [16960, 21200, 25440]},
+  ]};
+  const before = JSON.stringify(location);
+  const {panel} = api.renderLocationSignals(location, "Copper", 0);
+  assert.ok(panel.indexOf("铜为主矿") < panel.indexOf("锡为主矿，伴生铜"));
+  assert.match(panel,/>4 块<\/small><b>16,960<\/b>/);
+  assert.match(panel,/>5 块<\/small><b>21,200<\/b>/);
+  assert.match(panel,/>6 块<\/small><b>25,170<\/b>/);
+  assert.equal((panel.match(/混合矿体使用主矿信号/g) || []).length, 1);
+  assert.equal(JSON.stringify(location), before);
+  assert.equal(api.renderLocationSignals({en: "Empty"}, "Copper", 1).button, "");
+});
+
+test("mineral filters preserve exact system and parent context and separate generic templates", () => {
+  const api = app();
+  const info = {hasReliableLocations: true, locations: {
+    starSystems: [{en: "Pyro", zh: "派罗"}],
+    planets: [{en: "Pyro I", systemEn: "Pyro", precision: "area", locationType: "planet"}],
+    moons: [{en: "Arial", zh: "艾瑞尔", systemEn: "Stanton", systemZh: "斯坦顿", parentEn: "Hurston", parentZh: "赫斯顿", precision: "area"}],
+    lagrangePoints: [{en: "Lagrange B", systemEn: "Stanton", precision: "template"}],
+  }};
+  assert.deepEqual(Array.from(api.mineralSystems(info), system => system.en), ["Pyro", "Stanton"]);
+  assert.match(api.renderMineralSystems(info), /data-mineral-system="all" aria-pressed="true"/);
+  const pyro = api.renderMineralLocationGroups(info, "Copper", "Pyro");
+  assert.match(pyro, /Pyro I/); assert.doesNotMatch(pyro, /Arial|Lagrange B|通用区域模板/);
+  const stanton = api.renderMineralLocationGroups(info, "Copper", "Stanton");
+  assert.match(stanton, /斯坦顿 \(Stanton\) › 赫斯顿 \(Hurston\)/);
+  assert.match(stanton, /<details class="mineral-location-group mineral-template-group"><summary>通用区域模板/);
+  assert.doesNotMatch(stanton, /Pyro I|HUR-L1/);
+  const onlyTemplates = api.renderMineralLocationGroups({hasReliableLocations: true, locations: {lagrangePoints: info.locations.lagrangePoints}}, "Copper");
+  assert.match(onlyTemplates, /mineral-template-group" open/);
+  assert.match(api.renderMineralLocationGroups({hasReliableLocations: true, locations: {starSystems: [{en: "Pyro"}]}}, "Copper"), /仅提供星系范围/);
+});
+
+test("mineral location and mixed-material labels escape untrusted text", () => {
+  const api = app();
+  api.state.mineralLocations.materials["<material>"] = {nameZh: "<铜>"};
+  const {button, panel} = api.renderLocationSignals({en: '<location>"', signals: [{mode: "ship", primaryMaterial: "<Tin>", values: [100]}]}, "<material>", 9);
+  assert.match(button, /&lt;location&gt;&quot;/);
+  assert.match(panel, /&lt;Tin&gt;为主矿，伴生&lt;铜&gt;/);
+  assert.doesNotMatch(button + panel, /<location>|<Tin>|<铜>/);
+});
+
+test("only one inline signal panel opens and a second activation collapses it", () => {
+  const api = app();
+  const panels = [{hidden: true}, {hidden: true}];
+  const buttons = panels.map((panel) => ({
+    expanded: "false", getAttribute() {return this.expanded;}, setAttribute(key, value) {this.expanded = value;},
+    closest(selector) {return selector === ".mineral-overlay" ? overlay : {querySelector: () => panel};},
+  }));
+  const overlay = {querySelectorAll: selector => selector === "[data-signal-trigger]" ? buttons : panels};
+  api.toggleLocationSignals(buttons[0]);
+  assert.deepEqual(panels.map(panel => panel.hidden), [false, true]);
+  api.toggleLocationSignals(buttons[1]);
+  assert.deepEqual(panels.map(panel => panel.hidden), [true, false]);
+  assert.equal(buttons[0].expanded, "false");
+  api.toggleLocationSignals(buttons[1]);
+  assert.deepEqual(panels.map(panel => panel.hidden), [true, true]);
+});
+
+test("every cached mineral location remains in all/system-filtered views without mutating data", () => {
+  const api = app();
+  const payload = JSON.parse(readFileSync(new URL("../data/mineral-locations.json", import.meta.url), "utf8"));
+  api.state.mineralLocations = payload;
+  const before = JSON.stringify(payload);
+  for (const [name, info] of Object.entries(payload.materials)) {
+    const entries = api.mineralLocationEntries(info);
+    const all = api.renderMineralLocationGroups(info, name);
+    assert.equal((all.match(/data-mineral-location=/g) || []).length, entries.length, name);
+    for (const system of api.mineralSystems(info)) {
+      const filtered = api.renderMineralLocationGroups(info, name, system.en);
+      assert.equal((filtered.match(/data-mineral-location=/g) || []).length,
+        entries.filter(({location}) => (location.systemEn || "unknown") === system.en).length, `${name}: ${system.en}`);
+    }
+  }
+  assert.equal(JSON.stringify(payload), before);
 });
