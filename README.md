@@ -83,6 +83,49 @@ Manufacturing specification values, detail titles and recovered-material names a
 
 When names or layout rules change, inspect actual text bounds inside each box, not only the page's total scroll width: an overflowing centered value may leave the page width unchanged. Include long manufacturers, English specification identifiers and large quality values at 320/390 px, responsive breakpoints, 16:9 desktop, 2K and ultrawide.
 
+## Mission Rewards
+
+Each acquisition task shows its reported star system(s). Missing systems are
+explicitly marked; template locations are not replaced with guessed places.
+Clicking a task opens its blueprint reward pools and any recorded physical item
+rewards, including quantities and owner-only/delivery conditions. Blueprint rows
+open the corresponding blueprint without changing saved favorites.
+
+Acquisition tasks share one compact list across source pools, deduplicated by
+contract ID without merging distinct same-title tasks. Show eight rows initially
+and use the native disclosure to expand all remaining tasks or collapse them.
+Clickable task names are white without underlines, with an arrow and visible
+hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
+reward dialog still keeps its independent pools separate.
+
+Reward lookup uses the exact contract ID and its explicit pool IDs, not a task
+name, faction or a transitive shared-blueprint association. Same-title tasks in
+different systems remain separate. Following SCMDB's mission reward display,
+each pool lists compact candidate rows with an `N 选 1` draw count, trigger and
+pool trigger probability. Multiple pools draw independently; a completed pool
+stops awarding blueprints. Pool membership is not a single-completion award
+quantity, and a 100% pool trigger is not a 100% drop rate for each member. Do not
+calculate individual odds from entry count or weights alone.
+
+The dialog follows its content height up to the viewport cap, with a scrollable
+body and a non-overlapping footer. Its width follows content within responsive
+limits: candidate lists use two columns above 620 px and one column on phones.
+Chinese/English star systems and displayed task titles participate in the
+existing full-text search; this is not a dedicated star-system filter and does
+not describe a manufacturing site or mineral location. Opening a reward from
+`我的蓝图` exits the favorites-only view without changing any saved favorites.
+
+`missionRewards` is generated and validated with the same exact-LIVE snapshot.
+A missing/outdated reward schema triggers a full rebuild through the existing
+refresh entry point, with its validation, 14-day backup and atomic replacement.
+After that migration, new LIVE/localization changes and maintenance/forced
+rebuilds update rewards normally. An unchanged six-hour check does not independently
+refetch the same-build mission table. No extra runtime API or schedule is added.
+Missing/empty referenced pools and malformed system arrays fail validation.
+Before replacement, task, referenced-pool, task-linked-blueprint and physical-item
+coverage are compared with the previous cache; a drop exceeding 20% aborts the
+candidate and keeps the previous data for investigation.
+
 ## Local Preview
 
 ```bash

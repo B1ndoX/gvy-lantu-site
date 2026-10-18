@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
+import math
 import sys
 import time
 import urllib.request
@@ -15,6 +17,7 @@ from scmdb_versions import select_latest_live_version
 
 
 BASE_URL = "https://scmdb.net/data"
+MISSION_REWARDS_SCHEMA = 1
 
 
 def load_json(path: Path) -> Any:
@@ -172,6 +175,13 @@ def faction_name(factions: dict[str, Any], guid: str | None) -> str:
     return clean(faction.get("displayName")) or clean(faction.get("name"))
 
 
+def mission_systems(contract: dict[str, Any]) -> list[str]:
+    systems = contract.get("systems") or contract.get("availableSystems") or []
+    if not isinstance(systems, list) or any(not isinstance(name, str) or not name.strip() for name in systems):
+        raise RuntimeError("invalid mission star system list")
+    return systems
+
+
 def build_source_maps(mission_data: dict[str, Any]) -> tuple[dict[str, list[dict[str, Any]]], dict[str, dict[str, Any]]]:
     blueprint_pools = mission_data.get("blueprintPools") or {}
     factions = mission_data.get("factions") or {}
@@ -184,13 +194,14 @@ def build_source_maps(mission_data: dict[str, Any]) -> tuple[dict[str, list[dict
                 continue
             pool_to_contracts.setdefault(pool_id, []).append(
                 {
+                    "id": clean(contract.get("id")),
                     "title": clean(contract.get("title"), clean(contract.get("debugName"), "Unknown mission")),
                     "category": clean(contract.get("category"), "mission"),
                     "faction": faction_name(factions, contract.get("factionGuid")),
                     "trigger": clean(reward.get("trigger"), "complete"),
                     "chance": reward.get("chance"),
                     "rewardUEC": contract.get("rewardUEC"),
-                    "systems": contract.get("systems") or contract.get("availableSystems") or [],
+                    "systems": mission_systems(contract),
                     "debugName": clean(contract.get("debugName")),
                 }
             )
@@ -217,6 +228,94 @@ def build_source_maps(mission_data: dict[str, Any]) -> tuple[dict[str, list[dict
     return by_record, pool_meta
 
 
+def reward_items(reward: dict[str, Any]) -> list[dict[str, Any]]:
+    if reward.get("type") == "weighted_choice":
+        return [item for group in reward.get("groups") or [] for item in group.get("items") or []]
+    return [reward] if reward.get("name") else []
+
+
+def validate_probability(value: Any) -> None:
+    if value is not None and (isinstance(value, bool) or not isinstance(value, (int, float))
+                              or not math.isfinite(value) or not 0 <= value <= 1):
+        raise RuntimeError("invalid mission reward probability")
+
+
+def validate_item_rewards(items: Any) -> None:
+    if not isinstance(items, list):
+        raise RuntimeError("invalid mission item reward list")
+    for reward in items:
+        if not isinstance(reward, dict) or reward.get("type") not in (None, "weighted_choice"):
+            raise RuntimeError("unsupported mission item reward structure")
+        if reward.get("type") == "weighted_choice":
+            groups = reward.get("groups")
+            if not isinstance(groups, list) or not groups:
+                raise RuntimeError("invalid mission reward choice groups")
+            for group in groups:
+                if not isinstance(group, dict) or not isinstance(group.get("items"), list) or not group["items"]:
+                    raise RuntimeError("invalid mission reward choice items")
+                validate_probability(group.get("probability"))
+        if not reward_items(reward):
+            raise RuntimeError("mission item reward has no items")
+        for item in reward_items(reward):
+            amount = item.get("amount") if isinstance(item, dict) else None
+            if not isinstance(item, dict) or not isinstance(item.get("name"), str) or not item["name"].strip() or (amount is not None and (
+                isinstance(amount, bool) or not isinstance(amount, (int, float))
+                or not math.isfinite(amount) or amount < 0
+            )):
+                raise RuntimeError("invalid mission item reward name/amount")
+
+
+def build_mission_rewards(mission_data: dict[str, Any]) -> dict[str, Any]:
+    missions = {}
+    systems = set()
+    for contract in mission_data.get("contracts") or []:
+        rewards = contract.get("blueprintRewards") or []
+        if not rewards:
+            continue
+        mission_id = clean(contract.get("id"))
+        if not mission_id or mission_id in missions:
+            raise RuntimeError("mission rewards require unique contract IDs")
+        items = copy.deepcopy(contract.get("itemRewards") or [])
+        validate_item_rewards(items)
+        for reward in rewards:
+            pool = (mission_data.get("blueprintPools") or {}).get(reward.get("blueprintPool"))
+            if not pool or not pool.get("blueprints"):
+                raise RuntimeError("mission reward references a missing or empty blueprint pool")
+        missions[mission_id] = {
+            "pools": [{"id": reward["blueprintPool"], "chance": reward.get("chance"),
+                       "trigger": clean(reward.get("trigger"), "complete")}
+                      for reward in rewards if reward.get("blueprintPool")],
+            "items": items,
+        }
+        systems.update(mission_systems(contract))
+    return {"schemaVersion": MISSION_REWARDS_SCHEMA, "version": mission_data.get("version"),
+            "missions": missions, "systems": [{"name": name} for name in sorted(systems)]}
+
+
+def validate_mission_rewards(index: dict[str, Any]) -> None:
+    rewards = index.get("missionRewards") or {}
+    if rewards.get("schemaVersion") != MISSION_REWARDS_SCHEMA or rewards.get("version") != index.get("version"):
+        raise RuntimeError("mission rewards schema/version does not match blueprint index")
+    missions = rewards.get("missions")
+    if not isinstance(missions, dict):
+        raise RuntimeError("mission rewards are missing the contract map")
+    for mission_id, detail in missions.items():
+        if not mission_id or not isinstance(detail, dict) or not isinstance(detail.get("pools"), list) or not detail["pools"]:
+            raise RuntimeError("invalid mission reward contract/pools")
+        for pool in detail["pools"]:
+            if not isinstance(pool, dict) or not pool.get("id"):
+                raise RuntimeError("invalid mission reward pool ID")
+            validate_probability(pool.get("chance"))
+        validate_item_rewards(detail.get("items"))
+    for record in index.get("records") or []:
+        for source in record.get("sources") or []:
+            for mission in source.get("missions") or []:
+                mission_systems(mission)
+                detail = missions.get(mission.get("id"))
+                if not detail or source.get("poolId") not in {p.get("id") for p in detail.get("pools") or []}:
+                    raise RuntimeError("mission reward contract/pool reference is missing")
+
+
 def dedupe_sources(sources: list[dict[str, Any]]) -> list[dict[str, Any]]:
     seen = set()
     unique = []
@@ -230,6 +329,9 @@ def dedupe_sources(sources: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_data: dict[str, Any]) -> dict[str, Any]:
+    version = mission_data.get("version") or crafting.get("version") or items_data.get("version")
+    mission_rewards = build_mission_rewards(mission_data)
+    mission_rewards["version"] = version
     items = items_data.get("items") or []
     item_by_entity = {item.get("entityClass"): item for item in items if item.get("entityClass")}
     item_by_name = {item.get("name"): item for item in items if item.get("name")}
@@ -310,7 +412,8 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
     records.sort(key=lambda record: (record["category"]["id"], record["name"].lower()))
     return {
         "generatedFrom": "SCMDB public data",
-        "version": mission_data.get("version") or crafting.get("version") or items_data.get("version"),
+        "version": version,
+        "missionRewards": mission_rewards,
         "counts": {
             "blueprints": len(records),
             "categories": category_counts,

@@ -19,6 +19,8 @@ const state = {
   qualityValues: {},
   sort: "relevance",
   visibleResults: 0,
+  missions: new Map(),
+  rewardPools: new Map(),
 };
 
 const DATA_VERSION = "__BUILD_DATA_VERSION__";
@@ -755,7 +757,132 @@ function closeMineralInfo() {
 }
 
 function missionTitle(mission) {
-  return preferZh(mission.titleZh, mission.title);
+  return preferZh(mission.titleZh, mission.title).replace(/\[LOCATION\]/gi, "[地点]");
+}
+
+function initMissionRewards() {
+  state.missions = new Map();
+  state.rewardPools = new Map();
+  for (const record of state.records) {
+    for (const source of record.sources || []) {
+      if (!state.rewardPools.has(source.poolId)) state.rewardPools.set(source.poolId, new Map());
+      state.rewardPools.get(source.poolId).set(record.id, record);
+      for (const mission of source.missions || []) {
+        if (mission.id) state.missions.set(mission.id, mission);
+      }
+    }
+  }
+}
+
+function missionSystemLabels(mission) {
+  const systems = [...new Set((mission.systems || []).filter((name) => typeof name === "string" && name.trim()))];
+  return systems.map((name) => {
+    const localized = state.data.missionRewards?.systems?.find((system) => system.name === name)?.nameZh;
+    const location = Object.values(state.mineralLocations.materials || {})
+      .flatMap((material) => material.locations?.starSystems || [])
+      .find((system) => system.en === name);
+    const zh = localized || location?.zh;
+    return zh && zh !== name ? `${zh} (${name})` : name;
+  }).join(" / ") || "星系未注明";
+}
+
+function renderMissionItems(rewards) {
+  if (!rewards.length) return '<p class="mission-empty">暂无已记录的物品奖励</p>';
+  return rewards.map((reward) => {
+    const groups = reward.type === "weighted_choice" ? reward.groups || [] : [{ items: [reward] }];
+    const conditions = [reward.awardOnlyToMissionOwner ? "仅任务拥有者" : "",
+      reward.sendToPlayerHomeLocation ? "送至家乡仓库" : ""].filter(Boolean);
+    return groups.map((group, index) => `
+      <div class="mission-item-group">
+        ${reward.type === "weighted_choice" ? `<p class="mission-reward-meta">备选物品组合 ${index + 1}（按权重选择）</p>` : ""}
+        ${(group.items || []).map((item) => `<div class="mission-item-row">
+          <strong>${escapeHtml(preferZh(item.nameZh, item.name))}</strong>
+          <span>${item.amount != null ? `×${escapeHtml(formatNumber(item.amount))}` : "数量未注明"}</span>
+        </div>`).join("")}
+        ${conditions.length ? `<p class="mission-reward-meta">${escapeHtml(conditions.join(" · "))}</p>` : ""}
+      </div>`).join("");
+  }).join("");
+}
+
+function renderMissionPools(rewardPools) {
+  return rewardPools.map((pool, index) => {
+    const records = [...(state.rewardPools.get(pool.id)?.values() || [])]
+      .sort((left, right) => recordName(left).localeCompare(recordName(right), "zh-CN"));
+    const chance = formatChance(pool.chance);
+    const trigger = { complete: "完成任务", fail: "任务失败", abandon: "放弃任务" }[pool.trigger] || pool.trigger;
+    const types = [...new Set(records.map((record) => record.category.id === "ship_component"
+      ? recordComponentType(record) : record.category.label))];
+    return `<section class="mission-pool">
+      <header class="mission-pool-head">
+        <div><h4>蓝图奖励池 ${index + 1}</h4><small>${escapeHtml(types.join(" / "))}</small></div>
+        <div class="mission-pool-draw"><strong>${records.length ? `${formatNumber(records.length)} 选 1` : "候选蓝图待补齐"}</strong><small>${escapeHtml([trigger, chance ? `池触发概率 ${chance}` : "池触发概率未注明"].filter(Boolean).join(" · "))}</small></div>
+      </header>
+      <div class="mission-blueprint-list">${records.map((record) => `
+        <button type="button" class="mission-blueprint-row" data-mission-blueprint="${escapeHtml(record.id)}" title="查看${escapeHtml(recordName(record))}蓝图">
+          <span><strong>${escapeHtml(recordName(record))}</strong><small>${escapeHtml([record.category.label, record.category.id === "ship_component" ? recordComponentType(record) : recordSubtype(record), sizeLabel(record.stats.size)].filter(Boolean).join(" · "))}</small></span>
+          <span class="mission-reward-marker">${record.id === state.selectedId ? "当前蓝图" : "查看蓝图"}<i aria-hidden="true">›</i></span>
+        </button>`).join("") || '<p class="mission-empty">暂无已收录的蓝图</p>'}</div>
+    </section>`;
+  }).join("");
+}
+
+function openMissionInfo(id, opener) {
+  const mission = state.missions.get(id);
+  const rewards = state.data.missionRewards?.missions?.[id];
+  if (!mission || !rewards) return;
+  if (document.querySelector(".mission-dialog")) return;
+  const previousOverflow = document.body.style.overflow;
+  document.body.insertAdjacentHTML("beforeend", `
+    <dialog class="mission-dialog" aria-labelledby="missionDialogTitle">
+      <header class="mission-dialog-head">
+        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${escapeHtml(missionTitle(mission))}</h2>
+          <p>${escapeHtml(missionSystemLabels(mission))}</p>
+          <small>${escapeHtml([missionFaction(mission), mission.rewardUEC != null ? `${formatNumber(mission.rewardUEC)} aUEC` : ""].filter(Boolean).join(" · "))}</small>
+        </div>
+        <button type="button" class="mission-close" data-close-mission aria-label="关闭任务奖励" autofocus>×</button>
+      </header>
+      <div class="mission-dialog-body">
+        <section class="mission-reward-section">
+          <h3>蓝图奖励</h3>
+          <p class="mission-draw-note">本任务含 ${formatNumber(rewards.pools.length)} 个蓝图奖励池。各池独立按对应条件及触发概率发放 1 张蓝图，已集齐的池不再发放。以下为候选蓝图，并非一次全部获得。</p>
+          ${renderMissionPools(rewards.pools || [])}
+          <p class="mission-reward-meta">池触发概率不等于单张蓝图的掉率；实际发放以游戏任务和完成条件为准。</p>
+        </section>
+        <section class="mission-reward-section"><h3>物品奖励</h3><p class="mission-reward-note">来自当前任务配置，实际发放以游戏任务及完成条件为准。</p>${renderMissionItems(rewards.items || [])}</section>
+      </div>
+      <footer class="mission-dialog-footer"><span>${escapeHtml(formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"))}</span><span>制作：Ayuan</span></footer>
+    </dialog>`);
+  const dialog = document.querySelector(".mission-dialog");
+  document.body.style.overflow = "hidden";
+  dialog.addEventListener("close", () => {
+    document.body.style.overflow = previousOverflow;
+    dialog.remove();
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  }, { once: true });
+  dialog.addEventListener("click", (event) => {
+    const target = event.target.closest("[data-mission-blueprint]");
+    if (target) {
+      const record = state.records.find((record) => record.id === target.dataset.missionBlueprint);
+      if (!record) return;
+      dialog.close();
+      window.clearTimeout(searchInputTimer);
+      state.query = recordName(record);
+      els.searchInput.value = state.query;
+      state.favoritesOnly = false;
+      resetFilters();
+      selectRecord(target.dataset.missionBlueprint);
+      const heading = els.detailPanel.querySelector("h2");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus({ preventScroll: true });
+      if (window.innerWidth <= 1100) els.detailPanel.scrollIntoView({ block: "start" });
+      return;
+    }
+    const rect = dialog.getBoundingClientRect();
+    const outside = event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right
+      || event.clientY < rect.top || event.clientY > rect.bottom);
+    if (event.target.closest("[data-close-mission]") || outside) dialog.close();
+  });
+  dialog.showModal();
 }
 
 function missionFaction(mission) {
@@ -801,6 +928,8 @@ function recordSearchText(record) {
       mission.factionZh,
       mission.category,
       mission.categoryZh,
+      missionTitle(mission),
+      missionSystemLabels(mission),
       ...(mission.systems || []),
     ]),
   ]);
@@ -1232,6 +1361,11 @@ function bindEvents() {
   });
 
   els.detailPanel.addEventListener("click", (event) => {
+    const mission = event.target.closest("[data-mission-id]");
+    if (mission) {
+      openMissionInfo(mission.dataset.missionId, mission);
+      return;
+    }
     const close = event.target.closest("[data-close-mineral]");
     if (close || event.target.classList.contains("mineral-overlay")) {
       closeMineralInfo();
@@ -1538,9 +1672,20 @@ function renderDetail() {
   `;
 }
 
+function recordMissions(record) {
+  const missions = new Map();
+  for (const source of record.sources || []) {
+    for (const mission of source.missions || []) {
+      const key = mission.id || JSON.stringify([mission.debugName, mission.title, mission.faction, mission.rewardUEC, mission.systems]);
+      if (!missions.has(key)) missions.set(key, mission);
+    }
+  }
+  return [...missions.values()];
+}
+
 function renderSources(record) {
-  const sourcesWithMissions = (record.sources || []).filter((source) => (source.missions || []).length);
-  if (!sourcesWithMissions.length) {
+  const missions = recordMissions(record);
+  if (!missions.length) {
     return `
       <div class="source-item">
         <strong>暂无任务来源</strong>
@@ -1549,28 +1694,23 @@ function renderSources(record) {
     `;
   }
 
-  return sourcesWithMissions
-    .map((source) => {
-      const missions = source.missions || [];
-      const missionHtml = `<ul class="source-missions">${missions
-            .map((mission) => {
-              const chance = formatChance(mission.chance);
-              const reward = mission.rewardUEC ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
-              const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
-              return `<li>${escapeHtml(missionTitle(mission))}${faction}${reward}${chance ? ` · ${chance}` : ""}</li>`;
-            })
-            .join("")}</ul>`;
-      return `
-        <div class="source-item">
-          <strong>任务来源</strong>
-          <span class="source-line">
-            <span>任务 ${formatNumber(source.missionCount || 0)}</span>
-          </span>
-          ${missionHtml}
-        </div>
-      `;
-    })
-    .join("");
+  const rows = missions.map((mission) => {
+    const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
+    const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
+    const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
+    const content = `<strong>${escapeHtml(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
+  });
+  return `
+    <div class="source-item">
+      <strong>任务来源</strong>
+      <span class="source-line"><span>任务 ${formatNumber(missions.length)}</span></span>
+      <ul class="source-missions">${rows.slice(0, 8).join("")}</ul>
+      ${rows.length > 8 ? `<details class="source-more">
+        <summary><span class="source-expand-label">展开全部 ${formatNumber(missions.length)} 条任务</span><span class="source-collapse-label">收起更多任务</span></summary>
+        <ul class="source-missions">${rows.slice(8).join("")}</ul>
+      </details>` : ""}
+    </div>`;
 }
 
 async function fetchJson(path) {
@@ -1605,6 +1745,7 @@ async function boot() {
       state.mineralLocations = mineralData;
     }
     state.records = state.data.records.map(prepareRecord);
+    initMissionRewards();
     els.versionBadge.textContent = state.data.version;
     els.dataUpdatedBadge.textContent = formatDataUpdatedAt(state.data.dataUpdatedAt);
     els.dataStatus.setAttribute(

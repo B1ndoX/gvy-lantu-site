@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any
 
 from scmdb_versions import is_live_version, select_latest_live_version, version_sort_key
+from build_data import reward_items, validate_mission_rewards
 from official_localization import SNAPSHOT, refresh_snapshot
 
 
@@ -201,7 +202,36 @@ def compact_public_index(index_path: Path) -> int:
     return removed
 
 
-def validate_index(path: Path, expected_version: str) -> None:
+def mission_coverage(index: dict[str, Any]) -> dict[str, int]:
+    missions = set()
+    pools = set()
+    records_with_missions = 0
+    for record in index.get("records") or []:
+        has_missions = False
+        for source in record.get("sources") or []:
+            for mission in source.get("missions") or []:
+                identity = mission.get("id") or json.dumps(
+                    [mission.get(key) for key in ("debugName", "title", "faction", "rewardUEC", "systems")],
+                    sort_keys=True,
+                )
+                missions.add(identity)
+                pools.add(source.get("poolId"))
+                has_missions = True
+        records_with_missions += has_missions
+    rewards = (index.get("missionRewards") or {}).get("missions") or {}
+    return {"contracts": len(missions), "pools": len(pools), "blueprints": records_with_missions,
+            "itemRewards": sum(len(reward_items(reward)) for detail in rewards.values()
+                               for reward in detail.get("items") or [])}
+
+
+def validate_mission_coverage(index: dict[str, Any], previous: dict[str, Any]) -> None:
+    current_counts = mission_coverage(index)
+    for label, old_count in mission_coverage(previous).items():
+        if old_count and current_counts[label] < old_count * 0.8:
+            raise RuntimeError(f"mission reward {label} coverage dropped unexpectedly: {old_count} -> {current_counts[label]}")
+
+
+def validate_index(path: Path, expected_version: str, previous: dict[str, Any] | None = None) -> None:
     index = load_json(path, {})
     records = index.get("records") or []
     counts = index.get("counts") or {}
@@ -240,6 +270,9 @@ def validate_index(path: Path, expected_version: str) -> None:
         for record in records
     ):
         raise RuntimeError("blueprint source counts do not match source missions")
+    validate_mission_rewards(index)
+    if previous is not None:
+        validate_mission_coverage(index, previous)
     if int(localization.get("starCitizenLocalizationCount") or 0) < MIN_OFFICIAL_LOCALIZATION_COUNT:
         raise RuntimeError("official Star Citizen localization coverage is unexpectedly low")
     quality_effects = index.get("qualityEffects")
@@ -304,6 +337,11 @@ def refresh(force: bool) -> bool:
     official_snapshot, snapshot_changed = refresh_snapshot(latest_version)
     applied_hash = ((current.get("localization") or {}).get("nasOfficial") or {}).get("sourceSha256")
     force = force or snapshot_changed or applied_hash != official_snapshot["metadata"]["sourceSha256"]
+    try:
+        validate_mission_rewards(current)
+    except RuntimeError:
+        print("Mission reward schema is missing or outdated; rebuilding the selected LIVE snapshot.")
+        force = True
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
         if not quality_enrichment_is_current(current, current_version):
@@ -313,7 +351,7 @@ def refresh(force: bool) -> bool:
                 if enrich_quality_stats(candidate):
                     completed_at = datetime.now(timezone.utc)
                     annotate_refresh_metadata(candidate, current_version, completed_at)
-                    validate_index(candidate, current_version)
+                    validate_index(candidate, current_version, previous=current)
                     backup_current_data(current_version, completed_at)
                     replace_if_exists(candidate, DATA_DIR / "blueprint-index.json")
                     print("SCMDB version unchanged; added version-matched quality base stats.")
@@ -415,7 +453,7 @@ def refresh(force: bool) -> bool:
         compact_public_index(index_path)
         completed_at = datetime.now(timezone.utc)
         annotate_refresh_metadata(index_path, latest_version, completed_at)
-        validate_index(index_path, latest_version)
+        validate_index(index_path, latest_version, previous=current)
 
         backup_current_data(current_version or "none", datetime.now(timezone.utc))
         replace_if_exists(staged_snapshot, SNAPSHOT)

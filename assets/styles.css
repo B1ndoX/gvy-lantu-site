@@ -1773,15 +1773,125 @@ html[data-query-mode="dismantle"] .reset-button {
 
 .source-missions {
   display: grid;
-  gap: 5px;
+  gap: 2px;
   margin: 0;
-  padding-left: 16px;
+  padding-left: 0;
+  list-style: none;
 }
 
 .source-missions li {
   color: var(--muted);
   font-size: 11px;
   line-height: 1.35;
+}
+
+.source-mission-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 2px 16px 2px 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.source-mission-button strong {
+  display: inline;
+  white-space: normal;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.source-mission-button small {
+  display: inline;
+  margin-top: 0;
+  font-size: 11px;
+}
+
+.source-mission-button small b { color: var(--cyan); }
+.source-mission-button[data-mission-id] strong {
+  color: var(--text-strong);
+  text-decoration: none;
+}
+.source-mission-button > span { position: absolute; right: 2px; top: 1px; font-size: 14px; color: var(--cyan); }
+.source-more { margin-top: 5px; }
+.source-more summary { padding: 4px 0; color: var(--cyan); font-size: 11px; cursor: pointer; }
+.source-collapse-label, .source-more[open] .source-expand-label { display: none; }
+.source-more[open] .source-collapse-label { display: inline; }
+button.source-mission-button:hover, .mission-blueprint-row:hover { background: rgba(40, 80, 99, 0.36); }
+button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible, .mission-close:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+
+.mission-dialog {
+  width: fit-content;
+  min-width: min(680px, calc(100vw - 32px));
+  max-width: min(1040px, calc(100vw - 32px));
+  height: fit-content;
+  max-height: calc(100vh - 32px);
+  max-height: min(88dvh, 900px);
+  padding: 0;
+  border: 1px solid rgba(126, 221, 242, 0.36);
+  border-radius: 16px;
+  background: #0c1d2a;
+  color: var(--text-strong);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.mission-dialog[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.mission-dialog::backdrop { background: rgba(2, 9, 15, 0.7); backdrop-filter: blur(8px); }
+.mission-dialog-head { display: grid; grid-template-columns: minmax(0, 1fr) 36px; gap: 12px; padding: 18px; border-bottom: 1px solid rgba(126, 221, 242, 0.18); }
+.mission-eyebrow { color: var(--cyan); font-size: 11px; font-weight: 800; }
+.mission-dialog h2 { margin: 5px 0 8px; font-size: 20px; line-height: 1.35; overflow-wrap: anywhere; }
+.mission-dialog-head p { margin: 0 0 4px; color: var(--cyan); font-size: 12px; overflow-wrap: anywhere; }
+.mission-dialog-head small { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.mission-close { width: 36px; height: 36px; border: 1px solid rgba(126, 221, 242, 0.28); border-radius: 8px; background: transparent; color: var(--text-strong); font-size: 24px; line-height: 1; }
+.mission-dialog-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 14px 18px 18px; scrollbar-width: thin; scrollbar-color: rgba(126, 221, 242, 0.42) transparent; }
+.mission-reward-note { margin: 0 0 14px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.mission-reward-section + .mission-reward-section { margin-top: 18px; }
+.mission-reward-section h3 { margin: 0 0 8px; color: var(--orange); font-size: 14px; line-height: 1.5; }
+.mission-draw-note { margin: 0 0 12px; padding: 9px 11px; border-left: 2px solid rgba(126, 221, 242, 0.55); background: rgba(126, 221, 242, 0.04); color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.mission-pool { padding: 10px; border: 1px solid rgba(126, 221, 242, 0.18); border-radius: 6px; }
+.mission-pool + .mission-pool { margin-top: 10px; }
+.mission-pool-head { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; margin-bottom: 8px; }
+.mission-pool-head > div { min-width: 0; }
+.mission-pool-head h4 { margin: 0; color: var(--cyan); font-size: 12px; line-height: 1.4; }
+.mission-pool-head small { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+.mission-pool-draw { margin-left: auto; text-align: right; }
+.mission-pool-draw strong { color: var(--orange); font-size: 13px; }
+.mission-blueprint-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 6px; }
+.mission-blueprint-row:only-child { grid-column: 1 / -1; }
+.mission-blueprint-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-width: 0; padding: 6px 8px; border: 0; border-radius: 3px; background: rgba(4, 17, 27, 0.6); color: var(--text-strong); text-align: left; }
+.mission-blueprint-row > span:first-child { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
+.mission-blueprint-row strong, .mission-item-row strong { display: block; font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+.mission-blueprint-row small { display: block; color: var(--muted); font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; }
+.mission-reward-marker { flex: 0 0 auto; color: var(--cyan); font-size: 10px; white-space: nowrap; }
+.mission-reward-marker i { margin-left: 5px; font-size: 16px; font-style: normal; }
+.mission-item-group + .mission-item-group { margin-top: 8px; }
+.mission-item-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 10px; background: rgba(4, 17, 27, 0.6); border-radius: 6px; }
+.mission-item-row + .mission-item-row { margin-top: 4px; }
+.mission-item-row strong { min-width: 0; }
+.mission-item-row > span { flex: 0 0 auto; color: var(--orange); font-size: 12px; }
+.mission-reward-meta, .mission-empty { margin: 5px 0; color: var(--muted); font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.mission-dialog-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 12px 18px; border-top: 1px solid rgba(126, 221, 242, 0.18); color: var(--muted); font-size: 11px; }
+.mission-dialog-footer > span:last-child { white-space: nowrap; }
+
+@media (max-width: 620px) {
+  .mission-dialog { width: calc(100vw - 20px); min-width: 0; max-width: calc(100vw - 20px); max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); }
+  .mission-dialog-head { padding: 14px; }
+  .mission-dialog h2 { font-size: 17px; }
+  .mission-dialog-body { padding: 12px 14px 14px; }
+  .mission-pool { padding: 8px; }
+  .mission-blueprint-list { grid-template-columns: minmax(0, 1fr); }
+  .mission-blueprint-row > span:first-child { display: block; }
+  .mission-blueprint-row small { margin-top: 2px; }
+  .mission-dialog-footer { padding: 10px 14px; }
 }
 
 .spec-grid {

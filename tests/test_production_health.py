@@ -111,6 +111,15 @@ class ProductionHealthTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "does not match"):
             validate_production_snapshot(production, local, minerals, minerals)
 
+    def test_rejects_stale_mission_reward_payload(self) -> None:
+        production = self.blueprints()
+        local = self.blueprints()
+        production["missionRewards"] = {"missions": {}}
+        local["missionRewards"] = {"missions": {"task": {"items": [{"name": "Rifle", "amount": 2}]}}}
+        minerals = self.minerals()
+        with self.assertRaisesRegex(RuntimeError, "does not match"):
+            validate_production_snapshot(production, local, minerals, minerals)
+
     def test_builds_utc_maintenance_heartbeat(self) -> None:
         now = datetime(2026, 8, 18, 8, 0, tzinfo=timezone.utc)
         payload = heartbeat_payload("123", "abc", "success", "success", "success", now)

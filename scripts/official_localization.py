@@ -373,6 +373,14 @@ class OfficialNames:
                 for mission in source.get("missions") or []:
                     assign(mission, "titleZh", mission.get("title", ""), "other")
                     assign(mission, "factionZh", mission.get("faction", ""), "manufacturer")
+        from build_data import reward_items
+        reward_data = index.get("missionRewards") or {}
+        for system in reward_data.get("systems") or []:
+            assign(system, "nameZh", system.get("name", ""), "location")
+        for mission in reward_data.get("missions", {}).values():
+            for reward in mission.get("items") or []:
+                for item in reward_items(reward):
+                    assign(item, "nameZh", item.get("name", ""), "item")
         metadata = self.snapshot.get("metadata") or {}
         index.setdefault("localization", {})["nasOfficial"] = {
             key: metadata[key] for key in ("sourceSha256", "sourceVersionLabel", "versionPrecision", "exactBuildVerified", "englishKeyCommit", "sourcePolicy")

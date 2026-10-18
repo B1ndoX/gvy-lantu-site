@@ -10,6 +10,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any
+from build_data import reward_items
 
 
 API_URL = "https://translate.googleapis.com/translate_a/single"
@@ -47,6 +48,10 @@ def add_value(values: set[str], value: Any) -> None:
 
 def collect_strings(index: dict[str, Any]) -> list[str]:
     values: set[str] = set()
+    for mission in (index.get("missionRewards") or {}).get("missions", {}).values():
+        for reward in mission.get("items") or []:
+            for item in reward_items(reward):
+                add_value(values, item.get("name"))
     for record in index.get("records", []):
         for key in ("name", "manufacturer", "type", "subtype", "gear"):
             add_value(values, record.get(key))
@@ -211,6 +216,13 @@ def apply_translations(index: dict[str, Any], cache: dict[str, str]) -> None:
         record["search"] = f"{record.get('search', '')} {translated_blob}".lower()
 
 
+def translate_mission_rewards(index: dict[str, Any], cache: dict[str, str]) -> None:
+    for mission in (index.get("missionRewards") or {}).get("missions", {}).values():
+        for reward in mission.get("items") or []:
+            for item in reward_items(reward):
+                item["nameZh"] = t(cache, item.get("name"))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Translate blueprint-index.json with Google Translate")
     parser.add_argument("--index", type=Path, default=Path(__file__).resolve().parents[1] / "data" / "blueprint-index.json")
@@ -225,6 +237,7 @@ def main() -> int:
     print(f"unique translatable strings: {len(strings)}; cached: {len(cache)}")
     count = 0 if args.cache_only else translate_missing(strings, cache, args.limit, args.cache)
     apply_translations(index, cache)
+    translate_mission_rewards(index, cache)
     save_json(args.cache, cache)
     with args.index.open("w", encoding="utf-8") as handle:
         json.dump(index, handle, ensure_ascii=False, separators=(",", ":"))
