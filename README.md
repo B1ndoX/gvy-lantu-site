@@ -144,7 +144,7 @@ threshold, not an invented upper XP limit. Candidate task sites are not guarante
 acceptance locations; region membership and unresolved/additional constraints are
 explicit. Locations and requirements use the same exact-LIVE contract IDs, with
 official contextual/keyed Chinese first. Unresolved game label keys do not become
-user-facing place names. The mineral dialog is unchanged.
+user-facing place names. Preserve the mineral dialog's existing content-driven layout.
 
 The dialog follows its content height up to the viewport cap, with a scrollable
 body and a non-overlapping footer. Its width follows content within responsive
@@ -204,10 +204,43 @@ panels are Q500; theory excludes armor, distance falloff, reload and charging cy
 Do not assign an unverified SCU/10-GM unit to a raw quantum-fuel coefficient.
 
 Exact-version community enrichment remains optional. It may fill missing metrics,
-but must never erase/override primary SCMDB values or mix firing-mode calculations.
+but must join a unique entity UUID, never a name, and must never erase/override primary SCMDB values or mix firing-mode calculations.
 An unavailable or cross-build fallback leaves verified primary values intact.
 Coverage metadata and payloads must agree; source/log messages must not claim that
 all absolute attributes are absent merely because the optional fallback is late.
+The scheduled refresh no longer fetches this duplicate gameplay export. SCMDB's
+exact-LIVE item table supplies the primary panel; unsupported absolute metrics
+retain their relative effects. Component class and mission type also come from
+the same primary tables, not the secondary blueprint site's metadata.
+
+Quality inputs retain the original 23px pill beside each slider. The initial
+500 (or higher recipe minimum) is a semi-transparent gray placeholder, not
+prefilled input text; focusing starts an empty draft. Leaving it empty preserves
+the effective quality. Editing or moving the slider changes it to cyan.
+Hover/focus reveals a smaller input/range hint
+centered above the capsule without shifting the surrounding layout.
+Enter/Tab retain their ordinary browser behavior, with no special acceptance
+rule. Only integers are allowed, with maximum 1000 and the recipe minimum.
+Negative/decimal/exponent input is rejected; high values clamp immediately,
+and unfinished below-minimum drafts never affect calculations and clamp on blur.
+The separate quick-value row and update-summary feature are not part of this UI.
+
+## Craft Plan And Sharing
+
+`制作清单` stores bounded counts and recipe choices in browser-local storage
+under `gvy-lantu-craft-plan-v1`, independently of favorites. Adding a blueprint
+opens its list; counts scale material amounts and sequential craft time. Resource
+amounts use SCU, item inputs use counts, and different minimum qualities remain
+separate. One alternative is selected per recipe slot; alternatives are never
+all added together. Unknown/removed IDs remain removable and are excluded from
+totals with a warning. Storage failure leaves the current session usable and
+explicitly reports that it was not saved. No login, cloud permanence or device
+synchronization is implied.
+
+Share links encode only the exact blueprint ID and craft/dismantle mode in the
+URL fragment. They do not export favorites, filters or the craft plan. Clipboard
+failure opens a selectable link. Opening an unavailable ID reports the missing
+blueprint rather than substituting a same-name result.
 
 ## Local Preview
 
@@ -255,7 +288,8 @@ recovery retries. Persistent connectivity failures and real deployment mismatche
 still exit nonzero, preserve the existing rollback rules, and reach the final
 failure-reporting step. Notifications are not muted or reconfigured. The final
 report identifies source and production outcomes separately. This does not alter
-NAS/source validation, data timestamps, refresh schedules, or manual-only signals.
+NAS/source validation, data timestamps, or existing refresh schedules. Mining
+signals follow the unified automatic refresh described below.
 
 For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `星远舰队` and `维科洛查询` destinations.
 
@@ -268,7 +302,7 @@ The maintenance schedule (`43 17 1,15 * *`, UTC) runs twice monthly with `--forc
 
 The header shows the active LIVE version. Hovering or keyboard-focusing the version badge reveals `dataUpdatedAt` as `更新 YYYY/MM/DD HH:mm` in Asia/Shanghai; tapping the badge provides the same information on touch devices. This timestamp changes only after a newer release or a scheduled/manual forced calibration has been fetched, localized, validated, backed up, and atomically published. Routine six-hour checks with no newer LIVE release do not change it.
 
-If SCMDB has no newer `LIVE` version and the verified NAS localization source has not changed, a normal six-hour run keeps the existing data cache and makes no commit (except a newly available exact-version quality enrichment). A localization hash/adapter change rebuilds the same LIVE release through this same command. The twice-monthly maintenance run intentionally creates a verified calibration snapshot and heartbeat commit. A stale manifest is prevented from rolling an existing `LIVE` release backward.
+If SCMDB has no newer `LIVE` version and the verified NAS localization source has not changed, a normal six-hour run keeps the existing blueprint cache and makes no blueprint commit. A localization hash/adapter or source-policy schema change rebuilds the same LIVE through this command. The twice-monthly maintenance run intentionally creates a verified calibration snapshot and heartbeat commit. A stale manifest cannot roll an existing `LIVE` release backward. Mining still checks the exact selected build on every existing run, including same-build corrections.
 If a newer `LIVE` version exists, `scripts/refresh_blueprint_data.py` locks the build to that exact release, regenerates the blueprint index, applies localization in this priority order:
 
 1. NAS official Star Citizen localization, matched through verified game localization keys
@@ -285,9 +319,9 @@ The helper `scripts/official_localization.py` produces the build input `data/off
 
 The Chinese file currently declares only the `4.10` series. English key labels are read from an immutable `StarCitizenWiki/scunpacked-data` commit declaring the same series, not used as gameplay stats. `exactBuildVerified` remains false: this is not proof of an exact LIVE build match. A source series mismatch, invalid hash, or low coverage fails closed. On a new NAS hash or adapter revision the existing refresh rebuilds and applies official names last. Identical inputs preserve the snapshot timestamp. Exact names bridge upstream records to game keys; manufacturer codes and property keys take precedence. Item/vehicle, planet/company and crafting-slot contexts are distinct; full item names take precedence over short-name keys. Conflicting or missing matches retain marked legacy fallbacks and are listed in the refresh log, never guessed or claimed as NAS-verified.
 
-The frontend uses verified material `nameZh` before its hardcoded fallback table. The mineral refresh similarly applies the verified snapshot to mineral and location names without refreshing signal values. Mineral footer copy stays `数据更新`, with no last-check timestamp.
+The frontend uses verified material `nameZh` before its hardcoded fallback table. The mineral refresh applies that same snapshot to mineral and location names. Mineral footer copy stays `数据更新`, with no last-check timestamp or public source attribution.
 
-The same staged build also attempts to attach compact base attributes from the community-maintained `StarCitizenWiki/scunpacked-data` item export. The source commit must declare the exact same `X.Y.Z-LIVE.build` version as the SCMDB blueprint index, and matching/base-stat coverage must pass minimum thresholds before those values are accepted. A temporary source outage or a lagging community release never blocks a newer verified LIVE blueprint release: the site publishes the SCMDB quality coefficients and relative effects first, then retries the version-matched base-stat enrichment on later six-hour runs. It never combines base attributes from one game build with quality coefficients from another.
+The staged build uses SCMDB's exact-version item export for base stats and class, and the exact contracts for mission types. It no longer refetches another site's copy of those gameplay fields. FlowCLD is a committed, exact-blueprint-ID Chinese-name fallback only; it is no longer fetched in the scheduled pipeline and cannot supply gameplay metadata. Google/local language caches fill unresolved text before verified NAS keys are applied last. The community enrichment utility requires an immutable same-build source and a unique entity UUID but is not called automatically. Missing trustworthy absolute metrics retain relative-quality effects instead of values from another game build.
 
 Before replacing data files, the script saves a local backup under `.data-backups/`.
 Local backups are retained for 14 days and are ignored by Git.
@@ -296,11 +330,13 @@ The upload must enable `include-hidden-files: true` for `.data-backups/`; valida
 an actual artifact after a changed-data run, not just the workflow's conclusion.
 All staged public files are validated before same-filesystem atomic replacement. Transient SCMDB network failures are retried up to three times; if refresh still fails, the existing LIVE cache and its displayed update time remain unchanged.
 
-The same six-hour workflow then runs `scripts/refresh_mineral_locations.py`. It fetches the current commodity/location relationships from UEX API 2.0, rebuilds all five supported location groups, applies the verified NAS location localization, and preserves the calibrated Chinese fallbacks that are absent from that package. The candidate must retain at least 30 materials, 25 materials with reliable locations, 100 total locations, and 100 location-specific signal mappings. It is also compared with the last verified cache, and large coverage drops are rejected. If the source data is unchanged, `retrievedAt` is not advanced and no commit is created.
+The same six-hour workflow runs `scripts/refresh_mineral_locations.py` once for both distributions and signals. Its structured input is SCMDB `mining_data-<exact blueprint LIVE>.json`. Schema, manifest counts, element/composition/cluster references, finite values, modes and coverage must validate. It retains at least 30 materials, 25 with locations, 100 location entries and 100 signal locations, with relative drop guards against the previous primary snapshot. The one-time schema-2 migration removes unverifiable legacy station mappings rather than relabeling them as current-LIVE evidence. NAS location names remain authoritative. Identical normalized contents retain the previous `retrievedAt` and exact file bytes.
 
-Mineral radar signals are deliberately excluded from both schedules. `scripts/refresh_mineral_signals.py` runs only after the user explicitly requests a manual signal refresh. It verifies the embedded `RADAR_DATA` published by the Shadow Guardians Mining Resource Finder, maps source aliases such as Quantanium/Quantainium, and updates only the radar base, maximum cluster, and derived values already attached to local mineral locations. Location distribution is not inferred by this signal-only step. A visible source version label is optional: when the upstream page omits it, the refresh stores a deterministic `content-<sha256>` revision derived from the fully parsed and validated signal definitions. Coverage, required-material, range, backup, and atomic-replacement checks remain mandatory.
+This automatic policy supersedes the former manual-only signal rule. The old `refresh_mineral_signals.py` is only a compatibility alias to the same writer; no separate step or schedule is added. UEX distribution fetching and Shadow Guardians HTML signal parsing have been removed. A valid source with an unmapped material is not permission to fabricate a mine or copy an older build. Source failure preserves the last verified snapshot and remains a real failed refresh, not a successful timestamp-only update.
 
-Mineral location updates and manually requested signal updates both use strict coverage checks, a 14-day backup under `.data-backups/`, and same-filesystem atomic replacement. The production build derives one frontend data revision from the exact bytes of both verified JSON files, so either a blueprint change or a mineral change automatically creates a new browser cache URL without editing application source. If an automated blueprint or location source is unavailable, incomplete, or invalid, that step keeps the last deployed verified cache and the workflow reports failure after checking production. A signal-source outage cannot fail scheduled runs because signals are not fetched automatically. If verified values are unchanged, no mineral-data commit is created. The mineral dialog displays the newest valid timestamp among the location snapshot and the last manually verified signal calibration.
+Mixed deposits show their primary mineral's signal, not the searched secondary material's global signature. Actual possible cluster counts are preserved. FPS/ROC signatures are shared per-rock readings and are not multiplied into invented cluster totals. Named areas retain system/parent context; generic Lagrange or asteroid templates are explicitly regions, never expanded into named stations. The export does not provide validated surface coordinates, so none are invented.
+
+Distributions and signals share a 14-day backup and atomic file replacement. `--validate-only` performs offline coverage/schema and blueprint/mining version-pair checks before building and again after workflow rebase, before push. A changed blueprint build with incompatible cached mining cannot be published. Production checks enforce the same pair and full hashes. The combined data fingerprint and existing failure/rollback behavior are retained. No new runtime API, schedule or credential is needed.
 
 ## Long-Term Unattended Operation
 
@@ -308,7 +344,7 @@ The site is designed to remain available for at least a year and to continue bey
 
 The persistence chain is:
 
-1. GitHub Actions checks stable-LIVE blueprint data and mineral locations four times per day; mineral radar signals remain on the last manually verified snapshot.
+1. GitHub Actions checks stable-LIVE blueprint data plus exact-version mineral distributions/signals four times per day, through the existing schedules.
 2. New data is built in a temporary directory and must pass unit, coverage, channel, localization, count, uniqueness, and source consistency checks.
 3. The previous verified files are backed up before same-filesystem atomic replacement.
 4. Only approved generated files are staged and committed; unrelated or untracked files are never swept into an automated commit.
@@ -349,9 +385,9 @@ The `我的蓝图` filter is deliberately browser-local. A user can save or remo
 
 Each material card reads its slot's `modifiers` from the selected LIVE SCMDB crafting dataset and contains a compact quality slider plus the active linearly interpolated property coefficient or additive adjustment. Multi-segment quality curves are grouped by property and only the segment containing the selected quality is evaluated. Values from separate material slots that affect the same multiplicative property are multiplied; additive properties are summed relative to Q500.
 
-The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version community item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
+The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version primary item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
 
-Current 4.9.0 LIVE coverage is 1,540 blueprints with SCMDB quality modifiers, 1,530 exact item matches, and 1,508 blueprints with at least one compact base attribute. The remaining modifier-bearing records retain exact relative effects only. Known limitations are deliberate: recoil, damage mitigation, maximum tractor volume, and some newly introduced or unnamed items do not have a complete compact base panel; the preview models data values and cannot guarantee that the current in-game inventory UI displays every crafted adjustment correctly.
+The unpublished 4.10.2 LIVE preview has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; the preview cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
 Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 

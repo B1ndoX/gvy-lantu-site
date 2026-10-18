@@ -10,14 +10,12 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import time
-import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
 from scmdb_versions import is_live_version, select_latest_live_version, version_sort_key
-from build_data import reward_items, validate_mission_rewards
+from build_data import fetch_json, reward_items, validate_mission_rewards
 from scmdb_item_stats import validate_item_stats
 from official_localization import SNAPSHOT, refresh_snapshot
 
@@ -54,19 +52,7 @@ def write_json_compact(path: Path, payload: Any) -> None:
 
 
 def fetch_latest_live_scmdb_version(attempts: int = 3) -> str:
-    versions = None
-    for attempt in range(1, attempts + 1):
-        request = urllib.request.Request(SCMDB_VERSIONS_URL, headers={"User-Agent": "GVY Lantu Site/1.0"})
-        try:
-            with urllib.request.urlopen(request, timeout=45) as response:
-                versions = json.loads(response.read().decode("utf-8"))
-            break
-        except Exception:
-            if attempt == attempts:
-                raise
-            wait_seconds = attempt * 2
-            print(f"SCMDB version check failed; retrying in {wait_seconds}s ({attempt}/{attempts})", file=sys.stderr)
-            time.sleep(wait_seconds)
+    versions = fetch_json(SCMDB_VERSIONS_URL, attempts)
     if not versions:
         raise RuntimeError("SCMDB versions.json returned no versions")
     return select_latest_live_version(versions)["version"]
@@ -273,6 +259,17 @@ def validate_index(path: Path, expected_version: str, previous: dict[str, Any] |
         for record in records
     ):
         raise RuntimeError("blueprint source counts do not match source missions")
+    for record in records:
+        for tier in record.get("tiers") or []:
+            for slot in tier.get("slots") or []:
+                for option in slot.get("options") or []:
+                    minimum = option.get("minQuality", 0)
+                    quantity = option.get("quantity")
+                    if (isinstance(minimum, bool) or not isinstance(minimum, (int, float)) or not math.isfinite(minimum)
+                            or int(minimum) != minimum or not 0 <= minimum <= 1000):
+                        raise RuntimeError("invalid material quality range")
+                    if (isinstance(quantity, bool) or not isinstance(quantity, (int, float)) or not math.isfinite(quantity) or quantity < 0):
+                        raise RuntimeError("invalid crafting material quantity")
     validate_mission_rewards(index)
     validate_item_stats(index)
     if previous is not None:
@@ -319,24 +316,6 @@ def validate_index(path: Path, expected_version: str, previous: dict[str, Any] |
             raise RuntimeError("quality base stats contain a non-numeric value")
 
 
-def quality_enrichment_is_current(index: dict[str, Any], version: str) -> bool:
-    metadata = index.get("qualityEffects") or {}
-    source_version = metadata.get("communityVersion") if metadata.get("source") == "scmdb" else metadata.get("communityVersion", metadata.get("version"))
-    return str(source_version or "").lower() == version.lower()
-
-
-def enrich_quality_stats(index_path: Path) -> bool:
-    return run(
-        [
-            sys.executable,
-            "scripts/enrich_quality_stats.py",
-            "--index",
-            str(index_path),
-        ],
-        allow_failure=True,
-    )
-
-
 def refresh(force: bool) -> bool:
     current = load_json(DATA_DIR / "blueprint-index.json", {})
     current_version = str(current.get("version") or "")
@@ -350,6 +329,7 @@ def refresh(force: bool) -> bool:
     official_snapshot, snapshot_changed = refresh_snapshot(latest_version)
     applied_hash = ((current.get("localization") or {}).get("nasOfficial") or {}).get("sourceSha256")
     force = force or snapshot_changed or applied_hash != official_snapshot["metadata"]["sourceSha256"]
+    force = force or (current.get("sourcePolicy") or {}).get("schemaVersion") != 1
     try:
         validate_mission_rewards(current)
         validate_item_stats(current)
@@ -358,23 +338,6 @@ def refresh(force: bool) -> bool:
         force = True
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
-        if not quality_enrichment_is_current(current, current_version):
-            with tempfile.TemporaryDirectory(prefix="gvy-lantu-quality-refresh-") as tmp_name:
-                candidate = Path(tmp_name) / "blueprint-index.json"
-                shutil.copy2(DATA_DIR / "blueprint-index.json", candidate)
-                if enrich_quality_stats(candidate):
-                    completed_at = datetime.now(timezone.utc)
-                    annotate_refresh_metadata(candidate, current_version, completed_at)
-                    validate_index(candidate, current_version, previous=current)
-                    backup_current_data(current_version, completed_at)
-                    replace_if_exists(candidate, DATA_DIR / "blueprint-index.json")
-                    print("SCMDB version unchanged; added version-matched quality base stats.")
-                    return True
-                print(
-                    "warning: version-matched quality base stats are not available yet; "
-                    "keeping verified SCMDB base stats, relative effects and the existing LIVE cache",
-                    file=sys.stderr,
-                )
         if removed:
             print(f"SCMDB version unchanged; removed {removed} pipeline-only fields from the public index.")
         else:
@@ -407,12 +370,6 @@ def refresh(force: bool) -> bool:
                 latest_version,
             ]
         )
-        if not enrich_quality_stats(index_path):
-            print(
-                "warning: version-matched quality base stats are not available yet; "
-                "publishing the new LIVE with verified SCMDB base stats and relative fallbacks",
-                file=sys.stderr,
-            )
         translate_args = [
             sys.executable,
             "scripts/translate_index_google.py",
@@ -425,29 +382,8 @@ def refresh(force: bool) -> bool:
             print("warning: Google Translate unavailable; applying the existing fallback cache", file=sys.stderr)
             run([*translate_args, "--cache-only"])
 
-        fresh_flowcld = tmp / "flowcld-blueprint-calibration.fresh.json"
-        cached_flowcld = flowcld if flowcld.exists() else None
-        if run(
-            [
-                sys.executable,
-                "scripts/fetch_flowcld_calibration.py",
-                "--output",
-                str(fresh_flowcld),
-                "--delay",
-                "0.1",
-            ],
-            allow_failure=True,
-        ):
-            try:
-                validate_flowcld_calibration(fresh_flowcld, cached_flowcld)
-            except RuntimeError as error:
-                print(f"warning: {error}; keeping cached FlowCLD calibration", file=sys.stderr)
-                if cached_flowcld is None:
-                    raise
-            else:
-                shutil.move(str(fresh_flowcld), flowcld)
-        elif not flowcld.exists():
-            raise RuntimeError("FlowCLD refresh failed and no cached calibration exists")
+        # The cached calibration is a language fallback only. SCMDB already
+        # supplies gameplay fields; fetching a second copy cannot improve them.
 
         run(
             [

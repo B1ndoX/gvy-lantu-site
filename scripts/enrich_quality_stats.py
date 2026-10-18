@@ -240,10 +240,11 @@ def enrich_index(index: dict[str, Any], items: list[dict[str, Any]], source_vers
     if normalize_version(index_version) != normalize_version(source_version):
         raise RuntimeError(f"quality data version mismatch: index={index_version}, community={source_version}")
 
-    by_name = {}
+    by_entity = {}
     for item in items:
-        if item.get("name"):
-            by_name.setdefault(str(item["name"]), []).append(item)
+        entity = item.get("uuid") or item.get("entityClass")
+        if entity:
+            by_entity.setdefault(str(entity).lower(), []).append(item)
     primary = index.get("itemStats") or {}
     preserve_primary = primary.get("version", "").lower() == index_version.lower() and primary.get("schemaVersion") == 1
     records_with_modifiers = 0
@@ -261,7 +262,7 @@ def enrich_index(index: dict[str, Any], items: list[dict[str, Any]], source_vers
         if not keys:
             continue
         records_with_modifiers += 1
-        matches = by_name.get(str(record.get("name") or ""), [])
+        matches = by_entity.get(str(record.get("productEntityClass") or "").lower(), [])
         item = matches[0] if len(matches) == 1 else None
         community_matched_items += bool(item)
         matched_items += bool(item or existing)

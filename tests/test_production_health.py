@@ -87,6 +87,13 @@ class ProductionHealthTests(unittest.TestCase):
         minerals = self.minerals()
         validate_production_snapshot(blueprints, blueprints, minerals, minerals)
 
+    def test_primary_mining_cannot_match_itself_but_mismatch_blueprint_build(self) -> None:
+        blueprints = self.blueprints()
+        minerals = self.minerals()
+        minerals["metadata"] = {"schemaVersion": 2, "sourceVersion": "4.10.2-live.12913470"}
+        with self.assertRaisesRegex(RuntimeError, "mining data does not match the blueprint LIVE"):
+            validate_production_snapshot(blueprints, blueprints, minerals, minerals)
+
     def test_rejects_test_channel_snapshot(self) -> None:
         production = self.blueprints("4.10.0-ptu.12409360")
         local = self.blueprints()

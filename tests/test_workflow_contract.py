@@ -59,10 +59,12 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("data/blueprint-index.json", git_add_line)
         self.assertIn("data/mineral-locations.json", git_add_line)
 
-    def test_scheduled_workflow_does_not_refresh_mineral_signals(self) -> None:
+    def test_signals_share_one_mineral_refresh_and_the_real_heartbeat_outcome(self) -> None:
         self.assertNotIn("python scripts/refresh_mineral_signals.py", self.workflow)
         self.assertNotIn("steps.mineral_signals.outcome", self.workflow)
-        self.assertIn('--mineral-signals-outcome "skipped"', self.workflow)
+        self.assertIn('--mineral-signals-outcome "${{ steps.mineral_locations.outcome }}"', self.workflow)
+        self.assertEqual(self.workflow.count("run: python scripts/refresh_mineral_locations.py"), 1)
+        self.assertIn("python scripts/refresh_mineral_locations.py --validate-only", self.workflow)
 
 
 if __name__ == "__main__":

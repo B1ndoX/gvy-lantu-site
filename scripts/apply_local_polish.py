@@ -488,6 +488,8 @@ def flowcld_name(record: dict[str, Any], calibration: dict[str, dict[str, str]])
     by_name = calibration.get("by_name") or {}
     by_internal = calibration.get("by_internal") or {}
     record_id = str(record.get("id") or "").strip()
+    if "componentClass" in (record.get("stats") or {}):
+        return by_id.get(record_id)
     clean_name = normalize_name(str(record.get("name") or ""))
     product_entity_class = normalize_name(str(record.get("productEntityClass") or ""))
     tag = normalize_name(str(record.get("tag") or ""))
@@ -571,7 +573,7 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
             "starCitizenLocalizationCount": len(starcitizen_names),
             "starCitizenLocalizationCounts": starcitizen_counts,
             "flowcldCalibrationCount": len(flowcld_calibration.get("by_id") or {}),
-            "flowcldMetadataCount": len(flowcld_calibration.get("items_by_id") or {}),
+            "flowcldMetadataCount": 0 if index.get("sourcePolicy") else len(flowcld_calibration.get("items_by_id") or {}),
             "flowcldCalibrationSource": "https://flowcld.xyz/tools/blueprint",
         }
     )
@@ -580,7 +582,8 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
         local_name = localize_product_name(str(record.get("name") or ""), local_names)
         calibrated_name = flowcld_name(record, flowcld_calibration)
         calibrated_item = flowcld_item(record, flowcld_calibration)
-        apply_flowcld_metadata(record, calibrated_item)
+        if not index.get("sourcePolicy"):
+            apply_flowcld_metadata(record, calibrated_item)
         if local_name:
             zh["name"] = local_name
             zh["nameSource"] = "starcitizen-localization"

@@ -12,6 +12,13 @@ from build_data import build_index  # noqa: E402
 
 
 class BuildDataTests(unittest.TestCase):
+    def test_item_class_and_specs_require_entity_identity_not_same_name(self) -> None:
+        crafting = {"version": "4.10.2-live.12913470", "blueprints": [{"guid": "bp", "productName": "Same", "productEntityClass": "wanted", "tiers": []}]}
+        items = {"version": crafting["version"], "items": [{"entityClass": "other", "name": "Same", "grade": 1, "componentClass": "Military"}]}
+        index = build_index({"version": crafting["version"], "contracts": []}, crafting, items)
+        self.assertIsNone(index["records"][0]["stats"]["grade"])
+        self.assertIsNone(index["records"][0]["stats"]["componentClass"])
+
     def test_preserves_quality_modifiers_and_derives_dismantle_outputs(self) -> None:
         crafting = {
             "version": "4.9.0-live.12344265",

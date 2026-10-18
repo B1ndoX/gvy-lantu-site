@@ -5,8 +5,8 @@ import test from "node:test";
 
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
-  const context = { document, window: { getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType };`, context);
+  const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignalTooltip, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -225,4 +225,67 @@ test("base stats preserve exact units and escape labels, while dismantling inclu
   assert.match(html, /&lt;speed&gt;/);
   assert.doesNotMatch(html, /<note>/);
   assert.match(api.renderDismantle({ dismantle: { outputs: [{ name: "Eye", kind: "item", quantity: 2 }] } }), /资源与物品/);
+});
+
+test("primary class and task types cannot be replaced by a conflicting legacy calibration", () => {
+  const api = app();
+  const record = {stats:{componentClass:"Industrial",grade:3}, flowcld:{itemClass:"Military",rewardMissionTypes:["Other"]},
+    sources:[{missions:[{id:"m",missionType:"Refueling"}]}]};
+  assert.equal(api.recordClassGrade(record),"工C");
+  assert.equal(api.recordComponentClass(record),"工业");
+  assert.equal(api.recordMissionTypes(record)[0].label,"加油");
+  record.stats.componentClass=null;
+  assert.equal(api.recordClassGrade(record),"C");
+  record.stats.componentClass="Laser";
+  assert.equal(api.recordComponentClass(record),"");
+});
+
+test("planner validates storage, aggregates quantities and time, preserves choice and quality boundaries", () => {
+  const api = app();
+  assert.equal(api.validPlan({}).length,0);
+  assert.equal(api.validPlan([{recordId:"a",quantity:0},{recordId:"a",quantity:2},{recordId:"a",quantity:3},{recordId:"b",quantity:1.5}]).length,1);
+  const record = {id:"a",name:"A",tiers:[{craftTimeSeconds:15,slots:[{name:"Frame",options:[{kind:"resource",name:"Iron",quantity:.03,minQuality:500},{kind:"resource",name:"Gold",quantity:.02,minQuality:500}]},
+    {name:"Eye",options:[{kind:"item",name:"Eye",quantity:2}]}]}]};
+  let totals=api.planTotals([{recordId:"a",quantity:2,choices:{0:1}}],[record]);
+  assert.equal(totals.seconds,30);
+  assert.equal(totals.materials[0].name,"Gold");assert.equal(totals.materials[0].quantity,.04);
+  assert.equal(totals.materials[1].quantity,4);
+  assert.equal(totals.warnings.length,0);
+  totals=api.planTotals([{recordId:"a",quantity:1,choices:{0:9}},{recordId:"missing",quantity:1}],[record]);
+  assert.equal(totals.warnings.length,2);
+  assert.equal(totals.materials.length,1);
+  assert.equal(api.formatTime(0),"0 秒");
+});
+
+test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {
+  const api=app();
+  const html=api.renderMaterialQuality({id:"a"},{name:"<frame>",options:[{minQuality:600}],modifiers:[{propertyKey:"x",propertyName:"X",startQuality:0,endQuality:1000,modifierAtStart:.8,modifierAtEnd:1.2}]},0);
+  assert.match(html,/data-quality-number/);
+  assert.match(html,/min="600" max="1000" step="1" value="" placeholder="600"/);
+  assert.match(html,/data-confirmed="false"/);
+  assert.match(html,/点击输入品质 · 600–1000/);
+  assert.match(html,/aria-describedby="qualityHint-a:0"/);
+  assert.doesNotMatch(html,/data-quality-preset/);
+  assert.doesNotMatch(html,/<frame>/);
+  api.state.qualityConfirmed["a:0"] = true;
+  api.state.qualityValues["a:0"] = 750;
+  const edited = api.renderMaterialQuality({id:"a"},{options:[{minQuality:600}],modifiers:[{propertyKey:"x"}]},0);
+  assert.match(edited,/value="750" placeholder="750"/);
+  assert.match(edited,/data-confirmed="true"/);
+});
+
+test("share URLs are bounded to the current origin and contain only blueprint and mode", () => {
+  const api=app();
+  const url=new URL(api.blueprintShareUrl("a&b","dismantle"));
+  assert.equal(url.origin,"https://example.test");assert.equal(url.search,"");
+  const params=new URLSearchParams(url.hash.slice(1));
+  assert.equal(params.get("blueprint"),"a&b");assert.equal(params.get("mode"),"dismantle");
+});
+
+test("signal entries distinguish shared per-rock readings and expose keyboard-accessible buttons", () => {
+  const api=app();
+  const html=api.renderLocationSignalTooltip({en:"<location>",signals:[{mode:"fps",primaryMaterialZh:"宝石",shared:true,base:3000,values:[3000],clusterKnown:true,clusterCounts:[10,11]}]});
+  assert.match(html,/type="button" class="mineral-signal-badge"/);
+  assert.match(html,/同类共通信号/);assert.match(html,/不按矿簇数量叠加/);
+  assert.match(html,/>3,000<\/b>/);assert.doesNotMatch(html,/33,000|产出权重|<location>/);
 });

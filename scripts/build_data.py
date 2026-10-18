@@ -202,6 +202,7 @@ def build_source_maps(mission_data: dict[str, Any]) -> tuple[dict[str, list[dict
                     "titleKey": clean(contract.get("titleLocKey")) or clean(contract.get("titleKey")).lstrip("@"),
                     "titleTokens": copy.deepcopy(contract.get("tokenSubstitutions") or {}),
                     "category": clean(contract.get("category"), "mission"),
+                    "missionType": clean(contract.get("missionType")),
                     "faction": faction_name(factions, contract.get("factionGuid")),
                     "factionKey": clean((factions.get(contract.get("factionGuid")) or {}).get("nameKey")).lstrip("@")
                     or clean(contract.get("contractorNameKey")).lstrip("@"),
@@ -355,7 +356,6 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
     mission_rewards["version"] = version
     items = items_data.get("items") or []
     item_by_entity = {item.get("entityClass"): item for item in items if item.get("entityClass")}
-    item_by_name = {item.get("name"): item for item in items if item.get("name")}
     sources_by_record, pool_meta = build_source_maps(mission_data)
     dismantle_config = normalize_dismantle_config(crafting)
 
@@ -366,7 +366,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
 
     for blueprint in crafting.get("blueprints") or []:
         product_name = clean(blueprint.get("productName"), clean(blueprint.get("suggestedName"), "Unnamed blueprint"))
-        item = item_by_entity.get(blueprint.get("productEntityClass")) or item_by_name.get(product_name)
+        item = item_by_entity.get(blueprint.get("productEntityClass"))
         category = category_for(blueprint, item)
         tiers = normalize_tiers(blueprint)
         dismantle = build_dismantle_outputs(tiers, dismantle_config)
@@ -392,6 +392,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
             "combatRange": (item or {}).get("combatRange"),
             "manufacturerCode": clean((item or {}).get("manufacturerCode")),
             "tags": clean((item or {}).get("tags")),
+            "componentClass": (item or {}).get("componentClass"),
         }
 
         search_blob = " ".join(
@@ -433,6 +434,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
     records.sort(key=lambda record: (record["category"]["id"], record["name"].lower()))
     index = {
         "generatedFrom": "SCMDB public data",
+        "sourcePolicy": {"schemaVersion": 1, "gameplay": "scmdb", "fallback": "verified-gaps-only"},
         "version": version,
         "missionRewards": mission_rewards,
         "counts": {

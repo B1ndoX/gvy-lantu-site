@@ -17,10 +17,13 @@ const state = {
   favoritesOnly: false,
   favorites: new Set(),
   qualityValues: {},
+  qualityConfirmed: {},
   sort: "relevance",
   visibleResults: 0,
   missions: new Map(),
   rewardPools: new Map(),
+  craftPlan: [],
+  planSaved: true,
 };
 
 const DATA_VERSION = "__BUILD_DATA_VERSION__";
@@ -29,6 +32,7 @@ const RESULT_BATCH_SIZE = 140;
 const SOURCE_TASK_PREVIEW_LIMIT = 12;
 const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
+const PLAN_STORAGE_KEY = "gvy-lantu-craft-plan-v1";
 let searchInputTimer = 0;
 let summaryResizeFrame = 0;
 
@@ -102,6 +106,171 @@ function toggleFavorite(recordId) {
   persistFavorites();
   updateFavoriteControl();
   applyFilters();
+}
+
+function setSlotQuality(record, slotIndex, value) {
+  const slot = getFirstTier(record).slots?.[slotIndex];
+  if (!slot?.modifiers?.length) return;
+  const quality = Math.round(Math.max(qualitySlotMinimum(slot), Math.min(1000, Number.isFinite(value) ? value : qualitySlotBaseline(slot))));
+  state.qualityValues[qualitySlotKey(record, slotIndex)] = quality;
+  state.qualityConfirmed[qualitySlotKey(record, slotIndex)] = true;
+  const container = [...els.detailPanel.querySelectorAll("[data-quality-slot]")].find(el => el.dataset.qualitySlot === qualitySlotKey(record, slotIndex));
+  if (!container) return;
+  container.querySelectorAll("[data-quality-input], [data-quality-number]").forEach(input => { input.value = quality; });
+  container.querySelector(".quality-number").dataset.confirmed = "true";
+  container.querySelector("[data-quality-number]").placeholder = quality;
+  const existing = container.querySelector(".quality-modifier-list");
+  if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
+  const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
+  if (summary) summary.outerHTML = renderQualitySummaryContent(record);
+}
+
+function validPlan(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  return value.filter(row => {
+    if (!row || typeof row.recordId !== "string" || !row.recordId || row.recordId.length > 200 || seen.has(row.recordId)
+      || !Number.isInteger(row.quantity) || row.quantity < 1 || row.quantity > 9999) return false;
+    seen.add(row.recordId);
+    return true;
+  }).slice(0, 100).map(row => ({recordId: row.recordId, quantity: row.quantity,
+    choices: row.choices && typeof row.choices === "object" && !Array.isArray(row.choices) ? row.choices : {}}));
+}
+
+function savePlan() {
+  try {
+    window.localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(state.craftPlan));
+    state.planSaved = true;
+  } catch { state.planSaved = false; }
+  updatePlanCount();
+}
+
+function updatePlanCount() {
+  const badge = document.querySelector("#planCount");
+  if (badge) badge.textContent = formatNumber(state.craftPlan.reduce((sum, row) => sum + row.quantity, 0));
+}
+
+function planTotals(plan, records) {
+  const materials = new Map();
+  let seconds = 0;
+  const warnings = [];
+  for (const row of validPlan(plan)) {
+    const record = records.find(item => item.id === row.recordId);
+    if (!record) { warnings.push(`当前版本未收录：${row.recordId}`); continue; }
+    const tier = getFirstTier(record);
+    const time = tier.craftTimeSeconds;
+    if (typeof time === "number" && Number.isFinite(time) && time >= 0) seconds += time * row.quantity;
+    else warnings.push(`${recordName(record)}：制作耗时未提供`);
+    for (const [index, slot] of (tier.slots || []).entries()) {
+      const choice = row.choices[index] ?? 0;
+      const option = Number.isInteger(choice) ? slot.options?.[choice] : null;
+      if (!option || typeof option.quantity !== "number" || !Number.isFinite(option.quantity) || option.quantity < 0) {
+        warnings.push(`${recordName(record)}：${preferZh(slot.nameZh, slot.name)}配方选项待确认`);
+        continue;
+      }
+      const key = JSON.stringify([option.kind, option.name, option.minQuality || 0]);
+      if (!materials.has(key)) materials.set(key, {...option, quantity: 0});
+      materials.get(key).quantity += option.quantity * row.quantity;
+    }
+  }
+  return {materials: [...materials.values()], seconds, warnings};
+}
+
+function openUtilityDialog(title, content, opener, className = "") {
+  if (document.querySelector("dialog[open]")) return null;
+  const previousOverflow = document.body.style.overflow;
+  document.body.insertAdjacentHTML("beforeend", `<dialog class="mission-dialog utility-dialog ${className}" aria-labelledby="utilityDialogTitle">
+    <header class="mission-dialog-head"><h2 id="utilityDialogTitle">${escapeHtml(title)}</h2><button type="button" class="mission-close" data-close-utility aria-label="关闭${escapeHtml(title)}" autofocus>×</button></header>
+    <div class="mission-dialog-body">${content}</div>
+    <footer class="mission-dialog-footer"><span>${escapeHtml(formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"))}</span><span>制作：Ayuan</span></footer></dialog>`);
+  const dialog = document.querySelector(".utility-dialog");
+  document.body.style.overflow = "hidden";
+  dialog.addEventListener("close", () => { dialog.remove(); document.body.style.overflow = previousOverflow; if (opener?.isConnected) opener.focus({preventScroll: true}); }, {once: true});
+  dialog.addEventListener("click", event => {
+    const rect = dialog.getBoundingClientRect();
+    if (event.target.closest("[data-close-utility]") || (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom))) dialog.close();
+  });
+  dialog.showModal();
+  return dialog;
+}
+
+function renderPlanBody() {
+  const totals = planTotals(state.craftPlan, state.records);
+  return `<div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>
+    <div class="plan-list">${state.craftPlan.map(row => {
+      const record = state.records.find(item => item.id === row.recordId);
+      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
+        <label>数量 <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" /></label>
+        <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
+        ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
+    }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
+    <section class="detail-section"><h3>材料合计</h3><div class="dismantle-output-list">${totals.materials.map(item => `<div><strong>${escapeHtml(materialName(item))}</strong><span>${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""} · ${formatNumber(Number(item.quantity.toFixed(6)))}${item.kind === "resource" ? " SCU" : " 件"}</span></div>`).join("") || '<p class="mission-empty">暂无材料</p>'}</div>
+    <p class="detail-note plan-time">累计制作耗时 ${escapeHtml(formatTime(totals.seconds))}（串行估算，不含排队）</p>
+    ${totals.warnings.map(warning => `<p class="detail-note">${escapeHtml(warning)}</p>`).join("")}</section>`;
+}
+
+function openCraftPlan(opener) {
+  const dialog = openUtilityDialog("制作清单", renderPlanBody(), opener, "planner-dialog");
+  if (!dialog) return;
+  const update = () => { savePlan(); dialog.querySelector(".mission-dialog-body").innerHTML = renderPlanBody(); };
+  dialog.addEventListener("change", event => {
+    const row = state.craftPlan.find(item => item.recordId === event.target.closest("[data-plan-row]")?.dataset.planRow);
+    if (!row) return;
+    if (event.target.matches("[data-plan-quantity]")) {
+      const n = Number(event.target.value);
+      row.quantity = Number.isFinite(n) && event.target.value.trim() ? Math.min(9999, Math.max(1, Math.round(n))) : row.quantity;
+    } else if (event.target.matches("[data-plan-choice]")) row.choices[event.target.dataset.planChoice] = Number(event.target.value);
+    else return;
+    update();
+  });
+  dialog.addEventListener("click", event => {
+    if (event.target.closest("[data-remove-plan]")) {
+      state.craftPlan = state.craftPlan.filter(row => row.recordId !== event.target.closest("[data-plan-row]").dataset.planRow);
+      update();
+    } else if (event.target.closest("[data-clear-plan]")) {
+      if (window.confirm("清空当前制作清单？")) { state.craftPlan = []; update(); }
+    }
+  });
+}
+
+function addToPlan(recordId, opener) {
+  const existing = state.craftPlan.find(row => row.recordId === recordId);
+  if (existing) existing.quantity = Math.min(9999, existing.quantity + 1);
+  else if (state.craftPlan.length < 100) state.craftPlan.push({recordId, quantity: 1, choices: {}});
+  savePlan();
+  openCraftPlan(opener);
+}
+
+function blueprintShareUrl(id, mode = state.mode) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = new URLSearchParams({blueprint: id, mode: mode === "dismantle" ? mode : "craft"}).toString();
+  return url.href;
+}
+
+async function shareBlueprint(id, opener) {
+  const link = blueprintShareUrl(id);
+  try {
+    await navigator.clipboard.writeText(link);
+    if (opener?.isConnected) { opener.textContent = "已复制"; opener.setAttribute("aria-label", "蓝图链接已复制"); }
+  } catch {
+    const dialog = openUtilityDialog("蓝图链接", `<label class="share-link-label">${escapeHtml(recordName(state.records.find(r => r.id === id)))}<input class="share-link-input" value="${escapeHtml(link)}" readonly aria-label="蓝图链接" /></label>`, opener);
+    dialog?.querySelector("input")?.select();
+  }
+}
+
+function restoreSharedBlueprint() {
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  const id = params.get("blueprint");
+  if (!id) return;
+  const record = state.records.find(item => item.id === id);
+  if (!record) {
+    openUtilityDialog("蓝图未收录", '<p class="mission-empty">该链接对应的蓝图在当前版本中未收录。</p>');
+    return;
+  }
+  state.query = ""; els.searchInput.value = ""; state.favoritesOnly = false;
+  setMode(params.get("mode") === "dismantle" && hasDismantleOutputs(record) ? "dismantle" : "craft");
+  resetFilters(); updateFavoriteControl(); selectRecord(id);
 }
 
 function formatDataUpdatedAt(value) {
@@ -242,7 +411,12 @@ const missionTypeOrder = [
   ["Ship Mining", "舰船采矿"],
   ["Hauling - Interstellar", "星际货运"],
   ["Hauling - Stellar", "星际货运"],
-  ["Refueling", "Refueling"],
+  ["Refueling", "加油"],
+  ["Hand Mining", "手持采矿"],
+  ["Priority", "优先任务"],
+  ["Battaglia", "巴塔利亚任务"],
+  ["Wikelo - Other Items", "维科洛物品兑换"],
+  ["Wikelo - Vehicles", "维科洛载具兑换"],
   ["Hauling", "货运"],
   ["Delivery", "快递"],
   ["Courier", "快递"],
@@ -276,7 +450,7 @@ function formatChance(value) {
 }
 
 function formatTime(seconds) {
-  if (!seconds) return "未知";
+  if (seconds == null || typeof seconds !== "number" || !Number.isFinite(seconds) || seconds < 0) return "未知";
   if (seconds < 60) return `${seconds} 秒`;
   const minutes = Math.floor(seconds / 60);
   const remain = seconds % 60;
@@ -460,11 +634,12 @@ function renderMaterialQuality(record, slot, slotIndex) {
   if (!(slot?.modifiers || []).length) return "";
   const quality = qualitySlotValue(record, slot, slotIndex);
   const minimum = qualitySlotMinimum(slot);
+  const confirmed = state.qualityConfirmed[qualitySlotKey(record, slotIndex)] === true;
   return `
     <div class="material-quality" data-quality-slot="${escapeHtml(qualitySlotKey(record, slotIndex))}">
       <div class="material-quality-control">
         <input type="range" min="${minimum}" max="1000" step="1" value="${quality}" data-quality-input data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质" />
-        <output>品质 ${formatNumber(quality)}</output>
+        <label class="quality-number" data-confirmed="${confirmed}">品质 <input type="number" inputmode="numeric" min="${minimum}" max="1000" step="1" value="${confirmed ? quality : ""}" placeholder="${quality}" data-quality-number data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质数值" aria-describedby="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" /><span class="quality-input-hint" id="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" role="tooltip">点击输入品质 · ${minimum}–1000</span></label>
       </div>
       ${renderQualityModifiers(slot, quality)}
     </div>
@@ -660,22 +835,43 @@ function mineralLocationSubline(location) {
 }
 
 function renderLocationSignalTooltip(location) {
-  const signal = location.signal || {};
-  const values = signal.values || [];
-  if (!values.length) return "";
-  const meta = [];
-  if (signal.probability) meta.push(`产出权重 ${signal.probability}%`);
-  if (signal.maxCluster) meta.push(`最大 ${signal.maxCluster} 簇`);
-  return `
-    <span class="mineral-signal-badge" aria-hidden="true">信号</span>
-    <div class="mineral-location-tooltip" role="tooltip">
-      <strong>该地点信号值</strong>
-      ${meta.length ? `<small>${escapeHtml(meta.join(" · "))}</small>` : ""}
-      <span class="mineral-signal-values">
-        ${values.map((value) => `<b>${escapeHtml(formatNumber(value))}</b>`).join(" ")}
-      </span>
-    </div>
-  `;
+  const signals = location.signals || (location.signal?.values?.length ? [location.signal] : []);
+  if (!signals.length) return "";
+  const unique = [...new Map(signals.map(s => [JSON.stringify([s.mode, s.base, s.primaryMaterial, s.clusterCounts, s.values]), s])).values()];
+  return `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-label="查看${escapeHtml(location.zh || location.en)}信号">信号</button>
+    <template data-signal-content><strong>${escapeHtml(mineralLocationLabel(location))}</strong>
+    ${unique.map(signal => `<div class="mineral-signal-entry">
+      <strong>${escapeHtml({ship: "舰采矿体", roc: "ROC 单矿", fps: "手采单矿"}[signal.mode] || "矿体")} · ${escapeHtml(signal.primaryMaterialZh || signal.primaryMaterial || "信号参考")}</strong>
+      ${signal.shared ? '<small>同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。</small>' : '<small>混合矿体以主矿信号为准，不代表只含该材料。</small>'}
+      <span class="mineral-signal-values">${signal.values.map(value => `<b>${escapeHtml(formatNumber(value))}</b>`).join("")}</span>
+      <small>${signal.clusterKnown ? `矿簇配置：${escapeHtml(signal.clusterCounts.join(" / "))} 块` : "矿簇配置未提供，仅作单矿参考"}</small>
+    </div>`).join("")}</template>`;
+}
+
+function closeSignalTooltip() {
+  document.querySelector(".mineral-location-tooltip")?.remove();
+  document.querySelectorAll("[data-signal-trigger][aria-expanded=true]").forEach(button => {
+    button.setAttribute("aria-expanded", "false"); button.removeAttribute("aria-describedby");
+  });
+}
+
+function showSignalTooltip(button) {
+  closeSignalTooltip();
+  const overlay = button.closest(".mineral-overlay");
+  const template = button.parentElement.querySelector("[data-signal-content]");
+  if (!overlay || !template) return;
+  overlay.insertAdjacentHTML("beforeend", `<div class="mineral-location-tooltip is-visible" role="tooltip">${template.innerHTML}</div>`);
+  const tooltip = overlay.querySelector(".mineral-location-tooltip");
+  const rect = button.getBoundingClientRect();
+  const card = overlay.querySelector(".mineral-card").getBoundingClientRect();
+  const width = Math.min(380, window.innerWidth - 32, card.width - 24);
+  tooltip.style.width = `${width}px`;
+  tooltip.style.left = `${Math.max(16, card.left + 12, Math.min(rect.right - width, card.right - width - 12, window.innerWidth - width - 16))}px`;
+  const height = tooltip.getBoundingClientRect().height;
+  tooltip.style.top = `${Math.max(16, Math.min(rect.bottom + 8, window.innerHeight - height - 16))}px`;
+  tooltip.id = "mineralSignalTooltip";
+  button.setAttribute("aria-expanded", "true");
+  button.setAttribute("aria-describedby", tooltip.id);
 }
 
 function renderMineralLocationGroups(info) {
@@ -701,9 +897,10 @@ function renderMineralLocationGroups(info) {
                 const subline = mineralLocationSubline(location);
                 const signalTooltip = renderLocationSignalTooltip(location);
                 return `
-                  <div class="mineral-location-item${signalTooltip ? " has-signal" : ""}" ${signalTooltip ? 'tabindex="0"' : ""}>
-                    <strong>${escapeHtml(mineralLocationLabel(location))}</strong>
+                  <div class="mineral-location-item${signalTooltip ? " has-signal" : ""}">
+                    <strong title="${escapeHtml(mineralLocationLabel(location))}">${escapeHtml(mineralLocationLabel(location))}</strong>
                     ${subline ? `<small>${escapeHtml(subline)}</small>` : ""}
+                    ${location.precision ? `<small>${location.precision === "template" ? "区域配置模板" : "区域分布"} · ${escapeHtml((location.modes || []).map(mode => ({ship: "舰采", roc: "ROC", fps: "手采"}[mode] || mode)).join(" / "))}${!signalTooltip ? " · 信号未提供" : ""}</small>` : ""}
                     ${signalTooltip}
                   </div>
                 `;
@@ -721,7 +918,7 @@ function renderMineralInfo(name) {
   const displayName = materialDisplayLabel(name, info?.nameZh || flowcldMaterialLabels[name]);
   const commodity = info?.commodityName && info.commodityName !== name ? info.commodityName : "";
   const hasLocationSignals = mineralLocationGroups.some(([key]) =>
-    (info?.locations?.[key] || []).some((location) => (location.signal?.values || []).length),
+    (info?.locations?.[key] || []).some((location) => location.signals?.length || location.signal?.values?.length),
   );
   const mineralMetadata = state.mineralLocations?.metadata || {};
   const latestMineralTimestamp = [mineralMetadata.retrievedAt, mineralMetadata.signalSyncedAt]
@@ -735,6 +932,7 @@ function renderMineralInfo(name) {
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: "Asia/Shanghai",
       })
     : "未知";
 
@@ -750,6 +948,7 @@ function renderMineralInfo(name) {
           <button type="button" class="mineral-close" data-close-mineral aria-label="关闭矿点详情">×</button>
         </header>
         <div class="mineral-card-body">
+          ${info?.hasReliableLocations && mineralMetadata.schemaVersion === 2 ? '<p class="detail-note">以下为当前版本的产出区域，不保证固定刷新。未提供可验证的地表坐标；区域模板不对应某个指定空间站。</p>' : ""}
           ${renderMineralLocationGroups(info)}
         </div>
         <footer class="mineral-source">
@@ -767,6 +966,7 @@ function openMineralInfo(name) {
 }
 
 function closeMineralInfo() {
+  closeSignalTooltip();
   els.detailPanel.querySelector(".mineral-overlay")?.remove();
 }
 
@@ -959,9 +1159,13 @@ function recordFlowcld(record) {
   return record.flowcld || {};
 }
 
+function recordClass(record) {
+  return Object.hasOwn(record.stats || {}, "componentClass") ? record.stats.componentClass : recordFlowcld(record).itemClass;
+}
+
 function recordComponentClass(record) {
-  const meta = recordFlowcld(record);
-  return preferZh(meta.itemClassCn, componentClassOrder.find(([id]) => id === meta.itemClass)?.[1] || meta.itemClass);
+  const value = recordClass(record);
+  return componentClassOrder.find(([id]) => id !== "all" && id === value)?.[1] || "";
 }
 
 function recordComponentType(record) {
@@ -985,7 +1189,7 @@ function recordWeaponType(record) {
 }
 
 function recordClassGrade(record) {
-  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordFlowcld(record).itemClass] || "";
+  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
   const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
   return `${abbreviation}${grade}`;
 }
@@ -1017,6 +1221,10 @@ function fitRecordSummaries(root) {
 }
 
 function recordMissionTypes(record) {
+  const primary = recordMissions(record).filter(m => Object.hasOwn(m, "missionType"));
+  if (primary.length || state.data?.sourcePolicy?.schemaVersion === 1) {
+    return [...new Set(primary.map(m => m.missionType).filter(Boolean))].map(name => ({name, label: missionTypeOrder.find(([id]) => id === name)?.[1] || name}));
+  }
   const meta = recordFlowcld(record);
   const names = Array.isArray(meta.rewardMissionTypes) ? meta.rewardMissionTypes : [];
   const namesCn = Array.isArray(meta.rewardMissionTypesCn) ? meta.rewardMissionTypesCn : [];
@@ -1239,7 +1447,7 @@ function initFilters() {
       }),
   ].join(""), componentTypeActive);
 
-  const componentClassCounts = countBy(componentRecords, (record) => recordFlowcld(record).itemClass);
+  const componentClassCounts = countBy(componentRecords, recordClass);
   const componentClassActive = state.category === "ship_component" ? state.componentClass : "none";
   renderDropdown(els.componentClassFilters, [
     optionTag("none", "无", undefined, componentClassActive),
@@ -1401,6 +1609,8 @@ function bindFilterSelect(select, key) {
 }
 
 function bindEvents() {
+  document.querySelector("#openPlan")?.addEventListener("click", event => openCraftPlan(event.currentTarget));
+  window.addEventListener("hashchange", restoreSharedBlueprint);
   window.addEventListener("resize", () => {
     window.cancelAnimationFrame(summaryResizeFrame);
     summaryResizeFrame = window.requestAnimationFrame(() => fitRecordSummaries(document));
@@ -1452,6 +1662,7 @@ function bindEvents() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeDropdowns();
+      closeSignalTooltip();
     }
   });
 
@@ -1481,6 +1692,16 @@ function bindEvents() {
   });
 
   els.detailPanel.addEventListener("click", (event) => {
+    const signalButton = event.target.closest("[data-signal-trigger]");
+    if (signalButton) {
+      showSignalTooltip(signalButton);
+      return;
+    }
+    if (!event.target.closest(".mineral-location-tooltip")) closeSignalTooltip();
+    const plan = event.target.closest("[data-add-plan]");
+    if (plan) { addToPlan(plan.dataset.addPlan, plan); return; }
+    const share = event.target.closest("[data-share-blueprint]");
+    if (share) { shareBlueprint(share.dataset.shareBlueprint, share); return; }
     const mission = event.target.closest("[data-mission-id]");
     if (mission) {
       openMissionInfo(mission.dataset.missionId, mission);
@@ -1504,7 +1725,7 @@ function bindEvents() {
   });
 
   els.detailPanel.addEventListener("input", (event) => {
-    const input = event.target.closest("[data-quality-input]");
+    const input = event.target.closest("[data-quality-input], [data-quality-number]");
     if (!input) return;
     const record = state.records.find((item) => item.id === input.dataset.recordId);
     if (!record) return;
@@ -1512,14 +1733,60 @@ function bindEvents() {
     const slot = getFirstTier(record).slots?.[slotIndex];
     if (!slot) return;
     const quality = Number(input.value);
-    state.qualityValues[qualitySlotKey(record, slotIndex)] = quality;
-    const container = input.closest("[data-quality-slot]");
-    container.querySelector("output").textContent = `品质 ${formatNumber(quality)}`;
-    const existing = container.querySelector(".quality-modifier-list");
-    if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
-    const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
-    if (summary) summary.outerHTML = renderQualitySummaryContent(record);
+    if (!input.value.trim()) {
+      if (input.validity?.badInput) { input.value = qualitySlotValue(record, slot, slotIndex); return; }
+      input.closest(".quality-number")?.setAttribute("data-confirmed", "false");
+      return;
+    }
+    if (!Number.isFinite(quality)) return;
+    if (quality < 0 || quality > 1000 || !Number.isInteger(quality)) {
+      setSlotQuality(record, slotIndex, quality);
+      return;
+    }
+    if (quality < qualitySlotMinimum(slot)) { input.closest(".quality-number").dataset.confirmed = "false"; return; }
+    setSlotQuality(record, slotIndex, quality);
   });
+  els.detailPanel.addEventListener("focusin", event => {
+    const input = event.target.closest("[data-quality-number]");
+    if (!input) return;
+    const record = state.records.find(item => item.id === input.dataset.recordId);
+    const slotIndex = Number(input.dataset.slotIndex);
+    const slot = record && getFirstTier(record).slots?.[slotIndex];
+    if (!slot) return;
+    input.placeholder = qualitySlotValue(record, slot, slotIndex);
+    input.value = "";
+    input.closest(".quality-number").dataset.confirmed = "false";
+  });
+  els.detailPanel.addEventListener("focusout", event => {
+    const input = event.target.closest("[data-quality-number]");
+    if (!input) return;
+    const record = state.records.find(item => item.id === input.dataset.recordId);
+    const slotIndex = Number(input.dataset.slotIndex);
+    const slot = record && getFirstTier(record).slots?.[slotIndex];
+    if (!slot) return;
+    if (input.value.trim()) { setSlotQuality(record, slotIndex, Number(input.value)); return; }
+    const confirmed = state.qualityConfirmed[qualitySlotKey(record, slotIndex)] === true;
+    input.placeholder = qualitySlotValue(record, slot, slotIndex);
+    input.value = confirmed ? input.placeholder : "";
+    input.closest(".quality-number").dataset.confirmed = String(confirmed);
+  });
+  els.detailPanel.addEventListener("beforeinput", event => {
+    if (event.target.matches("[data-quality-number]") && event.data && !/^\d+$/.test(event.data)) event.preventDefault();
+  });
+  els.detailPanel.addEventListener("pointerover", event => {
+    const button = event.target.closest("[data-signal-trigger]");
+    if (button && button.getAttribute("aria-expanded") !== "true") showSignalTooltip(button);
+  });
+  els.detailPanel.addEventListener("focusin", event => {
+    if (event.target.matches("[data-signal-trigger]")) showSignalTooltip(event.target);
+  });
+  els.detailPanel.addEventListener("focusout", event => {
+    if (event.target.matches("[data-signal-trigger]")) closeSignalTooltip();
+  });
+  document.addEventListener("scroll", event => {
+    if (!event.target.closest?.(".mineral-location-tooltip")) closeSignalTooltip();
+  }, true);
+  window.addEventListener("resize", closeSignalTooltip);
 }
 
 function materialMatches(record) {
@@ -1530,7 +1797,7 @@ function materialMatches(record) {
 
 function componentClassMatches(record) {
   if (state.category !== "ship_component") return true;
-  return state.componentClass === "all" || state.componentClass === "none" || recordFlowcld(record).itemClass === state.componentClass;
+  return state.componentClass === "all" || state.componentClass === "none" || recordClass(record) === state.componentClass;
 }
 
 function componentTypeMatches(record) {
@@ -1637,6 +1904,7 @@ function renderResults() {
 
 function selectRecord(id) {
   state.selectedId = id;
+  if (window.history?.replaceState) window.history.replaceState(null, "", blueprintShareUrl(id));
   els.resultList.querySelectorAll(".result-card").forEach((card) => {
     const active = card.dataset.id === id;
     card.classList.toggle("active", active);
@@ -1664,6 +1932,7 @@ function renderDismantleDetail(record) {
       <div class="detail-head">
         <span>拆解详情</span>
         <span class="detail-head-actions">
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏物品"}</button>
           <strong>${formatNumber(outputs.length)} 种回收物</strong>
         </span>
@@ -1734,6 +2003,11 @@ function renderDetail() {
         <span>${escapeHtml(recordManufacturer(record))}</span>
         ${componentClass ? `<span>${escapeHtml(componentClass)}</span>` : ""}
         <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
+      </div>
+
+      <div class="detail-tools">
+        <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
+        <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
       </div>
 
       ${renderQualitySummary(record)}
@@ -1851,6 +2125,8 @@ async function fetchJson(path) {
 
 async function boot() {
   state.favorites = loadFavorites();
+  try { state.craftPlan = validPlan(JSON.parse(window.localStorage.getItem(PLAN_STORAGE_KEY) || "[]")); }
+  catch { state.craftPlan = []; state.planSaved = false; }
   els.resultList.innerHTML = `<div class="loading-state"><div><h3>正在加载蓝图</h3><p>请稍候...</p></div></div>`;
   try {
     const [blueprintData, mineralData] = await Promise.all([
@@ -1861,6 +2137,9 @@ async function boot() {
     if (!Array.isArray(state.data.records)) throw new Error("blueprint-index.json 缺少 records 数组");
     if (mineralData) {
       state.mineralLocations = mineralData;
+      if (mineralData.metadata?.schemaVersion === 2 && mineralData.metadata.sourceVersion !== state.data.version) {
+        state.mineralLocations = {materials: {}, metadata: null};
+      }
     }
     state.records = state.data.records.map(prepareRecord);
     initMissionRewards();
@@ -1874,6 +2153,8 @@ async function boot() {
     initFilters();
     bindEvents();
     applyFilters();
+    updatePlanCount();
+    restoreSharedBlueprint();
   } catch (error) {
     console.error("蓝图数据加载失败。", error);
     els.resultList.innerHTML = `

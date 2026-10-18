@@ -46,6 +46,13 @@ class RefreshValidationTests(unittest.TestCase):
     def test_accepts_live_index_with_timestamp(self) -> None:
         validate_index(self.write_index(self.valid_index()), "4.9.0-live.12344265")
 
+    def test_quality_range_and_material_quantities_are_finite_and_bounded(self) -> None:
+        for minimum, quantity in ((-1, 1), (1001, 1), (True, 1), (1.5, 1), (float("inf"), 1), (0, -1), (0, float("nan"))):
+            index = self.valid_index()
+            index["records"][0]["tiers"] = [{"slots": [{"options": [{"minQuality": minimum, "quantity": quantity}]}]}]
+            with self.assertRaisesRegex(RuntimeError, "invalid (material quality range|crafting material quantity)"):
+                validate_index(self.write_index(index), index["version"])
+
     def test_rejects_missing_missions_even_with_complete_recipe_count(self) -> None:
         previous = self.valid_index()
         previous["records"][0]["sources"] = [{"poolId": "pool", "missions": [{"id": "one"}]}]
