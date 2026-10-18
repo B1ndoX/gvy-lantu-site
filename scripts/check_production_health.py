@@ -100,7 +100,7 @@ def mineral_coverage(payload: dict[str, Any]) -> tuple[int, int, int, int]:
         if material.get("hasReliableLocations") and material_locations:
             reliable += 1
         locations += len(material_locations)
-        signals += sum(1 for location in material_locations if location.get("signal"))
+        signals += sum(1 for location in material_locations if location.get("signals") or location.get("signal"))
     return len(materials), reliable, locations, signals
 
 
@@ -122,6 +122,9 @@ def validate_production_snapshot(
         raise RuntimeError("production blueprint data does not match the committed snapshot")
 
     coverage = mineral_coverage(production_minerals)
+    mineral_metadata = production_minerals.get("metadata") or {}
+    if mineral_metadata.get("schemaVersion") == 2 and mineral_metadata.get("sourceVersion") != version:
+        raise RuntimeError("production mining data does not match the blueprint LIVE version")
     minimums = (
         MIN_MINERAL_MATERIALS,
         MIN_RELIABLE_MINERALS,

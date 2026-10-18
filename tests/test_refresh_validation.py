@@ -10,7 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from refresh_blueprint_data import validate_flowcld_calibration, validate_index
+from refresh_blueprint_data import validate_flowcld_calibration, validate_index, validate_mission_coverage
+from build_data import MISSION_REWARDS_SCHEMA
 
 
 class RefreshValidationTests(unittest.TestCase):
@@ -38,10 +39,45 @@ class RefreshValidationTests(unittest.TestCase):
             "records": records,
             "counts": {"blueprints": len(records), "categories": {"other": len(records)}},
             "localization": {"starCitizenLocalizationCount": 7000},
+            "missionRewards": {"schemaVersion": MISSION_REWARDS_SCHEMA, "version": "4.9.0-live.12344265", "missions": {}, "systems": [], "locations": {}},
+            "itemStats": {"schemaVersion": 1, "version": "4.9.0-live.12344265", "matchedItems": 0, "recordsWithBaseStats": 0},
         }
 
     def test_accepts_live_index_with_timestamp(self) -> None:
         validate_index(self.write_index(self.valid_index()), "4.9.0-live.12344265")
+
+    def test_quality_range_and_material_quantities_are_finite_and_bounded(self) -> None:
+        for minimum, quantity in ((-1, 1), (1001, 1), (True, 1), (1.5, 1), (float("inf"), 1), (0, -1), (0, float("nan"))):
+            index = self.valid_index()
+            index["records"][0]["tiers"] = [{"slots": [{"options": [{"minQuality": minimum, "quantity": quantity}]}]}]
+            with self.assertRaisesRegex(RuntimeError, "invalid (material quality range|crafting material quantity)"):
+                validate_index(self.write_index(index), index["version"])
+
+    def test_rejects_missing_missions_even_with_complete_recipe_count(self) -> None:
+        previous = self.valid_index()
+        previous["records"][0]["sources"] = [{"poolId": "pool", "missions": [{"id": "one"}]}]
+        candidate = self.valid_index()
+        with self.assertRaisesRegex(RuntimeError, "mission reward .* coverage dropped"):
+            validate_index(self.write_index(candidate), candidate["version"], previous=previous)
+
+    def test_coverage_supports_legacy_ids_and_rejects_item_reward_loss(self) -> None:
+        previous = self.valid_index()
+        previous["records"][0]["sources"] = [{"poolId": "pool", "missions": [{"title": "Legacy", "systems": ["Nyx"]}]}]
+        validate_mission_coverage(previous, previous)
+        candidate = json.loads(json.dumps(previous))
+        previous["missionRewards"]["missions"] = {"one": {"items": [{"name": "Rifle", "amount": 1}]}}
+        with self.assertRaisesRegex(RuntimeError, "itemRewards coverage dropped"):
+            validate_mission_coverage(candidate, previous)
+
+    def test_rejects_loss_of_previously_published_conditions_and_locations(self) -> None:
+        previous = self.valid_index()
+        previous["missionRewards"]["missions"] = {"one": {"requirements": {"canBeShared": True}, "items": []}}
+        with self.assertRaisesRegex(RuntimeError, "conditions coverage dropped"):
+            validate_mission_coverage(self.valid_index(), previous)
+        previous["missionRewards"]["missions"] = {}
+        previous["missionRewards"]["locations"] = {"place": {"name": "Nyx"}}
+        with self.assertRaisesRegex(RuntimeError, "locations coverage dropped"):
+            validate_mission_coverage(self.valid_index(), previous)
 
     def test_rejects_missing_update_timestamp(self) -> None:
         payload = self.valid_index()
@@ -70,7 +106,7 @@ class RefreshValidationTests(unittest.TestCase):
     def test_accepts_consistent_quality_metadata(self) -> None:
         payload = self.valid_index()
         payload["records"][0]["tiers"] = [{"slots": [{"modifiers": [{"propertyKey": "weapon_damage"}]}]}]
-        payload["records"][0]["qualityStats"] = [{"value": 10}]
+        payload["records"][0]["qualityStats"] = [{"id": "damage", "label": "伤害", "value": 10, "properties": ["weapon_damage"]}]
         payload["qualityEffects"] = {
             "version": payload["version"].upper(),
             "recordsWithModifiers": 1,

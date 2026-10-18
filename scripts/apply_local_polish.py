@@ -94,6 +94,16 @@ STAT_TERMS = {
     "TractorBeam": "牵引光束",
     "SalvageHead": "打捞头",
     "SalvageModifier": "打捞模块",
+    "Char_Armor_Helmet": "头盔",
+    "Char_Armor_Arms": "臂甲",
+    "Char_Armor_Torso": "胸甲",
+    "Char_Armor_Legs": "腿甲",
+    "Char_Armor_Backpack": "背包",
+    "Char_Armor_Undersuit": "内衬",
+    "Char_Clothing_Torso_0": "上身服装",
+    "Char_Clothing_Torso_1": "上身服装",
+    "Char_Clothing_Legs": "下身服装",
+    "unknown": "未知",
     "resource": "资源",
     "item": "物品",
     "missionitems": "任务物品",
@@ -478,6 +488,8 @@ def flowcld_name(record: dict[str, Any], calibration: dict[str, dict[str, str]])
     by_name = calibration.get("by_name") or {}
     by_internal = calibration.get("by_internal") or {}
     record_id = str(record.get("id") or "").strip()
+    if "componentClass" in (record.get("stats") or {}):
+        return by_id.get(record_id)
     clean_name = normalize_name(str(record.get("name") or ""))
     product_entity_class = normalize_name(str(record.get("productEntityClass") or ""))
     tag = normalize_name(str(record.get("tag") or ""))
@@ -561,7 +573,7 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
             "starCitizenLocalizationCount": len(starcitizen_names),
             "starCitizenLocalizationCounts": starcitizen_counts,
             "flowcldCalibrationCount": len(flowcld_calibration.get("by_id") or {}),
-            "flowcldMetadataCount": len(flowcld_calibration.get("items_by_id") or {}),
+            "flowcldMetadataCount": 0 if index.get("sourcePolicy") else len(flowcld_calibration.get("items_by_id") or {}),
             "flowcldCalibrationSource": "https://flowcld.xyz/tools/blueprint",
         }
     )
@@ -570,7 +582,8 @@ def apply(index: dict[str, Any], local_names: dict[str, str], flowcld_calibratio
         local_name = localize_product_name(str(record.get("name") or ""), local_names)
         calibrated_name = flowcld_name(record, flowcld_calibration)
         calibrated_item = flowcld_item(record, flowcld_calibration)
-        apply_flowcld_metadata(record, calibrated_item)
+        if not index.get("sourcePolicy"):
+            apply_flowcld_metadata(record, calibrated_item)
         if local_name:
             zh["name"] = local_name
             zh["nameSource"] = "starcitizen-localization"

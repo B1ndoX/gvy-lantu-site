@@ -240,22 +240,40 @@ def enrich_index(index: dict[str, Any], items: list[dict[str, Any]], source_vers
     if normalize_version(index_version) != normalize_version(source_version):
         raise RuntimeError(f"quality data version mismatch: index={index_version}, community={source_version}")
 
-    by_name = {str(item.get("name")): item for item in items if item.get("name")}
+    by_entity = {}
+    for item in items:
+        entity = item.get("uuid") or item.get("entityClass")
+        if entity:
+            by_entity.setdefault(str(entity).lower(), []).append(item)
+    primary = index.get("itemStats") or {}
+    preserve_primary = primary.get("version", "").lower() == index_version.lower() and primary.get("schemaVersion") == 1
     records_with_modifiers = 0
     matched_items = 0
+    community_matched_items = 0
     records_with_base_stats = 0
 
     for record in index.get("records") or []:
+        primary_metrics = {metric["id"]: metric for metric in record.get("baseStats") or []}
+        existing = [metric for metric in record.get("qualityStats") or []
+                    if preserve_primary and metric.get("id") in primary_metrics
+                    and metric.get("value") == primary_metrics[metric["id"]].get("value")]
         record.pop("qualityStats", None)
         keys = modifier_keys(record)
         if not keys:
             continue
         records_with_modifiers += 1
-        item = by_name.get(str(record.get("name") or ""))
-        if not item:
-            continue
-        matched_items += 1
-        metrics = extract_quality_metrics(item, keys)
+        matches = by_entity.get(str(record.get("productEntityClass") or "").lower(), [])
+        item = matches[0] if len(matches) == 1 else None
+        community_matched_items += bool(item)
+        matched_items += bool(item or existing)
+        metrics = list(existing)
+        ids = {metric["id"] for metric in existing}
+        for metric in extract_quality_metrics(item, keys) if item else []:
+            if metric["id"] in ids:
+                continue
+            if preserve_primary and record.get("baseStatNotes") and metric["id"] in {"alpha_damage", "burst_dps", "fire_rate"}:
+                continue
+            metrics.append(metric)
         if metrics:
             record["qualityStats"] = metrics
             records_with_base_stats += 1
@@ -264,15 +282,17 @@ def enrich_index(index: dict[str, Any], items: list[dict[str, Any]], source_vers
         "recordsWithModifiers": records_with_modifiers,
         "matchedItems": matched_items,
         "recordsWithBaseStats": records_with_base_stats,
+        "communityMatchedItems": community_matched_items,
     }
-    index["qualityEffects"] = {"version": source_version, **coverage}
+    index["qualityEffects"] = {"version": index_version, "communityVersion": source_version,
+                               "source": "scmdb+community" if preserve_primary else "community", **coverage}
     return coverage
 
 
 def validate_coverage(index: dict[str, Any], coverage: dict[str, int]) -> None:
     record_count = len(index.get("records") or [])
     modifier_count = coverage["recordsWithModifiers"]
-    matched_count = coverage["matchedItems"]
+    matched_count = coverage.get("communityMatchedItems", coverage["matchedItems"])
     base_count = coverage["recordsWithBaseStats"]
     if not record_count or modifier_count < int(record_count * 0.7):
         raise RuntimeError(

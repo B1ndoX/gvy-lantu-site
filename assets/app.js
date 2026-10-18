@@ -17,15 +17,29 @@ const state = {
   favoritesOnly: false,
   favorites: new Set(),
   qualityValues: {},
+  qualityConfirmed: {},
   sort: "relevance",
   visibleResults: 0,
+  missions: new Map(),
+  rewardPools: new Map(),
+  craftPlan: [],
+  planSaved: true,
 };
 
 const DATA_VERSION = "__BUILD_DATA_VERSION__";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
+const SOURCE_TASK_PREVIEW_LIMIT = 12;
+const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
+const PLAN_STORAGE_KEY = "gvy-lantu-craft-plan-v1";
 let searchInputTimer = 0;
+let summaryResizeFrame = 0;
+let mineralOpener = null;
+let mineralPreviousOverflow = "";
+let mineralSignal = null;
+let mineralSignalCloseTimer = 0;
+let mineralPointerType = "mouse";
 
 const els = {
   dataStatus: document.querySelector("#dataStatus"),
@@ -97,6 +111,172 @@ function toggleFavorite(recordId) {
   persistFavorites();
   updateFavoriteControl();
   applyFilters();
+}
+
+function setSlotQuality(record, slotIndex, value) {
+  const slot = getFirstTier(record).slots?.[slotIndex];
+  if (!slot?.modifiers?.length) return;
+  const quality = Math.round(Math.max(qualitySlotMinimum(slot), Math.min(1000, Number.isFinite(value) ? value : qualitySlotBaseline(slot))));
+  state.qualityValues[qualitySlotKey(record, slotIndex)] = quality;
+  state.qualityConfirmed[qualitySlotKey(record, slotIndex)] = true;
+  const container = [...els.detailPanel.querySelectorAll("[data-quality-slot]")].find(el => el.dataset.qualitySlot === qualitySlotKey(record, slotIndex));
+  if (!container) return;
+  container.querySelectorAll("[data-quality-input], [data-quality-number]").forEach(input => { input.value = quality; });
+  container.querySelector(".quality-number").dataset.confirmed = "true";
+  container.querySelector(".quality-number").style.setProperty("--quality-digits", String(quality).length);
+  container.querySelector("[data-quality-number]").placeholder = quality;
+  const existing = container.querySelector(".quality-modifier-list");
+  if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
+  const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
+  if (summary) summary.outerHTML = renderQualitySummaryContent(record);
+}
+
+function validPlan(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  return value.filter(row => {
+    if (!row || typeof row.recordId !== "string" || !row.recordId || row.recordId.length > 200 || seen.has(row.recordId)
+      || !Number.isInteger(row.quantity) || row.quantity < 1 || row.quantity > 9999) return false;
+    seen.add(row.recordId);
+    return true;
+  }).slice(0, 100).map(row => ({recordId: row.recordId, quantity: row.quantity,
+    choices: row.choices && typeof row.choices === "object" && !Array.isArray(row.choices) ? row.choices : {}}));
+}
+
+function savePlan() {
+  try {
+    window.localStorage.setItem(PLAN_STORAGE_KEY, JSON.stringify(state.craftPlan));
+    state.planSaved = true;
+  } catch { state.planSaved = false; }
+  updatePlanCount();
+}
+
+function updatePlanCount() {
+  const badge = document.querySelector("#planCount");
+  if (badge) badge.textContent = formatNumber(state.craftPlan.reduce((sum, row) => sum + row.quantity, 0));
+}
+
+function planTotals(plan, records) {
+  const materials = new Map();
+  let seconds = 0;
+  const warnings = [];
+  for (const row of validPlan(plan)) {
+    const record = records.find(item => item.id === row.recordId);
+    if (!record) { warnings.push(`当前版本未收录：${row.recordId}`); continue; }
+    const tier = getFirstTier(record);
+    const time = tier.craftTimeSeconds;
+    if (typeof time === "number" && Number.isFinite(time) && time >= 0) seconds += time * row.quantity;
+    else warnings.push(`${recordName(record)}：制作耗时未提供`);
+    for (const [index, slot] of (tier.slots || []).entries()) {
+      const choice = row.choices[index] ?? 0;
+      const option = Number.isInteger(choice) ? slot.options?.[choice] : null;
+      if (!option || typeof option.quantity !== "number" || !Number.isFinite(option.quantity) || option.quantity < 0) {
+        warnings.push(`${recordName(record)}：${preferZh(slot.nameZh, slot.name)}配方选项待确认`);
+        continue;
+      }
+      const key = JSON.stringify([option.kind, option.name, option.minQuality || 0]);
+      if (!materials.has(key)) materials.set(key, {...option, quantity: 0});
+      materials.get(key).quantity += option.quantity * row.quantity;
+    }
+  }
+  return {materials: [...materials.values()], seconds, warnings};
+}
+
+function openUtilityDialog(title, content, opener, className = "") {
+  if (document.querySelector("dialog[open]")) return null;
+  const previousOverflow = document.body.style.overflow;
+  document.body.insertAdjacentHTML("beforeend", `<dialog class="mission-dialog utility-dialog ${className}" aria-labelledby="utilityDialogTitle">
+    <header class="mission-dialog-head"><h2 id="utilityDialogTitle">${escapeHtml(title)}</h2><button type="button" class="mission-close" data-close-utility aria-label="关闭${escapeHtml(title)}" autofocus>×</button></header>
+    <div class="mission-dialog-body">${content}</div>
+    <footer class="mission-dialog-footer"><span>${escapeHtml(formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"))}</span><span>制作：Ayuan</span></footer></dialog>`);
+  const dialog = document.querySelector(".utility-dialog");
+  document.body.style.overflow = "hidden";
+  dialog.addEventListener("close", () => { dialog.remove(); document.body.style.overflow = previousOverflow; if (opener?.isConnected) opener.focus({preventScroll: true}); }, {once: true});
+  dialog.addEventListener("click", event => {
+    const rect = dialog.getBoundingClientRect();
+    if (event.target.closest("[data-close-utility]") || (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom))) dialog.close();
+  });
+  dialog.showModal();
+  return dialog;
+}
+
+function renderPlanBody() {
+  const totals = planTotals(state.craftPlan, state.records);
+  return `<div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>
+    <div class="plan-list">${state.craftPlan.map(row => {
+      const record = state.records.find(item => item.id === row.recordId);
+      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
+        <label>数量 <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" /></label>
+        <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
+        ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
+    }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
+    <section class="detail-section"><h3>材料合计</h3><div class="dismantle-output-list">${totals.materials.map(item => `<div><strong>${escapeHtml(materialName(item))}</strong><span>${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""} · ${formatNumber(Number(item.quantity.toFixed(6)))}${item.kind === "resource" ? " SCU" : " 件"}</span></div>`).join("") || '<p class="mission-empty">暂无材料</p>'}</div>
+    <p class="detail-note plan-time">累计制作耗时 ${escapeHtml(formatTime(totals.seconds))}（串行估算，不含排队）</p>
+    ${totals.warnings.map(warning => `<p class="detail-note">${escapeHtml(warning)}</p>`).join("")}</section>`;
+}
+
+function openCraftPlan(opener) {
+  const dialog = openUtilityDialog("制作清单", renderPlanBody(), opener, "planner-dialog");
+  if (!dialog) return;
+  const update = () => { savePlan(); dialog.querySelector(".mission-dialog-body").innerHTML = renderPlanBody(); };
+  dialog.addEventListener("change", event => {
+    const row = state.craftPlan.find(item => item.recordId === event.target.closest("[data-plan-row]")?.dataset.planRow);
+    if (!row) return;
+    if (event.target.matches("[data-plan-quantity]")) {
+      const n = Number(event.target.value);
+      row.quantity = Number.isFinite(n) && event.target.value.trim() ? Math.min(9999, Math.max(1, Math.round(n))) : row.quantity;
+    } else if (event.target.matches("[data-plan-choice]")) row.choices[event.target.dataset.planChoice] = Number(event.target.value);
+    else return;
+    update();
+  });
+  dialog.addEventListener("click", event => {
+    if (event.target.closest("[data-remove-plan]")) {
+      state.craftPlan = state.craftPlan.filter(row => row.recordId !== event.target.closest("[data-plan-row]").dataset.planRow);
+      update();
+    } else if (event.target.closest("[data-clear-plan]")) {
+      if (window.confirm("清空当前制作清单？")) { state.craftPlan = []; update(); }
+    }
+  });
+}
+
+function addToPlan(recordId, opener) {
+  const existing = state.craftPlan.find(row => row.recordId === recordId);
+  if (existing) existing.quantity = Math.min(9999, existing.quantity + 1);
+  else if (state.craftPlan.length < 100) state.craftPlan.push({recordId, quantity: 1, choices: {}});
+  savePlan();
+  openCraftPlan(opener);
+}
+
+function blueprintShareUrl(id, mode = state.mode) {
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = new URLSearchParams({blueprint: id, mode: mode === "dismantle" ? mode : "craft"}).toString();
+  return url.href;
+}
+
+async function shareBlueprint(id, opener) {
+  const link = blueprintShareUrl(id);
+  try {
+    await navigator.clipboard.writeText(link);
+    if (opener?.isConnected) { opener.textContent = "已复制"; opener.setAttribute("aria-label", "蓝图链接已复制"); }
+  } catch {
+    const dialog = openUtilityDialog("蓝图链接", `<label class="share-link-label">${escapeHtml(recordName(state.records.find(r => r.id === id)))}<input class="share-link-input" value="${escapeHtml(link)}" readonly aria-label="蓝图链接" /></label>`, opener);
+    dialog?.querySelector("input")?.select();
+  }
+}
+
+function restoreSharedBlueprint() {
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  const id = params.get("blueprint");
+  if (!id) return;
+  const record = state.records.find(item => item.id === id);
+  if (!record) {
+    openUtilityDialog("蓝图未收录", '<p class="mission-empty">该链接对应的蓝图在当前版本中未收录。</p>');
+    return;
+  }
+  state.query = ""; els.searchInput.value = ""; state.favoritesOnly = false;
+  setMode(params.get("mode") === "dismantle" && hasDismantleOutputs(record) ? "dismantle" : "craft");
+  resetFilters(); updateFavoriteControl(); selectRecord(id);
 }
 
 function formatDataUpdatedAt(value) {
@@ -237,7 +417,12 @@ const missionTypeOrder = [
   ["Ship Mining", "舰船采矿"],
   ["Hauling - Interstellar", "星际货运"],
   ["Hauling - Stellar", "星际货运"],
-  ["Refueling", "Refueling"],
+  ["Refueling", "加油"],
+  ["Hand Mining", "手持采矿"],
+  ["Priority", "优先任务"],
+  ["Battaglia", "巴塔利亚任务"],
+  ["Wikelo - Other Items", "维科洛物品兑换"],
+  ["Wikelo - Vehicles", "维科洛载具兑换"],
   ["Hauling", "货运"],
   ["Delivery", "快递"],
   ["Courier", "快递"],
@@ -271,7 +456,7 @@ function formatChance(value) {
 }
 
 function formatTime(seconds) {
-  if (!seconds) return "未知";
+  if (seconds == null || typeof seconds !== "number" || !Number.isFinite(seconds) || seconds < 0) return "未知";
   if (seconds < 60) return `${seconds} 秒`;
   const minutes = Math.floor(seconds / 60);
   const remain = seconds % 60;
@@ -329,6 +514,7 @@ function recordManufacturer(record) {
 }
 
 function recordType(record) {
+  if (record.category.id === "ship_weapon") return recordWeaponType(record);
   return preferZh(record.zh?.type, record.type);
 }
 
@@ -454,11 +640,12 @@ function renderMaterialQuality(record, slot, slotIndex) {
   if (!(slot?.modifiers || []).length) return "";
   const quality = qualitySlotValue(record, slot, slotIndex);
   const minimum = qualitySlotMinimum(slot);
+  const confirmed = state.qualityConfirmed[qualitySlotKey(record, slotIndex)] === true;
   return `
     <div class="material-quality" data-quality-slot="${escapeHtml(qualitySlotKey(record, slotIndex))}">
       <div class="material-quality-control">
         <input type="range" min="${minimum}" max="1000" step="1" value="${quality}" data-quality-input data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质" />
-        <output>品质 ${formatNumber(quality)}</output>
+        <div class="quality-number" data-confirmed="${confirmed}" style="--quality-digits: ${String(quality).length}"><span>品质</span><input type="number" inputmode="numeric" min="${minimum}" max="1000" step="1" value="${confirmed ? quality : ""}" placeholder="${quality}" data-quality-number data-record-id="${escapeHtml(record.id)}" data-slot-index="${slotIndex}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}品质数值" aria-describedby="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" /><span class="quality-input-hint" id="qualityHint-${escapeHtml(qualitySlotKey(record, slotIndex))}" role="tooltip">点击输入品质 · ${minimum}–1000</span></div>
       </div>
       ${renderQualityModifiers(slot, quality)}
     </div>
@@ -590,6 +777,16 @@ function renderQualitySummary(record) {
   `;
 }
 
+function renderBaseStats(record) {
+  const metrics = record.baseStats || [];
+  if (!metrics.length) return "";
+  return `<details class="detail-section base-stats">
+    <summary>基础属性 <small>Q500 基准</small></summary>
+    <div class="spec-grid">${metrics.map((metric) => `<div class="spec-item"><strong>${escapeHtml(metric.label)}</strong><span>${escapeHtml(formatQualityValue(metric.value, metric.digits, metric.unit))}</span></div>`).join("")}</div>
+    ${(record.baseStatNotes || []).map((note) => `<p class="detail-note">${escapeHtml(note)}</p>`).join("")}
+  </details>`;
+}
+
 function renderDismantle(record, standalone = false) {
   const dismantle = record.dismantle || {};
   const outputs = dismantle.outputs || [];
@@ -597,7 +794,7 @@ function renderDismantle(record, standalone = false) {
   return `
     <section class="detail-section dismantle-section">
       <h3>${standalone ? "拆解所得" : "拆解回收"}</h3>
-      <p class="detail-note">按当前 LIVE 拆解规则计算，仅显示可回收资源；实际结果以游戏版本为准。</p>
+      <p class="detail-note">按当前 LIVE 拆解规则计算，显示可回收的资源与物品；实际结果以游戏版本为准。</p>
       <div class="dismantle-summary">
         <span>效率 ${Math.round((Number(dismantle.efficiency) || 0) * 100)}%</span>
         <span>耗时 ${formatTime(dismantle.timeSeconds)}</span>
@@ -636,77 +833,175 @@ function mineralLocationLabel(location) {
 
 function mineralLocationSubline(location) {
   const parts = [];
-  if (location.systemEn && location.systemZh) parts.push(`${location.systemZh} (${location.systemEn})`);
-  if (location.parentEn && location.parentZh && location.parentEn !== location.en) {
-    parts.push(`${location.parentZh} (${location.parentEn})`);
+  if (location.systemEn) parts.push(mineralLocationLabel({en: location.systemEn, zh: location.systemZh}));
+  if (location.parentEn && location.parentEn !== location.en && location.parentEn !== location.systemEn) {
+    parts.push(mineralLocationLabel({en: location.parentEn, zh: location.parentZh}));
   }
-  return parts.join(" · ");
+  return parts.join(" › ");
 }
 
-function renderLocationSignalTooltip(location) {
-  const signal = location.signal || {};
-  const values = signal.values || [];
-  if (!values.length) return "";
-  const meta = [];
-  if (signal.probability) meta.push(`产出权重 ${signal.probability}%`);
-  if (signal.maxCluster) meta.push(`最大 ${signal.maxCluster} 簇`);
-  return `
-    <span class="mineral-signal-badge" aria-hidden="true">信号</span>
-    <div class="mineral-location-tooltip" role="tooltip">
-      <strong>该地点信号值</strong>
-      ${meta.length ? `<small>${escapeHtml(meta.join(" · "))}</small>` : ""}
-      <span class="mineral-signal-values">
-        ${values.map((value) => `<b>${escapeHtml(formatNumber(value))}</b>`).join(" ")}
-      </span>
+function mineralLocationEntries(info) {
+  return mineralLocationGroups.filter(([key]) => key !== "starSystems")
+    .flatMap(([key, label]) => (info?.locations?.[key] || []).map(location => ({location, label})))
+    .map((entry, index) => ({...entry, index}));
+}
+
+function mineralSystems(info) {
+  const systems = new Map((info?.locations?.starSystems || []).map(system => [system.en, system]));
+  for (const {location} of mineralLocationEntries(info)) {
+    const key = location.systemEn || "unknown";
+    if (!systems.has(key)) systems.set(key, {en: key, zh: location.systemZh || (key === "unknown" ? "星系未注明" : key)});
+  }
+  return [...systems.values()];
+}
+
+function renderMineralSystems(info) {
+  const systems = mineralSystems(info);
+  if (!systems.length) return "";
+  if (systems.length === 1) return `<p class="mineral-system-label">${escapeHtml(systems[0].en === "unknown" ? systems[0].zh : mineralLocationLabel(systems[0]))}</p>`;
+  return `<div class="mineral-system-filter" role="group" aria-label="分布星系" style="--system-count:${systems.length + 1}">
+    <button type="button" data-mineral-system="all" aria-pressed="true">全部</button>
+    ${systems.map(system => `<button type="button" data-mineral-system="${escapeHtml(system.en)}" aria-pressed="false" title="${escapeHtml(mineralLocationLabel(system))}">${escapeHtml(system.zh || system.en)}</button>`).join("")}
+  </div>`;
+}
+
+function mineralLocationSignals(location, name) {
+  const signals = location.signals || (location.signal?.values?.length ? [location.signal] : []);
+  return [...new Map(signals.map(signal => [JSON.stringify([signal.mode, signal.base, signal.primaryMaterial, signal.clusterCounts, signal.values]), signal])).values()]
+    .sort((left, right) => Number(right.primaryMaterial === name && !right.shared) - Number(left.primaryMaterial === name && !left.shared));
+}
+
+function renderLocationSignals(location, name, index) {
+  const signals = mineralLocationSignals(location, name);
+  if (!signals.length) return {button: "", panel: ""};
+  const id = `mineralSignal-${index}`;
+  const material = mineralLocationInfo(name)?.nameZh || name;
+  const multipleModes = new Set(signals.map(signal => signal.mode)).size > 1;
+  const button = `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-controls="${id}" aria-haspopup="dialog" aria-label="查看${escapeHtml(location.zh || location.en)}信号">信号</button>`;
+  const entries = signals.map(signal => {
+    const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
+    const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "";
+    const primary = signal.primaryMaterialZh || signal.primaryMaterial;
+    const relation = signal.shared ? "共通信号" : primary
+      ? `${primary}为主矿${signal.primaryMaterial !== name ? `，伴生${material}` : ""}` : "信号参考";
+    const values = signal.values.map((value, i) => {
+      const label = signal.shared ? "单矿" : paired ? `${signal.clusterCounts[i]} 块` : "单矿参考";
+      return `<span aria-label="${escapeHtml(label)}：${escapeHtml(formatNumber(value))}"><b>${escapeHtml(formatNumber(value))}</b></span>`;
+    }).join("");
+    return `<div class="mineral-signal-entry"><strong>${escapeHtml(multipleModes && mode ? `${mode} · ${relation}` : relation)}</strong>
+      <div class="mineral-signal-values">${values}</div></div>`;
+  }).join("");
+  const panel = `<template id="${id}-content"><header class="mineral-signal-head"><div><strong id="${id}-title">${escapeHtml(mineralLocationLabel(location))}</strong><small>${escapeHtml(mineralLocationSubline(location))}</small></div><button type="button" data-close-signal aria-label="关闭信号">×</button></header>
+    <div class="mineral-signal-content" tabindex="0" role="region" aria-label="矿体信号">${entries}
+      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。" : ""}</p>
     </div>
-  `;
+  </template>`;
+  return {button, panel};
 }
 
-function renderMineralLocationGroups(info) {
+function closeLocationSignals(restoreFocus = false) {
+  clearTimeout(mineralSignalCloseTimer);
+  if (!mineralSignal) return;
+  const {button, panel} = mineralSignal;
+  mineralSignal = null;
+  button.setAttribute("aria-expanded", "false");
+  panel.remove();
+  if (restoreFocus && button.isConnected) button.focus({preventScroll: true});
+}
+
+function mineralSignalBounds(anchor, size, bounds) {
+  const left = Math.max(bounds.left, Math.min(anchor.right - size.width, bounds.right - size.width));
+  const below = anchor.bottom + 8;
+  const top = below + size.height <= bounds.bottom ? below : Math.max(bounds.top, anchor.top - size.height - 8);
+  return {left, top: Math.min(top, bounds.bottom - size.height)};
+}
+
+function showLocationSignals(button, mode = "hover") {
+  clearTimeout(mineralSignalCloseTimer);
+  if (mineralSignal?.button === button) {
+    mineralSignal.mode = mode;
+    return;
+  }
+  const overlay = button.closest(".mineral-overlay");
+  const id = button.getAttribute("aria-controls");
+  const template = overlay?.querySelector(`#${id}-content`);
+  if (!template) return;
+  closeLocationSignals();
+  overlay.insertAdjacentHTML("beforeend", `<section class="mineral-signal-popover" id="${id}" role="dialog" aria-labelledby="${id}-title">${template.innerHTML}</section>`);
+  const panel = overlay.querySelector(".mineral-signal-popover");
+  const card = overlay.querySelector(".mineral-card").getBoundingClientRect();
+  const body = overlay.querySelector(".mineral-card-body").getBoundingClientRect();
+  const footer = overlay.querySelector(".mineral-source").getBoundingClientRect();
+  const bounds = {left: Math.max(8, card.left + 8), right: Math.min(window.innerWidth - 8, card.right - 8),
+    top: Math.max(8, card.top + 8, body.top), bottom: Math.min(window.innerHeight - 8, card.bottom - 8, footer.top - 4)};
+  // Short dialogs still need room for a readable, scrollable signal layer.
+  if (bounds.bottom - bounds.top < 180) {
+    bounds.top = Math.max(8, card.top + 8);
+    bounds.bottom = Math.min(window.innerHeight - 8, card.bottom - 8);
+  }
+  panel.style.width = "max-content";
+  panel.style.maxWidth = `${Math.min(360, bounds.right - bounds.left)}px`;
+  panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
+  const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
+  panel.style.left = `${position.left}px`;
+  panel.style.top = `${position.top}px`;
+  button.setAttribute("aria-expanded", "true");
+  mineralSignal = {button, panel, mode};
+}
+
+function mineralSignalContains(target) {
+  return !!target && !!mineralSignal && (mineralSignal.button.contains(target) || mineralSignal.panel.contains(target));
+}
+
+function deferCloseLocationSignals(target) {
+  if (!mineralSignal || mineralSignal.mode !== "hover" || mineralSignalContains(target)) return;
+  clearTimeout(mineralSignalCloseTimer);
+  mineralSignalCloseTimer = setTimeout(() => closeLocationSignals(), 140);
+}
+
+function renderMineralLocationGroups(info, name, system = "all") {
   if (!info?.hasReliableLocations) {
     return `
       <div class="mineral-empty">
-        <strong>暂无可靠矿点</strong>
+        <strong>暂无可靠产出区域</strong>
         <span>暂无地点数据</span>
       </div>
     `;
   }
 
-  return mineralLocationGroups
-    .map(([key, label]) => {
-      const locations = info.locations?.[key] || [];
-      if (!locations.length) return "";
-      return `
-        <section class="mineral-location-group">
-          <h4>${label}</h4>
-          <div class="mineral-location-list">
-            ${locations
-              .map((location) => {
-                const subline = mineralLocationSubline(location);
-                const signalTooltip = renderLocationSignalTooltip(location);
-                return `
-                  <div class="mineral-location-item${signalTooltip ? " has-signal" : ""}" ${signalTooltip ? 'tabindex="0"' : ""}>
-                    <strong>${escapeHtml(mineralLocationLabel(location))}</strong>
-                    ${subline ? `<small>${escapeHtml(subline)}</small>` : ""}
-                    ${signalTooltip}
-                  </div>
-                `;
-              })
-              .join("")}
-          </div>
-        </section>
-      `;
-    })
-    .join("");
+  const entries = mineralLocationEntries(info).filter(({location}) => system === "all" || (location.systemEn || "unknown") === system);
+  if (!entries.length) return '<div class="mineral-empty"><strong>仅提供星系范围</strong><span>暂无更细的产出区域</span></div>';
+  const areas = entries.filter(({location}) => location.precision !== "template");
+  const templates = entries.filter(({location}) => location.precision === "template");
+  const renderEntries = rows => `<div class="mineral-location-list">${rows.map(({location, label, index}) => {
+    const subline = mineralLocationSubline(location);
+    const signals = renderLocationSignals(location, name, index);
+    const type = {planet: "行星", moon: "卫星", belt: "矿带", cave: "洞穴", cluster: "小行星群", event: "活动区域", lagrange: "拉格朗日区域"}[location.locationType] || label;
+    const modes = (location.modes || []).map(mode => ({ship: "舰采", roc: "ROC", fps: "手采"}[mode] || mode));
+    return `<div class="mineral-location-item" data-mineral-location="${escapeHtml(location.id || location.en)}" data-location-system="${escapeHtml(location.systemEn || "unknown")}">
+      <div class="mineral-location-heading"><strong>${escapeHtml(mineralLocationLabel(location))}</strong>${signals.button}</div>
+      <small class="mineral-location-path">${escapeHtml([subline, type, ...modes, ...(!signals.button ? ["信号未提供"] : [])].filter(Boolean).join(" · "))}</small>
+      ${signals.panel}
+    </div>`;
+  }).join("")}</div>`;
+  return `${areas.length ? `<section class="mineral-location-group" aria-label="分布地区">${renderEntries(areas)}</section>` : ""}
+    ${templates.length ? `<details class="mineral-location-group mineral-template-group"${!areas.length ? " open" : ""}><summary>通用区域模板 <small>非精确地点 · ${templates.length} 项</small></summary>${renderEntries(templates)}</details>` : ""}`;
+}
+
+function filterMineralSystem(button) {
+  const overlay = button.closest(".mineral-overlay");
+  const info = mineralLocationInfo(overlay?.dataset.mineralName);
+  const system = button.dataset.mineralSystem;
+  if (!info || (system !== "all" && !mineralSystems(info).some(item => item.en === system))) return;
+  closeLocationSignals();
+  overlay.querySelectorAll("[data-mineral-system]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+  overlay.querySelector("[data-mineral-locations]").innerHTML = renderMineralLocationGroups(info, overlay.dataset.mineralName, system);
 }
 
 function renderMineralInfo(name) {
   const info = mineralLocationInfo(name);
   const displayName = materialDisplayLabel(name, info?.nameZh || flowcldMaterialLabels[name]);
   const commodity = info?.commodityName && info.commodityName !== name ? info.commodityName : "";
-  const hasLocationSignals = mineralLocationGroups.some(([key]) =>
-    (info?.locations?.[key] || []).some((location) => (location.signal?.values || []).length),
-  );
   const mineralMetadata = state.mineralLocations?.metadata || {};
   const latestMineralTimestamp = [mineralMetadata.retrievedAt, mineralMetadata.signalSyncedAt]
     .map((value) => (value ? new Date(value) : null))
@@ -719,12 +1014,13 @@ function renderMineralInfo(name) {
         day: "2-digit",
         hour: "2-digit",
         minute: "2-digit",
+        timeZone: "Asia/Shanghai",
       })
     : "未知";
 
   return `
-    <div class="mineral-overlay" role="presentation">
-      <section class="mineral-card${hasLocationSignals ? " has-location-signals" : ""}" role="dialog" aria-modal="true" aria-label="${escapeHtml(displayName)}矿点详情">
+    <div class="mineral-overlay" role="presentation" data-mineral-name="${escapeHtml(name)}">
+      <section class="mineral-card" role="dialog" aria-modal="true" aria-label="${escapeHtml(displayName)}矿物分布">
         <header class="mineral-card-head">
           <div>
             <span>矿物分布</span>
@@ -734,7 +1030,9 @@ function renderMineralInfo(name) {
           <button type="button" class="mineral-close" data-close-mineral aria-label="关闭矿点详情">×</button>
         </header>
         <div class="mineral-card-body">
-          ${renderMineralLocationGroups(info)}
+          ${renderMineralSystems(info)}
+          <div data-mineral-locations>${renderMineralLocationGroups(info, name)}</div>
+          ${info?.hasReliableLocations && mineralMetadata.schemaVersion === 2 ? '<p class="mineral-distribution-note">当前版本产出区域，不保证固定刷新；未提供可验证坐标，区域模板不对应指定空间站。</p>' : ""}
         </div>
         <footer class="mineral-source">
           <span>数据更新 ${escapeHtml(updatedAt)}</span>
@@ -745,17 +1043,208 @@ function renderMineralInfo(name) {
   `;
 }
 
-function openMineralInfo(name) {
-  closeMineralInfo();
+function openMineralInfo(name, opener = document.activeElement) {
+  closeMineralInfo(false);
+  mineralOpener = opener;
+  mineralPreviousOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
   els.detailPanel.insertAdjacentHTML("beforeend", renderMineralInfo(name));
+  els.detailPanel.querySelector("[data-close-mineral]").focus({preventScroll: true});
 }
 
-function closeMineralInfo() {
-  els.detailPanel.querySelector(".mineral-overlay")?.remove();
+function closeMineralInfo(restoreFocus = true) {
+  const overlay = els.detailPanel.querySelector(".mineral-overlay");
+  if (!overlay) return;
+  closeLocationSignals();
+  overlay.remove();
+  document.body.style.overflow = mineralPreviousOverflow;
+  if (restoreFocus && mineralOpener?.isConnected) mineralOpener.focus({preventScroll: true});
+  mineralOpener = null;
 }
 
 function missionTitle(mission) {
-  return preferZh(mission.titleZh, mission.title);
+  return preferZh(mission.titleZh, mission.title).replace(/\[LOCATION\]/gi, "[地点]").replaceAll("[蓝图]", "").trim();
+}
+
+function renderMissionText(text) {
+  return escapeHtml(text).replace(/\[[^\[\]\r\n]+\]/g, '<span class="mission-placeholder">$&</span>');
+}
+
+function initMissionRewards() {
+  state.missions = new Map();
+  state.rewardPools = new Map();
+  for (const record of state.records) {
+    for (const source of record.sources || []) {
+      if (!state.rewardPools.has(source.poolId)) state.rewardPools.set(source.poolId, new Map());
+      state.rewardPools.get(source.poolId).set(record.id, record);
+      for (const mission of source.missions || []) {
+        if (mission.id) state.missions.set(mission.id, mission);
+      }
+    }
+  }
+}
+
+function missionSystemLabels(mission) {
+  const systems = [...new Set((mission.systems || []).filter((name) => typeof name === "string" && name.trim()))];
+  return systems.map((name) => {
+    const localized = state.data.missionRewards?.systems?.find((system) => system.name === name)?.nameZh;
+    const location = Object.values(state.mineralLocations.materials || {})
+      .flatMap((material) => material.locations?.starSystems || [])
+      .find((system) => system.en === name);
+    const zh = localized || location?.zh;
+    return zh && zh !== name ? `${zh} (${name})` : name;
+  }).join(" / ") || "星系未注明";
+}
+
+function renderMissionItems(rewards) {
+  if (!rewards.length) return '<p class="mission-empty">暂无已记录的物品奖励</p>';
+  return rewards.map((reward) => {
+    const groups = reward.type === "weighted_choice" ? reward.groups || [] : [{ items: [reward] }];
+    const conditions = [reward.awardOnlyToMissionOwner ? "仅任务拥有者" : "",
+      reward.sendToPlayerHomeLocation ? "送至家乡仓库" : ""].filter(Boolean);
+    const choiceNote = reward.type === "weighted_choice"
+      ? `<p class="mission-reward-meta">${groups.length === 1 ? "触发该物品奖励时，以下物品作为一组一起发放。" : "按权重选择以下一个组合；选中组合内的物品一起发放，不是所有组合都获得。"}</p>` : "";
+    return choiceNote + groups.map((group, index) => `
+      <div class="mission-item-group">
+        ${reward.type === "weighted_choice" ? `<p class="mission-reward-meta">${groups.length > 1 ? "备选物品组合" : "物品组合"} ${index + 1}${group.probability != null ? ` · 组合选择概率 ${escapeHtml(formatChance(group.probability))}` : ""}</p>` : ""}
+        ${(group.items || []).map((item) => `<div class="mission-item-row">
+          <strong>${escapeHtml(preferZh(item.nameZh, item.name))}</strong>
+          <span>${item.amount != null ? `×${escapeHtml(formatNumber(item.amount))}` : "数量未注明"}</span>
+        </div>`).join("")}
+        ${conditions.length ? `<p class="mission-reward-meta">${escapeHtml(conditions.join(" · "))}</p>` : ""}
+      </div>`).join("");
+  }).join("");
+}
+
+function renderMissionRequirements(requirements) {
+  if (!requirements) return '<p class="mission-reward-meta">接取条件未记录；请以游戏内任务为准。</p>';
+  const rows = [];
+  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${renderMissionText(value)}</dd></div>`);
+  for (const [field, label] of [["minStanding", "最低声望"], ["maxStanding", "最高声望"]]) {
+    const standing = requirements[field];
+    if (standing) add(label, `${preferZh(standing.nameZh, standing.name)}${standing.minReputation != null ? ` · 该级起始 ${formatNumber(standing.minReputation)} XP` : ""}${requirements.canBeShared !== true ? "" : standing.includeWhenSharing === true ? " · 共享时同样要求" : standing.includeWhenSharing === false ? " · 不限制共享接收者" : ""}`);
+  }
+  const crime = requirements.crimeStat;
+  if (crime) add("犯罪等级", `${crime.min}–${crime.max}${crime.includeWhenSharing === true ? " · 共享时同样要求" : ""}`);
+  for (const [field, label, yes, no] of [
+    ["canBeShared", "任务共享", "可以共享", "不可共享"],
+    ["illegal", "任务性质", "非法任务", "合法任务"],
+    ["onceOnly", "次数限制", "仅一次", "非一次性任务"],
+    ["canReacceptAfterAbandoning", "放弃后重接", "允许", "不允许"],
+    ["canReacceptAfterFailing", "失败后重接", "允许", "不允许"],
+  ]) if (typeof requirements[field] === "boolean") add(label, requirements[field] ? yes : no);
+  if (requirements.hasPersonalCooldown === true && requirements.personalCooldownTime != null) add("个人冷却", `${formatNumber(requirements.personalCooldownTime)} 分钟`);
+  if (requirements.abandonedCooldownTime > 0) add("放弃后冷却", `${formatNumber(requirements.abandonedCooldownTime)} 分钟`);
+  const titles = (intros) => [...new Set((intros || []).map(missionTitle))].join(" / ");
+  if (requirements.requiredIntros?.length) add("必需入门任务", titles(requirements.requiredIntros));
+  if (requirements.linkedIntros?.length) add("派系入门（非硬前置）", titles(requirements.linkedIntros));
+  const completed = requirements.completedContracts;
+  if (completed) add("前置完成标记", `${completed.requiredCount != null ? `要求 ${formatNumber(completed.requiredCount)} 项` : "要求数量未注明"}${completed.candidates?.length ? `；对应任务：${titles(completed.candidates)}` : "；具体任务未明确"}（候选任务并非全部必做）`);
+  const excluded = requirements.excludedContracts;
+  if (excluded) add("已完成标记排除", `${excluded.candidates?.length ? titles(excluded.candidates) : `${formatNumber(excluded.tagCount)} 项标记，具体任务未明确`}；满足这些完成标记时可能无法接取，不是必做前置。`);
+  const location = (id) => {
+    const item = state.data.missionRewards?.locations?.[id];
+    if (!item) return "";
+    const name = !item.nameZh && item.name?.startsWith("@") ? "地点名称未解析" : preferZh(item.nameZh, item.name);
+    return [name, item.system ? preferZh(item.systemZh, item.system) : ""].filter(Boolean).join(" · ");
+  };
+  const locationList = (label, ids) => ids?.length ? `<details class="mission-places"><summary>${escapeHtml(label)} · ${formatNumber(ids.length)} 处</summary><ul>${ids.map((id) => `<li>${escapeHtml(location(id))}</li>`).join("")}</ul></details>` : "";
+  const regions = (requirements.regions || []).map((region) => {
+    const label = region.system === "Pyro" && /^Region[A-D]$/.test(region.name) ? `派罗区域 ${region.name.slice(-1)}` : preferZh(region.nameZh, region.name);
+    return `<div class="mission-region"><p class="mission-reward-meta">接取区域：${escapeHtml(label)}</p>${locationList("区域覆盖地点", region.locations)}</div>`;
+  }).join("");
+  const extraLabels = { reputationLockout: "其他派系声望限制", requiredScenarios: "活动状态限制", subLocationVariants: "子地点变体限制" };
+  const extra = (requirements.additionalRestrictions || []).map((key) => extraLabels[key] || "额外接取限制");
+  return `<details class="mission-requirements"><summary>接取条件与地点</summary>
+    <dl class="mission-condition-grid">${rows.join("")}</dl>${regions}
+    ${locationList("接取位置条件", requirements.acceptLocations)}${locationList("任务候选地点（非接取保证）", requirements.missionLocations)}
+    ${requirements.unresolvedLocations ? `<p class="mission-reward-meta">另有 ${formatNumber(requirements.unresolvedLocations)} 个地点未解析。</p>` : ""}
+    ${extra.length ? `<p class="mission-reward-meta">另含${escapeHtml(extra.join("、"))}，详情需在游戏内确认。</p>` : ""}
+    <p class="mission-reward-meta">区域和条件来自当前任务配置，不表示服务器当前一定可接；未列出的限制不代表不存在。</p>
+  </details>`;
+}
+
+function renderMissionPools(rewardPools) {
+  return rewardPools.map((pool, index) => {
+    const records = [...(state.rewardPools.get(pool.id)?.values() || [])]
+      .sort((left, right) => recordName(left).localeCompare(recordName(right), "zh-CN"));
+    const chance = formatChance(pool.chance);
+    const trigger = { complete: "完成任务", fail: "任务失败", abandon: "放弃任务" }[pool.trigger] || pool.trigger;
+    const types = [...new Set(records.map((record) => record.category.id === "ship_component"
+      ? recordComponentType(record) : record.category.label))];
+    return `<section class="mission-pool">
+      <header class="mission-pool-head">
+        <div><h4>蓝图奖励池 ${index + 1}</h4><small>${escapeHtml(types.join(" / "))}</small></div>
+        <div class="mission-pool-draw"><strong>${records.length ? `${formatNumber(records.length)} 选 1` : "候选蓝图待补齐"}</strong><small>${escapeHtml([trigger, chance ? `池触发概率 ${chance}` : "池触发概率未注明"].filter(Boolean).join(" · "))}</small></div>
+      </header>
+      <div class="mission-blueprint-list">${records.map((record) => `
+        <button type="button" class="mission-blueprint-row" data-mission-blueprint="${escapeHtml(record.id)}" title="查看${escapeHtml(recordName(record))}蓝图">
+          <span><strong>${escapeHtml(recordName(record))}</strong>${renderRecordSummary(record)}</span>
+          <span class="mission-reward-marker">${record.id === state.selectedId ? "当前蓝图" : "查看蓝图"}<i aria-hidden="true">›</i></span>
+        </button>`).join("") || '<p class="mission-empty">暂无已收录的蓝图</p>'}</div>
+    </section>`;
+  }).join("");
+}
+
+function openMissionInfo(id, opener) {
+  const mission = state.missions.get(id);
+  const rewards = state.data.missionRewards?.missions?.[id];
+  if (!mission || !rewards) return;
+  if (document.querySelector(".mission-dialog")) return;
+  const previousOverflow = document.body.style.overflow;
+  document.body.insertAdjacentHTML("beforeend", `
+    <dialog class="mission-dialog" aria-labelledby="missionDialogTitle">
+      <header class="mission-dialog-head">
+        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${renderMissionText(missionTitle(mission))}</h2>
+          <p>${escapeHtml(missionSystemLabels(mission))}</p>
+          <small>${escapeHtml([missionFaction(mission), mission.rewardUEC != null ? `${formatNumber(mission.rewardUEC)} aUEC` : ""].filter(Boolean).join(" · "))}</small>
+        </div>
+        <button type="button" class="mission-close" data-close-mission aria-label="关闭任务奖励" autofocus>×</button>
+      </header>
+      <div class="mission-dialog-body">
+        ${renderMissionRequirements(rewards.requirements)}
+        <section class="mission-reward-section">
+          <h3>蓝图奖励</h3>
+          <p class="mission-draw-note">本任务含 ${formatNumber(rewards.pools.length)} 个蓝图奖励池。各池独立按对应条件及触发概率发放 1 张蓝图，已集齐的池不再发放。以下为候选蓝图，并非一次全部获得。</p>
+          ${renderMissionPools(rewards.pools || [])}
+          <p class="mission-reward-meta">池触发概率不等于单张蓝图的掉率。N 选 1 不代表必得未拥有的蓝图，也不保证 N 次集齐；重复和保底规则未完整确认。实际发放以游戏任务和完成条件为准。</p>
+        </section>
+        <section class="mission-reward-section"><h3>物品奖励</h3><p class="mission-reward-note">以下是实物，不是蓝图；数量与蓝图奖励分别计算。领取对象和发放条件以任务配置及游戏内结果为准。</p>${renderMissionItems(rewards.items || [])}</section>
+      </div>
+      <footer class="mission-dialog-footer"><span>${escapeHtml(formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"))}</span><span>制作：Ayuan</span></footer>
+    </dialog>`);
+  const dialog = document.querySelector(".mission-dialog");
+  document.body.style.overflow = "hidden";
+  dialog.addEventListener("close", () => {
+    document.body.style.overflow = previousOverflow;
+    dialog.remove();
+    if (opener?.isConnected) opener.focus({ preventScroll: true });
+  }, { once: true });
+  dialog.addEventListener("click", (event) => {
+    const target = event.target.closest("[data-mission-blueprint]");
+    if (target) {
+      const record = state.records.find((record) => record.id === target.dataset.missionBlueprint);
+      if (!record) return;
+      dialog.close();
+      window.clearTimeout(searchInputTimer);
+      state.query = recordName(record);
+      els.searchInput.value = state.query;
+      state.favoritesOnly = false;
+      resetFilters();
+      selectRecord(target.dataset.missionBlueprint);
+      const heading = els.detailPanel.querySelector("h2");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus({ preventScroll: true });
+      if (window.innerWidth <= 1100) els.detailPanel.scrollIntoView({ block: "start" });
+      return;
+    }
+    const rect = dialog.getBoundingClientRect();
+    const outside = event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right
+      || event.clientY < rect.top || event.clientY > rect.bottom);
+    if (event.target.closest("[data-close-mission]") || outside) dialog.close();
+  });
+  dialog.showModal();
+  fitRecordSummaries(dialog);
 }
 
 function missionFaction(mission) {
@@ -766,16 +1255,71 @@ function recordFlowcld(record) {
   return record.flowcld || {};
 }
 
+function recordClass(record) {
+  return Object.hasOwn(record.stats || {}, "componentClass") ? record.stats.componentClass : recordFlowcld(record).itemClass;
+}
+
 function recordComponentClass(record) {
-  const meta = recordFlowcld(record);
-  return preferZh(meta.itemClassCn, componentClassOrder.find(([id]) => id === meta.itemClass)?.[1] || meta.itemClass);
+  const value = recordClass(record);
+  return componentClassOrder.find(([id]) => id !== "all" && id === value)?.[1] || "";
 }
 
 function recordComponentType(record) {
   return componentTypeOrder.find(([id]) => id === record.type)?.[1] || recordType(record);
 }
 
+function recordWeaponType(record) {
+  const subtype = recordSubtype(record);
+  if (record.category.id !== "ship_weapon") return subtype;
+  const tags = new Set(String(record.stats?.tags || "").split(/\s+/));
+  const families = [
+    [["MassDriver"], /\bMass Driver Cannon(?:\s*\(S\d+\))?$/i, "质量驱动炮"],
+    [["ScatterGun"], /\bScattergun(?:\s*\(S\d+\))?$/i, "霰弹炮"],
+    [["BallisticGatling", "LaserGatling"], /\bGatling(?:\s*\(S\d+\))?$/i, "加特林"],
+    [["LaserRepeater", "BallisticRepeater", "DistortionRepeater"], /\bRepeater(?:\s*\(S\d+\))?$/i, "速射炮"],
+    [["LaserCannon", "BallisticCannon", "DistortionCannon", "NeutronCannon", "BANU_TachyonCannon"], /\bCannon(?:\s*\(S\d+\))?$/i, "加农炮"],
+  ];
+  const family = families.find(([tokens, pattern]) => tokens.some(token => tags.has(token)) || pattern.test(record.name || ""))?.[2];
+  if (!family || !["laser", "ballistic", "distortion", "neutron", "tachyon", "plasma", "electron"].includes(record.subtype)) return subtype;
+  return family === "质量驱动炮" ? family : `${subtype}${family}`;
+}
+
+function recordClassGrade(record) {
+  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
+  const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
+  return `${abbreviation}${grade}`;
+}
+
+function recordSummary(record, fullType = false, manufacturer = false) {
+  const type = record.category.id === "ship_component" ? recordComponentType(record)
+    : fullType ? recordWeaponType(record) : recordSubtype(record);
+  const parts = [record.category.label, type, recordClassGrade(record), sizeLabel(record.stats?.size)];
+  if (manufacturer) parts.push(recordManufacturer(record));
+  return parts.filter(Boolean).join(" · ");
+}
+
+function renderRecordSummary(record, manufacturer = false) {
+  const short = recordSummary(record, false, manufacturer);
+  const full = recordSummary(record, true, manufacturer);
+  const description = [full, recordComponentClass(record), record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
+  const adaptive = full !== short ? ` data-summary-full="${escapeHtml(full)}" data-summary-short="${escapeHtml(short)}"` : "";
+  return `<small${adaptive} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
+}
+
+function fitRecordSummaries(root) {
+  const candidates = [...root.querySelectorAll("[data-summary-full]")].filter(el => el.clientWidth);
+  candidates.forEach(el => { el.textContent = el.dataset.summaryFull; });
+  // Measure every full label before writes, so narrow rows fall back in one pass.
+  const compact = candidates.filter(el => el.scrollWidth > el.clientWidth + 1
+    || el.getBoundingClientRect().height > parseFloat(window.getComputedStyle(el).lineHeight) + 1);
+  compact.forEach(el => { el.textContent = el.dataset.summaryShort; });
+}
+
 function recordMissionTypes(record) {
+  const primary = recordMissions(record).filter(m => Object.hasOwn(m, "missionType"));
+  if (primary.length || state.data?.sourcePolicy?.schemaVersion === 1) {
+    return [...new Set(primary.map(m => m.missionType).filter(Boolean))].map(name => ({name, label: missionTypeOrder.find(([id]) => id === name)?.[1] || name}));
+  }
   const meta = recordFlowcld(record);
   const names = Array.isArray(meta.rewardMissionTypes) ? meta.rewardMissionTypes : [];
   const namesCn = Array.isArray(meta.rewardMissionTypesCn) ? meta.rewardMissionTypesCn : [];
@@ -801,6 +1345,8 @@ function recordSearchText(record) {
       mission.factionZh,
       mission.category,
       mission.categoryZh,
+      missionTitle(mission),
+      missionSystemLabels(mission),
       ...(mission.systems || []),
     ]),
   ]);
@@ -814,6 +1360,7 @@ function recordSearchText(record) {
     recordComponentType(record),
     record.subtype,
     recordSubtype(record),
+    recordWeaponType(record),
     record.manufacturer,
     recordManufacturer(record),
     recordGear(record),
@@ -824,6 +1371,7 @@ function recordSearchText(record) {
     sizeLabel(record.stats?.size),
     record.stats?.grade ? gradeLabel(record.stats.grade) : "",
     recordComponentClass(record),
+    recordClassGrade(record),
     ...materials,
     ...dismantleOutputs,
     ...missionTypes,
@@ -994,7 +1542,7 @@ function initFilters() {
       }),
   ].join(""), componentTypeActive);
 
-  const componentClassCounts = countBy(componentRecords, (record) => recordFlowcld(record).itemClass);
+  const componentClassCounts = countBy(componentRecords, recordClass);
   const componentClassActive = state.category === "ship_component" ? state.componentClass : "none";
   renderDropdown(els.componentClassFilters, [
     optionTag("none", "无", undefined, componentClassActive),
@@ -1156,6 +1704,12 @@ function bindFilterSelect(select, key) {
 }
 
 function bindEvents() {
+  document.querySelector("#openPlan")?.addEventListener("click", event => openCraftPlan(event.currentTarget));
+  window.addEventListener("hashchange", restoreSharedBlueprint);
+  window.addEventListener("resize", () => {
+    window.cancelAnimationFrame(summaryResizeFrame);
+    summaryResizeFrame = window.requestAnimationFrame(() => fitRecordSummaries(document));
+  });
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
 
   els.searchInput.addEventListener("input", (event) => {
@@ -1201,6 +1755,35 @@ function bindEvents() {
   });
 
   document.addEventListener("keydown", (event) => {
+    const mineral = els.detailPanel.querySelector(".mineral-overlay");
+    if (mineral && event.key === "Escape") {
+      event.preventDefault();
+      if (mineralSignal) closeLocationSignals(true);
+      else closeMineralInfo();
+      return;
+    }
+    if (mineral && event.key === "Tab") {
+      if (mineralSignal?.mode === "keyboard" && document.activeElement === mineralSignal.button && !event.shiftKey) {
+        event.preventDefault();
+        mineralSignal.panel.querySelector("[data-close-signal]").focus();
+        return;
+      }
+      if (mineralSignal?.mode === "keyboard" && document.activeElement.matches("[data-close-signal]") && event.shiftKey) {
+        event.preventDefault();
+        closeLocationSignals(true);
+        return;
+      }
+      const controls = [...mineral.querySelectorAll('button, summary, [href], input, select, textarea, [tabindex="0"]')]
+        .filter(control => !control.disabled && control.getClientRects().length
+          && (!control.closest("details:not([open])") || control.matches("summary")));
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (!mineral.contains(document.activeElement) || (!event.shiftKey && document.activeElement === last)
+        || (event.shiftKey && document.activeElement === first)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      }
+    }
     if (event.key === "Escape") {
       closeDropdowns();
     }
@@ -1231,7 +1814,59 @@ function bindEvents() {
     selectRecord(card.dataset.id);
   });
 
+  els.detailPanel.addEventListener("pointerdown", event => { mineralPointerType = event.pointerType; });
+  els.detailPanel.addEventListener("pointerover", event => {
+    if (event.pointerType === "touch") return;
+    if (mineralSignal?.panel.contains(event.target)) { clearTimeout(mineralSignalCloseTimer); return; }
+    const button = event.target.closest("[data-signal-trigger]");
+    if (button) showLocationSignals(button);
+  });
+  els.detailPanel.addEventListener("pointerout", event => {
+    if (mineralSignalContains(event.target)) deferCloseLocationSignals(event.relatedTarget);
+  });
+  els.detailPanel.addEventListener("focusin", event => {
+    if (mineralSignalContains(event.target)) clearTimeout(mineralSignalCloseTimer);
+  });
+  els.detailPanel.addEventListener("focusout", event => {
+    if (mineralSignal?.mode === "keyboard" && mineralSignalContains(event.target) && !mineralSignalContains(event.relatedTarget)) closeLocationSignals();
+  });
+  els.detailPanel.addEventListener("toggle", event => {
+    if (!event.target.open && mineralSignal && event.target.contains(mineralSignal.button)) closeLocationSignals();
+  }, true);
+  document.addEventListener("scroll", event => {
+    if (mineralSignal && !mineralSignal.panel.contains(event.target)) closeLocationSignals();
+  }, true);
+  window.addEventListener("resize", () => closeLocationSignals());
+
   els.detailPanel.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close-signal]")) { closeLocationSignals(true); return; }
+    if (mineralSignal && !mineralSignalContains(event.target)) closeLocationSignals();
+    const qualityCapsule = event.target.closest(".quality-number");
+    if (qualityCapsule) {
+      const bounds = qualityCapsule.getBoundingClientRect();
+      if (event.clientX >= bounds.left && event.clientX <= bounds.right && event.clientY >= bounds.top && event.clientY <= bounds.bottom) {
+        qualityCapsule.querySelector("[data-quality-number]").focus();
+      }
+      return;
+    }
+    const signalButton = event.target.closest("[data-signal-trigger]");
+    if (signalButton) {
+      const mode = event.detail === 0 ? "keyboard" : mineralPointerType === "touch" ? "touch" : "hover";
+      if (mode !== "hover" && mineralSignal?.button === signalButton) closeLocationSignals();
+      else showLocationSignals(signalButton, mode);
+      return;
+    }
+    const mineralSystem = event.target.closest("[data-mineral-system]");
+    if (mineralSystem) { filterMineralSystem(mineralSystem); return; }
+    const plan = event.target.closest("[data-add-plan]");
+    if (plan) { addToPlan(plan.dataset.addPlan, plan); return; }
+    const share = event.target.closest("[data-share-blueprint]");
+    if (share) { shareBlueprint(share.dataset.shareBlueprint, share); return; }
+    const mission = event.target.closest("[data-mission-id]");
+    if (mission) {
+      openMissionInfo(mission.dataset.missionId, mission);
+      return;
+    }
     const close = event.target.closest("[data-close-mineral]");
     if (close || event.target.classList.contains("mineral-overlay")) {
       closeMineralInfo();
@@ -1246,25 +1881,58 @@ function bindEvents() {
 
     const mineral = event.target.closest("[data-mineral]");
     if (!mineral) return;
-    openMineralInfo(mineral.dataset.mineral);
+    openMineralInfo(mineral.dataset.mineral, mineral);
   });
 
   els.detailPanel.addEventListener("input", (event) => {
-    const input = event.target.closest("[data-quality-input]");
+    const input = event.target.closest("[data-quality-input], [data-quality-number]");
     if (!input) return;
     const record = state.records.find((item) => item.id === input.dataset.recordId);
     if (!record) return;
     const slotIndex = Number(input.dataset.slotIndex);
     const slot = getFirstTier(record).slots?.[slotIndex];
     if (!slot) return;
+    if (input.matches("[data-quality-number]")) input.closest(".quality-number").style.setProperty("--quality-digits", (input.value || input.placeholder).length);
     const quality = Number(input.value);
-    state.qualityValues[qualitySlotKey(record, slotIndex)] = quality;
-    const container = input.closest("[data-quality-slot]");
-    container.querySelector("output").textContent = `品质 ${formatNumber(quality)}`;
-    const existing = container.querySelector(".quality-modifier-list");
-    if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
-    const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
-    if (summary) summary.outerHTML = renderQualitySummaryContent(record);
+    if (!input.value.trim()) {
+      if (input.validity?.badInput) { input.value = qualitySlotValue(record, slot, slotIndex); return; }
+      input.closest(".quality-number")?.setAttribute("data-confirmed", "false");
+      return;
+    }
+    if (!Number.isFinite(quality)) return;
+    if (quality < 0 || quality > 1000 || !Number.isInteger(quality)) {
+      setSlotQuality(record, slotIndex, quality);
+      return;
+    }
+    if (quality < qualitySlotMinimum(slot)) { input.closest(".quality-number").dataset.confirmed = "false"; return; }
+    setSlotQuality(record, slotIndex, quality);
+  });
+  els.detailPanel.addEventListener("focusin", event => {
+    const input = event.target.closest("[data-quality-number]");
+    if (!input) return;
+    const record = state.records.find(item => item.id === input.dataset.recordId);
+    const slotIndex = Number(input.dataset.slotIndex);
+    const slot = record && getFirstTier(record).slots?.[slotIndex];
+    if (!slot) return;
+    input.placeholder = qualitySlotValue(record, slot, slotIndex);
+    input.value = "";
+    input.closest(".quality-number").dataset.confirmed = "false";
+  });
+  els.detailPanel.addEventListener("focusout", event => {
+    const input = event.target.closest("[data-quality-number]");
+    if (!input) return;
+    const record = state.records.find(item => item.id === input.dataset.recordId);
+    const slotIndex = Number(input.dataset.slotIndex);
+    const slot = record && getFirstTier(record).slots?.[slotIndex];
+    if (!slot) return;
+    if (input.value.trim()) { setSlotQuality(record, slotIndex, Number(input.value)); return; }
+    const confirmed = state.qualityConfirmed[qualitySlotKey(record, slotIndex)] === true;
+    input.placeholder = qualitySlotValue(record, slot, slotIndex);
+    input.value = confirmed ? input.placeholder : "";
+    input.closest(".quality-number").dataset.confirmed = String(confirmed);
+  });
+  els.detailPanel.addEventListener("beforeinput", event => {
+    if (event.target.matches("[data-quality-number]") && event.data && !/^\d+$/.test(event.data)) event.preventDefault();
   });
 }
 
@@ -1276,7 +1944,7 @@ function materialMatches(record) {
 
 function componentClassMatches(record) {
   if (state.category !== "ship_component") return true;
-  return state.componentClass === "all" || state.componentClass === "none" || recordFlowcld(record).itemClass === state.componentClass;
+  return state.componentClass === "all" || state.componentClass === "none" || recordClass(record) === state.componentClass;
 }
 
 function componentTypeMatches(record) {
@@ -1361,18 +2029,12 @@ function renderResults() {
       const sourceLabel = state.mode === "dismantle"
         ? `${formatNumber(outputCount)} 种回收物`
         : record.sourceCount > 0 ? "任务奖励" : "无任务来源";
-      const size = sizeLabel(record.stats.size);
-      const grade = record.stats.grade ? gradeLabel(record.stats.grade) : "未知等级";
-      const componentClass = recordComponentClass(record);
-      const metaParts = record.category.id === "ship_component"
-        ? [record.category.label, recordComponentType(record), recordManufacturer(record), componentClass, size, grade]
-        : [record.category.label, recordManufacturer(record), recordSubtype(record), size, grade];
       return `
         <button class="result-card ${escapeHtml(record.category.id)}${record.id === state.selectedId ? " active" : ""}" type="button" data-id="${escapeHtml(record.id)}" aria-current="${record.id === state.selectedId ? "true" : "false"}">
           <span class="row-dot"></span>
           <span class="row-main">
             <strong>${escapeHtml(recordName(record))}</strong>
-            <small>${metaParts.filter(Boolean).map((part) => escapeHtml(part)).join(" · ")}</small>
+            ${renderRecordSummary(record, true)}
           </span>
           <span class="source-badge ${state.mode === "craft" && !(record.sourceCount > 0) ? "muted" : ""}">${sourceLabel}</span>
         </button>
@@ -1384,10 +2046,12 @@ function renderResults() {
     ? `<button class="load-more-results" type="button" data-load-more>继续加载 <strong>${formatNumber(state.visibleResults)}</strong> / ${formatNumber(state.filtered.length)}</button>`
     : "";
   els.resultList.innerHTML = cards + loadMore;
+  fitRecordSummaries(els.resultList);
 }
 
 function selectRecord(id) {
   state.selectedId = id;
+  if (window.history?.replaceState) window.history.replaceState(null, "", blueprintShareUrl(id));
   els.resultList.querySelectorAll(".result-card").forEach((card) => {
     const active = card.dataset.id === id;
     card.classList.toggle("active", active);
@@ -1415,6 +2079,7 @@ function renderDismantleDetail(record) {
       <div class="detail-head">
         <span>拆解详情</span>
         <span class="detail-head-actions">
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏物品"}</button>
           <strong>${formatNumber(outputs.length)} 种回收物</strong>
         </span>
@@ -1434,6 +2099,7 @@ function renderDismantleDetail(record) {
 }
 
 function renderDetail() {
+  closeMineralInfo(false);
   const record = state.records.find((item) => item.id === state.selectedId);
   if (!record) {
     els.detailPanel.innerHTML = `
@@ -1487,7 +2153,13 @@ function renderDetail() {
         <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
       </div>
 
+      <div class="detail-tools">
+        <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
+        <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
+      </div>
+
       ${renderQualitySummary(record)}
+      ${renderBaseStats(record)}
 
       <section class="detail-section">
         <h3>制作材料</h3>
@@ -1538,9 +2210,20 @@ function renderDetail() {
   `;
 }
 
+function recordMissions(record) {
+  const missions = new Map();
+  for (const source of record.sources || []) {
+    for (const mission of source.missions || []) {
+      const key = mission.id || JSON.stringify([mission.debugName, mission.title, mission.faction, mission.rewardUEC, mission.systems]);
+      if (!missions.has(key)) missions.set(key, mission);
+    }
+  }
+  return [...missions.values()];
+}
+
 function renderSources(record) {
-  const sourcesWithMissions = (record.sources || []).filter((source) => (source.missions || []).length);
-  if (!sourcesWithMissions.length) {
+  const missions = recordMissions(record);
+  if (!missions.length) {
     return `
       <div class="source-item">
         <strong>暂无任务来源</strong>
@@ -1549,28 +2232,25 @@ function renderSources(record) {
     `;
   }
 
-  return sourcesWithMissions
-    .map((source) => {
-      const missions = source.missions || [];
-      const missionHtml = `<ul class="source-missions">${missions
-            .map((mission) => {
-              const chance = formatChance(mission.chance);
-              const reward = mission.rewardUEC ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
-              const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
-              return `<li>${escapeHtml(missionTitle(mission))}${faction}${reward}${chance ? ` · ${chance}` : ""}</li>`;
-            })
-            .join("")}</ul>`;
-      return `
-        <div class="source-item">
-          <strong>任务来源</strong>
-          <span class="source-line">
-            <span>任务 ${formatNumber(source.missionCount || 0)}</span>
-          </span>
-          ${missionHtml}
-        </div>
-      `;
-    })
-    .join("");
+  const rows = missions.map((mission) => {
+    const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
+    const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
+    const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
+    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
+  });
+  const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN
+    ? rows.length : SOURCE_TASK_PREVIEW_LIMIT;
+  return `
+    <div class="source-item">
+      <strong>任务来源</strong>
+      <span class="source-line"><span>任务 ${formatNumber(missions.length)}</span></span>
+      <ul class="source-missions">${rows.slice(0, previewCount).join("")}</ul>
+      ${rows.length > previewCount ? `<details class="source-more">
+        <summary><span class="source-expand-label">展开全部 ${formatNumber(missions.length)} 条任务</span><span class="source-collapse-label">收起更多任务</span></summary>
+        <ul class="source-missions">${rows.slice(previewCount).join("")}</ul>
+      </details>` : ""}
+    </div>`;
 }
 
 async function fetchJson(path) {
@@ -1593,6 +2273,8 @@ async function fetchJson(path) {
 
 async function boot() {
   state.favorites = loadFavorites();
+  try { state.craftPlan = validPlan(JSON.parse(window.localStorage.getItem(PLAN_STORAGE_KEY) || "[]")); }
+  catch { state.craftPlan = []; state.planSaved = false; }
   els.resultList.innerHTML = `<div class="loading-state"><div><h3>正在加载蓝图</h3><p>请稍候...</p></div></div>`;
   try {
     const [blueprintData, mineralData] = await Promise.all([
@@ -1603,8 +2285,12 @@ async function boot() {
     if (!Array.isArray(state.data.records)) throw new Error("blueprint-index.json 缺少 records 数组");
     if (mineralData) {
       state.mineralLocations = mineralData;
+      if (mineralData.metadata?.schemaVersion === 2 && mineralData.metadata.sourceVersion !== state.data.version) {
+        state.mineralLocations = {materials: {}, metadata: null};
+      }
     }
     state.records = state.data.records.map(prepareRecord);
+    initMissionRewards();
     els.versionBadge.textContent = state.data.version;
     els.dataUpdatedBadge.textContent = formatDataUpdatedAt(state.data.dataUpdatedAt);
     els.dataStatus.setAttribute(
@@ -1615,6 +2301,8 @@ async function boot() {
     initFilters();
     bindEvents();
     applyFilters();
+    updatePlanCount();
+    restoreSharedBlueprint();
   } catch (error) {
     console.error("蓝图数据加载失败。", error);
     els.resultList.innerHTML = `

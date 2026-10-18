@@ -8,6 +8,25 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## Reviewed Releases
+
+The original refresh workflow accepts an optional manual `prepare_only` input
+(default false). With `force=true`, this rebuilds exact-LIVE data in GitHub,
+validates the paired snapshots, builds the site, and uploads both the original
+14-day backup and a separate `gvy-lantu-prepared-release` artifact. Preparation
+never commits/pushes `main`, checks uninstalled candidate assets against the
+production domain, or reports that a deployment passed. Both source steps must
+succeed before the candidate artifact can be produced. Scheduled runs and normal
+manual refreshes keep their existing publish, health-check and rollback behavior.
+
+For a reviewed code release, start from production `main`, pick code changes only,
+prepare cloud data on the release branch, inspect its immutable run/head and
+artifact, then commit only the generated-data allowlist to that same branch.
+Rerun tests, coverage/version validation, build and browser QA before merging the
+reviewed code and data together. Do not publish local preview-data checkpoints.
+After merge, verify the actual EdgeOne client URLs against that final revision;
+keep the previous production commit and cloud backup available for rollback.
+
 Official localization version labels may start with a numeric series or the
 official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
 preserves the original INI and manifest label, verifies their complete bytes,
@@ -83,6 +102,181 @@ Manufacturing specification values, detail titles and recovered-material names a
 
 When names or layout rules change, inspect actual text bounds inside each box, not only the page's total scroll width: an overflowing centered value may leave the page width unchanged. Include long manufacturers, English specification identifiers and large quality values at 320/390 px, responsive breakpoints, 16:9 desktop, 2K and ultrawide.
 
+## Mission Rewards
+
+Each acquisition task shows its reported star system(s). Missing systems are
+explicitly marked; template locations are not replaced with guessed places.
+Clicking a task opens its blueprint reward pools and any recorded physical item
+rewards, including quantities and owner-only/delivery conditions. Blueprint rows
+open the corresponding blueprint without changing saved favorites.
+
+Acquisition tasks share one compact list across source pools, deduplicated by
+contract ID without merging distinct same-title tasks. Show twelve rows initially;
+if only one to three would remain hidden, show them too (up to fifteen total).
+The current 678 task-linked blueprints average 11.03 unique contracts; twelve is
+a stable display limit, not a live average that changes the layout on each refresh.
+Use the native disclosure only when at least four rows remain hidden.
+Clickable task names are white without underlines, with an arrow and visible
+hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
+reward dialog still keeps its independent pools separate.
+Hide the redundant literal `[蓝图]` hint from all displayed task titles, including
+source rows, reward-dialog headings and prerequisite/completed/excluded tasks.
+Preserve original localization and reward data. Bracketed runtime placeholders
+such as `[目标]`, `[地点]`, `[飞船]`, `[编号]` and `[位置]` use light blue `#b8c9f1`,
+distinct from cyan star systems. Escape text before adding their inline spans;
+keep ordinary 蓝图 text, fonts, wrapping and click targets unchanged. A title's
+old suffix never determines reward eligibility or probability.
+
+Reward candidates and result-list summaries show verified compact class/grade
+labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,
+combined with A-D only when the data provides a valid grade. Missing classes do
+not become military; a weapon with grade A but no class shows only A. Summary
+order is category, component/weapon type, compact class/grade, size, and optional
+manufacturer (for example, 舰船组件 · 冷却器 · 隐C · S1 · 制造商).
+Keep class/grade before trailing size/manufacturer text and verify actual visible
+bounds on narrow screens; detail boxes retain full class and grade fields.
+At 360px and below, reduce only the result-card column gaps and horizontal
+padding so this order remains readable without shrinking text or moving grade first.
+
+Ship weapons use their primary SCMDB subtype plus an explicit family from an
+exact tag or canonical English type suffix: cannon, repeater, gatling, scattergun
+or mass driver. Never relabel every laser weapon as a cannon or override the
+primary subtype with a conflicting legacy calibration/tag. Unknown families keep
+their existing subtype. Full types also appear in detailed manufacturing and
+dismantling information and participate in search, as do compact class/grades.
+Summary rows try the full type, measure actual width and line height, and fall
+back to the original subtype if it would overflow or wrap. Recheck after result
+rendering, dialog opening and a frame-debounced window resize. Wider layouts
+restore full names. Keep fonts, colors, row styling and responsive columns intact;
+do not shrink text or hide names to force a full type to fit. Main-list trailing
+manufacturer text retains its existing intentional ellipsis and full tooltip.
+
+Reward lookup uses the exact contract ID and its explicit pool IDs, not a task
+name, faction or a transitive shared-blueprint association. Same-title tasks in
+different systems remain separate. Following SCMDB's mission reward display,
+each pool lists compact candidate rows with an `N 选 1` draw count, trigger and
+pool trigger probability. Multiple pools draw independently; a completed pool
+stops awarding blueprints. Pool membership is not a single-completion award
+quantity, and a 100% pool trigger is not a 100% drop rate for each member. Do not
+calculate individual odds from entry count or weights alone.
+An `N 选 1` pool is not a promise of an unowned blueprint or completion in N runs.
+Duplicate/pity behavior is not fully verified. Physical rewards are separate from
+blueprints: a weighted group is one bundle whose items are awarded together when
+selected, not a choice between its individual rows. Display group-selection
+probabilities as such, with recorded quantities, owner and delivery restrictions.
+
+Task dialogs add a collapsed conditions/location disclosure without changing the
+compact source list. Requirements retain rank thresholds and their sharing flags,
+crime ranges, legality, sharing, repeat restrictions, cooldowns (minutes), required
+intros and optional faction entry points separately. Required completion tags and
+excluded completion tags must never be interchanged. XP is a rank's starting
+threshold, not an invented upper XP limit. Candidate task sites are not guaranteed
+acceptance locations; region membership and unresolved/additional constraints are
+explicit. Locations and requirements use the same exact-LIVE contract IDs, with
+official contextual/keyed Chinese first. Unresolved game label keys do not become
+user-facing place names. Preserve the mineral dialog's existing content-driven layout.
+
+The dialog follows its content height up to the viewport cap, with a scrollable
+body and a non-overlapping footer. Its width follows content within responsive
+limits: candidate lists use two columns above 620 px and one column on phones.
+Chinese/English star systems and displayed task titles participate in the
+existing full-text search; this is not a dedicated star-system filter and does
+not describe a manufacturing site or mineral location. Opening a reward from
+`我的蓝图` exits the favorites-only view without changing any saved favorites.
+
+`missionRewards` is generated and validated with the same exact-LIVE snapshot.
+A missing/outdated reward schema triggers a full rebuild through the existing
+refresh entry point, with its validation, 14-day backup and atomic replacement.
+After that migration, new LIVE/localization changes and maintenance/forced
+rebuilds update rewards normally. An unchanged six-hour check does not independently
+refetch the same-build mission table. No extra runtime API or schedule is added.
+Missing/empty referenced pools and malformed system arrays fail validation.
+Before replacement, task, referenced-pool, task-linked-blueprint and physical-item
+coverage are compared with the previous cache; a drop exceeding 20% aborts the
+candidate and keeps the previous data for investigation.
+The same guard now covers conditions, location references, matched base-stat
+records and previously available absolute-quality panels. Reward schema 3 and
+item-stat schema 1 migrate through that same refresh entry point, not a new job.
+
+Task titles preserve the raw contract's localization key and token substitutions.
+The official template is accepted only when its fully expanded English matches
+the actual task title; keyed ranks/cargo scales then expand from the verified
+Chinese snapshot. This also applies to prerequisite titles. Runtime placeholders
+remain placeholders, with known labels translated, never invented locations.
+Faction names use their own validated key/English identity, not an unrelated
+contractor or manufacturer. Conflicting templates retain a traceable translation
+fallback. Missing title metadata, unresolved templates and the known partial-cache
+regressions fail candidate validation. Original English titles remain searchable.
+The migration reuses the full rebuild and coverage/backup guards above.
+
+Localization QA must inspect rendered manufacturing, dismantling, task rewards
+and conditions, including armor/clothing attachment labels, mode labels and
+mineral names. Do not strip ordinary model codes, acronyms, units or deliberate
+bilingual places. Base-attribute labels wrap within their existing specification
+boxes, including multi-mode labels at 320 px; no font reduction or ellipsis.
+
+## Base Attributes And Quality
+
+`scripts/scmdb_item_stats.py` extracts base attributes from the selected exact-LIVE
+SCMDB item export. Join blueprint `productEntityClass` to the exact entity, never
+authorize gameplay metrics through a name-only fallback. Resolve weapon fire-mode,
+ammo and magazine pool indexes structurally (including index zero); mismatched
+builds, duplicate entities and invalid references fail closed. Basic values use
+a collapsed `基础属性` disclosure with existing specification boxes; quality-aware
+values continue using the existing `成品品质效果` rows and sliders.
+
+For simple single/automatic modes, distinguish per-projectile damage from a whole
+shot and include pellet count and damage multiplier in theoretical DPS. Simplify
+only a verified one-entry looping sequence with matching RPM. Do not invent a
+single-shot/DPS result for burst, charge, beam, complex sequences or explosive
+ammo; retain the reliable metrics and relative-quality fallback instead. Baseline
+panels are Q500; theory excludes armor, distance falloff, reload and charging cycles.
+Do not assign an unverified SCU/10-GM unit to a raw quantum-fuel coefficient.
+
+Exact-version community enrichment remains optional. It may fill missing metrics,
+but must join a unique entity UUID, never a name, and must never erase/override primary SCMDB values or mix firing-mode calculations.
+An unavailable or cross-build fallback leaves verified primary values intact.
+Coverage metadata and payloads must agree; source/log messages must not claim that
+all absolute attributes are absent merely because the optional fallback is late.
+The scheduled refresh no longer fetches this duplicate gameplay export. SCMDB's
+exact-LIVE item table supplies the primary panel; unsupported absolute metrics
+retain their relative effects. Component class and mission type also come from
+the same primary tables, not the secondary blueprint site's metadata.
+
+Quality inputs retain a stable 72px by 23px pill beside each slider. The label
+and numeric field are centered together; the field uses tabular-digit width
+for its current value/placeholder and the same 14px line box as the label.
+Only a pointer click within the capsule activates its numeric input; the tooltip
+and surrounding empty area must not activate it. Keyboard Tab focus still works.
+The initial
+500 (or higher recipe minimum) is a semi-transparent gray placeholder, not
+prefilled input text; focusing starts an empty draft. Leaving it empty preserves
+the effective quality. Editing or moving the slider changes it to cyan.
+Hover/focus reveals a smaller input/range hint
+centered above the capsule without shifting the surrounding layout.
+Enter/Tab retain their ordinary browser behavior, with no special acceptance
+rule. Only integers are allowed, with maximum 1000 and the recipe minimum.
+Negative/decimal/exponent input is rejected; high values clamp immediately,
+and unfinished below-minimum drafts never affect calculations and clamp on blur.
+The separate quick-value row and update-summary feature are not part of this UI.
+
+## Craft Plan And Sharing
+
+`制作清单` stores bounded counts and recipe choices in browser-local storage
+under `gvy-lantu-craft-plan-v1`, independently of favorites. Adding a blueprint
+opens its list; counts scale material amounts and sequential craft time. Resource
+amounts use SCU, item inputs use counts, and different minimum qualities remain
+separate. One alternative is selected per recipe slot; alternatives are never
+all added together. Unknown/removed IDs remain removable and are excluded from
+totals with a warning. Storage failure leaves the current session usable and
+explicitly reports that it was not saved. No login, cloud permanence or device
+synchronization is implied.
+
+Share links encode only the exact blueprint ID and craft/dismantle mode in the
+URL fragment. They do not export favorites, filters or the craft plan. Clipboard
+failure opens a selectable link. Opening an unavailable ID reports the missing
+blueprint rather than substituting a same-name result.
+
 ## Local Preview
 
 ```bash
@@ -91,6 +285,12 @@ python3 -m http.server 8002 --directory dist
 ```
 
 Open `http://127.0.0.1:8002/`.
+
+When the user requests local-only review, keep the preview available and do not
+push, open a release PR, trigger Actions or deploy. Keep preview data separate
+from release code commits. For later publication, use the original workflow's
+non-publishing preparation mode, review its cloud candidate, and merge code and
+data together so backup and production checks are not bypassed.
 
 ## Build
 
@@ -124,7 +324,8 @@ recovery retries. Persistent connectivity failures and real deployment mismatche
 still exit nonzero, preserve the existing rollback rules, and reach the final
 failure-reporting step. Notifications are not muted or reconfigured. The final
 report identifies source and production outcomes separately. This does not alter
-NAS/source validation, data timestamps, refresh schedules, or manual-only signals.
+NAS/source validation, data timestamps, or existing refresh schedules. Mining
+signals follow the unified automatic refresh described below.
 
 For manual releases, also verify filter interactions, desktop/mobile overflow, console errors, and both the `星远舰队` and `维科洛查询` destinations.
 
@@ -137,7 +338,7 @@ The maintenance schedule (`43 17 1,15 * *`, UTC) runs twice monthly with `--forc
 
 The header shows the active LIVE version. Hovering or keyboard-focusing the version badge reveals `dataUpdatedAt` as `更新 YYYY/MM/DD HH:mm` in Asia/Shanghai; tapping the badge provides the same information on touch devices. This timestamp changes only after a newer release or a scheduled/manual forced calibration has been fetched, localized, validated, backed up, and atomically published. Routine six-hour checks with no newer LIVE release do not change it.
 
-If SCMDB has no newer `LIVE` version and the verified NAS localization source has not changed, a normal six-hour run keeps the existing data cache and makes no commit (except a newly available exact-version quality enrichment). A localization hash/adapter change rebuilds the same LIVE release through this same command. The twice-monthly maintenance run intentionally creates a verified calibration snapshot and heartbeat commit. A stale manifest is prevented from rolling an existing `LIVE` release backward.
+If SCMDB has no newer `LIVE` version and the verified NAS localization source has not changed, a normal six-hour run keeps the existing blueprint cache and makes no blueprint commit. A localization hash/adapter or source-policy schema change rebuilds the same LIVE through this command. The twice-monthly maintenance run intentionally creates a verified calibration snapshot and heartbeat commit. A stale manifest cannot roll an existing `LIVE` release backward. Mining still checks the exact selected build on every existing run, including same-build corrections.
 If a newer `LIVE` version exists, `scripts/refresh_blueprint_data.py` locks the build to that exact release, regenerates the blueprint index, applies localization in this priority order:
 
 1. NAS official Star Citizen localization, matched through verified game localization keys
@@ -154,9 +355,9 @@ The helper `scripts/official_localization.py` produces the build input `data/off
 
 The Chinese file currently declares only the `4.10` series. English key labels are read from an immutable `StarCitizenWiki/scunpacked-data` commit declaring the same series, not used as gameplay stats. `exactBuildVerified` remains false: this is not proof of an exact LIVE build match. A source series mismatch, invalid hash, or low coverage fails closed. On a new NAS hash or adapter revision the existing refresh rebuilds and applies official names last. Identical inputs preserve the snapshot timestamp. Exact names bridge upstream records to game keys; manufacturer codes and property keys take precedence. Item/vehicle, planet/company and crafting-slot contexts are distinct; full item names take precedence over short-name keys. Conflicting or missing matches retain marked legacy fallbacks and are listed in the refresh log, never guessed or claimed as NAS-verified.
 
-The frontend uses verified material `nameZh` before its hardcoded fallback table. The mineral refresh similarly applies the verified snapshot to mineral and location names without refreshing signal values. Mineral footer copy stays `数据更新`, with no last-check timestamp.
+The frontend uses verified material `nameZh` before its hardcoded fallback table. The mineral refresh applies that same snapshot to mineral and location names. Mineral footer copy stays `数据更新`, with no last-check timestamp or public source attribution.
 
-The same staged build also attempts to attach compact base attributes from the community-maintained `StarCitizenWiki/scunpacked-data` item export. The source commit must declare the exact same `X.Y.Z-LIVE.build` version as the SCMDB blueprint index, and matching/base-stat coverage must pass minimum thresholds before those values are accepted. A temporary source outage or a lagging community release never blocks a newer verified LIVE blueprint release: the site publishes the SCMDB quality coefficients and relative effects first, then retries the version-matched base-stat enrichment on later six-hour runs. It never combines base attributes from one game build with quality coefficients from another.
+The staged build uses SCMDB's exact-version item export for base stats and class, and the exact contracts for mission types. It no longer refetches another site's copy of those gameplay fields. FlowCLD is a committed, exact-blueprint-ID Chinese-name fallback only; it is no longer fetched in the scheduled pipeline and cannot supply gameplay metadata. Google/local language caches fill unresolved text before verified NAS keys are applied last. The community enrichment utility requires an immutable same-build source and a unique entity UUID but is not called automatically. Missing trustworthy absolute metrics retain relative-quality effects instead of values from another game build.
 
 Before replacing data files, the script saves a local backup under `.data-backups/`.
 Local backups are retained for 14 days and are ignored by Git.
@@ -165,11 +366,49 @@ The upload must enable `include-hidden-files: true` for `.data-backups/`; valida
 an actual artifact after a changed-data run, not just the workflow's conclusion.
 All staged public files are validated before same-filesystem atomic replacement. Transient SCMDB network failures are retried up to three times; if refresh still fails, the existing LIVE cache and its displayed update time remain unchanged.
 
-The same six-hour workflow then runs `scripts/refresh_mineral_locations.py`. It fetches the current commodity/location relationships from UEX API 2.0, rebuilds all five supported location groups, applies the verified NAS location localization, and preserves the calibrated Chinese fallbacks that are absent from that package. The candidate must retain at least 30 materials, 25 materials with reliable locations, 100 total locations, and 100 location-specific signal mappings. It is also compared with the last verified cache, and large coverage drops are rejected. If the source data is unchanged, `retrievedAt` is not advanced and no commit is created.
+The same six-hour workflow runs `scripts/refresh_mineral_locations.py` once for both distributions and signals. Its structured input is SCMDB `mining_data-<exact blueprint LIVE>.json`. Schema, manifest counts, element/composition/cluster references, finite values, modes and coverage must validate. It retains at least 30 materials, 25 with locations, 100 location entries and 100 signal locations, with relative drop guards against the previous primary snapshot. The one-time schema-2 migration removes unverifiable legacy station mappings rather than relabeling them as current-LIVE evidence. NAS location names remain authoritative. Identical normalized contents retain the previous `retrievedAt` and exact file bytes.
 
-Mineral radar signals are deliberately excluded from both schedules. `scripts/refresh_mineral_signals.py` runs only after the user explicitly requests a manual signal refresh. It verifies the embedded `RADAR_DATA` published by the Shadow Guardians Mining Resource Finder, maps source aliases such as Quantanium/Quantainium, and updates only the radar base, maximum cluster, and derived values already attached to local mineral locations. Location distribution is not inferred by this signal-only step. A visible source version label is optional: when the upstream page omits it, the refresh stores a deterministic `content-<sha256>` revision derived from the fully parsed and validated signal definitions. Coverage, required-material, range, backup, and atomic-replacement checks remain mandatory.
+This automatic policy supersedes the former manual-only signal rule. The old `refresh_mineral_signals.py` is only a compatibility alias to the same writer; no separate step or schedule is added. UEX distribution fetching and Shadow Guardians HTML signal parsing have been removed. A valid source with an unmapped material is not permission to fabricate a mine or copy an older build. Source failure preserves the last verified snapshot and remains a real failed refresh, not a successful timestamp-only update.
 
-Mineral location updates and manually requested signal updates both use strict coverage checks, a 14-day backup under `.data-backups/`, and same-filesystem atomic replacement. The production build derives one frontend data revision from the exact bytes of both verified JSON files, so either a blueprint change or a mineral change automatically creates a new browser cache URL without editing application source. If an automated blueprint or location source is unavailable, incomplete, or invalid, that step keeps the last deployed verified cache and the workflow reports failure after checking production. A signal-source outage cannot fail scheduled runs because signals are not fetched automatically. If verified values are unchanged, no mineral-data commit is created. The mineral dialog displays the newest valid timestamp among the location snapshot and the last manually verified signal calibration.
+Mixed deposits show their primary mineral's signal, not the searched secondary material's global signature. Actual possible cluster counts are preserved. FPS/ROC signatures are shared per-rock readings and are not multiplied into invented cluster totals. Named areas retain system/parent context; generic Lagrange or asteroid templates are explicitly regions, never expanded into named stations. The export does not provide validated surface coordinates, so none are invented.
+
+The mineral dialog retains its existing styling and content-driven height, capped
+by the viewport. Location lists use two columns above 620 px and one column on
+phones. Compact star-system controls filter exact reported systems without merging
+location identities; known system/parent paths remain visible. Named distribution
+areas are separate from generic region templates. Templates start collapsed when
+named areas exist, or expanded when they are the only available locations.
+
+Signals use one compact, gold-bordered popover anchored to the signal button,
+without expanding or rearranging location rows. Desktop hover opens it; leaving
+both the button and popover closes it after a short pointer-transition grace
+period, even when the button still has mouse focus. Touch taps toggle it; tapping
+outside or its close control dismisses it. The rest of the location is not a
+signal trigger. Enter/Space opens it for keyboard users, Escape dismisses the
+signal layer before the mineral dialog, and Tab remains within the dialog.
+Filtering, scrolling the location list, resizing and closing the dialog remove
+the old popover. The portal is outside the scrolling card, clamped to the dialog
+and viewport, with internal scrolling for unusually long signal content.
+Both dimensions follow the contents; 360px width and 400px height are upper
+limits, not fixed sizes. Signal-button occlusion was explicitly deferred by the
+user, so this compacting change leaves the original positioning helper intact.
+
+Prioritize the searched primary mineral and explicitly label secondary matches.
+Signal readings use the original gold capsules in a wrapping flex row, never
+columns generated from cluster counts. Visible cluster-configuration lines are
+omitted; the underlying actual count/value pairs remain in the data and each
+capsule's accessible label. More readings wrap naturally without widening the popover.
+Shared FPS/ROC values stay per-rock readings in their own labeled groups.
+Explanatory signal notes appear once in smaller text at the bottom of the layer,
+not repeatedly between each group heading and its readings.
+Single-mode headings omit the mode already shown outside; only genuinely mixed
+signal modes retain their compact labels, without the redundant mineral-body suffix.
+Generic templates are marked as
+non-exact locations. The dialog restores focus and the prior body scroll setting;
+closed template contents must not enter the focus loop. This locally approved
+popover design supersedes the earlier inline-only presentation, not its data rules.
+
+Distributions and signals share a 14-day backup and atomic file replacement. `--validate-only` performs offline coverage/schema and blueprint/mining version-pair checks before building and again after workflow rebase, before push. A changed blueprint build with incompatible cached mining cannot be published. Production checks enforce the same pair and full hashes. The combined data fingerprint and existing failure/rollback behavior are retained. No new runtime API, schedule or credential is needed.
 
 ## Long-Term Unattended Operation
 
@@ -177,7 +416,7 @@ The site is designed to remain available for at least a year and to continue bey
 
 The persistence chain is:
 
-1. GitHub Actions checks stable-LIVE blueprint data and mineral locations four times per day; mineral radar signals remain on the last manually verified snapshot.
+1. GitHub Actions checks stable-LIVE blueprint data plus exact-version mineral distributions/signals four times per day, through the existing schedules.
 2. New data is built in a temporary directory and must pass unit, coverage, channel, localization, count, uniqueness, and source consistency checks.
 3. The previous verified files are backed up before same-filesystem atomic replacement.
 4. Only approved generated files are staged and committed; unrelated or untracked files are never swept into an automated commit.
@@ -218,9 +457,9 @@ The `我的蓝图` filter is deliberately browser-local. A user can save or remo
 
 Each material card reads its slot's `modifiers` from the selected LIVE SCMDB crafting dataset and contains a compact quality slider plus the active linearly interpolated property coefficient or additive adjustment. Multi-segment quality curves are grouped by property and only the segment containing the selected quality is evaluated. Values from separate material slots that affect the same multiplicative property are multiplied; additive properties are summed relative to Q500.
 
-The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version community item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
+The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version primary item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
 
-Current 4.9.0 LIVE coverage is 1,540 blueprints with SCMDB quality modifiers, 1,530 exact item matches, and 1,508 blueprints with at least one compact base attribute. The remaining modifier-bearing records retain exact relative effects only. Known limitations are deliberate: recoil, damage mitigation, maximum tractor volume, and some newly introduced or unnamed items do not have a complete compact base panel; the preview models data values and cannot guarantee that the current in-game inventory UI displays every crafted adjustment correctly.
+The validated 4.10.2 LIVE snapshot has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; these calculations cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
 Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 

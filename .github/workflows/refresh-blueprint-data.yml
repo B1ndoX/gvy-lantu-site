@@ -14,6 +14,11 @@ on:
         required: false
         type: boolean
         default: false
+      prepare_only:
+        description: "Validate and upload candidate data without publishing main"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -55,13 +60,14 @@ jobs:
             python scripts/refresh_blueprint_data.py
           fi
 
-      - name: Refresh mineral locations if needed
+      - name: Refresh mineral distributions and signals if needed
         id: mineral_locations
         continue-on-error: true
         run: python scripts/refresh_mineral_locations.py
 
       - name: Validate production build
         run: |
+          python scripts/refresh_mineral_locations.py --validate-only
           node --check assets/app.js
           npm run build
 
@@ -73,7 +79,7 @@ jobs:
             --commit "${{ github.sha }}" \
             --blueprint-outcome "${{ steps.blueprint_refresh.outcome }}" \
             --mineral-locations-outcome "${{ steps.mineral_locations.outcome }}" \
-            --mineral-signals-outcome "skipped"
+            --mineral-signals-outcome "${{ steps.mineral_locations.outcome }}"
 
       - name: Upload data backup
         uses: actions/upload-artifact@v7
@@ -85,8 +91,24 @@ jobs:
           if-no-files-found: ignore
           retention-days: 14
 
+      - name: Upload prepared release data
+        if: github.event_name == 'workflow_dispatch' && inputs.prepare_only && steps.blueprint_refresh.outcome == 'success' && steps.mineral_locations.outcome == 'success'
+        uses: actions/upload-artifact@v7
+        with:
+          name: gvy-lantu-prepared-release
+          path: |
+            data/blueprint-index.json
+            data/mineral-locations.json
+            data/google-translate-cache.json
+            data/flowcld-blueprint-calibration.json
+            data/local-polish-names.json
+            data/official-localization/localization/starcitizen/nas-keyed-names.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Commit refreshed data
         id: commit_refresh
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.prepare_only) }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -98,6 +120,7 @@ jobs:
           fi
           git commit -m "Refresh blueprint and mineral data"
           git pull --rebase origin main
+          python scripts/refresh_mineral_locations.py --validate-only
           git push origin HEAD:main
           echo "changed=true" >> "$GITHUB_OUTPUT"
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -117,7 +140,7 @@ jobs:
 
       - name: Verify current EdgeOne production snapshot
         id: production_snapshot
-        if: steps.commit_refresh.outputs.changed != 'true'
+        if: steps.commit_refresh.outputs.changed != 'true' && !(github.event_name == 'workflow_dispatch' && inputs.prepare_only)
         continue-on-error: true
         run: |
           python scripts/check_production_health.py \

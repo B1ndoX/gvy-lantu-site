@@ -18,6 +18,7 @@ class EnrichQualityStatsTests(unittest.TestCase):
             "records": [
                 {
                     "name": "Example Cannon",
+                    "productEntityClass": "entity-id",
                     "tiers": [
                         {
                             "slots": [
@@ -36,6 +37,7 @@ class EnrichQualityStatsTests(unittest.TestCase):
         items = [
             {
                 "name": "Example Cannon",
+                "uuid": "entity-id",
                 "type": "WeaponGun",
                 "stdItem": {
                     "Weapon": {
@@ -58,6 +60,15 @@ class EnrichQualityStatsTests(unittest.TestCase):
     def test_rejects_cross_version_stats(self) -> None:
         with self.assertRaisesRegex(RuntimeError, "version mismatch"):
             enrich_index({"version": "4.9.0-live.12344265", "records": []}, [], "4.9.1-LIVE.12399999")
+
+    def test_same_name_is_not_an_identity_and_ambiguous_ids_do_not_fill(self) -> None:
+        import copy
+        record = {"name": "Example Cannon", "productEntityClass": "entity", "tiers": [{"slots": [{"modifiers": [{"propertyKey": "weapon_firerate"}]}]}]}
+        for items in ([{"name": "Example Cannon", "stdItem": {"Weapon": {"RateOfFire": 999}}}],
+                      [{"uuid": "entity", "stdItem": {"Weapon": {"RateOfFire": 999}}}] * 2):
+            index = {"version": "4.9.0-live.1", "records": [copy.deepcopy(record)]}
+            enrich_index(index, items, "4.9.0-LIVE.1")
+            self.assertNotIn("qualityStats", index["records"][0])
 
     def test_rejects_truncated_community_coverage(self) -> None:
         index = {"records": [{} for _ in range(100)]}
