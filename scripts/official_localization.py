@@ -27,6 +27,8 @@ SOURCE_BRANCH = "nas-localization"
 MAX_SOURCE_BYTES = 20 * 1024 * 1024
 ADAPTER_VERSION = 5
 SOURCE_POLICY = "nas-chinese-only-v1"
+MISSION_TOKEN = re.compile(r"~mission\(([^()\r\n]+)\)", re.IGNORECASE)
+MISSION_PLACEHOLDERS = {"LOCATION": "地点", "TARGET": "目标", "SHIP": "飞船", "OBJECTS": "目标物体", "CLAIM": "编号"}
 
 
 def fetch_bytes(url: str, limit: int = MAX_SOURCE_BYTES) -> bytes:
@@ -165,6 +167,8 @@ def clean_label(text: str, english: str, *, group: str = "other") -> str:
                     and preserves_item_codes(text[:match.start()], alias, variants=True)):
                 text = text[:match.start()].strip()
                 break
+    if group == "material" and english == "Corundum" and text == "刚玉Corundom":
+        text = "刚玉"
     return text
 
 
@@ -310,12 +314,14 @@ class OfficialNames:
         self.snapshot = snapshot
         self.entries = snapshot.get("entries") or {}
         self.by_name: dict[tuple[str, str], list[tuple[str, dict]]] = {}
+        self.mission_titles: dict[tuple, tuple[str, str] | None] = {}
         for key, entry in self.entries.items():
             self.by_name.setdefault((entry["domain"], entry["english"]), []).append((key, entry))
 
     def resolve(self, name: str, group: str = "other", key: str = "") -> tuple[str, str] | None:
         if key and (entry := self.entries.get(key.casefold())) and entry["domain"] == group:
-            return entry["chinese"], key.casefold()
+            value = clean_label(entry["chinese"], entry["english"], group=group) if group == "material" else entry["chinese"]
+            return value, key.casefold()
         matches = self.by_name.get((group, name), [])
         if group == "item":
             full_names = [(entry_key, entry) for entry_key, entry in matches
@@ -324,7 +330,72 @@ class OfficialNames:
         # Exact labels bridge SCMDB/UEX to game keys; conflicting keys are never guessed.
         if not matches or len({entry["chinese"] for _, entry in matches}) != 1:
             return None
-        return matches[0][1]["chinese"], matches[0][0]
+        entry_key, entry = matches[0]
+        value = clean_label(entry["chinese"], entry["english"], group=group) if group == "material" else entry["chinese"]
+        return value, entry_key
+
+    def resolve_mission_title(self, mission: dict) -> tuple[str, str] | None:
+        title = mission.get("title") or ""
+        key = (mission.get("titleKey") or "").lstrip("@").casefold()
+        tokens = mission.get("titleTokens") or {}
+        cache_key = (title, key, tuple(sorted(tokens.items())))
+        if cache_key in self.mission_titles:
+            return self.mission_titles[cache_key]
+        result = self._resolve_mission_template(title, key, tokens)
+        if result is None:
+            exact = self.resolve(title, "other")
+            if exact and not MISSION_TOKEN.search(exact[0]):
+                result = exact
+        self.mission_titles[cache_key] = result
+        return result
+
+    def _resolve_mission_template(self, title: str, key: str, tokens: dict) -> tuple[str, str] | None:
+        entry = self.entries.get(key)
+        if not entry or entry["domain"] != "other":
+            return None
+        english, chinese = entry["english"], entry["chinese"]
+        values = {}
+        for token, raw in tokens.items():
+            if not isinstance(raw, str):
+                return None
+            if raw.startswith("@"):
+                value = self.entries.get(raw.lstrip("@").casefold())
+                if value and not MISSION_TOKEN.search(value["english"] + value["chinese"]):
+                    values[token.casefold()] = (value["english"], value["chinese"])
+            else:
+                values[token.casefold()] = (raw, raw)
+        captures = {}
+        pattern, cursor = "", 0
+        for match in MISSION_TOKEN.finditer(english):
+            pattern += re.escape(english[cursor:match.start()])
+            token = match[1].casefold()
+            if token in values:
+                pattern += re.escape(values[token][0])
+            elif token in captures:
+                pattern += f"(?P={captures[token]})"
+            else:
+                name = f"p{len(captures)}"
+                captures[token] = name
+                pattern += f"(?P<{name}>.+?)"
+            cursor = match.end()
+        pattern += re.escape(english[cursor:])
+        matched = re.fullmatch(pattern, title)
+        if not matched:
+            return None
+        for token, name in captures.items():
+            raw = matched[name]
+            # Dynamic game locations/targets stay placeholders, never guessed names.
+            placeholder = re.fullmatch(r"\[([A-Z_]+)\]", raw)
+            if not placeholder:
+                return None
+            label = MISSION_PLACEHOLDERS.get(placeholder[1], placeholder[1])
+            values[token] = (raw, f"[{label}]")
+        if any(match[1].casefold() not in values for match in MISSION_TOKEN.finditer(chinese)):
+            return None
+        result = MISSION_TOKEN.sub(lambda match: values[match[1].casefold()][1], chinese)
+        if MISSION_TOKEN.search(result):
+            return None
+        return result, key
 
     def apply_index(self, index: dict) -> dict:
         changes = []
@@ -341,6 +412,27 @@ class OfficialNames:
                 changes.append({"english": raw, "field": field, "before": target.get(field), "after": value, "key": localization_key})
             target[field] = value
             target[field + "LocalizationKey"] = localization_key
+
+        def assign_mission_title(mission):
+            match = self.resolve_mission_title(mission)
+            if match:
+                value, key = match
+                if mission.get("titleZh") != value:
+                    changes.append({"english": mission.get("title", ""), "field": "titleZh", "before": mission.get("titleZh"), "after": value, "key": key})
+                mission["titleZh"] = value
+                mission["titleZhLocalizationKey"] = key
+                mission["titleZhSource"] = "nas-official-mission"
+            else:
+                fallback = mission.get("titleZh") or ""
+                for placeholder, label in MISSION_PLACEHOLDERS.items():
+                    fallback = fallback.replace(f"[{placeholder}]", f"[{label}]")
+                if fallback and fallback != mission.get("titleZh"):
+                    changes.append({"english": mission.get("title", ""), "field": "titleZh", "before": mission.get("titleZh"), "after": fallback, "key": ""})
+                    mission["titleZh"] = fallback
+                mission["titleZhSource"] = "translation-fallback"
+                mission.pop("titleZhLocalizationKey", None)
+                if mission.get("title"):
+                    unresolved.add(("mission", mission["title"]))
 
         for record in index.get("records") or []:
             zh = record.setdefault("zh", {})
@@ -371,8 +463,12 @@ class OfficialNames:
                 assign(output, "nameZh", output.get("name", ""), group)
             for source in record.get("sources") or []:
                 for mission in source.get("missions") or []:
-                    assign(mission, "titleZh", mission.get("title", ""), "other")
+                    assign_mission_title(mission)
                     assign(mission, "factionZh", mission.get("faction", ""), "manufacturer")
+                    faction_key = (mission.get("factionKey") or "").lstrip("@")
+                    faction_entry = self.entries.get(faction_key.casefold())
+                    if faction_entry and faction_entry["english"].casefold() == mission.get("faction", "").casefold():
+                        assign(mission, "factionZh", mission.get("faction", ""), "other", faction_key)
         from build_data import reward_items
         reward_data = index.get("missionRewards") or {}
         for system in reward_data.get("systems") or []:
@@ -393,7 +489,7 @@ class OfficialNames:
                       *(requirements.get("completedContracts") or {}).get("candidates", []),
                       *(requirements.get("excludedContracts") or {}).get("candidates", [])]
             for intro in intros:
-                assign(intro, "titleZh", intro.get("title", ""), "other", intro.get("titleKey", "").lstrip("@"))
+                assign_mission_title(intro)
             for reward in mission.get("items") or []:
                 for item in reward_items(reward):
                     assign(item, "nameZh", item.get("name", ""), "item")

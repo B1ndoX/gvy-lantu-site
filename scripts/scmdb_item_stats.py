@@ -69,7 +69,9 @@ def weapon_metrics(item: dict, data: dict) -> tuple[list[dict], list[str]]:
         for key, label in (("chargeTime", "蓄力时间"), ("cooldownTime", "模式冷却")):
             add_metric(metrics, f"{key}_{index}", f"{prefix}{label}", number_at(mode, key), [], "秒")
     if modes:
-        notes.insert(0, "射击模式：" + " / ".join(str(m.get("name") or m.get("type") or "未知") for m in modes))
+        mode_labels = {"Single": "单发", "Rapid": "自动", "Burst": "连发", "Charge": "蓄力", "Sequence": "序列", "Damage Beam": "伤害光束", "Shotgun": "霰弹"}
+        kind_labels = {"single": "单发", "rapid": "自动", "burst": "连发", "charged": "蓄力", "sequence": "序列", "beam": "光束"}
+        notes.insert(0, "射击模式：" + " / ".join(mode_labels.get(m.get("name")) or kind_labels.get(m.get("type"), "未知模式") for m in modes))
     if explosive:
         notes.append("包含爆炸伤害，未估算合并伤害与 DPS")
     if any(m["id"].startswith("burst_dps") for m in metrics):

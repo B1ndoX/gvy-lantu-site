@@ -7,6 +7,7 @@ import argparse
 import copy
 import json
 import math
+import re
 import sys
 import time
 import urllib.request
@@ -19,7 +20,7 @@ from mission_requirements import build_requirements, validate_requirements
 
 
 BASE_URL = "https://scmdb.net/data"
-MISSION_REWARDS_SCHEMA = 2
+MISSION_REWARDS_SCHEMA = 3
 
 
 def load_json(path: Path) -> Any:
@@ -198,8 +199,12 @@ def build_source_maps(mission_data: dict[str, Any]) -> tuple[dict[str, list[dict
                 {
                     "id": clean(contract.get("id")),
                     "title": clean(contract.get("title"), clean(contract.get("debugName"), "Unknown mission")),
+                    "titleKey": clean(contract.get("titleLocKey")) or clean(contract.get("titleKey")).lstrip("@"),
+                    "titleTokens": copy.deepcopy(contract.get("tokenSubstitutions") or {}),
                     "category": clean(contract.get("category"), "mission"),
                     "faction": faction_name(factions, contract.get("factionGuid")),
+                    "factionKey": clean((factions.get(contract.get("factionGuid")) or {}).get("nameKey")).lstrip("@")
+                    or clean(contract.get("contractorNameKey")).lstrip("@"),
                     "trigger": clean(reward.get("trigger"), "complete"),
                     "chance": reward.get("chance"),
                     "rewardUEC": contract.get("rewardUEC"),
@@ -321,6 +326,12 @@ def validate_mission_rewards(index: dict[str, Any]) -> None:
         for source in record.get("sources") or []:
             for mission in source.get("missions") or []:
                 mission_systems(mission)
+                if (not isinstance(mission.get("titleKey"), str) or not isinstance(mission.get("titleTokens"), dict)
+                        or any(not isinstance(key, str) or not isinstance(value, str) for key, value in mission["titleTokens"].items())):
+                    raise RuntimeError("mission title localization metadata is missing or invalid")
+                title_zh = mission.get("titleZh") or ""
+                if re.search(r"~mission\(|\bMaster Rank\b|\bLing Family Rookie\b|Lrg。采购订单", title_zh, flags=re.IGNORECASE):
+                    raise RuntimeError("mission title contains an unresolved localization template or known untranslated phrase")
                 detail = missions.get(mission.get("id"))
                 if not detail or source.get("poolId") not in {p.get("id") for p in detail.get("pools") or []}:
                     raise RuntimeError("mission reward contract/pool reference is missing")

@@ -8,6 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_base_attribute_labels_can_wrap_without_truncation(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        scoped_rule = styles.split(".base-stats .spec-item strong {", 1)[1].split("}", 1)[0]
+        self.assertIn("white-space: normal", scoped_rule)
+        self.assertIn("overflow-wrap: anywhere", scoped_rule)
+        self.assertIn("overflow: visible", scoped_rule)
+
     def test_mineral_footer_labels_data_update_not_check_time(self) -> None:
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         footer = app.split('<footer class="mineral-source">', 1)[1].split("</footer>", 1)[0]

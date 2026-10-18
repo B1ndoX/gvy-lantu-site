@@ -36,6 +36,8 @@ class ItemStatTests(unittest.TestCase):
         self.assertEqual(metrics["burst_dps"]["value"], 132)
         self.assertEqual(metrics["burst_dps"]["properties"], ["weapon_damage", "weapon_firerate"])
         self.assertEqual(index["itemStats"]["matchedItems"], 1)
+        self.assertNotIn("Single", " ".join(index["records"][0]["baseStatNotes"]))
+        self.assertIn("单发", " ".join(index["records"][0]["baseStatNotes"]))
         self.assertEqual(data, before)
 
     def test_name_only_or_missing_entity_never_authorizes_base_stats(self):

@@ -24,7 +24,8 @@ def build_requirements(contract: dict, data: dict, locations: dict) -> dict:
         for intro in contract.get(field) or []:
             original = by_debug.get(intro.get("debugName"), intro)
             intros.append({"title": intro.get("title") or original.get("title") or intro.get("debugName"),
-                           "titleKey": original.get("titleLocKey") or original.get("titleKey", "")})
+                           "titleKey": original.get("titleLocKey") or original.get("titleKey", ""),
+                           "titleTokens": copy.deepcopy(original.get("tokenSubstitutions") or {})})
         if intros:
             result[field] = intros
 
@@ -80,7 +81,8 @@ def build_requirements(contract: dict, data: dict, locations: dict) -> dict:
             tags = set(completion.get(source) or [])
             if not tags:
                 continue
-            titles = [{"title": c.get("title") or c.get("debugName"), "titleKey": c.get("titleLocKey") or c.get("titleKey", "")}
+            titles = [{"title": c.get("title") or c.get("debugName"), "titleKey": c.get("titleLocKey") or c.get("titleKey", ""),
+                       "titleTokens": copy.deepcopy(c.get("tokenSubstitutions") or {})}
                       for c in contracts if any(t.get("tag") in tags for t in c.get("completionTags") or [])]
             result[target] = {"tagCount": len(tags), "candidates": titles}
             if source == "tags":

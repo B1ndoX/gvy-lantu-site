@@ -145,8 +145,25 @@ Before replacement, task, referenced-pool, task-linked-blueprint and physical-it
 coverage are compared with the previous cache; a drop exceeding 20% aborts the
 candidate and keeps the previous data for investigation.
 The same guard now covers conditions, location references, matched base-stat
-records and previously available absolute-quality panels. Reward schema 2 and
+records and previously available absolute-quality panels. Reward schema 3 and
 item-stat schema 1 migrate through that same refresh entry point, not a new job.
+
+Task titles preserve the raw contract's localization key and token substitutions.
+The official template is accepted only when its fully expanded English matches
+the actual task title; keyed ranks/cargo scales then expand from the verified
+Chinese snapshot. This also applies to prerequisite titles. Runtime placeholders
+remain placeholders, with known labels translated, never invented locations.
+Faction names use their own validated key/English identity, not an unrelated
+contractor or manufacturer. Conflicting templates retain a traceable translation
+fallback. Missing title metadata, unresolved templates and the known partial-cache
+regressions fail candidate validation. Original English titles remain searchable.
+The migration reuses the full rebuild and coverage/backup guards above.
+
+Localization QA must inspect rendered manufacturing, dismantling, task rewards
+and conditions, including armor/clothing attachment labels, mode labels and
+mineral names. Do not strip ordinary model codes, acronyms, units or deliberate
+bilingual places. Base-attribute labels wrap within their existing specification
+boxes, including multi-mode labels at 320 px; no font reduction or ellipsis.
 
 ## Base Attributes And Quality
 
