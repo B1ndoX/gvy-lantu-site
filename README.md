@@ -272,17 +272,22 @@ totals with a warning. Storage failure leaves the current session usable and
 explicitly reports that it was not saved. No login, cloud permanence or device
 synchronization is implied.
 
-The plan dialog stays content-height driven and at most 640px wide. Its compact
-summary highlights planned pieces and sequential craft time; one short note
-states that material quantities already include all planned pieces and that time
-excludes queueing. Materials use aligned `material / quality requirement / total
-amount` columns rather than two-column cards or a dot-separated sentence.
+The plan dialog stays content-height driven and at most 640px wide. Planned item
+names come first at 16px in the existing soft gold, ahead of material requirements.
+Planned-piece and `清单总耗时` totals follow the materials at a secondary 14px in
+white, with smaller muted labels. One short note explicitly states that material
+and time totals include every item and its quantity in the whole plan; time is
+estimated for sequential crafting, excluding queueing, not a single-item duration
+or promised parallel completion time. Materials use aligned `material / quality
+requirement / total amount` columns rather than two-column cards or a dot-separated sentence.
 Resource totals retain SCU, item totals retain pieces, and missing quality stays
 explicit instead of being invented. Saved-state and clear controls are secondary.
-Each quantity has separate 44px increment/decrement targets and direct input,
+Each quantity has separate 32px desktop increment/decrement targets and direct input,
 bounded to 1-9999. Recalculation preserves editable row/action nodes so input
 blur cannot swallow the next click or disrupt keyboard Tab. Mobile places the
-quantity controls below the item name without shrinking their touch targets.
+quantity controls below the item name with 40px touch targets. Quantity-control
+borders and symbols stay muted, rather than visually dominating the item name.
+Check actual reading order, relative typography and color, not only overflow.
 
 Share links encode only the exact blueprint ID and craft/dismantle mode in the
 URL fragment. They do not export favorites, filters or the craft plan. Clipboard

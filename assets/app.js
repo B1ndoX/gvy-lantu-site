@@ -203,9 +203,7 @@ function openUtilityDialog(title, content, opener, className = "") {
 function renderPlanBody() {
   const totals = planTotals(state.craftPlan, state.records);
   const count = validPlan(state.craftPlan).reduce((sum, row) => sum + row.quantity, 0);
-  return `<div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>逐件耗时合计</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
-    <p class="plan-explanation">材料用量已按清单件数合计；耗时按逐件制作估算，不含排队。</p>
-    <div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
+  return `<div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
       return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
@@ -217,9 +215,10 @@ function renderPlanBody() {
         <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
         ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
     }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
-    <section class="detail-section plan-material-section"><h3>材料合计</h3>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
+    <section class="detail-section plan-material-section"><h3>材料合计</h3><p class="plan-explanation">材料与耗时均按清单内全部物品及数量合计；耗时按依次制作估算，不含排队。</p>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
       <thead><tr><th scope="col">材料</th><th scope="col">品质要求</th><th scope="col">所需总量</th></tr></thead>
       <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 ${formatNumber(item.minQuality)}` : "未注明"}</td><td><strong>${formatNumber(Number(item.quantity.toFixed(6)))}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
+    <div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>清单总耗时</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
     <div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>`;
 }
 

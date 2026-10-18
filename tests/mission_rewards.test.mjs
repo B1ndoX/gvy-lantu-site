@@ -297,8 +297,8 @@ test("planner explains aggregate amounts and separates quality, quantities and u
   api.state.craftPlan=[{recordId:"a",quantity:2,choices:{}}];
   const html=api.renderPlanBody();
   assert.match(html,/计划制作<\/span><strong>2 <small>件/);
-  assert.match(html,/逐件耗时合计<\/span><strong>21 分钟/);
-  assert.match(html,/材料用量已按清单件数合计/);
+  assert.match(html,/清单总耗时<\/span><strong>21 分钟/);
+  assert.match(html,/材料与耗时均按清单内全部物品及数量合计/);
   assert.match(html,/不含排队/);
   for(const label of ["材料", "品质要求", "所需总量"])assert.ok(html.includes(`scope="col">${label}</th>`));
   assert.match(html,/<td>至少 1<\/td><td><strong>0\.32<\/strong> <span>SCU<\/span>/);
@@ -329,6 +329,18 @@ test("empty or unavailable plans remain explicit without fabricating material to
   html=api.renderPlanBody();
   assert.match(html,/class="plan-warning">当前版本未收录：missing/);
   assert.match(html,/data-remove-plan/);
+});
+
+test("planner reading order prioritizes planned items and materials before secondary totals", () => {
+  const api=app();
+  api.state.records=[{id:"snow",name:"SnowBlind",tiers:[{craftTimeSeconds:630,slots:[{name:"Shell",options:[{kind:"resource",name:"Savrilium",quantity:.16,minQuality:1}]}]}]}];
+  api.state.craftPlan=[{recordId:"snow",quantity:2,choices:{}}];
+  const html=api.renderPlanBody();
+  assert.ok(html.indexOf('class="plan-list"')<html.indexOf('class="detail-section plan-material-section"'));
+  assert.ok(html.indexOf('class="plan-material-table"')<html.indexOf('class="plan-summary"'));
+  assert.ok(html.indexOf('class="plan-summary"')<html.indexOf('class="plan-toolbar"'));
+  assert.equal((html.match(/class="plan-explanation"/g)||[]).length,1);
+  assert.match(html,/清单总耗时<\/span><strong>21 分钟/);
 });
 
 test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {

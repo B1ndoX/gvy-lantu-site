@@ -12,12 +12,26 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         self.assertIn(".mission-dialog.planner-dialog { width: min(640px,", styles)
         explanation = styles.split(".planner-dialog .plan-explanation {", 1)[1].split("}", 1)[0]
-        self.assertIn("margin: 10px 0 12px", explanation)
+        self.assertIn("margin: 0 0 10px", explanation)
         self.assertIn(".plan-material-table { width: 100%; border-collapse: collapse; table-layout: fixed; }", styles)
-        self.assertIn("grid-template-columns: 44px 56px 44px", styles)
+        self.assertIn("grid-template-columns: 32px 44px 32px", styles)
+        self.assertIn("grid-template-columns: 40px 48px 40px", styles)
         self.assertIn(".plan-stepper button {", styles)
         self.assertIn("input::-webkit-inner-spin-button", styles)
         self.assertNotIn(".plan-time", styles)
+
+    def test_plan_item_names_have_priority_over_secondary_totals_and_controls(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
+        self.assertIn("color: var(--orange)", name)
+        self.assertIn("font-size: 16px", name)
+        self.assertIn("line-height: 1.45", name)
+        summary = styles.split(".plan-summary strong {", 1)[1].split("}", 1)[0]
+        self.assertIn("font-size: 14px", summary)
+        self.assertNotIn("var(--cyan)", summary)
+        button = styles.split(".plan-stepper button {", 1)[1].split("}", 1)[0]
+        self.assertIn("width: 32px", button)
+        self.assertIn("height: 32px", button)
 
     def test_base_attribute_labels_can_wrap_without_truncation(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
