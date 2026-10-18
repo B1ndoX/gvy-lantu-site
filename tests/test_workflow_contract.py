@@ -59,6 +59,24 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("data/blueprint-index.json", git_add_line)
         self.assertIn("data/mineral-locations.json", git_add_line)
 
+    def test_prepare_only_exports_validated_data_without_publishing_or_claiming_health(self) -> None:
+        inputs = self.workflow.split("permissions:", 1)[0]
+        self.assertIn("prepare_only:", inputs)
+        self.assertIn("default: false", inputs.split("prepare_only:", 1)[1])
+        guard = "!(github.event_name == 'workflow_dispatch' && inputs.prepare_only)"
+        commit = self.workflow.split("- name: Commit refreshed data", 1)[1].split("- name:", 1)[0]
+        snapshot = self.workflow.split("- name: Verify current EdgeOne production snapshot", 1)[1].split("- name:", 1)[0]
+        self.assertIn("if: ${{ " + guard + " }}", commit)
+        self.assertIn(guard, snapshot)
+        upload = self.workflow.split("- name: Upload prepared release data", 1)[1].split("- name:", 1)[0]
+        for gate in ("github.event_name == 'workflow_dispatch'", "inputs.prepare_only", "steps.blueprint_refresh.outcome == 'success'", "steps.mineral_locations.outcome == 'success'"):
+            self.assertIn(gate, upload)
+        self.assertIn("if-no-files-found: error", upload)
+        self.assertIn("retention-days: 14", upload)
+        for path in ("blueprint-index.json", "mineral-locations.json", "nas-keyed-names.json"):
+            self.assertIn(path, upload)
+        self.assertNotIn("if: always()", upload)
+
     def test_signals_share_one_mineral_refresh_and_the_real_heartbeat_outcome(self) -> None:
         self.assertNotIn("python scripts/refresh_mineral_signals.py", self.workflow)
         self.assertNotIn("steps.mineral_signals.outcome", self.workflow)

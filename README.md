@@ -8,6 +8,25 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## Reviewed Releases
+
+The original refresh workflow accepts an optional manual `prepare_only` input
+(default false). With `force=true`, this rebuilds exact-LIVE data in GitHub,
+validates the paired snapshots, builds the site, and uploads both the original
+14-day backup and a separate `gvy-lantu-prepared-release` artifact. Preparation
+never commits/pushes `main`, checks uninstalled candidate assets against the
+production domain, or reports that a deployment passed. Both source steps must
+succeed before the candidate artifact can be produced. Scheduled runs and normal
+manual refreshes keep their existing publish, health-check and rollback behavior.
+
+For a reviewed code release, start from production `main`, pick code changes only,
+prepare cloud data on the release branch, inspect its immutable run/head and
+artifact, then commit only the generated-data allowlist to that same branch.
+Rerun tests, coverage/version validation, build and browser QA before merging the
+reviewed code and data together. Do not publish local preview-data checkpoints.
+After merge, verify the actual EdgeOne client URLs against that final revision;
+keep the previous production commit and cloud backup available for rollback.
+
 Official localization version labels may start with a numeric series or the
 official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
 preserves the original INI and manifest label, verifies their complete bytes,
