@@ -287,6 +287,9 @@ or promised parallel completion time. Materials use aligned `material / quality
 requirement / total amount` columns rather than two-column cards or a dot-separated sentence.
 Resource totals retain SCU, item totals retain pieces, and missing quality stays
 explicit instead of being invented. Saved-state and clear controls are secondary.
+Within the material table, only quality digits use pale periwinkle `#b8c9f1`
+(13px) and total-amount digits use soft mint `#9de2bf` (14px). Prefixes, units and
+column labels stay muted; keep both below the gold item name's visual priority.
 Each quantity has separate 32px desktop increment/decrement targets and direct input,
 bounded to 1-9999. Recalculation preserves editable row/action nodes so input
 blur cannot swallow the next click or disrupt keyboard Tab. Mobile places the

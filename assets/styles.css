@@ -1138,8 +1138,10 @@ html[data-query-mode="dismantle"] .reset-button {
 .plan-material-table th:first-child { padding-left: 0; }
 .plan-material-table tbody th { color: var(--text-strong); font-size: 13px; font-weight: 700; }
 .plan-material-table td:nth-child(2) { color: var(--muted); }
-.plan-material-table th:last-child, .plan-material-table td:last-child { padding-right: 0; text-align: right; color: var(--cyan); font-variant-numeric: tabular-nums; }
-.plan-material-table td:last-child strong { font-size: 14px; }
+.plan-material-table th:last-child, .plan-material-table td:last-child { padding-right: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.plan-material-table td:last-child { color: var(--muted); }
+.plan-material-table .plan-quality-value { color: #b8c9f1; font-size: 13px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.plan-material-table .plan-amount-value { color: #9de2bf; font-size: 14px; }
 @media (max-width: 620px) {
   .plan-row { grid-template-columns: minmax(0, 1fr) 40px; }
   .plan-row > .plan-remove { grid-column: 2; grid-row: 1; }

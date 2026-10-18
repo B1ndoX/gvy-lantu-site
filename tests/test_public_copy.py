@@ -46,6 +46,16 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn("overflow-wrap: anywhere", scoped_rule)
         self.assertIn("overflow: visible", scoped_rule)
 
+    def test_plan_requirement_numbers_have_distinct_colors_but_units_remain_muted(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        quality = styles.split(".plan-material-table .plan-quality-value {", 1)[1].split("}", 1)[0]
+        amount = styles.split(".plan-material-table .plan-amount-value {", 1)[1].split("}", 1)[0]
+        self.assertIn("color: #b8c9f1", quality)
+        self.assertIn("font-size: 13px", quality)
+        self.assertIn("color: #9de2bf", amount)
+        self.assertIn("font-size: 14px", amount)
+        self.assertIn(".plan-material-table td:last-child { color: var(--muted); }", styles)
+
     def test_mineral_footer_labels_data_update_not_check_time(self) -> None:
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         footer = app.split('<footer class="mineral-source">', 1)[1].split("</footer>", 1)[0]

@@ -301,10 +301,10 @@ test("planner explains aggregate amounts and separates quality, quantities and u
   assert.match(html,/材料与耗时均按清单内全部物品及数量合计/);
   assert.match(html,/不含排队/);
   for(const label of ["材料", "品质要求", "所需总量"])assert.ok(html.includes(`scope="col">${label}</th>`));
-  assert.match(html,/<td>至少 1<\/td><td><strong>0\.32<\/strong> <span>SCU<\/span>/);
-  assert.match(html,/<td>至少 1<\/td><td><strong>0\.2<\/strong> <span>SCU<\/span>/);
-  assert.match(html,/<td>至少 0<\/td><td><strong>4<\/strong> <span>件<\/span>/);
-  assert.match(html,/<td>未注明<\/td><td><strong>2<\/strong> <span>件<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">1<\/strong><\/td><td><strong class="plan-amount-value">0\.32<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">1<\/strong><\/td><td><strong class="plan-amount-value">0\.2<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">0<\/strong><\/td><td><strong class="plan-amount-value">4<\/strong> <span>件<\/span>/);
+  assert.match(html,/<td>未注明<\/td><td><strong class="plan-amount-value">2<\/strong> <span>件<\/span>/);
   assert.match(html,/&lt;unsafe&gt;/);
   assert.match(html,/data-plan-step="-1"/);
   assert.match(html,/data-plan-step="1"/);
