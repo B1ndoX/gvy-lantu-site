@@ -129,8 +129,10 @@ old suffix never determines reward eligibility or probability.
 
 Reward candidates and result-list summaries show verified compact class/grade
 labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,
-combined with A-D only when the data provides a valid grade. Missing classes do
-not become military; a weapon with grade A but no class shows only A. Summary
+combined with A-D only when the data provides a valid grade. Without a recognized
+class, omit the compact class/grade field entirely, including a bare A-D. Do not
+invent a class or show a lone grade in plan metadata, reward pools, list summaries
+or their summary tooltips. Original grade fields, search and filtering remain intact. Summary
 order is category, component/weapon type, compact class/grade, size, and optional
 manufacturer (for example, 舰船组件 · 冷却器 · 隐C · S1 · 制造商).
 Keep class/grade before trailing size/manufacturer text and verify actual visible
@@ -274,6 +276,9 @@ synchronization is implied.
 
 The plan dialog stays content-height driven and at most 640px wide. Planned item
 names come first at 16px in the existing soft gold, ahead of material requirements.
+Their following parentheses show `category · size · compact class/grade` at 12px
+in muted regular text, wrapping naturally without shrinking the name. Omit missing
+fields; without a recognized class omit the grade too, rather than showing a bare A-D.
 Each row places its single-item craft duration to the left of the quantity
 controls, separated by 16px. This is secondary 12px muted text, not multiplied
 by the row count; narrow screens let its label/value wrap within that left area.

@@ -26,6 +26,10 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn("color: var(--orange)", name)
         self.assertIn("font-size: 16px", name)
         self.assertIn("line-height: 1.45", name)
+        metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]
+        self.assertIn("color: var(--muted)", metadata)
+        self.assertIn("font-size: 12px", metadata)
+        self.assertIn("font-weight: 400", metadata)
         summary = styles.split(".plan-summary strong {", 1)[1].split("}", 1)[0]
         self.assertIn("font-size: 14px", summary)
         self.assertNotIn("var(--cyan)", summary)

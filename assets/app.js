@@ -207,7 +207,9 @@ function renderPlanBody() {
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
       const tier = record ? getFirstTier(record) : null;
-      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
+      const size = record?.stats?.size;
+      const specification = record ? [record.category?.label, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ") : "";
+      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}${specification ? `<small class="plan-item-meta">（${escapeHtml(specification)}）</small>` : ""}</strong>
         <div class="plan-controls"><div class="plan-unit-time"><span>单件耗时</span><span>${escapeHtml(formatTime(tier?.craftTimeSeconds))}</span></div>
         <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
           <button type="button" data-plan-step="-1" aria-label="减少${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="减少一件" ${row.quantity <= 1 ? "disabled" : ""}>−</button>
@@ -1319,7 +1321,7 @@ function recordWeaponType(record) {
 function recordClassGrade(record) {
   const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
   const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
-  return `${abbreviation}${grade}`;
+  return abbreviation ? `${abbreviation}${grade}` : "";
 }
 
 function recordSummary(record, fullType = false, manufacturer = false) {
@@ -1333,7 +1335,7 @@ function recordSummary(record, fullType = false, manufacturer = false) {
 function renderRecordSummary(record, manufacturer = false) {
   const short = recordSummary(record, false, manufacturer);
   const full = recordSummary(record, true, manufacturer);
-  const description = [full, recordComponentClass(record), record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
+  const description = [full, recordComponentClass(record), recordComponentClass(record) && record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
   const adaptive = full !== short ? ` data-summary-full="${escapeHtml(full)}" data-summary-short="${escapeHtml(short)}"` : "";
   return `<small${adaptive} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
 }

@@ -170,7 +170,7 @@ test("prerequisite and excluded mission titles remove blueprint hints and color 
 test("compact class-grade labels preserve verified classes without inventing a weapon class", () => {
   const api = app();
   for (const [itemClass, grade, expected] of [["Military",1,"军A"],["Stealth",1,"隐A"],["Industrial",3,"工C"],["Civilian",2,"民B"],["Competition",4,"竞D"],
-    [undefined,1,"A"],["Unknown",2,"B"],["Military",null,"军"],[undefined,null,""]]) {
+    [undefined,1,""],["Unknown",2,""],["Military",null,"军"],[undefined,null,""]]) {
     assert.equal(api.recordClassGrade({flowcld:{itemClass},stats:{grade}}),expected);
   }
 });
@@ -203,8 +203,9 @@ test("reward and result summaries show compact grades, escape text and index bot
   assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · 隐A · S1");
   const weapon={name:"M7A Cannon",category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"<Maker>",subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1,tags:"LaserCannon"}};
   const html=api.renderRecordSummary(weapon,true);
-  assert.match(html,/data-summary-full="舰船武器 · 激光加农炮 · A · S5 · &lt;Maker&gt;"/);
-  assert.match(html,/data-summary-short="舰船武器 · 激光 · A · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/data-summary-full="舰船武器 · 激光加农炮 · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/data-summary-short="舰船武器 · 激光 · S5 · &lt;Maker&gt;"/);
+  assert.doesNotMatch(html,/ · A(?: 级)?(?: ·|&quot;|")/);
   assert.doesNotMatch(html,/<Maker>|军A/);
   assert.match(api.recordSearchText(weapon),/激光加农炮/);
   assert.match(api.recordSearchText(cooler),/隐a/);
@@ -263,7 +264,7 @@ test("primary class and task types cannot be replaced by a conflicting legacy ca
   assert.equal(api.recordComponentClass(record),"工业");
   assert.equal(api.recordMissionTypes(record)[0].label,"加油");
   record.stats.componentClass=null;
-  assert.equal(api.recordClassGrade(record),"C");
+  assert.equal(api.recordClassGrade(record),"");
   record.stats.componentClass="Laser";
   assert.equal(api.recordComponentClass(record),"");
 });
@@ -365,6 +366,26 @@ test("planner shows per-item unit time left of quantity without multiplying it b
   }
   api.state.craftPlan=[{recordId:"missing",quantity:2,choices:{}}];
   assert.match(api.renderPlanBody(),/单件耗时<\/span><span>未知/);
+});
+
+test("planner appends smaller category, size and verified compact class-grade metadata", () => {
+  const api=app();
+  api.state.records=[
+    {id:"military",name:"Military",category:{label:"舰船组件"},stats:{size:0,componentClass:"Military",grade:1}},
+    {id:"stealth",name:"SnowBlind",category:{label:"舰船组件"},stats:{size:1,componentClass:"Stealth",grade:1}},
+    {id:"weapon",name:"Weapon",category:{label:"舰船武器"},stats:{size:5,grade:1}},
+    {id:"partial",name:"Partial",category:{label:"<unsafe>"},stats:{size:""}},
+    {id:"empty",name:"Empty"},
+  ];
+  api.state.craftPlan=api.state.records.map(r=>({recordId:r.id,quantity:1,choices:{}}));
+  const html=api.renderPlanBody();
+  for(const text of ["舰船组件 · S0 · 军A","舰船组件 · S1 · 隐A","舰船武器 · S5","&lt;unsafe&gt;"]) {
+    assert.ok(html.includes(`<small class="plan-item-meta">（${text}）</small>`));
+  }
+  assert.equal((html.match(/class="plan-item-meta"/g)||[]).length,4);
+  assert.doesNotMatch(html,/<unsafe>|Sundefined|Snull|S ·|未知尺寸|S5 · (?:军)?A/);
+  api.state.craftPlan=[{recordId:"unavailable",quantity:1,choices:{}}];
+  assert.doesNotMatch(api.renderPlanBody(),/class="plan-item-meta"/);
 });
 
 test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {
