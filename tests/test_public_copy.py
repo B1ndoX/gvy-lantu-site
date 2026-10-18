@@ -8,6 +8,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_planner_has_scoped_compact_layout_and_independent_explanation_spacing(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        self.assertIn(".mission-dialog.planner-dialog { width: min(640px,", styles)
+        explanation = styles.split(".planner-dialog .plan-explanation {", 1)[1].split("}", 1)[0]
+        self.assertIn("margin: 10px 0 12px", explanation)
+        self.assertIn(".plan-material-table { width: 100%; border-collapse: collapse; table-layout: fixed; }", styles)
+        self.assertIn("grid-template-columns: 44px 56px 44px", styles)
+        self.assertIn(".plan-stepper button {", styles)
+        self.assertIn("input::-webkit-inner-spin-button", styles)
+        self.assertNotIn(".plan-time", styles)
+
     def test_base_attribute_labels_can_wrap_without_truncation(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         scoped_rule = styles.split(".base-stats .spec-item strong {", 1)[1].split("}", 1)[0]

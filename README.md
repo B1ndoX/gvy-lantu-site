@@ -272,6 +272,18 @@ totals with a warning. Storage failure leaves the current session usable and
 explicitly reports that it was not saved. No login, cloud permanence or device
 synchronization is implied.
 
+The plan dialog stays content-height driven and at most 640px wide. Its compact
+summary highlights planned pieces and sequential craft time; one short note
+states that material quantities already include all planned pieces and that time
+excludes queueing. Materials use aligned `material / quality requirement / total
+amount` columns rather than two-column cards or a dot-separated sentence.
+Resource totals retain SCU, item totals retain pieces, and missing quality stays
+explicit instead of being invented. Saved-state and clear controls are secondary.
+Each quantity has separate 44px increment/decrement targets and direct input,
+bounded to 1-9999. Recalculation preserves editable row/action nodes so input
+blur cannot swallow the next click or disrupt keyboard Tab. Mobile places the
+quantity controls below the item name without shrinking their touch targets.
+
 Share links encode only the exact blueprint ID and craft/dismantle mode in the
 URL fragment. They do not export favorites, filters or the craft plan. Clipboard
 failure opens a selectable link. Opening an unavailable ID reports the missing

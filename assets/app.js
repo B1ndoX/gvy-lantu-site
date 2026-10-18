@@ -202,23 +202,46 @@ function openUtilityDialog(title, content, opener, className = "") {
 
 function renderPlanBody() {
   const totals = planTotals(state.craftPlan, state.records);
-  return `<div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>
+  const count = validPlan(state.craftPlan).reduce((sum, row) => sum + row.quantity, 0);
+  return `<div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>逐件耗时合计</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
+    <p class="plan-explanation">材料用量已按清单件数合计；耗时按逐件制作估算，不含排队。</p>
+    <div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
       return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
-        <label>数量 <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" /></label>
+        <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
+          <button type="button" data-plan-step="-1" aria-label="减少${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="减少一件" ${row.quantity <= 1 ? "disabled" : ""}>−</button>
+          <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" />
+          <button type="button" data-plan-step="1" aria-label="增加${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="增加一件" ${row.quantity >= 9999 ? "disabled" : ""}>+</button>
+        </div></div>
         <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
         ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
     }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
-    <section class="detail-section"><h3>材料合计</h3><div class="dismantle-output-list">${totals.materials.map(item => `<div><strong>${escapeHtml(materialName(item))}</strong><span>${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""} · ${formatNumber(Number(item.quantity.toFixed(6)))}${item.kind === "resource" ? " SCU" : " 件"}</span></div>`).join("") || '<p class="mission-empty">暂无材料</p>'}</div>
-    <p class="detail-note plan-time">累计制作耗时 ${escapeHtml(formatTime(totals.seconds))}（串行估算，不含排队）</p>
-    ${totals.warnings.map(warning => `<p class="detail-note">${escapeHtml(warning)}</p>`).join("")}</section>`;
+    <section class="detail-section plan-material-section"><h3>材料合计</h3>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
+      <thead><tr><th scope="col">材料</th><th scope="col">品质要求</th><th scope="col">所需总量</th></tr></thead>
+      <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 ${formatNumber(item.minQuality)}` : "未注明"}</td><td><strong>${formatNumber(Number(item.quantity.toFixed(6)))}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
+    <div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>`;
 }
 
 function openCraftPlan(opener) {
   const dialog = openUtilityDialog("制作清单", renderPlanBody(), opener, "planner-dialog");
   if (!dialog) return;
-  const update = () => { savePlan(); dialog.querySelector(".mission-dialog-body").innerHTML = renderPlanBody(); };
+  const update = (preserveRows = false) => {
+    savePlan();
+    if (!preserveRows) { dialog.querySelector(".mission-dialog-body").innerHTML = renderPlanBody(); return; }
+    // Keep editable controls mounted so blur, clicks and keyboard focus survive recalculation.
+    const next = document.createElement("template");
+    next.innerHTML = renderPlanBody();
+    for (const selector of [".plan-summary", ".plan-warnings", ".plan-material-section", ".plan-toolbar .detail-note"]) {
+      dialog.querySelector(selector).replaceWith(next.content.querySelector(selector));
+    }
+    for (const element of dialog.querySelectorAll("[data-plan-row]")) {
+      const row = state.craftPlan.find(item => item.recordId === element.dataset.planRow);
+      element.querySelector("[data-plan-quantity]").value = row.quantity;
+      element.querySelector('[data-plan-step="-1"]').disabled = row.quantity <= 1;
+      element.querySelector('[data-plan-step="1"]').disabled = row.quantity >= 9999;
+    }
+  };
   dialog.addEventListener("change", event => {
     const row = state.craftPlan.find(item => item.recordId === event.target.closest("[data-plan-row]")?.dataset.planRow);
     if (!row) return;
@@ -227,10 +250,18 @@ function openCraftPlan(opener) {
       row.quantity = Number.isFinite(n) && event.target.value.trim() ? Math.min(9999, Math.max(1, Math.round(n))) : row.quantity;
     } else if (event.target.matches("[data-plan-choice]")) row.choices[event.target.dataset.planChoice] = Number(event.target.value);
     else return;
-    update();
+    update(true);
   });
   dialog.addEventListener("click", event => {
-    if (event.target.closest("[data-remove-plan]")) {
+    const step = event.target.closest("[data-plan-step]");
+    if (step) {
+      const element = step.closest("[data-plan-row]");
+      const row = state.craftPlan.find(item => item.recordId === element.dataset.planRow);
+      if (!row) return;
+      row.quantity = Math.min(9999, Math.max(1, row.quantity + Number(step.dataset.planStep)));
+      update(true);
+      if (step.disabled) element.querySelector("[data-plan-quantity]").focus({preventScroll: true});
+    } else if (event.target.closest("[data-remove-plan]")) {
       state.craftPlan = state.craftPlan.filter(row => row.recordId !== event.target.closest("[data-plan-row]").dataset.planRow);
       update();
     } else if (event.target.closest("[data-clear-plan]")) {

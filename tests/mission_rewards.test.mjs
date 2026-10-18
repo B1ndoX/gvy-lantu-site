@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -283,6 +283,52 @@ test("planner validates storage, aggregates quantities and time, preserves choic
   assert.equal(totals.warnings.length,2);
   assert.equal(totals.materials.length,1);
   assert.equal(api.formatTime(0),"0 秒");
+});
+
+test("planner explains aggregate amounts and separates quality, quantities and units", () => {
+  const api=app();
+  api.state.records=[{id:"a",name:"<unsafe>",tiers:[{craftTimeSeconds:630,slots:[
+    {name:"Shell",options:[{kind:"resource",name:"Savrilium",nameZh:"萨维里金属",quantity:.16,minQuality:1}]},
+    {name:"Coolant",options:[{kind:"resource",name:"Pressurized Ice",quantity:.16,minQuality:1}]},
+    {name:"Pump",options:[{kind:"resource",name:"Borase",quantity:.1,minQuality:1}]},
+    {name:"Item",options:[{kind:"item",name:"Part",quantity:2,minQuality:0}]},
+    {name:"Unknown",options:[{kind:"item",name:"Unknown quality",quantity:1}]},
+  ]}]}];
+  api.state.craftPlan=[{recordId:"a",quantity:2,choices:{}}];
+  const html=api.renderPlanBody();
+  assert.match(html,/计划制作<\/span><strong>2 <small>件/);
+  assert.match(html,/逐件耗时合计<\/span><strong>21 分钟/);
+  assert.match(html,/材料用量已按清单件数合计/);
+  assert.match(html,/不含排队/);
+  for(const label of ["材料", "品质要求", "所需总量"])assert.ok(html.includes(`scope="col">${label}</th>`));
+  assert.match(html,/<td>至少 1<\/td><td><strong>0\.32<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 1<\/td><td><strong>0\.2<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 0<\/td><td><strong>4<\/strong> <span>件<\/span>/);
+  assert.match(html,/<td>未注明<\/td><td><strong>2<\/strong> <span>件<\/span>/);
+  assert.match(html,/&lt;unsafe&gt;/);
+  assert.match(html,/data-plan-step="-1"/);
+  assert.match(html,/data-plan-step="1"/);
+  api.state.craftPlan[0].quantity=1;
+  assert.match(api.renderPlanBody(),/data-plan-step="-1"[^>]* disabled/);
+  api.state.craftPlan[0].quantity=9999;
+  assert.match(api.renderPlanBody(),/data-plan-step="1"[^>]* disabled/);
+  assert.doesNotMatch(html,/<unsafe>|plan-time|dismantle-output-list|资源 · 最低品质/);
+  api.state.planSaved=false;
+  assert.match(api.renderPlanBody(),/浏览器存储不可用，仅本次会话保留/);
+});
+
+test("empty or unavailable plans remain explicit without fabricating material totals", () => {
+  const api=app();
+  api.state.craftPlan=[];
+  let html=api.renderPlanBody();
+  assert.match(html,/清单为空/);
+  assert.match(html,/暂无材料/);
+  assert.match(html,/data-clear-plan disabled/);
+  assert.doesNotMatch(html,/class="plan-material-table"/);
+  api.state.craftPlan=[{recordId:"missing",quantity:3,choices:{}}];
+  html=api.renderPlanBody();
+  assert.match(html,/class="plan-warning">当前版本未收录：missing/);
+  assert.match(html,/data-remove-plan/);
 });
 
 test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {
