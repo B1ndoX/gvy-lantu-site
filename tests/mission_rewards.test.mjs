@@ -63,6 +63,24 @@ test("source rows show systems and task IDs without implying item drop certainty
   assert.doesNotMatch(html, /<script>/);
 });
 
+test("each source row puts its verified task type after systems, before faction, without guessing from names", () => {
+  const api=app();
+  const missions=[
+    {id:"bounty",title:"Same task",systems:["Pyro"],missionType:"Bounty Hunter",factionZh:"猎头帮",rewardUEC:43250},
+    {id:"mercenary",title:"Same task",systems:["Nyx","Stanton"],missionType:"Mercenary"},
+    {id:"unknown",title:"Bounty Hunter Mission",systems:["Pyro"],missionType:""},
+    {id:"new",title:"New task",missionType:"<New Type>"},
+  ];
+  for(const m of missions)api.state.data.missionRewards.missions[m.id]={};
+  const html=api.renderSources({sources:[{missions}]});
+  assert.match(html,/<b>派罗 \(Pyro\)<\/b> · <span class="source-mission-type">赏金猎人<\/span> · 猎头帮 · 43,250 aUEC/);
+  assert.match(html,/<b>尼克斯 \(Nyx\) \/ Stanton<\/b> · <span class="source-mission-type">雇佣兵<\/span>/);
+  assert.match(html,/Bounty Hunter Mission<\/strong> <small>· <b>派罗 \(Pyro\)<\/b> · <span class="source-mission-type">类型未注明<\/span>/);
+  assert.match(html,/<span class="source-mission-type">&lt;New Type&gt;<\/span>/);
+  assert.doesNotMatch(html,/<New Type>/);
+  assert.equal((html.match(/class="source-mission-type"/g)||[]).length,4);
+});
+
 test("source pools share one compact task list, deduplicated by ID with twelve initial rows", () => {
   const api = app();
   const missions = Array.from({ length: 20 }, (_, i) => ({ id: `task-${i}`, title: "Same title", systems: ["Nyx"] }));
@@ -244,7 +262,7 @@ test("manufacturing specifications retain only approved fields, exact unit time 
   const api=app();
   const record={category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:0,componentClass:"Stealth",grade:3},tiers:[{craftTimeSeconds:570}],sources:[{missions:[{missionType:"Refueling"}]}]};
   assert.equal(JSON.stringify(api.manufacturingSpecifications(record)),JSON.stringify([
-    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐形C"],["任务类型","加油"],["单件制作耗时","9 分 30 秒"]
+    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐形C"],["单件制作耗时","9 分 30 秒"]
   ]));
   for (const [name,full,compact] of [["Military","军用C","军C"],["Industrial","工业C","工C"],["Civilian","民用C","民C"],["Competition","竞赛C","竞C"]]) {
     record.stats.componentClass=name;
@@ -256,7 +274,7 @@ test("manufacturing specifications retain only approved fields, exact unit time 
   assert.equal(api.recordClassGrade(record,true),"");
   record.tiers[0].craftTimeSeconds=0;record.sources=[];
   assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"0 秒");
-  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="任务类型")[1],"未注明");
+  assert.ok(!api.manufacturingSpecifications(record).some(([label])=>label==="任务类型"));
   delete record.tiers;
   assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"未知");
 });
@@ -519,16 +537,18 @@ test("mineral location and mixed-material labels escape untrusted text", () => {
   assert.doesNotMatch(button + panel, /<location>|<Tin>|<铜>/);
 });
 
-test("signal popovers prefer below, above, left then right without covering their trigger", () => {
+test("signal popovers prefer side lanes and reflow before covering any visible trigger column", () => {
   const api = app();
   const bounds = {left: 30, right: 730, top: 100, bottom: 650};
   const size = {width: 360, height: 200};
-  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 322, right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 30, top: 152}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 692, right: 730, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 370, top: 372}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 322, right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 368, top: 120}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 692, right: 730, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 324, top: 450}));
   const shortBounds = {...bounds, bottom: 350};
   assert.equal(JSON.stringify(api.mineralSignalBounds({left: 680, right: 718, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 312, top: 150}));
   assert.equal(JSON.stringify(api.mineralSignalBounds({left: 40, right: 78, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 86, top: 150}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 342, right: 380, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 30, top: 232, maxHeight: 118}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 342, right: 380, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 388, top: 150, maxWidth: 342}));
+  const neighbors=[{left:330,right:368,top:160,bottom:184},{left:680,right:718,top:300,bottom:324}];
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left:680,right:718,top:200,bottom:224},size,bounds,neighbors)),JSON.stringify({left:376,top:200,maxWidth:296}));
 });
 
 test("signal placement stays bounded and separated for narrow, short and large content cases", () => {
@@ -540,10 +560,10 @@ test("signal placement stays bounded and separated for narrow, short and large c
       for (const contentHeight of [100, 200, 400]) {
         const size = {width: Math.min(360, width), height: Math.min(contentHeight, height)};
         const p = api.mineralSignalBounds(anchor, size, bounds);
-        const actualHeight = p.maxHeight ?? size.height;
-        assert.ok(p.left >= bounds.left && p.left + size.width <= bounds.right);
-        assert.ok(p.top >= bounds.top && p.top + actualHeight <= bounds.bottom);
-        assert.ok(p.left + size.width <= anchor.left - 8 || p.left >= anchor.right + 8 || p.top + actualHeight <= anchor.top - 8 || p.top >= anchor.bottom + 8);
+        const actualWidth = p.maxWidth ?? size.width;
+        assert.ok(p.left >= bounds.left && p.left + actualWidth <= bounds.right);
+        assert.ok(p.top >= bounds.top && p.top + size.height <= bounds.bottom);
+        assert.ok(p.left + actualWidth <= anchor.left - 8 || p.left >= anchor.right + 8);
       }
     }
   }

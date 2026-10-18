@@ -206,10 +206,7 @@ function renderPlanBody() {
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
       const tier = record ? getFirstTier(record) : null;
-      const size = record?.stats?.size;
-      const type = record?.category?.id === "ship_component" ? recordComponentType(record)
-        : record?.category?.id === "ship_weapon" ? recordWeaponType(record) : "";
-      const specification = record ? [record.category?.label, type, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ") : "";
+      const specification = record ? recordCompactSpecification(record) : "";
       return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}${specification ? `<small class="plan-item-meta">（${escapeHtml(specification)}）</small>` : ""}</strong>
         <div class="plan-controls"><div class="plan-unit-time"><span>单件耗时</span><span>${escapeHtml(formatTime(tier?.craftTimeSeconds))}</span></div>
         <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
@@ -944,22 +941,17 @@ function closeLocationSignals(restoreFocus = false) {
   if (restoreFocus && button.isConnected) button.focus({preventScroll: true});
 }
 
-function mineralSignalBounds(anchor, size, bounds) {
-  const left = Math.max(bounds.left, Math.min(anchor.right - size.width, bounds.right - size.width));
-  const below = Math.max(bounds.top, anchor.bottom + 8);
-  const above = Math.min(bounds.bottom, anchor.top - 8);
-  if (below + size.height <= bounds.bottom) return {left, top: below};
-  if (above - size.height >= bounds.top) return {left, top: above - size.height};
-
+function mineralSignalBounds(anchor, size, bounds, triggers = []) {
+  // Keep both columns' visible signal-button lanes clear, not only the active button.
+  const leftEdge = triggers.reduce((edge, rect) => rect.right <= anchor.left ? Math.max(edge, rect.right + 8) : edge, bounds.left);
+  const rightEdge = triggers.reduce((edge, rect) => rect.left >= anchor.right ? Math.min(edge, rect.left - 8) : edge, bounds.right);
+  const leftSpace = Math.max(0, anchor.left - leftEdge - 8);
+  const rightSpace = Math.max(0, rightEdge - anchor.right - 8);
+  const toLeft = size.width <= leftSpace || (size.width > rightSpace && leftSpace >= rightSpace);
+  const width = Math.min(size.width, toLeft ? leftSpace : rightSpace);
   const top = Math.max(bounds.top, Math.min(anchor.top, bounds.bottom - size.height));
-  if (anchor.left - size.width - 8 >= bounds.left) return {left: anchor.left - size.width - 8, top};
-  if (anchor.right + size.width + 8 <= bounds.right) return {left: anchor.right + 8, top};
-
-  // Preserve the trigger gap even when only a shortened scrolling layer fits.
-  const belowSpace = Math.max(0, bounds.bottom - below);
-  const aboveSpace = Math.max(0, above - bounds.top);
-  const maxHeight = Math.min(size.height, Math.max(belowSpace, aboveSpace));
-  return {left, top: belowSpace >= aboveSpace ? below : above - maxHeight, maxHeight};
+  return {left: toLeft ? anchor.left - width - 8 : anchor.right + 8, top,
+    ...(width < size.width ? {maxWidth: width} : {})};
 }
 
 function showLocationSignals(button, mode = "hover") {
@@ -988,8 +980,15 @@ function showLocationSignals(button, mode = "hover") {
   panel.style.width = "max-content";
   panel.style.maxWidth = `${Math.min(360, bounds.right - bounds.left)}px`;
   panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
-  const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
-  if (position.maxHeight !== undefined) panel.style.maxHeight = `${position.maxHeight}px`;
+  const triggers = [...overlay.querySelectorAll("[data-signal-trigger]")]
+    .map(trigger => trigger.getBoundingClientRect())
+    .filter(rect => rect.width && rect.bottom > Math.max(body.top, bounds.top) && rect.top < Math.min(body.bottom, bounds.bottom));
+  const anchor = button.getBoundingClientRect();
+  let position = mineralSignalBounds(anchor, panel.getBoundingClientRect(), bounds, triggers);
+  if (position.maxWidth !== undefined) {
+    panel.style.maxWidth = `${position.maxWidth}px`;
+    position = mineralSignalBounds(anchor, panel.getBoundingClientRect(), bounds, triggers);
+  }
   panel.style.left = `${position.left}px`;
   panel.style.top = `${position.top}px`;
   button.setAttribute("aria-expanded", "true");
@@ -1347,14 +1346,12 @@ function recordSpecificationType(record) {
 }
 
 function manufacturingSpecifications(record) {
-  const missionTypes = recordMissionTypes(record);
   const classGrade = recordClassGrade(record, true);
   return [
     ["分类", record.category.label],
     ["类型", recordSpecificationType(record)],
     ["尺寸", sizeLabel(record.stats?.size)],
     ...(classGrade ? [["等级", classGrade]] : []),
-    ["任务类型", missionTypes.length ? missionTypes.map(type => type.label).join(" / ") : "未注明"],
     ["单件制作耗时", formatTime(getFirstTier(record).craftTimeSeconds)],
   ];
 }
@@ -1363,6 +1360,13 @@ function recordClassGrade(record, fullClass = false) {
   const classLabel = fullClass ? recordComponentClass(record) : { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
   const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
   return classLabel ? `${classLabel}${grade}` : "";
+}
+
+function recordCompactSpecification(record) {
+  const size = record.stats?.size;
+  const type = record.category?.id === "ship_component" ? recordComponentType(record)
+    : record.category?.id === "ship_weapon" ? recordWeaponType(record) : "";
+  return [record.category?.label, type, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ");
 }
 
 function recordSummary(record, manufacturer = false) {
@@ -2094,7 +2098,7 @@ function renderResults() {
           <span class="row-dot"></span>
           <span class="row-main">
             <strong>${escapeHtml(recordName(record))}</strong>
-            ${renderRecordSummary(record, true)}
+            <small title="${escapeHtml(recordSummary(record, true))}">（${escapeHtml(recordCompactSpecification(record))}）</small>
           </span>
           <span class="source-badge ${state.mode === "craft" && !(record.sourceCount > 0) ? "muted" : ""}">${sourceLabel}</span>
         </button>
@@ -2267,8 +2271,9 @@ function renderSources(record) {
   const rows = missions.map((mission) => {
     const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
     const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
+    const type = mission.missionType ? missionTypeOrder.find(([id]) => id === mission.missionType)?.[1] || mission.missionType : "类型未注明";
     const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
-    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b> · <span class="source-mission-type">${escapeHtml(type)}</span>${faction}${reward}</small>`;
     return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
   });
   const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN

@@ -995,33 +995,25 @@ html[data-query-mode="dismantle"] .reset-button {
 }
 
 .row-main {
-  display: grid;
+  display: block;
   min-width: 0;
-  gap: 4px;
+  line-height: 1.45;
 }
 
 .row-main strong {
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 15px;
+  color: #9fe9f5;
+  font-size: 18px;
   font-weight: 780;
-  line-height: 1.15;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .row-main small {
-  overflow: hidden;
+  margin-left: 8px;
   color: var(--muted);
-  font-size: 11px;
-  line-height: 1.25;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.row-main small.weapon-summary {
-  overflow: visible;
-  white-space: normal;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -1134,7 +1126,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 .planner-dialog .plan-toolbar .favorite-detail-button { border-color: rgba(126, 221, 242, 0.18); background: transparent; color: var(--muted); }
 .plan-list { display: grid; gap: 6px; }
 .plan-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 32px; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 6px; background: rgba(4, 18, 27, 0.58); }
-.plan-row > strong { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; min-width: 0; overflow-wrap: anywhere; color: var(--orange); font-size: 16px; font-weight: 750; line-height: 1.45; }
+.plan-row > strong { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; min-width: 0; overflow-wrap: anywhere; color: #9fe9f5; font-size: 16px; font-weight: 750; line-height: 1.45; }
 .plan-item-meta { min-width: 0; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.45; overflow-wrap: anywhere; }
 .share-link-label { min-width: 0; overflow-wrap: anywhere; font-size: 12px; }
 .plan-row label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
@@ -1211,15 +1203,18 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .craft-specs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   margin: 0;
 }
 
 .craft-specs > div {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
   min-width: 0;
+  max-width: 100%;
   padding: 3px 6px;
   border: 1px solid rgba(113, 220, 255, 0.18);
   border-radius: 9px;
@@ -1230,15 +1225,16 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
   color: var(--muted);
   font-size: 11px;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 .craft-specs dd {
-  margin: 2px 0 0;
+  margin: 0;
   color: var(--text-strong);
   font-size: 12px;
   font-weight: 780;
   line-height: 1.4;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .detail-section {
@@ -1461,7 +1457,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .material-side strong {
-  color: var(--orange);
+  color: #f3e2a4;
 }
 
 .material-item small,
@@ -1966,6 +1962,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .source-mission-button small b { color: var(--cyan); }
+.source-mission-type { color: #d6dce2; }
 .mission-placeholder { color: #b8c9f1; }
 .source-mission-button[data-mission-id] strong {
   color: var(--text-strong);
@@ -2282,8 +2279,6 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
 }
 
 @media (max-width: 620px) {
-  .craft-specs { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
   .filter-head { grid-template-columns: minmax(0, 1fr) auto; }
   .filter-head h2 { grid-column: 1; grid-row: 1; }
   .filter-head .filter-result-badge { grid-column: 2; grid-row: 1; }

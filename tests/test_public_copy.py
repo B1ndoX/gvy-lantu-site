@@ -23,15 +23,20 @@ class PublicCopyTests(unittest.TestCase):
         self.assertEqual(detail.count('<h3>规格</h3>'), 1)
         self.assertNotIn('recordManufacturer(record)', detail)
 
-    def test_craft_specs_have_scoped_compact_columns_and_wrapping_values(self) -> None:
+    def test_craft_specs_wrap_whole_compact_boxes_but_keep_each_label_and_value_inline(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         grid = styles.split('.craft-specs {', 1)[1].split('}', 1)[0]
-        self.assertIn('grid-auto-flow: column', grid)
-        self.assertIn('grid-auto-columns: minmax(0, 1fr)', grid)
+        self.assertIn('display: flex', grid)
+        self.assertIn('flex-wrap: wrap', grid)
         self.assertIn('gap: 6px', grid)
-        self.assertIn('.craft-specs { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }', styles)
+        box = styles.split('.craft-specs > div {', 1)[1].split('}', 1)[0]
+        self.assertIn('display: flex', box)
+        self.assertIn('align-items: baseline', box)
+        label = styles.split('.craft-specs dt {', 1)[1].split('}', 1)[0]
+        self.assertIn('white-space: nowrap', label)
         value = styles.split('.craft-specs dd {', 1)[1].split('}', 1)[0]
-        self.assertIn('overflow-wrap: anywhere', value)
+        self.assertIn('white-space: nowrap', value)
+        self.assertIn('margin: 0', value)
         self.assertIn('font-size: 12px', value)
 
     def test_craft_material_names_are_larger_soft_green_and_wrap_without_changing_other_labels(self) -> None:
@@ -42,6 +47,13 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn('white-space: normal', name)
         self.assertIn('overflow-wrap: anywhere', name)
         self.assertIn('.material-item-button:hover strong {', styles)
+
+    def test_craft_material_amounts_are_pale_yellow_without_recoloring_titles_or_badges(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        amount = styles.split('.material-side strong {', 1)[1].split('}', 1)[0]
+        self.assertIn('color: #f3e2a4', amount)
+        badge = styles.split('.material-location-badge {', 1)[1].split('}', 1)[0]
+        self.assertIn('color: var(--cyan)', badge)
 
     def test_dialog_crosses_use_shared_centering_without_native_button_padding(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
@@ -111,12 +123,22 @@ class PublicCopyTests(unittest.TestCase):
     def test_ship_weapon_summaries_wrap_complete_types_without_measured_abbreviations(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
-        summary = styles.split(".row-main small.weapon-summary {", 1)[1].split("}", 1)[0]
-        self.assertIn("white-space: normal", summary)
-        self.assertIn("overflow: visible", summary)
+        summary = styles.split(".row-main small {", 1)[1].split("}", 1)[0]
+        self.assertNotIn("overflow: hidden", summary)
+        self.assertNotIn("white-space: nowrap", summary)
         self.assertIn("overflow-wrap: anywhere", summary)
         self.assertNotIn("fitRecordSummaries", app)
         self.assertNotIn("data-summary-short", app)
+
+    def test_result_names_and_task_types_keep_separate_scoped_hierarchies(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        name = styles.split('.row-main strong {', 1)[1].split('}', 1)[0]
+        self.assertIn('color: #9fe9f5', name)
+        self.assertIn('font-size: 18px', name)
+        self.assertNotIn('white-space: nowrap', name)
+        self.assertIn('.source-mission-type { color: #d6dce2; }', styles)
+        self.assertIn('（${escapeHtml(recordCompactSpecification(record))}）', app)
 
     def test_task_source_badges_use_a_separate_color_without_changing_other_badges(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
@@ -141,7 +163,7 @@ class PublicCopyTests(unittest.TestCase):
     def test_plan_item_names_have_priority_over_secondary_totals_and_controls(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
-        self.assertIn("color: var(--orange)", name)
+        self.assertIn("color: #9fe9f5", name)
         self.assertIn("font-size: 16px", name)
         self.assertIn("line-height: 1.45", name)
         metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]

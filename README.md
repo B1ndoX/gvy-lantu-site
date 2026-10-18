@@ -118,13 +118,25 @@ the actual result-card columns, including their compact 320px padding. Only
 manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
 missing-source gray and dismantling's recovery badges keep their colors.
 
-Manufacturing places one compact specification grid directly under the name:
+Main result rows now follow the crafting-plan name/metadata pattern: the 18px
+bright pale-cyan name (`#9fe9f5`) is followed inline by 13px muted parentheses containing category,
+specific component/weapon type, size and verified compact class/grade. Reuse the
+same specification helper as plans. Full names and metadata wrap naturally on
+narrow screens without shrinking text or colliding with the separate source
+badge. Manufacturer remains searchable and in the full-summary tooltip, not the
+visible parentheses. Reward-pool summaries and detail specifications keep their
+own formats; do not globally change summary ordering to style the main list.
+The current name color is a local candidate pending the user's palette choice.
+
+Manufacturing places one compact specification row directly under the name:
 category, specific type, size, verified full class/grade (only when available),
-mission type and single-item craft duration, with a visible `规格` heading.
+and single-item craft duration, with a visible `规格` heading. Task types no
+longer occupy this row; they belong to their individual task-source rows.
 The detail grade spells out its class, such as `军用A`, `工业A` or `隐形C`;
 lists, plans and reward summaries retain compact class/grade labels.
-Above 620px keep all five/six compact fields in one row; phones use two columns,
-preserving full wrapping values and the existing muted labels,
+Each small box keeps its muted label and complete value on one baseline, such as
+`分类 舰船组件` or `等级 工业A`. Use natural widths rather than equal-width empty
+cells; narrow screens wrap whole boxes, not their text. Preserve the existing
 border and background. Remove the repeated name-tag row and bottom specification
 section, including manufacturer, gear and redundant subtype/mount fields from
 this view only; original data, search, filters and dismantling stay intact.
@@ -138,6 +150,8 @@ Crafting-material names alone are 15px soft mint `#9de2bf`, wrapping completely
 inside their existing rows. Descriptions, quality controls, units/amounts, plan
 names and dismantling outputs keep their own typography/colors; material hover
 and keyboard focus feedback remain available.
+The amount beside each 矿点 badge uses pale yellow `#f3e2a4`, separate from orange
+section headings; the location badge remains cyan and the quantity is unchanged.
 
 Dialog close crosses (task, crafting plan, share link, mineral and signal) and
 plan-row remove crosses share zero-padding grid centering, unit line height and
@@ -148,7 +162,7 @@ The seven dismantling information fields remain separate compact boxes with cent
 
 Desktop keeps seven columns. Up to 620 px, use four columns with the fifth field (manufacturer) spanning two: four fields in the first row, then manufacturer, size and grade in the second row. Keep that field order when maintaining the markup.
 
-Manufacturing specification values, detail titles and recovered-material names also allow long tokens to wrap. Quality-result rows and their value groups wrap when space is insufficient, preserving the displayed numbers and units. Compact result-list summaries and closed filter controls retain their intentional ellipsis behavior.
+Detail titles and recovered-material names allow long tokens to wrap. Manufacturing specification labels and values stay inline, with whole boxes wrapping as needed. Quality-result rows and their value groups wrap when space is insufficient, preserving the displayed numbers and units. Compact result-list summaries and closed filter controls retain their intentional ellipsis behavior.
 
 When names or layout rules change, inspect actual text bounds inside each box, not only the page's total scroll width: an overflowing centered value may leave the page width unchanged. Include long manufacturers, English specification identifiers and large quality values at 320/390 px, responsive breakpoints, 16:9 desktop, 2K and ultrawide.
 
@@ -156,6 +170,10 @@ When names or layout rules change, inspect actual text bounds inside each box, n
 
 Each acquisition task shows its reported star system(s). Missing systems are
 explicitly marked; template locations are not replaced with guessed places.
+After the system label, show that exact contract's reported task type before
+faction and aUEC, using 11px gray-white `#d6dce2` and the existing translations.
+The title stays primary white, systems cyan, and faction/reward muted blue-gray.
+Missing types say `类型未注明`; never infer one from a title or another task's type.
 Clicking a task opens its blueprint reward pools and any recorded physical item
 rewards, including quantities and owner-only/delivery conditions. Blueprint rows
 open the corresponding blueprint without changing saved favorites.
@@ -325,7 +343,7 @@ explicitly reports that it was not saved. No login, cloud permanence or device
 synchronization is implied.
 
 The plan dialog stays content-height driven and at most 640px wide. Planned item
-names come first at 16px in the existing soft gold, ahead of material requirements.
+names come first at 16px in the candidate pale cyan (`#9fe9f5`), ahead of material requirements.
 Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
 fields; without a recognized class omit the grade too, rather than showing a bare A-D.
@@ -473,11 +491,13 @@ Filtering, scrolling the location list, resizing and closing the dialog remove
 the old popover. The portal is outside the scrolling card, clamped to the dialog
 and viewport, with internal scrolling for unusually long signal content.
 Both dimensions follow the contents; 360px width and 400px height are upper
-limits, not fixed sizes. The user has now reauthorized trigger avoidance:
-try below, above, left, then right within the dialog/viewport bounds, always with
-an 8px gap from the active signal button. When no side fits, limit height to the
-larger vertical space and scroll internally instead of clamping over the trigger.
-Other background location rows can still be covered by this overlay.
+limits, not fixed sizes. The latest correction uses horizontal lanes, not the
+former below/above-first placement. Prefer left, then right where the natural
+width fits. If neither fits, narrow to the larger free side and remeasure its
+wrapped height. Keep 8px clear of every visible signal-button column, including
+the opposite location column, so neighboring buttons remain directly hoverable.
+Height still follows content up to the existing scrolling limit. Other background
+location text can still be covered by this overlay, not the signal buttons.
 
 Prioritize the searched primary mineral and explicitly label secondary matches.
 Signal readings use the original gold capsules in a wrapping flex row, never
