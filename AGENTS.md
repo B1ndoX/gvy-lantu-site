@@ -34,6 +34,9 @@ The handoff document is written for a person or AI with no prior context. Do not
 - Production health checks give transient transport errors a bounded recovery window (300 seconds without a deployment; inside the existing 900-second deployment window otherwise). Recovery must rerun the full exact-client-URL check. Never treat a snapshot mismatch as a network success, reset deadlines indefinitely, mute failure notifications, or skip persistent failures/rollback reporting.
 - Mineral radar signals are manual-only. The scheduled GitHub Actions workflow must not run `scripts/refresh_mineral_signals.py`; run it only after the user explicitly requests a signal refresh, then validate, back up, commit, and deploy the resulting snapshot normally.
 - Mission rewards must join the exact contract ID to its explicit `blueprintRewards` pool IDs, then to that pool's blueprint members. Never merge same-title missions or infer additional pools through a shared item. Show all reported systems and mark missing systems explicitly. Each pool draws one blueprint independently subject to its trigger/chance; its member count is not the number awarded at once and its trigger chance is not a per-blueprint drop rate. Verify the matching SCMDB LIVE mission page before changing these semantics; do not relabel a verified pool as unconfirmed merely to avoid a misleading count.
+- Base attributes prioritize the same exact-LIVE SCMDB item export, joined by product entity ID with validated shared-table indexes. Community data may fill gaps only at the exact build and must never erase primary metrics. Distinguish single projectiles from whole shots; never fabricate DPS for unsupported burst/charge/sequence/explosive modes or infer units from a raw coefficient. Missing absolute metrics retain their relative-quality effects.
+- Mission requirements keep optional faction entry points separate from mandatory intros, completed tags separate from excluded tags, and task candidate sites separate from acceptance constraints. Preserve sharing flags, missing values, official keyed translations and coverage guards. Do not claim N pool members means N runs to finish collection. A selected physical-item bundle awards its contained rows together; its selection probability is not a blueprint drop rate.
+- Source lists start with twelve unique tasks. Show all when the remaining tail is at most three; otherwise use the existing expand/collapse control. Do not restore the former eight-row limit or merge task identities to shorten the list.
 
 ## Verification And Release
 
@@ -43,6 +46,7 @@ The handoff document is written for a person or AI with no prior context. Do not
 - Commit and push every formal project change from this repository. Do not leave deployment-affecting work uncommitted.
 - After push, wait for EdgeOne and run `scripts/check_production_health.py` against the formal domain. Git push success alone is not deployment proof.
 - Finish with a clean worktree and confirm local `HEAD` equals `origin/main`.
+- An explicit local-preview-only request overrides publishing steps: do not push, create a release PR, dispatch workflows or deploy. Save local code and preview-data checkpoints separately, retain the preview server, and document the unpublished branch/commits rather than claiming it matches production.
 
 ## Mandatory Handoff Update
 

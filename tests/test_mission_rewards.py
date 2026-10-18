@@ -100,6 +100,51 @@ class MissionRewardTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 build_mission_rewards(data)
 
+    def test_requirements_preserve_rank_sharing_and_optional_vs_required_intros(self):
+        data = self.data()
+        data["contracts"][0].update(
+            canBeShared=True, illegal=False, personalCooldownTime=45, hasPersonalCooldown=True,
+            minStanding={"name": "Neutral", "minReputation": 0, "includeWhenSharing": False},
+            requiredIntros=[{"title": "Required", "debugName": "req"}],
+            linkedIntros=[{"title": "Optional", "debugName": "optional"}],
+            prerequisites={"locality": [{"name": "Nyx"}]}, locations=["site"])
+        data["regions"] = {"Nyx": {"system": "Nyx", "locations": [{"guid": "nyx", "name": "Nyx"}]}}
+        data["locationPools"] = {"site": {"name": "Station", "system": "Nyx"}}
+        rewards = build_mission_rewards(data)
+        req = rewards["missions"]["one"]["requirements"]
+        self.assertEqual(req["minStanding"]["minReputation"], 0)
+        self.assertFalse(req["minStanding"]["includeWhenSharing"])
+        self.assertEqual(req["personalCooldownTime"], 45)
+        self.assertEqual(req["requiredIntros"][0]["title"], "Required")
+        self.assertEqual(req["linkedIntros"][0]["title"], "Optional")
+        self.assertEqual(req["missionLocations"], ["site"])
+        self.assertEqual(req["regions"][0]["locations"], ["nyx"])
+        validate_mission_rewards({"version": data["version"], "records": [], "missionRewards": rewards})
+        rewards["locations"].pop("site")
+        with self.assertRaisesRegex(RuntimeError, "missing location"):
+            validate_mission_rewards({"version": data["version"], "records": [], "missionRewards": rewards})
+
+    def test_requirement_flags_times_and_old_schema_are_rejected(self):
+        for field, bad in (("canBeShared", "yes"), ("personalCooldownTime", -1), ("abandonedCooldownTime", float("nan"))):
+            data = self.data()
+            data["contracts"][0][field] = bad
+            rewards = build_mission_rewards(data)
+            with self.assertRaises(RuntimeError):
+                validate_mission_rewards({"version": data["version"], "records": [], "missionRewards": rewards})
+        rewards = build_mission_rewards(self.data())
+        rewards["schemaVersion"] = 1
+        with self.assertRaises(RuntimeError):
+            validate_mission_rewards({"version": rewards["version"], "records": [], "missionRewards": rewards})
+
+    def test_excluded_completion_tags_are_not_required_predecessors(self):
+        data = self.data()
+        data["contracts"][0]["prerequisites"] = {"completedContractTags": {"excludedTags": ["done"]}}
+        data["contracts"][1]["completionTags"] = [{"tag": "done"}]
+        requirement = build_mission_rewards(data)["missions"]["one"]["requirements"]
+        self.assertNotIn("completedContracts", requirement)
+        self.assertEqual(requirement["excludedContracts"]["tagCount"], 1)
+        self.assertEqual(requirement["excludedContracts"]["candidates"][0]["title"], "Same title")
+
     def test_rejects_stale_reward_schema_or_build(self):
         data = self.data()
         rewards = build_mission_rewards(data)

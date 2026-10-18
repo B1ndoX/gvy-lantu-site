@@ -92,8 +92,11 @@ rewards, including quantities and owner-only/delivery conditions. Blueprint rows
 open the corresponding blueprint without changing saved favorites.
 
 Acquisition tasks share one compact list across source pools, deduplicated by
-contract ID without merging distinct same-title tasks. Show eight rows initially
-and use the native disclosure to expand all remaining tasks or collapse them.
+contract ID without merging distinct same-title tasks. Show twelve rows initially;
+if only one to three would remain hidden, show them too (up to fifteen total).
+The current 678 task-linked blueprints average 11.03 unique contracts; twelve is
+a stable display limit, not a live average that changes the layout on each refresh.
+Use the native disclosure only when at least four rows remain hidden.
 Clickable task names are white without underlines, with an arrow and visible
 hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
 reward dialog still keeps its independent pools separate.
@@ -106,6 +109,22 @@ pool trigger probability. Multiple pools draw independently; a completed pool
 stops awarding blueprints. Pool membership is not a single-completion award
 quantity, and a 100% pool trigger is not a 100% drop rate for each member. Do not
 calculate individual odds from entry count or weights alone.
+An `N 选 1` pool is not a promise of an unowned blueprint or completion in N runs.
+Duplicate/pity behavior is not fully verified. Physical rewards are separate from
+blueprints: a weighted group is one bundle whose items are awarded together when
+selected, not a choice between its individual rows. Display group-selection
+probabilities as such, with recorded quantities, owner and delivery restrictions.
+
+Task dialogs add a collapsed conditions/location disclosure without changing the
+compact source list. Requirements retain rank thresholds and their sharing flags,
+crime ranges, legality, sharing, repeat restrictions, cooldowns (minutes), required
+intros and optional faction entry points separately. Required completion tags and
+excluded completion tags must never be interchanged. XP is a rank's starting
+threshold, not an invented upper XP limit. Candidate task sites are not guaranteed
+acceptance locations; region membership and unresolved/additional constraints are
+explicit. Locations and requirements use the same exact-LIVE contract IDs, with
+official contextual/keyed Chinese first. Unresolved game label keys do not become
+user-facing place names. The mineral dialog is unchanged.
 
 The dialog follows its content height up to the viewport cap, with a scrollable
 body and a non-overlapping footer. Its width follows content within responsive
@@ -125,6 +144,33 @@ Missing/empty referenced pools and malformed system arrays fail validation.
 Before replacement, task, referenced-pool, task-linked-blueprint and physical-item
 coverage are compared with the previous cache; a drop exceeding 20% aborts the
 candidate and keeps the previous data for investigation.
+The same guard now covers conditions, location references, matched base-stat
+records and previously available absolute-quality panels. Reward schema 2 and
+item-stat schema 1 migrate through that same refresh entry point, not a new job.
+
+## Base Attributes And Quality
+
+`scripts/scmdb_item_stats.py` extracts base attributes from the selected exact-LIVE
+SCMDB item export. Join blueprint `productEntityClass` to the exact entity, never
+authorize gameplay metrics through a name-only fallback. Resolve weapon fire-mode,
+ammo and magazine pool indexes structurally (including index zero); mismatched
+builds, duplicate entities and invalid references fail closed. Basic values use
+a collapsed `基础属性` disclosure with existing specification boxes; quality-aware
+values continue using the existing `成品品质效果` rows and sliders.
+
+For simple single/automatic modes, distinguish per-projectile damage from a whole
+shot and include pellet count and damage multiplier in theoretical DPS. Simplify
+only a verified one-entry looping sequence with matching RPM. Do not invent a
+single-shot/DPS result for burst, charge, beam, complex sequences or explosive
+ammo; retain the reliable metrics and relative-quality fallback instead. Baseline
+panels are Q500; theory excludes armor, distance falloff, reload and charging cycles.
+Do not assign an unverified SCU/10-GM unit to a raw quantum-fuel coefficient.
+
+Exact-version community enrichment remains optional. It may fill missing metrics,
+but must never erase/override primary SCMDB values or mix firing-mode calculations.
+An unavailable or cross-build fallback leaves verified primary values intact.
+Coverage metadata and payloads must agree; source/log messages must not claim that
+all absolute attributes are absent merely because the optional fallback is late.
 
 ## Local Preview
 
@@ -134,6 +180,11 @@ python3 -m http.server 8002 --directory dist
 ```
 
 Open `http://127.0.0.1:8002/`.
+
+When the user requests local-only review, keep the preview available and do not
+push, open a release PR, trigger Actions or deploy. Keep preview data separate
+from release code commits; later publish the code first and rebuild data through
+the original cloud pipeline so its backup and production checks are not bypassed.
 
 ## Build
 

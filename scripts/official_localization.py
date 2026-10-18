@@ -377,7 +377,23 @@ class OfficialNames:
         reward_data = index.get("missionRewards") or {}
         for system in reward_data.get("systems") or []:
             assign(system, "nameZh", system.get("name", ""), "location")
+        for location in (reward_data.get("locations") or {}).values():
+            raw = location.get("name", "")
+            assign(location, "nameZh", raw, "location", raw.lstrip("@") if raw.startswith("@") else "")
+            assign(location, "systemZh", location.get("system", ""), "location")
         for mission in reward_data.get("missions", {}).values():
+            requirements = mission.get("requirements") or {}
+            for region in requirements.get("regions") or []:
+                assign(region, "nameZh", region.get("name", ""), "location")
+            for field in ("minStanding", "maxStanding"):
+                standing = requirements.get(field)
+                if standing:
+                    assign(standing, "nameZh", standing.get("name", ""), "other", standing.get("nameKey", "").lstrip("@"))
+            intros = [*requirements.get("requiredIntros", []), *requirements.get("linkedIntros", []),
+                      *(requirements.get("completedContracts") or {}).get("candidates", []),
+                      *(requirements.get("excludedContracts") or {}).get("candidates", [])]
+            for intro in intros:
+                assign(intro, "titleZh", intro.get("title", ""), "other", intro.get("titleKey", "").lstrip("@"))
             for reward in mission.get("items") or []:
                 for item in reward_items(reward):
                     assign(item, "nameZh", item.get("name", ""), "item")

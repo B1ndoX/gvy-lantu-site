@@ -14,10 +14,12 @@ from pathlib import Path
 from typing import Any
 
 from scmdb_versions import select_latest_live_version
+from scmdb_item_stats import attach_item_stats
+from mission_requirements import build_requirements, validate_requirements
 
 
 BASE_URL = "https://scmdb.net/data"
-MISSION_REWARDS_SCHEMA = 1
+MISSION_REWARDS_SCHEMA = 2
 
 
 def load_json(path: Path) -> Any:
@@ -268,6 +270,7 @@ def validate_item_rewards(items: Any) -> None:
 def build_mission_rewards(mission_data: dict[str, Any]) -> dict[str, Any]:
     missions = {}
     systems = set()
+    locations = {}
     for contract in mission_data.get("contracts") or []:
         rewards = contract.get("blueprintRewards") or []
         if not rewards:
@@ -286,10 +289,12 @@ def build_mission_rewards(mission_data: dict[str, Any]) -> dict[str, Any]:
                        "trigger": clean(reward.get("trigger"), "complete")}
                       for reward in rewards if reward.get("blueprintPool")],
             "items": items,
+            "requirements": build_requirements(contract, mission_data, locations),
         }
         systems.update(mission_systems(contract))
     return {"schemaVersion": MISSION_REWARDS_SCHEMA, "version": mission_data.get("version"),
-            "missions": missions, "systems": [{"name": name} for name in sorted(systems)]}
+            "missions": missions, "locations": locations,
+            "systems": [{"name": name} for name in sorted(systems)]}
 
 
 def validate_mission_rewards(index: dict[str, Any]) -> None:
@@ -299,6 +304,10 @@ def validate_mission_rewards(index: dict[str, Any]) -> None:
     missions = rewards.get("missions")
     if not isinstance(missions, dict):
         raise RuntimeError("mission rewards are missing the contract map")
+    locations = rewards.get("locations") or {}
+    if not isinstance(locations, dict) or any(not isinstance(place, dict) or not isinstance(place.get("name"), str)
+                                               for place in locations.values()):
+        raise RuntimeError("invalid mission location registry")
     for mission_id, detail in missions.items():
         if not mission_id or not isinstance(detail, dict) or not isinstance(detail.get("pools"), list) or not detail["pools"]:
             raise RuntimeError("invalid mission reward contract/pools")
@@ -307,6 +316,7 @@ def validate_mission_rewards(index: dict[str, Any]) -> None:
                 raise RuntimeError("invalid mission reward pool ID")
             validate_probability(pool.get("chance"))
         validate_item_rewards(detail.get("items"))
+        validate_requirements(detail.get("requirements"), locations)
     for record in index.get("records") or []:
         for source in record.get("sources") or []:
             for mission in source.get("missions") or []:
@@ -410,7 +420,7 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
         )
 
     records.sort(key=lambda record: (record["category"]["id"], record["name"].lower()))
-    return {
+    index = {
         "generatedFrom": "SCMDB public data",
         "version": version,
         "missionRewards": mission_rewards,
@@ -427,6 +437,9 @@ def build_index(mission_data: dict[str, Any], crafting: dict[str, Any], items_da
         },
         "records": records,
     }
+    if items_data.get("version"):
+        attach_item_stats(index, items_data)
+    return index
 
 
 def main() -> int:
@@ -459,6 +472,8 @@ def main() -> int:
     mission_data = read_source(args.cache_dir, merged_file, f"{BASE_URL}/{merged_file}")
     crafting = read_source(args.cache_dir, f"crafting_blueprints-{version}.json", f"{BASE_URL}/crafting_blueprints-{version}.json")
     items = read_source(args.cache_dir, f"crafting_items-{version}.json", f"{BASE_URL}/crafting_items-{version}.json")
+    if any(str(payload.get("version") or "").lower() != version.lower() for payload in (mission_data, crafting, items)):
+        raise RuntimeError("SCMDB source versions do not match the selected LIVE")
     index = build_index(mission_data, crafting, items)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)

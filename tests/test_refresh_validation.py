@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from refresh_blueprint_data import validate_flowcld_calibration, validate_index, validate_mission_coverage
+from build_data import MISSION_REWARDS_SCHEMA
 
 
 class RefreshValidationTests(unittest.TestCase):
@@ -38,7 +39,8 @@ class RefreshValidationTests(unittest.TestCase):
             "records": records,
             "counts": {"blueprints": len(records), "categories": {"other": len(records)}},
             "localization": {"starCitizenLocalizationCount": 7000},
-            "missionRewards": {"schemaVersion": 1, "version": "4.9.0-live.12344265", "missions": {}, "systems": []},
+            "missionRewards": {"schemaVersion": MISSION_REWARDS_SCHEMA, "version": "4.9.0-live.12344265", "missions": {}, "systems": [], "locations": {}},
+            "itemStats": {"schemaVersion": 1, "version": "4.9.0-live.12344265", "matchedItems": 0, "recordsWithBaseStats": 0},
         }
 
     def test_accepts_live_index_with_timestamp(self) -> None:
@@ -59,6 +61,16 @@ class RefreshValidationTests(unittest.TestCase):
         previous["missionRewards"]["missions"] = {"one": {"items": [{"name": "Rifle", "amount": 1}]}}
         with self.assertRaisesRegex(RuntimeError, "itemRewards coverage dropped"):
             validate_mission_coverage(candidate, previous)
+
+    def test_rejects_loss_of_previously_published_conditions_and_locations(self) -> None:
+        previous = self.valid_index()
+        previous["missionRewards"]["missions"] = {"one": {"requirements": {"canBeShared": True}, "items": []}}
+        with self.assertRaisesRegex(RuntimeError, "conditions coverage dropped"):
+            validate_mission_coverage(self.valid_index(), previous)
+        previous["missionRewards"]["missions"] = {}
+        previous["missionRewards"]["locations"] = {"place": {"name": "Nyx"}}
+        with self.assertRaisesRegex(RuntimeError, "locations coverage dropped"):
+            validate_mission_coverage(self.valid_index(), previous)
 
     def test_rejects_missing_update_timestamp(self) -> None:
         payload = self.valid_index()
@@ -87,7 +99,7 @@ class RefreshValidationTests(unittest.TestCase):
     def test_accepts_consistent_quality_metadata(self) -> None:
         payload = self.valid_index()
         payload["records"][0]["tiers"] = [{"slots": [{"modifiers": [{"propertyKey": "weapon_damage"}]}]}]
-        payload["records"][0]["qualityStats"] = [{"value": 10}]
+        payload["records"][0]["qualityStats"] = [{"id": "damage", "label": "伤害", "value": 10, "properties": ["weapon_damage"]}]
         payload["qualityEffects"] = {
             "version": payload["version"].upper(),
             "recordsWithModifiers": 1,

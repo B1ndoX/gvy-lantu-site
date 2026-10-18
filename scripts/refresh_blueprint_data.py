@@ -18,6 +18,7 @@ from typing import Any
 
 from scmdb_versions import is_live_version, select_latest_live_version, version_sort_key
 from build_data import reward_items, validate_mission_rewards
+from scmdb_item_stats import validate_item_stats
 from official_localization import SNAPSHOT, refresh_snapshot
 
 
@@ -220,6 +221,8 @@ def mission_coverage(index: dict[str, Any]) -> dict[str, int]:
         records_with_missions += has_missions
     rewards = (index.get("missionRewards") or {}).get("missions") or {}
     return {"contracts": len(missions), "pools": len(pools), "blueprints": records_with_missions,
+            "conditions": sum(any(key in (detail.get("requirements") or {}) for key in ("canBeShared", "minStanding", "crimeStat")) for detail in rewards.values()),
+            "locations": len((index.get("missionRewards") or {}).get("locations") or {}),
             "itemRewards": sum(len(reward_items(reward)) for detail in rewards.values()
                                for reward in detail.get("items") or [])}
 
@@ -271,8 +274,13 @@ def validate_index(path: Path, expected_version: str, previous: dict[str, Any] |
     ):
         raise RuntimeError("blueprint source counts do not match source missions")
     validate_mission_rewards(index)
+    validate_item_stats(index)
     if previous is not None:
         validate_mission_coverage(index, previous)
+        old_stats = previous.get("itemStats") or {}
+        for key in ("matchedItems", "recordsWithBaseStats"):
+            if index["itemStats"][key] < int(old_stats.get(key, 0) * 0.8):
+                raise RuntimeError(f"SCMDB item stat {key} coverage dropped unexpectedly")
     if int(localization.get("starCitizenLocalizationCount") or 0) < MIN_OFFICIAL_LOCALIZATION_COUNT:
         raise RuntimeError("official Star Citizen localization coverage is unexpectedly low")
     quality_effects = index.get("qualityEffects")
@@ -297,6 +305,10 @@ def validate_index(path: Path, expected_version: str, previous: dict[str, Any] |
         actual_base_count = sum(bool(record.get("qualityStats")) for record in records)
         if actual_modifier_count != modifier_count or actual_base_count != base_count:
             raise RuntimeError("quality coverage metadata does not match blueprint records")
+        if previous and previous.get("itemStats"):
+            old_base_count = (previous.get("qualityEffects") or {}).get("recordsWithBaseStats", 0)
+            if base_count < int(old_base_count * 0.8):
+                raise RuntimeError("quality base-stat coverage dropped unexpectedly")
         if any(
             isinstance(metric.get("value"), bool)
             or not isinstance(metric.get("value"), (int, float))
@@ -309,7 +321,8 @@ def validate_index(path: Path, expected_version: str, previous: dict[str, Any] |
 
 def quality_enrichment_is_current(index: dict[str, Any], version: str) -> bool:
     metadata = index.get("qualityEffects") or {}
-    return str(metadata.get("version") or "").lower() == version.lower()
+    source_version = metadata.get("communityVersion") if metadata.get("source") == "scmdb" else metadata.get("communityVersion", metadata.get("version"))
+    return str(source_version or "").lower() == version.lower()
 
 
 def enrich_quality_stats(index_path: Path) -> bool:
@@ -339,8 +352,9 @@ def refresh(force: bool) -> bool:
     force = force or snapshot_changed or applied_hash != official_snapshot["metadata"]["sourceSha256"]
     try:
         validate_mission_rewards(current)
+        validate_item_stats(current)
     except RuntimeError:
-        print("Mission reward schema is missing or outdated; rebuilding the selected LIVE snapshot.")
+        print("Mission/item-stat schema is missing or outdated; rebuilding the selected LIVE snapshot.")
         force = True
     if current_version == latest_version and not force:
         removed = compact_public_index(DATA_DIR / "blueprint-index.json")
@@ -358,7 +372,7 @@ def refresh(force: bool) -> bool:
                     return True
                 print(
                     "warning: version-matched quality base stats are not available yet; "
-                    "keeping relative quality effects and the existing LIVE cache",
+                    "keeping verified SCMDB base stats, relative effects and the existing LIVE cache",
                     file=sys.stderr,
                 )
         if removed:
@@ -396,7 +410,7 @@ def refresh(force: bool) -> bool:
         if not enrich_quality_stats(index_path):
             print(
                 "warning: version-matched quality base stats are not available yet; "
-                "publishing the new LIVE blueprints with relative quality effects only",
+                "publishing the new LIVE with verified SCMDB base stats and relative fallbacks",
                 file=sys.stderr,
             )
         translate_args = [

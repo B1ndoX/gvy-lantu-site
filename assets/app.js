@@ -26,6 +26,8 @@ const state = {
 const DATA_VERSION = "__BUILD_DATA_VERSION__";
 const SEARCH_INPUT_DELAY_MS = 120;
 const RESULT_BATCH_SIZE = 140;
+const SOURCE_TASK_PREVIEW_LIMIT = 12;
+const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 let searchInputTimer = 0;
 
@@ -592,6 +594,16 @@ function renderQualitySummary(record) {
   `;
 }
 
+function renderBaseStats(record) {
+  const metrics = record.baseStats || [];
+  if (!metrics.length) return "";
+  return `<details class="detail-section base-stats">
+    <summary>基础属性 <small>Q500 基准</small></summary>
+    <div class="spec-grid">${metrics.map((metric) => `<div class="spec-item"><strong>${escapeHtml(metric.label)}</strong><span>${escapeHtml(formatQualityValue(metric.value, metric.digits, metric.unit))}</span></div>`).join("")}</div>
+    ${(record.baseStatNotes || []).map((note) => `<p class="detail-note">${escapeHtml(note)}</p>`).join("")}
+  </details>`;
+}
+
 function renderDismantle(record, standalone = false) {
   const dismantle = record.dismantle || {};
   const outputs = dismantle.outputs || [];
@@ -599,7 +611,7 @@ function renderDismantle(record, standalone = false) {
   return `
     <section class="detail-section dismantle-section">
       <h3>${standalone ? "拆解所得" : "拆解回收"}</h3>
-      <p class="detail-note">按当前 LIVE 拆解规则计算，仅显示可回收资源；实际结果以游戏版本为准。</p>
+      <p class="detail-note">按当前 LIVE 拆解规则计算，显示可回收的资源与物品；实际结果以游戏版本为准。</p>
       <div class="dismantle-summary">
         <span>效率 ${Math.round((Number(dismantle.efficiency) || 0) * 100)}%</span>
         <span>耗时 ${formatTime(dismantle.timeSeconds)}</span>
@@ -792,9 +804,11 @@ function renderMissionItems(rewards) {
     const groups = reward.type === "weighted_choice" ? reward.groups || [] : [{ items: [reward] }];
     const conditions = [reward.awardOnlyToMissionOwner ? "仅任务拥有者" : "",
       reward.sendToPlayerHomeLocation ? "送至家乡仓库" : ""].filter(Boolean);
-    return groups.map((group, index) => `
+    const choiceNote = reward.type === "weighted_choice"
+      ? `<p class="mission-reward-meta">${groups.length === 1 ? "触发该物品奖励时，以下物品作为一组一起发放。" : "按权重选择以下一个组合；选中组合内的物品一起发放，不是所有组合都获得。"}</p>` : "";
+    return choiceNote + groups.map((group, index) => `
       <div class="mission-item-group">
-        ${reward.type === "weighted_choice" ? `<p class="mission-reward-meta">备选物品组合 ${index + 1}（按权重选择）</p>` : ""}
+        ${reward.type === "weighted_choice" ? `<p class="mission-reward-meta">${groups.length > 1 ? "备选物品组合" : "物品组合"} ${index + 1}${group.probability != null ? ` · 组合选择概率 ${escapeHtml(formatChance(group.probability))}` : ""}</p>` : ""}
         ${(group.items || []).map((item) => `<div class="mission-item-row">
           <strong>${escapeHtml(preferZh(item.nameZh, item.name))}</strong>
           <span>${item.amount != null ? `×${escapeHtml(formatNumber(item.amount))}` : "数量未注明"}</span>
@@ -802,6 +816,54 @@ function renderMissionItems(rewards) {
         ${conditions.length ? `<p class="mission-reward-meta">${escapeHtml(conditions.join(" · "))}</p>` : ""}
       </div>`).join("");
   }).join("");
+}
+
+function renderMissionRequirements(requirements) {
+  if (!requirements) return '<p class="mission-reward-meta">接取条件未记录；请以游戏内任务为准。</p>';
+  const rows = [];
+  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`);
+  for (const [field, label] of [["minStanding", "最低声望"], ["maxStanding", "最高声望"]]) {
+    const standing = requirements[field];
+    if (standing) add(label, `${preferZh(standing.nameZh, standing.name)}${standing.minReputation != null ? ` · 该级起始 ${formatNumber(standing.minReputation)} XP` : ""}${requirements.canBeShared !== true ? "" : standing.includeWhenSharing === true ? " · 共享时同样要求" : standing.includeWhenSharing === false ? " · 不限制共享接收者" : ""}`);
+  }
+  const crime = requirements.crimeStat;
+  if (crime) add("犯罪等级", `${crime.min}–${crime.max}${crime.includeWhenSharing === true ? " · 共享时同样要求" : ""}`);
+  for (const [field, label, yes, no] of [
+    ["canBeShared", "任务共享", "可以共享", "不可共享"],
+    ["illegal", "任务性质", "非法任务", "合法任务"],
+    ["onceOnly", "次数限制", "仅一次", "非一次性任务"],
+    ["canReacceptAfterAbandoning", "放弃后重接", "允许", "不允许"],
+    ["canReacceptAfterFailing", "失败后重接", "允许", "不允许"],
+  ]) if (typeof requirements[field] === "boolean") add(label, requirements[field] ? yes : no);
+  if (requirements.hasPersonalCooldown === true && requirements.personalCooldownTime != null) add("个人冷却", `${formatNumber(requirements.personalCooldownTime)} 分钟`);
+  if (requirements.abandonedCooldownTime > 0) add("放弃后冷却", `${formatNumber(requirements.abandonedCooldownTime)} 分钟`);
+  const titles = (intros) => [...new Set((intros || []).map(missionTitle))].join(" / ");
+  if (requirements.requiredIntros?.length) add("必需入门任务", titles(requirements.requiredIntros));
+  if (requirements.linkedIntros?.length) add("派系入门（非硬前置）", titles(requirements.linkedIntros));
+  const completed = requirements.completedContracts;
+  if (completed) add("前置完成标记", `${completed.requiredCount != null ? `要求 ${formatNumber(completed.requiredCount)} 项` : "要求数量未注明"}${completed.candidates?.length ? `；对应任务：${titles(completed.candidates)}` : "；具体任务未明确"}（候选任务并非全部必做）`);
+  const excluded = requirements.excludedContracts;
+  if (excluded) add("已完成标记排除", `${excluded.candidates?.length ? titles(excluded.candidates) : `${formatNumber(excluded.tagCount)} 项标记，具体任务未明确`}；满足这些完成标记时可能无法接取，不是必做前置。`);
+  const location = (id) => {
+    const item = state.data.missionRewards?.locations?.[id];
+    if (!item) return "";
+    const name = !item.nameZh && item.name?.startsWith("@") ? "地点名称未解析" : preferZh(item.nameZh, item.name);
+    return [name, item.system ? preferZh(item.systemZh, item.system) : ""].filter(Boolean).join(" · ");
+  };
+  const locationList = (label, ids) => ids?.length ? `<details class="mission-places"><summary>${escapeHtml(label)} · ${formatNumber(ids.length)} 处</summary><ul>${ids.map((id) => `<li>${escapeHtml(location(id))}</li>`).join("")}</ul></details>` : "";
+  const regions = (requirements.regions || []).map((region) => {
+    const label = region.system === "Pyro" && /^Region[A-D]$/.test(region.name) ? `派罗区域 ${region.name.slice(-1)}` : preferZh(region.nameZh, region.name);
+    return `<div class="mission-region"><p class="mission-reward-meta">接取区域：${escapeHtml(label)}</p>${locationList("区域覆盖地点", region.locations)}</div>`;
+  }).join("");
+  const extraLabels = { reputationLockout: "其他派系声望限制", requiredScenarios: "活动状态限制", subLocationVariants: "子地点变体限制" };
+  const extra = (requirements.additionalRestrictions || []).map((key) => extraLabels[key] || "额外接取限制");
+  return `<details class="mission-requirements"><summary>接取条件与地点</summary>
+    <dl class="mission-condition-grid">${rows.join("")}</dl>${regions}
+    ${locationList("接取位置条件", requirements.acceptLocations)}${locationList("任务候选地点（非接取保证）", requirements.missionLocations)}
+    ${requirements.unresolvedLocations ? `<p class="mission-reward-meta">另有 ${formatNumber(requirements.unresolvedLocations)} 个地点未解析。</p>` : ""}
+    ${extra.length ? `<p class="mission-reward-meta">另含${escapeHtml(extra.join("、"))}，详情需在游戏内确认。</p>` : ""}
+    <p class="mission-reward-meta">区域和条件来自当前任务配置，不表示服务器当前一定可接；未列出的限制不代表不存在。</p>
+  </details>`;
 }
 
 function renderMissionPools(rewardPools) {
@@ -842,13 +904,14 @@ function openMissionInfo(id, opener) {
         <button type="button" class="mission-close" data-close-mission aria-label="关闭任务奖励" autofocus>×</button>
       </header>
       <div class="mission-dialog-body">
+        ${renderMissionRequirements(rewards.requirements)}
         <section class="mission-reward-section">
           <h3>蓝图奖励</h3>
           <p class="mission-draw-note">本任务含 ${formatNumber(rewards.pools.length)} 个蓝图奖励池。各池独立按对应条件及触发概率发放 1 张蓝图，已集齐的池不再发放。以下为候选蓝图，并非一次全部获得。</p>
           ${renderMissionPools(rewards.pools || [])}
-          <p class="mission-reward-meta">池触发概率不等于单张蓝图的掉率；实际发放以游戏任务和完成条件为准。</p>
+          <p class="mission-reward-meta">池触发概率不等于单张蓝图的掉率。N 选 1 不代表必得未拥有的蓝图，也不保证 N 次集齐；重复和保底规则未完整确认。实际发放以游戏任务和完成条件为准。</p>
         </section>
-        <section class="mission-reward-section"><h3>物品奖励</h3><p class="mission-reward-note">来自当前任务配置，实际发放以游戏任务及完成条件为准。</p>${renderMissionItems(rewards.items || [])}</section>
+        <section class="mission-reward-section"><h3>物品奖励</h3><p class="mission-reward-note">以下是实物，不是蓝图；数量与蓝图奖励分别计算。领取对象和发放条件以任务配置及游戏内结果为准。</p>${renderMissionItems(rewards.items || [])}</section>
       </div>
       <footer class="mission-dialog-footer"><span>${escapeHtml(formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"))}</span><span>制作：Ayuan</span></footer>
     </dialog>`);
@@ -1622,6 +1685,7 @@ function renderDetail() {
       </div>
 
       ${renderQualitySummary(record)}
+      ${renderBaseStats(record)}
 
       <section class="detail-section">
         <h3>制作材料</h3>
@@ -1701,14 +1765,16 @@ function renderSources(record) {
     const content = `<strong>${escapeHtml(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
     return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
   });
+  const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN
+    ? rows.length : SOURCE_TASK_PREVIEW_LIMIT;
   return `
     <div class="source-item">
       <strong>任务来源</strong>
       <span class="source-line"><span>任务 ${formatNumber(missions.length)}</span></span>
-      <ul class="source-missions">${rows.slice(0, 8).join("")}</ul>
-      ${rows.length > 8 ? `<details class="source-more">
+      <ul class="source-missions">${rows.slice(0, previewCount).join("")}</ul>
+      ${rows.length > previewCount ? `<details class="source-more">
         <summary><span class="source-expand-label">展开全部 ${formatNumber(missions.length)} 条任务</span><span class="source-collapse-label">收起更多任务</span></summary>
-        <ul class="source-missions">${rows.slice(8).join("")}</ul>
+        <ul class="source-missions">${rows.slice(previewCount).join("")}</ul>
       </details>` : ""}
     </div>`;
 }

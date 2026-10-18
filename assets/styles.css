@@ -1854,6 +1854,19 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
 .mission-close { width: 36px; height: 36px; border: 1px solid rgba(126, 221, 242, 0.28); border-radius: 8px; background: transparent; color: var(--text-strong); font-size: 24px; line-height: 1; }
 .mission-dialog-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 14px 18px 18px; scrollbar-width: thin; scrollbar-color: rgba(126, 221, 242, 0.42) transparent; }
 .mission-reward-note { margin: 0 0 14px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.base-stats > summary, .mission-requirements > summary { color: var(--orange); cursor: pointer; font-size: 14px; font-weight: 800; line-height: 1.5; }
+.base-stats > summary small { margin-left: 8px; color: var(--muted); font-size: 11px; font-weight: 500; }
+.base-stats[open] > summary, .mission-requirements[open] > summary { margin-bottom: 10px; }
+.base-stats .detail-note { margin: 8px 0 0; }
+.mission-requirements { margin-bottom: 14px; }
+.mission-condition-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 18px; margin: 0 0 8px; }
+.mission-condition-grid > div { min-width: 0; font-size: 11px; line-height: 1.5; }
+.mission-condition-grid dt { color: var(--muted); }
+.mission-condition-grid dd { margin: 1px 0 0; color: var(--text-strong); overflow-wrap: anywhere; }
+.mission-places { margin: 6px 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.mission-places summary { cursor: pointer; color: var(--cyan); overflow-wrap: anywhere; }
+.mission-places ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 20px; margin: 7px 0; padding-left: 16px; }
+.mission-places li { min-width: 0; overflow-wrap: anywhere; }
 .mission-reward-section + .mission-reward-section { margin-top: 18px; }
 .mission-reward-section h3 { margin: 0 0 8px; color: var(--orange); font-size: 14px; line-height: 1.5; }
 .mission-draw-note { margin: 0 0 12px; padding: 9px 11px; border-left: 2px solid rgba(126, 221, 242, 0.55); background: rgba(126, 221, 242, 0.04); color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
@@ -1883,6 +1896,7 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
 .mission-dialog-footer > span:last-child { white-space: nowrap; }
 
 @media (max-width: 620px) {
+  .mission-condition-grid, .mission-places ul { grid-template-columns: minmax(0, 1fr); }
   .mission-dialog { width: calc(100vw - 20px); min-width: 0; max-width: calc(100vw - 20px); max-height: calc(100vh - 20px); max-height: calc(100dvh - 20px); }
   .mission-dialog-head { padding: 14px; }
   .mission-dialog h2 { font-size: 17px; }
