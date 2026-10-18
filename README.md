@@ -274,6 +274,11 @@ synchronization is implied.
 
 The plan dialog stays content-height driven and at most 640px wide. Planned item
 names come first at 16px in the existing soft gold, ahead of material requirements.
+Each row places its single-item craft duration to the left of the quantity
+controls, separated by 16px. This is secondary 12px muted text, not multiplied
+by the row count; narrow screens let its label/value wrap within that left area.
+Use the same first-tier recipe duration as the total calculation, showing unknown
+when unavailable and preserving a real zero. Do not invent missing durations.
 Planned-piece and `清单总耗时` totals follow the materials at a secondary 14px in
 white, with smaller muted labels. One short note explicitly states that material
 and time totals include every item and its quantity in the whole plan; time is

@@ -32,6 +32,12 @@ class PublicCopyTests(unittest.TestCase):
         button = styles.split(".plan-stepper button {", 1)[1].split("}", 1)[0]
         self.assertIn("width: 32px", button)
         self.assertIn("height: 32px", button)
+        unit_time = styles.split(".plan-unit-time {", 1)[1].split("}", 1)[0]
+        self.assertIn("color: var(--muted)", unit_time)
+        self.assertIn("font-size: 12px", unit_time)
+        self.assertIn("font-weight: 400", unit_time)
+        controls = styles.split(".plan-controls {", 1)[1].split("}", 1)[0]
+        self.assertIn("gap: 16px", controls)
 
     def test_base_attribute_labels_can_wrap_without_truncation(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")

@@ -343,6 +343,30 @@ test("planner reading order prioritizes planned items and materials before secon
   assert.match(html,/清单总耗时<\/span><strong>21 分钟/);
 });
 
+test("planner shows per-item unit time left of quantity without multiplying it by the count", () => {
+  const api=app();
+  api.state.records=[
+    {id:"snow",name:"SnowBlind",tiers:[{craftTimeSeconds:630,slots:[]}]},
+    {id:"part",name:"Part",tiers:[{craftTimeSeconds:90,slots:[]}]},
+  ];
+  api.state.craftPlan=[{recordId:"snow",quantity:2,choices:{}},{recordId:"part",quantity:3,choices:{}}];
+  let html=api.renderPlanBody();
+  assert.match(html,/class="plan-unit-time"><span>单件耗时<\/span><span>10 分 30 秒<\/span><\/div>\s*<div class="plan-quantity"/);
+  assert.match(html,/class="plan-unit-time"><span>单件耗时<\/span><span>1 分 30 秒<\/span>/);
+  assert.match(html,/清单总耗时<\/span><strong>25 分 30 秒/);
+  api.state.craftPlan[0].quantity=4;
+  html=api.renderPlanBody();
+  assert.match(html,/单件耗时<\/span><span>10 分 30 秒/);
+  assert.match(html,/清单总耗时<\/span><strong>46 分 30 秒/);
+  for(const time of [undefined,null,-1,Infinity,"630",0]) {
+    api.state.records[0].tiers[0].craftTimeSeconds=time;
+    const expected=time===0?"0 秒":"未知";
+    assert.ok(api.renderPlanBody().includes(`单件耗时</span><span>${expected}</span>`));
+  }
+  api.state.craftPlan=[{recordId:"missing",quantity:2,choices:{}}];
+  assert.match(api.renderPlanBody(),/单件耗时<\/span><span>未知/);
+});
+
 test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {
   const api=app();
   const html=api.renderMaterialQuality({id:"a"},{name:"<frame>",options:[{minQuality:600}],modifiers:[{propertyKey:"x",propertyName:"X",startQuality:0,endQuality:1000,modifierAtStart:.8,modifierAtEnd:1.2}]},0);

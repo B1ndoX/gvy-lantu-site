@@ -206,14 +206,16 @@ function renderPlanBody() {
   return `<div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
+      const tier = record ? getFirstTier(record) : null;
       return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
+        <div class="plan-controls"><div class="plan-unit-time"><span>单件耗时</span><span>${escapeHtml(formatTime(tier?.craftTimeSeconds))}</span></div>
         <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
           <button type="button" data-plan-step="-1" aria-label="减少${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="减少一件" ${row.quantity <= 1 ? "disabled" : ""}>−</button>
           <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" />
           <button type="button" data-plan-step="1" aria-label="增加${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="增加一件" ${row.quantity >= 9999 ? "disabled" : ""}>+</button>
-        </div></div>
+        </div></div></div>
         <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
-        ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
+        ${tier ? tier.slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
     }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
     <section class="detail-section plan-material-section"><h3>材料合计</h3><p class="plan-explanation">材料与耗时均按清单内全部物品及数量合计；耗时按依次制作估算，不含排队。</p>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
       <thead><tr><th scope="col">材料</th><th scope="col">品质要求</th><th scope="col">所需总量</th></tr></thead>
