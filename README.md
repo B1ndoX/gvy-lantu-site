@@ -100,12 +100,13 @@ Use the native disclosure only when at least four rows remain hidden.
 Clickable task names are white without underlines, with an arrow and visible
 hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
 reward dialog still keeps its independent pools separate.
-Only the literal `[蓝图]` marker within source-row, reward-dialog and prerequisite
-task titles uses light blue `#b8c9f1`, distinct from cyan star systems. Keep the remaining title,
-text content, search and wrapping unchanged; escape title text before marking it.
-This suffix comes from the current Chinese localization, not a generated reward
-flag. Some verified blueprint-source missions lack it; never use it to decide
-whether a task awards blueprints or to calculate a drop chance.
+Hide the redundant literal `[蓝图]` hint from all displayed task titles, including
+source rows, reward-dialog headings and prerequisite/completed/excluded tasks.
+Preserve original localization and reward data. Bracketed runtime placeholders
+such as `[目标]`, `[地点]`, `[飞船]`, `[编号]` and `[位置]` use light blue `#b8c9f1`,
+distinct from cyan star systems. Escape text before adding their inline spans;
+keep ordinary 蓝图 text, fonts, wrapping and click targets unchanged. A title's
+old suffix never determines reward eligibility or probability.
 
 Reward candidates and result-list summaries show verified compact class/grade
 labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,

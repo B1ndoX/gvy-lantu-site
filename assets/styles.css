@@ -1853,7 +1853,7 @@ html[data-query-mode="dismantle"] .reset-button {
 }
 
 .source-mission-button small b { color: var(--cyan); }
-.mission-blueprint-tag { color: #b8c9f1; }
+.mission-placeholder { color: #b8c9f1; }
 .source-mission-button[data-mission-id] strong {
   color: var(--text-strong);
   text-decoration: none;

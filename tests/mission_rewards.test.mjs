@@ -59,7 +59,7 @@ test("source rows show systems and task IDs without implying item drop certainty
   assert.match(html, /aria-haspopup="dialog" title="查看任务奖励"/);
   assert.match(html, /尼克斯 \(Nyx\)/);
   assert.doesNotMatch(html, /100%|奖励池触发/);
-  assert.match(html, /&lt;script&gt;\[地点\]&lt;\/script&gt;/);
+  assert.match(html, /&lt;script&gt;<span class="mission-placeholder">\[地点\]<\/span>&lt;\/script&gt;/);
   assert.doesNotMatch(html, /<script>/);
 });
 
@@ -79,12 +79,16 @@ test("source pools share one compact task list, deduplicated by ID with twelve i
   assert.doesNotMatch(html, /<details[^>]* open/);
 });
 
-test("mission source titles highlight only the literal blueprint marker without changing text or trusting HTML", () => {
+test("mission source titles remove blueprint hints and color placeholders without trusting HTML or changing source data", () => {
   const api = app();
   api.state.data.missionRewards.missions.one = { pools: [] };
-  const html = api.renderSources({sources:[{missions:[{id:"one",title:"<script>[LOCATION][蓝图]</script>[目标]蓝图",systems:["Pyro"]}]}]});
-  assert.match(html, /&lt;script&gt;\[地点\]<span class="mission-blueprint-tag">\[蓝图\]<\/span>&lt;\/script&gt;\[目标\]蓝图/);
-  assert.equal((html.match(/class="mission-blueprint-tag"/g) || []).length, 1);
+  const mission = {id:"one",title:"<script>[LOCATION][蓝图]</script>[目标][飞船][编号][位置]蓝图",systems:["Pyro"]};
+  const html = api.renderSources({sources:[{missions:[mission]}]});
+  assert.match(html, /&lt;script&gt;<span class="mission-placeholder">\[地点\]<\/span>&lt;\/script&gt;<span class="mission-placeholder">\[目标\]<\/span>/);
+  assert.equal((html.match(/class="mission-placeholder"/g) || []).length, 5);
+  assert.doesNotMatch(html, /\[蓝图\]|mission-blueprint-tag/);
+  assert.match(mission.title, /\[蓝图\]/);
+  assert.match(html, /<\/span>蓝图<\/strong>/);
   assert.match(html, /<b>派罗 \(Pyro\)<\/b>/);
   assert.doesNotMatch(html, /<script>/);
 });
@@ -140,7 +144,8 @@ test("mission dialog explains independent draws without hiding verified pools as
   api.state.data.missionRewards.missions.mission = { pools: [{ id: "first" }, { id: "second" }], items: [] };
   api.openMissionInfo("mission");
   assert.equal(shown, true);
-  assert.match(html, /<h2 id="missionDialogTitle">Same<span class="mission-blueprint-tag">\[蓝图\]<\/span>&lt;script&gt;<\/h2>/);
+  assert.match(html, /<h2 id="missionDialogTitle">Same&lt;script&gt;<\/h2>/);
+  assert.doesNotMatch(html, /\[蓝图\]/);
   assert.match(html, /本任务含 2 个蓝图奖励池/);
   assert.match(html, /各池独立按对应条件及触发概率发放 1 张蓝图/);
   assert.match(html, /已集齐的池不再发放/);
@@ -150,12 +155,13 @@ test("mission dialog explains independent draws without hiding verified pools as
   assert.doesNotMatch(html, /范围未确认|非已确认掉落清单|<details/);
 });
 
-test("prerequisite and excluded mission titles share the blueprint marker without dropping their conditions", () => {
+test("prerequisite and excluded mission titles remove blueprint hints and color placeholders without dropping conditions", () => {
   const api = app();
-  const title = {title:"<task>[蓝图]"};
+  const title = {title:"<task>[地点][蓝图]"};
   const html = api.renderMissionRequirements({requiredIntros:[title],linkedIntros:[title],completedContracts:{requiredCount:1,candidates:[title]},excludedContracts:{candidates:[title]}});
-  assert.equal((html.match(/class="mission-blueprint-tag"/g)||[]).length,4);
-  assert.match(html, /&lt;task&gt;<span class="mission-blueprint-tag">\[蓝图\]<\/span>/);
+  assert.equal((html.match(/class="mission-placeholder"/g)||[]).length,4);
+  assert.match(html, /&lt;task&gt;<span class="mission-placeholder">\[地点\]<\/span>/);
+  assert.doesNotMatch(html, /\[蓝图\]/);
   assert.match(html, /前置完成标记/);
   assert.match(html, /已完成标记排除/);
   assert.doesNotMatch(html, /<task>/);

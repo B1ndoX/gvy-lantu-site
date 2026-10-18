@@ -972,11 +972,11 @@ function closeMineralInfo() {
 }
 
 function missionTitle(mission) {
-  return preferZh(mission.titleZh, mission.title).replace(/\[LOCATION\]/gi, "[地点]");
+  return preferZh(mission.titleZh, mission.title).replace(/\[LOCATION\]/gi, "[地点]").replaceAll("[蓝图]", "").trim();
 }
 
-function renderBlueprintText(text) {
-  return escapeHtml(text).replaceAll("[蓝图]", '<span class="mission-blueprint-tag">[蓝图]</span>');
+function renderMissionText(text) {
+  return escapeHtml(text).replace(/\[[^\[\]\r\n]+\]/g, '<span class="mission-placeholder">$&</span>');
 }
 
 function initMissionRewards() {
@@ -1028,7 +1028,7 @@ function renderMissionItems(rewards) {
 function renderMissionRequirements(requirements) {
   if (!requirements) return '<p class="mission-reward-meta">接取条件未记录；请以游戏内任务为准。</p>';
   const rows = [];
-  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${renderBlueprintText(value)}</dd></div>`);
+  const add = (label, value) => rows.push(`<div><dt>${escapeHtml(label)}</dt><dd>${renderMissionText(value)}</dd></div>`);
   for (const [field, label] of [["minStanding", "最低声望"], ["maxStanding", "最高声望"]]) {
     const standing = requirements[field];
     if (standing) add(label, `${preferZh(standing.nameZh, standing.name)}${standing.minReputation != null ? ` · 该级起始 ${formatNumber(standing.minReputation)} XP` : ""}${requirements.canBeShared !== true ? "" : standing.includeWhenSharing === true ? " · 共享时同样要求" : standing.includeWhenSharing === false ? " · 不限制共享接收者" : ""}`);
@@ -1104,7 +1104,7 @@ function openMissionInfo(id, opener) {
   document.body.insertAdjacentHTML("beforeend", `
     <dialog class="mission-dialog" aria-labelledby="missionDialogTitle">
       <header class="mission-dialog-head">
-        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${renderBlueprintText(missionTitle(mission))}</h2>
+        <div><span class="mission-eyebrow">任务奖励</span><h2 id="missionDialogTitle">${renderMissionText(missionTitle(mission))}</h2>
           <p>${escapeHtml(missionSystemLabels(mission))}</p>
           <small>${escapeHtml([missionFaction(mission), mission.rewardUEC != null ? `${formatNumber(mission.rewardUEC)} aUEC` : ""].filter(Boolean).join(" · "))}</small>
         </div>
@@ -2101,7 +2101,7 @@ function renderSources(record) {
     const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
     const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
     const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
-    const content = `<strong>${renderBlueprintText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
     return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
   });
   const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN
