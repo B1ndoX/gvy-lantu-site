@@ -952,10 +952,10 @@ html[data-query-mode="dismantle"] .reset-button {
   /* Match the scroll inset plus the result card's border and padding. */
   padding: 5px 23px;
   border-bottom: 1px solid rgba(126, 221, 242, 0.16);
-  color: rgba(126, 221, 242, 0.82);
+  color: var(--cyan);
   background: var(--surface-header);
   box-shadow: var(--shadow-panel-rim);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 820;
   line-height: 1.4;
   letter-spacing: 0;
