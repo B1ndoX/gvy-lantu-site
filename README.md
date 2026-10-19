@@ -95,12 +95,6 @@ The subsequent header-only correction makes both left result column labels match
 the right detail label's 14px cyan. Existing 36px header height, column tracks,
 padding and item-name sizes remain unchanged in craft and dismantle modes.
 
-Quality-effect cards use stable grid tracks: label/change above, original value,
-arrow and result below. Tabular digits and two reserved value lines keep changing
-decimal precision or units from moving the slider and scrolling panel. Full
-labels and values wrap when needed; no value, precision or calculation is removed.
-This correction is confined to quality-effect cards, not the main site layout.
-
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
 `checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and

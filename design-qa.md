@@ -2,51 +2,6 @@
 
 final result: passed
 
-## Quality Effect Row Stability
-
-The user reported Tungsten's quantum-speed effect wrapping when default 500
-changes, making the right panel flash during repeated slider movement. Actual
-Safari 26.6.2 reproduced this at 1264px: the quality section changed from 114px
-to 130px, with its quantum card changing from 38px to 54px. This was a content-
-length/flex-wrap layout shift, not an arithmetic/data fault.
-
-The scoped correction uses fixed grid positions inside each quality-effect card:
-label/change above, baseline/arrow/result below. Numeric slots reserve two 14px
-lines for complete values/units, use tabular digits and allow full text wrapping.
-Labels no longer use ellipses. Cards naturally accommodate longer labels rather
-than forcing a fixed whole-panel height. The existing DOM, formatter, precision,
-formulas, slider/quality input behavior, main layout, fonts and colors remain.
-The `display: contents` span is only an unsemantic value wrapper; native Safari
-still exposes the complete text in its accessibility tree.
-
-Initial candidate repro across 390/1101/1264/1321/1440/1920/2560/3440px retained
-one height per viewport across 500/501/499/750/1000/500, with 56px VK-00 cards.
-This intentionally reserves slightly more space than the old compact flex row;
-the goal is stable complete text, not preserving its unstable row height.
-The wider focused matrix and final release evidence are recorded in the handoff.
-The regression tests lock grid placement, reserved value lines and full labels,
-and check unchanged quantum results/units/percentages around 500 and at 1000.
-
-Fourteen completed native-Safari batches cover 320x568, 375x667, 390x844,
-620/621/880/881/1100/1101/1264/1321x793, 1920x1080, 2560x1440 and 3440x1440.
-Each checks 19 selected long-value/long-label/many-effect records at nine quality
-states: 266 record/viewport cases, 2,394 states and 14,994 card text/height checks.
-Each also dispatches 100 real range-input events on VK-00 with baseline/nearby/
-high values: 1,400 events, no slider offset/scroll/focus drift. Heights are stable,
-full text is inside cards, and no runtime error/rejection or page overflow was
-captured. This is a focused rendered matrix, not an all-recipe/all-quality run.
-
-Native UI numeric editing 499 -> 500 -> 750 confirms full values and normal Tab
-behavior. Tab may naturally scroll the next field into view; this is distinct
-from the repeated-range-input anchor assertion. Screenshots show the final
-complete effect section and changed result. Safari's optional privacy-reduction
-suggestion was dismissed only; its protection was not changed. No browser was
-downloaded, no Safari settings changed, no real iPhone/touch/keyboard claim.
-175 Python / 41 standalone Node tests, syntax, diff, build and version-pair checks
-pass. CSS 97d4aa9525c5 includes only an explanatory comment beyond the tested
-candidate rules; the final candidate CSS file and built CSS are byte-equal.
-JS 2bc5ce5932cd and data-0f6906d31548ddd6 remain unchanged.
-
 ## Result Header Match
 
 Following the Safari fix, the user requested that the left `item name/spec` and

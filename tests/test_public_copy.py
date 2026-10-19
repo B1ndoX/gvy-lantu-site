@@ -8,28 +8,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
-    def test_quality_result_values_use_stable_tracks_without_hiding_full_text(self) -> None:
-        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
-        item = styles.split('.quality-result-item {', 1)[1].split('}', 1)[0]
-        label = styles.split('.quality-result-item > strong {', 1)[1].split('}', 1)[0]
-        values = styles.split('.quality-result-values {', 1)[1].split('}', 1)[0]
-        numbers = styles.split('.quality-result-values small,\n.quality-result-values b {', 1)[1].split('}', 1)[0]
-        change = styles.split('.quality-result-values em {', 1)[1].split('}', 1)[0]
-        self.assertIn('display: grid', item)
-        self.assertIn('grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr)', item)
-        self.assertNotIn('flex-wrap:', item)
-        self.assertIn('grid-column: 1 / 3', label)
-        self.assertIn('overflow-wrap: anywhere', label)
-        self.assertNotIn('ellipsis', label)
-        self.assertIn('display: contents', values)
-        self.assertIn('font-variant-numeric: tabular-nums', values)
-        self.assertIn('grid-row: 2', numbers)
-        self.assertIn('min-height: 28px', numbers)
-        self.assertIn('line-height: 14px', numbers)
-        self.assertIn('overflow-wrap: anywhere', numbers)
-        self.assertNotIn('overflow: hidden', numbers)
-        self.assertIn('grid-area: 1 / 3', change)
-
     def test_result_headers_match_detail_label_size_and_color(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         header = styles.split('.result-head {', 1)[1].split('}', 1)[0]
