@@ -2,6 +2,32 @@
 
 final result: passed
 
+## Material Badge Right Inset, 2026-10-20
+
+After PR18 the user requested less trailing space and explicitly reused the
+previously authorized browser. Installed Safari measures all 4,316 current
+material rows before editing: the largest badge/gap/full-amount combination is
+102.1333px (Inquisitor Core, x0.015), inside the existing 112px group. Minimum
+frame clearance is 20.8594px. One product declaration, 8px left padding inside
+that border-box group, moves all contents right without changing the parent
+tracks, slider positions, amount format or vertical alignment.
+
+An independent full rerun of the same 16 viewports below renders 25,888 record
+views / 69,056 rows. Amount text is checked both against its own box (including
+potential ellipsis clipping) and its material row. Badge alignment, visible
+text, slider alignment, 72x23 capsules and page bounds all pass, with no captured
+runtime errors. The group stays 112px at every size; minimum frame clearance
+is 12.8594px, exactly 8px less than baseline, still safely inside the frame.
+The longest current amount remains complete, not abbreviated or reduced.
+
+The first AX read during the batch timed out and reset CUA after 30 seconds;
+the Safari page continued and saved all 16 successful reports. Progress was
+read from the result file, then native CUA reconnected. Final desktop/390px
+screenshots were reviewed; the shifted phone badge opens the correct mineral
+dialog and Escape restores focus. Existing Safari-only / non-iPhone-hardware
+and non-DevTools-console limitations still apply. No settings or dependencies
+were changed. Final build and production verification are in the handoff.
+
 ## Material Location Column Alignment
 
 The latest correction left-aligns each manufacturing material's mineral badge
