@@ -8,6 +8,32 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## Deep Blue Local Preview
+
+The 2026-10-19 skin is a local-only candidate on
+`feat/deep-blue-local-preview-20261019`, based on production `5bf9add`.
+Do not push, open a release PR, dispatch workflows or deploy without renewed user
+authorization. Preview the built `dist` at `http://127.0.0.1:8002/`.
+
+Surfaces use uniform opaque navy fills, shared exterior elevation shadows and
+continuous 1px inner-edge highlights. No gradients, noise, decorative textures or
+new assets are used. The selected navy concept defines color/elevation only;
+existing layout, templates, breakpoints, fonts, semantic foreground colors and
+all functionality remain unchanged, with two user-requested visual corrections:
+the joined header/summary now aligns to the same side insets as the main panels,
+and plan material rows have 4px separation and the shared raised-row treatment.
+Header tracks reserve the real action-control minima on narrow desktops/phones;
+no navigation or content regions are rearranged. The old structural page wrapper
+is transparent so it no longer visually encloses the independent raised panels.
+The robot ship card is a shadow reference
+only. Per-item time remains in its original plan row, left of quantity controls,
+at 12px with its original formatting and 16px gap. Quality 0/1 remains unchanged.
+
+Before editing, source/dist/handoff backups were saved under
+`.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
+`checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and
+scoped recovery, and `design-qa.md` for local browser comparisons and test scope.
+
 ## Reviewed Releases
 
 The original refresh workflow accepts an optional manual `prepare_only` input

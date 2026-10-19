@@ -1,6 +1,68 @@
-# Mineral Dialog Local Design QA
+# Deep Blue Local Skin QA, 2026-10-19
 
 final result: passed
+
+Latest user corrections are implemented and rechecked: originally unframed
+primary regions receive the shared raised treatment; header/summary align with
+the other panels; actual header controls fit at both breakpoint sides; plan
+material rows share the reward-list elevation. This is local technical/design QA,
+not user approval of the final art direction or authorization to publish.
+
+## Scope And Authority
+
+This is a local preview only. No push, PR, workflow dispatch, data refresh or
+deployment is authorized for this batch. Historical release authorizations below
+do not apply. The latest user-approved specification is uniform navy surfaces
+with floating exterior shadows, while preserving the current production layout,
+templates, typography and behavior. The cancelled unit-time move stays cancelled.
+
+## Comparison Evidence
+
+- Source visual truth: `/Users/bindox/.codex/generated_images/019ec6a8-7788-76e3-ae3c-ae7a03b52189/exec-aa8ec7b3-2baa-4210-a4ba-6cb77e570476.png` (1672 x 941 pixels). The robot ship card at `.git/visual-references/bot-ship-card-shadow-only-20261019.png` is an exterior-shadow reference only, not an asset/layout/palette source.
+- Implementation: `http://127.0.0.1:8002/#blueprint=33be7f1a-3f75-4627-bb8b-88e6d6b42f4e&mode=craft`, VK-00, manufacturing, no filters, base attributes collapsed, default quality. CSS `fd42e6d833b0`; unchanged JS `b085889e5719` and data `data-0f6906d31548ddd6`.
+- Evidence directory: `.git/visual-previews/deep-blue-20261019/` (local, not shipped). Main capture `gvy-deep-blue-after-1280-20261019.png`: viewport and screenshot 1280 x 720 CSS/device pixels, density 1. The concept was normalized from 1672 x 941 to the same 1280 x 720 comparison frame; its subpixel aspect-ratio difference is negligible, not a font/layout measurement source.
+- Actual combined full-view input: `gvy-deep-blue-source-candidate-20261019.png`, 2560 x 720, source left/candidate right. Actual combined focused input: `gvy-deep-blue-focused-comparison-20261019.png`, 2560 x 380, corresponding filter/list/detail regions. Both were opened and reviewed together, not inferred from separate views.
+- `gvy-deep-blue-before-after-20261019.png` compares the real production baseline against the candidate at identical viewport, route, content and independent QA storage. The concept's favorite count is 1 versus QA's 0; no user storage was changed. Generated geometry/text differences are intentional exclusions: the existing real page is authoritative for layout, fonts, exact labels and assets.
+- Additional opened evidence: `gvy-deep-blue-detail-390-20261019.png`, `gvy-deep-blue-main-3440-20261019.png`, final `gvy-deep-blue-plan-card-20261019.png`, `gvy-deep-blue-task-card-20261019.png`, `gvy-deep-blue-mineral-card-20261019.png`. Other captures cover 320/1920/2560, filter-open, signal-open and keyboard-focus states. An early ultrawide capture had a transient compositing artifact after rapid resizing; a two-animation-frame recapture and DOM hit-testing confirmed one header/shell and correct content, with no product edit required.
+- Material-row focused comparison: `gvy-deep-blue-material-row-comparison-20261019.png`, source reward-list screenshot left (1618 x 550 normalized to 809 x 275), actual plan table right (684 x 206 crop at density 1). Shared fill/highlight/shadow is the target; retaining the plan's three columns, 13px names and original contents is intentional, not a request to copy the reward list's two-column layout or smaller typography.
+
+## Findings And Fidelity
+
+- No actionable P0/P1/P2 issue remains in the inspected local candidate. The first pass was incomplete: the user identified a P1 omission in primary elevation and later a P2 header edge mismatch. These are fixes, not intentional deviations. See comparison history below; the earlier pass must not be used as proof of final acceptance.
+- Fonts/typography: original system/Inter fallback chain, weights, sizes, line heights, letter spacing and wrapping retained. Detail 30px, result/plan names 21px white, material names 18px mint; muted metadata and original disabled/placeholder treatment remain. No generated lettering or robot typography was copied.
+- Spacing/layout rhythm: final 404 non-paint CSSOM entries match the original 401 after an explicit allowlist for header/summary insets, outer corners, header track sizing and three material-row presentation rules. Across 14 widths/42 states, 29,260 snapshot values were inspected; fonts stay unchanged, main/mineral geometry outside the header correction and its natural height offset has maximum difference 0. Plan numeric geometry is intentionally not compared to the old contiguous table: the new separated rows are checked independently in 72 bounded-content scenarios at 18 sizes. Compact dialog widths, existing columns and control targets remain.
+- Colors/tokens: solid opaque navy surfaces, continuous 1px highlights, stronger shared exterior/contact shadows, beveled control edges and recessed inputs. The structural page wrapper is transparent, leaving independent main panels visible. The concept's uneven gradients were intentionally removed per user correction. All main panel computed background images are `none`, opacity 1. A 256-pixel empty filter-panel sample is uniformly RGB(16,47,72). Normal white/muted/gold/cyan/mint/task-type/source text tokens have minimum measured contrast 6.27:1 against the final tested normal/hover panel fills; this is not a claim about disabled or placeholder text.
+- Image quality/assets: existing real Star Citizen/GVY logos retain their exact files, dimensions and crop; no SVG/CSS substitute, generated logo, stock imagery, new asset or dependency. The bot card's image, watermark and grid are not imported. No decorative textures or blurry panel fills.
+- Copy/content: application HTML/JS/data are unchanged. Real record names, exact source types/systems, quantities, quality thresholds, mission pools and unit/total time semantics retain the approved presentation and calculations. No mock labels or explanatory design copy leaked into the app.
+- States/accessibility: selected/hover controls remain distinct, search/filter/empty states work, keyboard Tab/Shift+Tab yields the native visible focus outline, plan Enter/Escape works, quality fresh typing/keyboard/click synchronize, mineral hover bridge and signal-first Escape work. Touch-enabled 390px Chromium can open minerals, directly select a neighboring signal, close, and open/close the plan.
+
+## Verification
+
+- Final whole-page widths: 320, 390, 620, 621, 720, 721, 880, 881, 1100, 1101, 1320, 1321, 1366, 1440, 1920, 2560, 3440, 3840; short-window dialogs additionally 760 x 320 and 1100 x 420. Main panel edges and every actual header action fit, not merely their parent containers. No finite test suite proves every possible physical screen.
+- First-pass exhaustive dialogs at nine sizes render every 672 tasks and 37 minerals: 6,048 task dialogs and 333 mineral dialogs, expanded content/text bounds, accessible body/footer and no unnecessary width growth. Final header/shared-color corrections do not change task/mineral geometry; final pointer/keyboard/touch checks reopen their actual surfaces. No raw-data mutation or application warnings/errors.
+- Thirteen material widths render all 1,618 recipes: 56,108 material rows and 48,334 quality controls. Names/metadata/amounts stay inside their columns, sliders are equal-length within each list, modifiers share their left edge, explicit minima above 1 stay visible and hidden 1 values remain in the data. No application warnings/errors.
+- Seven widths also render all 1,618 details and 52,332 task-source rows, checking exact type/system order, distinct text colors, text bounds and adjacent-row separation. Actual task links open/close their exact dialog. These content checks preceded the final color-only strengthening; main content geometry remains unchanged.
+- Final plan-specific checks: 18 sizes x four scenarios (empty, unavailable ID, two real items and 100 items at quantity 9999). Material rows retain three columns, full text, shared background/shadow and 4px separation; dialogs stay bounded. No raw-data mutation or application warnings/errors.
+- 161 Python tests including 38 Node tests, standalone 38 Node tests, JS syntax, build, diff checks and offline blueprint/mining version-pair validation pass. The historical contiguous-table assertion was updated to the explicitly requested separated-row style; business behavior assertions remain. No HTML/JS/data/workflow diff.
+- Browser plugin/skill unavailable; existing independent Playwright Chromium was used under the user's explicit all-size approval. The user-facing in-app tab is refreshed and preserved without changing favorites or plan. Physical iOS, Safari and QQ browser are not tested.
+
+## Implementation Checklist
+
+1. Before-change source/dist/handoff backup and checkpoint retained; archive integrity and hashes checked.
+2. Paint-only CSS, shared surface/shadow roles and scoped regression tests complete.
+3. Combined visual comparison, responsive geometry, content and interaction checks complete.
+4. Local branch/checkpoint and handoff saved; preview remains available. No publication performed.
+
+## Comparison History
+
+1. Initial local pass had subtle shadows but retained the unframed header/summary and surrounding page card. The user correctly reported missing primary elevation (P1). Evidence retained under `iteration-1/`. Added the joined opaque raised header, shared dialog/control roles and continuous edge treatment; subsequent user review requested more faithful depth, so the old wrapper paint was removed and shared edge/contact/ambient shadows strengthened without gradients.
+2. User screenshot `截屏2026-10-19 10.06.13.png` identified the header's left edge extending beyond other panels (P2). The original header had no side margin, unlike filter/workbench. Added their exact responsive inset to header/summary. Descendant checks then found a phone and 1101px version pill crossing the surface despite its parent fitting (P2). Header tracks now reserve actual action minima and let search flex, with no changed navigation or breakpoint. Final 18-size edge/control checks and same-state captures pass.
+3. During header-band review, a square filter-heading fill covered rounded corners (P2). Removed that child fill, using the parent's uniform surface; menus remain unclipped. Resized screenshots also required two animation frames before capture to avoid transient compositor duplication; this was capture stabilization, not a product change.
+4. User requested plan material rows to match the task reward-row effect. Retained the existing 50/22/28 percent table columns and values, adding shared row fill/elevation, 4px gaps and 4px row corners. Final 72 plan scenarios and screenshots pass. No unit-time move, quality unification or calculation changes.
+
+## Historical QA Reports
+
+The reports below are history, not authority to deploy this local skin candidate.
 
 ## Reviewed Release Candidate, 2026-10-19
 

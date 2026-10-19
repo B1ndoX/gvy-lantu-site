@@ -185,7 +185,7 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn(".mission-dialog.planner-dialog { width: min(720px,", styles)
         explanation = styles.split(".planner-dialog .plan-explanation {", 1)[1].split("}", 1)[0]
         self.assertIn("margin: 0 0 10px", explanation)
-        self.assertIn(".plan-material-table { width: 100%; border-collapse: collapse; table-layout: fixed; }", styles)
+        self.assertIn(".plan-material-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; table-layout: fixed; }", styles)
         self.assertIn("grid-template-columns: 32px 44px 32px", styles)
         self.assertIn("grid-template-columns: 40px 48px 40px", styles)
 
