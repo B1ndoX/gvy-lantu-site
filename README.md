@@ -8,6 +8,40 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## 2026-10-20 Signal Pin Preview
+
+This batch is local-only on `feat/signal-pin-preview-20261020`, based on production
+`c1f19da`. Do not push, create a release PR, dispatch workflows or deploy. Backups
+of source, running dist and handoff are in
+`.git/visual-backups/signal-pin-before-20261020/`, with
+`checkpoint/before-signal-pin-20261020` retaining the baseline.
+
+Keep the existing signal popover, capsules, side-lane avoidance, dimensions and
+mineral data. Hover remains temporary; a click, tap or Enter/Space pins the one
+existing panel. Hover cannot replace or downgrade a pinned signal. Clicking a
+different signal switches and pins it; clicking the same pinned signal, outside,
+the close button or Escape dismisses it. Inside clicks and scrolling do not
+dismiss it. Pinned panels follow scroll/resize once per animation frame and close
+when their anchor is no longer visible or when the mineral/system view is removed.
+Keyboard focus behavior remains usable; only the existing signal button gets a
+slightly brighter pinned color, with no added control or surrounding frame.
+
+Local manual backup retention is now at most ten snapshot directories, oldest
+first. After validating this new snapshot, the oldest
+`pre-redesign-20261019-5bf9add` manual backup was removed. This limit does not
+change automatic 14-day `.data-backups/` retention or Git history/checkpoints;
+historical backup references below may therefore point to a retired manual copy.
+
+Verification: 179 Python and 70 Node tests, syntax, paired-cache validation and
+build passed. Existing independent Chrome/Playwright passed 23 desktop/mobile
+viewports (320-3840px) plus four touch simulations, seven unchanged-geometry
+comparisons and all 531 signal entries at six sizes. Final 8002 passed six more
+interaction/long-content stress cases and exact asset/data byte checks. Browser
+skill was unavailable; no browser/dependency download or Safari setting change.
+These phone-size/touch simulations are not real iPhone or renewed Safari QA.
+Evidence is in `.git/visual-previews/signal-pin-20261020/`. Candidate 8003 and the
+named test browser are closed; the original local 8002 preview remains running.
+
 ## 2026-10-20 Usability Preview
 
 This batch was reviewed locally on `feat/rea-usability-preview-20261020`, based on

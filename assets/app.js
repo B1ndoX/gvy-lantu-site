@@ -41,6 +41,8 @@ let mineralOpener = null;
 let mineralPreviousOverflow = "";
 let mineralSignal = null;
 let mineralSignalCloseTimer = 0;
+let mineralSignalPositionFrame = 0;
+let mineralSignalDismissedButton = null;
 let mineralPointerType = "mouse";
 
 const els = {
@@ -1088,7 +1090,7 @@ function renderLocationSignals(location, name, index) {
   const id = `mineralSignal-${index}`;
   const material = mineralLocationInfo(name)?.nameZh || name;
   const multipleModes = new Set(signals.map(signal => signal.mode)).size > 1;
-  const button = `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-controls="${id}" aria-haspopup="dialog" aria-label="查看${escapeHtml(location.zh || location.en)}信号">信号</button>`;
+  const button = `<button type="button" class="mineral-signal-badge" data-signal-trigger aria-expanded="false" aria-pressed="false" aria-controls="${id}" aria-haspopup="dialog" aria-label="查看${escapeHtml(location.zh || location.en)}信号" title="点击固定信号">信号</button>`;
   const entries = signals.map(signal => {
     const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
     const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "";
@@ -1112,10 +1114,15 @@ function renderLocationSignals(location, name, index) {
 
 function closeLocationSignals(restoreFocus = false) {
   clearTimeout(mineralSignalCloseTimer);
+  if (mineralSignalPositionFrame) window.cancelAnimationFrame(mineralSignalPositionFrame);
+  mineralSignalPositionFrame = 0;
   if (!mineralSignal) return;
   const {button, panel} = mineralSignal;
+  mineralSignalDismissedButton = button.matches(":hover") ? button : null;
   mineralSignal = null;
   button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-pressed", "false");
+  button.title = "点击固定信号";
   panel.remove();
   if (restoreFocus && button.isConnected) button.focus({preventScroll: true});
 }
@@ -1134,21 +1141,40 @@ function mineralSignalBounds(anchor, size, bounds, triggers = []) {
 }
 
 function showLocationSignals(button, mode = "hover") {
+  if (mode === "hover" && (mineralSignal?.pinned || mineralSignalDismissedButton === button)) return;
   clearTimeout(mineralSignalCloseTimer);
-  if (mineralSignal?.button === button) {
-    mineralSignal.mode = mode;
-    return;
-  }
   const overlay = button.closest(".mineral-overlay");
   const id = button.getAttribute("aria-controls");
   const template = overlay?.querySelector(`#${id}-content`);
   if (!template) return;
-  closeLocationSignals();
-  overlay.insertAdjacentHTML("beforeend", `<section class="mineral-signal-popover" id="${id}" role="dialog" aria-labelledby="${id}-title">${template.innerHTML}</section>`);
-  const panel = overlay.querySelector(".mineral-signal-popover");
+  if (mineralSignal?.button !== button) {
+    closeLocationSignals();
+    overlay.insertAdjacentHTML("beforeend", `<section class="mineral-signal-popover" id="${id}" role="dialog" aria-labelledby="${id}-title">${template.innerHTML}</section>`);
+    mineralSignal = {button, panel: overlay.querySelector(".mineral-signal-popover")};
+  }
+  mineralSignalDismissedButton = null;
+  mineralSignal.mode = mode;
+  mineralSignal.pinned = mode !== "hover";
+  button.setAttribute("aria-expanded", "true");
+  button.setAttribute("aria-pressed", String(mineralSignal.pinned));
+  button.title = mineralSignal.pinned ? "再次点击关闭信号" : "点击固定信号";
+  positionLocationSignals();
+}
+
+function positionLocationSignals() {
+  if (!mineralSignal) return;
+  const {button, panel} = mineralSignal;
+  const overlay = button.closest(".mineral-overlay");
+  if (!button.isConnected || !button.getClientRects().length || !overlay) { closeLocationSignals(); return; }
   const card = overlay.querySelector(".mineral-card").getBoundingClientRect();
   const body = overlay.querySelector(".mineral-card-body").getBoundingClientRect();
   const footer = overlay.querySelector(".mineral-source").getBoundingClientRect();
+  const anchor = button.getBoundingClientRect();
+  if (anchor.bottom <= Math.max(0, card.top, body.top) || anchor.top >= Math.min(window.innerHeight, card.bottom, body.bottom)
+    || anchor.right <= Math.max(0, card.left) || anchor.left >= Math.min(window.innerWidth, card.right)) {
+    closeLocationSignals();
+    return;
+  }
   const bounds = {left: Math.max(8, card.left + 8), right: Math.min(window.innerWidth - 8, card.right - 8),
     top: Math.max(8, card.top + 8, body.top), bottom: Math.min(window.innerHeight - 8, card.bottom - 8, footer.top - 4)};
   // Short dialogs still need room for a readable, scrollable signal layer.
@@ -1162,7 +1188,6 @@ function showLocationSignals(button, mode = "hover") {
   const triggers = [...overlay.querySelectorAll("[data-signal-trigger]")]
     .map(trigger => trigger.getBoundingClientRect())
     .filter(rect => rect.width && rect.bottom > Math.max(body.top, bounds.top) && rect.top < Math.min(body.bottom, bounds.bottom));
-  const anchor = button.getBoundingClientRect();
   let position = mineralSignalBounds(anchor, panel.getBoundingClientRect(), bounds, triggers);
   if (position.maxWidth !== undefined) {
     panel.style.maxWidth = `${position.maxWidth}px`;
@@ -1170,8 +1195,17 @@ function showLocationSignals(button, mode = "hover") {
   }
   panel.style.left = `${position.left}px`;
   panel.style.top = `${position.top}px`;
-  button.setAttribute("aria-expanded", "true");
-  mineralSignal = {button, panel, mode};
+}
+
+function updateLocationSignalPosition() {
+  if (!mineralSignal) return;
+  if (!mineralSignal.pinned) { closeLocationSignals(); return; }
+  if (mineralSignalPositionFrame) return;
+  // Scroll and resize can arrive together; measure the final anchor once per frame.
+  mineralSignalPositionFrame = window.requestAnimationFrame(() => {
+    mineralSignalPositionFrame = 0;
+    positionLocationSignals();
+  });
 }
 
 function mineralSignalContains(target) {
@@ -1219,6 +1253,7 @@ function filterMineralSystem(button) {
   const system = button.dataset.mineralSystem;
   if (!info || (system !== "all" && !mineralSystems(info).some(item => item.en === system))) return;
   closeLocationSignals();
+  mineralSignalDismissedButton = null;
   overlay.querySelectorAll("[data-mineral-system]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
   overlay.querySelector("[data-mineral-locations]").innerHTML = renderMineralLocationGroups(info, overlay.dataset.mineralName, system);
 }
@@ -1281,6 +1316,7 @@ function closeMineralInfo(restoreFocus = true) {
   const overlay = els.detailPanel.querySelector(".mineral-overlay");
   if (!overlay) return;
   closeLocationSignals();
+  mineralSignalDismissedButton = null;
   overlay.remove();
   document.body.style.overflow = mineralPreviousOverflow;
   if (restoreFocus && mineralOpener?.isConnected) mineralOpener.focus({preventScroll: true});
@@ -2023,9 +2059,13 @@ function bindEvents() {
   els.resetFilters.addEventListener("click", resetFilters);
 
   document.addEventListener("click", (event) => {
+    if (mineralSignal && !mineralSignalContains(event.target) && !event.target.closest("[data-signal-trigger]")) closeLocationSignals();
     if (event.target.closest(".filter-select")) return;
     closeDropdowns();
   });
+  document.addEventListener("pointerdown", event => {
+    if (mineralSignal && !mineralSignalContains(event.target) && !event.target.closest("[data-signal-trigger]")) closeLocationSignals();
+  }, true);
 
   document.addEventListener("keydown", (event) => {
     const mineral = els.detailPanel.querySelector(".mineral-overlay");
@@ -2095,28 +2135,29 @@ function bindEvents() {
     if (button) showLocationSignals(button);
   });
   els.detailPanel.addEventListener("pointerout", event => {
+    if (mineralSignalDismissedButton?.contains(event.target) && !mineralSignalDismissedButton.contains(event.relatedTarget)) mineralSignalDismissedButton = null;
     if (mineralSignalContains(event.target)) deferCloseLocationSignals(event.relatedTarget);
   });
   els.detailPanel.addEventListener("focusin", event => {
     if (mineralSignalContains(event.target)) clearTimeout(mineralSignalCloseTimer);
   });
-  els.detailPanel.addEventListener("focusout", event => {
-    if (mineralSignal?.mode === "keyboard" && mineralSignalContains(event.target) && !mineralSignalContains(event.relatedTarget)) closeLocationSignals();
-  });
   els.detailPanel.addEventListener("toggle", event => {
     if (!event.target.open && mineralSignal && event.target.contains(mineralSignal.button)) closeLocationSignals();
+    else if (mineralSignal?.pinned && event.target.closest(".mineral-overlay")) updateLocationSignalPosition();
     if (event.target.matches(".source-more") && event.target.open) {
       event.target.closest(".source-item").querySelectorAll("[data-source-variants]").forEach(button => toggleSourceVariants(button, true));
     }
   }, true);
   document.addEventListener("scroll", event => {
-    if (mineralSignal && !mineralSignal.panel.contains(event.target)) closeLocationSignals();
+    if (mineralSignal && !mineralSignal.panel.contains(event.target)) updateLocationSignalPosition();
   }, true);
   window.addEventListener("resize", () => {
-    closeLocationSignals();
+    updateLocationSignalPosition();
     document.querySelectorAll(".filter-select.open").forEach(select => positionFilterMenu(select));
     fitQualitySummary();
   });
+  window.visualViewport?.addEventListener("resize", updateLocationSignalPosition);
+  window.visualViewport?.addEventListener("scroll", updateLocationSignalPosition);
 
   els.detailPanel.addEventListener("click", (event) => {
     const variants = event.target.closest("[data-source-variants]");
@@ -2133,8 +2174,8 @@ function bindEvents() {
     }
     const signalButton = event.target.closest("[data-signal-trigger]");
     if (signalButton) {
-      const mode = event.detail === 0 ? "keyboard" : mineralPointerType === "touch" ? "touch" : "hover";
-      if (mode !== "hover" && mineralSignal?.button === signalButton) closeLocationSignals();
+      const mode = event.detail === 0 ? "keyboard" : mineralPointerType === "touch" ? "touch" : "click";
+      if (mineralSignal?.button === signalButton && mineralSignal.pinned) closeLocationSignals();
       else showLocationSignals(signalButton, mode);
       return;
     }
