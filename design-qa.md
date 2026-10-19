@@ -2,6 +2,60 @@
 
 final result: passed
 
+## Latest Repair And State Contrast
+
+This section supersedes the preceding checkpoint's acceptance below. This remains
+local technical/design QA, not final user style approval or deployment authority.
+
+- [P1, fixed] The decorative `tr::before` trial disrupted table layout: names moved into the middle and amounts wrapped outside the right edge. Restored the verified three-cell table immediately, then tested the replacement in an isolated build on port 8003. The final implementation adds no generated table content: exterior shadow stays on the row, the continuous inset rim is painted on its three opaque cells. Column widths, padding, fonts and row height remain unchanged.
+- [P1, fixed] Hover and selection had almost the same fill. Results now use different hover/selected fills, a clear hover outline and a persistent 3px cyan inset selected marker. Filter selections stay solid cyan, open signals become gold-filled, and gold command hover is distinct from the filled active state. Keyboard focus is independently outlined. Hover adds no dimensions or new hit targets; touch selection remains visible without hover.
+- [P2, fixed] Earlier whole-panel brightening flattened the depth. The revised darker cores use only a narrow continuous edge rim and exterior/contact shadows. Joined header/summary has no second top rim at its center seam. Body fills remain opaque and uniform, not the concept's blotchy gradients.
+- [P2, fixed] The broad hover treatment unnecessarily framed material names, base attributes and source-expand summaries. After a too-broad color-only rollback, the user explicitly asked to restore the preceding stronger state treatment, remove only those unwanted boxes and KEEP task-source feedback. The final exclusions are scoped to those three plain-text surfaces, not the rest of the site. Their hover backgrounds stay transparent, shadows/added outlines stay none; five widths verify these exclusions plus the retained blue task-source fill/rim. `gvy-rim-unframed-{width}-20261019.png` records the final targeted correction.
+
+Source visual truth remains `/Users/bindox/.codex/generated_images/019ec6a8-7788-76e3-ae3c-ae7a03b52189/exec-aa8ec7b3-2baa-4210-a4ba-6cb77e570476.png`.
+New evidence is in `.git/visual-previews/deep-blue-rim-polish-20261019/evidence/`:
+`gvy-rim-final-source-candidate-20261019.png` combines the same 1280 x 720
+source/candidate state into 2560 x 720; `gvy-rim-final-filter-focus-20261019.png`
+is a 520 x 104 source-left/candidate-right edge/control comparison. Both were
+opened together and reviewed. Source 1672 x 941 is normalized to 1280 x 720;
+implementation is 1280 x 720 CSS pixels at density 1, manufacturing VK-00,
+default quality, collapsed attributes and independent QA storage. The mock's
+different text metrics/geometry, favorite count and uneven shading remain
+intentional exclusions, not instructions to change the existing layout.
+
+Additional opened evidence: `gvy-rim-states-list-focus-20261019.png` shows normal,
+selected and hovered rows together; `gvy-rim-plan-390-20261019.png` and
+`gvy-rim-plan-fixed-20261019.png` show the repaired phone/desktop table.
+`gvy-rim-first-plan-20261019.png` is failed evidence only, never the deliverable.
+Final port-8002 proof `gvy-final-targeted-feedback-20261019.png` combines the
+unframed base-attribute/material/expand text and the explicitly retained framed
+task-source hover. `gvy-final-targeted-plan-20261019.png` rechecks the repaired
+three columns against the final served CSS, not only the isolated candidate.
+
+Five fidelity surfaces: typography/fallbacks/weights and complete wrapping stay
+unchanged; spacing/layout/columns/radii match the preceding verified checkpoint;
+color/elevation now has distinct interaction states and uniform panel bodies;
+all real logos/assets are unchanged with no additions; HTML/JS/data/copy and
+quality/unit-time/total-time semantics are unchanged. A 32 x 8 empty panel sample
+is uniformly RGB(11,42,67). The checked normal foreground tokens have minimum
+contrast 5.25:1 on normal/hover/selected navy fills; this excludes placeholders,
+disabled controls and dark text on filled accent buttons.
+
+Verification for this iteration:
+
+- Exact baseline geometry and fonts at 14 sizes / 42 main, plan and mineral states; non-paint CSS matches after excluding explicitly requested focus outlines and normalizing declaration order. Baseline 404 rules, candidate 405 including the new focus-only rule.
+- 18 sizes from 320 to 3840px, four plan scenarios each: empty, unavailable ID, two real items and 100 items at quantity 9999. Actual three-cell 50/22/28 widths, text bounds, 4px spacing, backgrounds/rims, row/window bounds and unchanged data pass. A further six sizes including 760 x 320 short-window stress all 1618 planned rows at quantity 9999 and their five resulting material groups; this does not claim every possible material choice was covered.
+- Whole-page 18-size panel/header-descendant/overflow checks, craft/dismantle, filter open/Escape, search-empty/reset, keyboard plan open/close, mineral hover bridge/Escape, task open/close and fresh 390px touch mineral/neighbor/plan flows pass. Ten representative hover targets and persistent selected states are checked with real pointer actions; their geometry stays constant. No relevant application console warnings/errors.
+- 164 Python tests including 38 Node tests, standalone 38 Node tests, JavaScript syntax, isolated build, offline paired-snapshot validation and whitespace checks pass. Latest CSS is `ff6753101cc7`; JS `b085889e5719` and data `data-0f6906d31548ddd6` are unchanged. No production check is claimed for this unpublished build.
+- Browser plugin/skill unavailable; the user-approved existing independent Playwright Chromium is used, without dependency installation or user storage changes. Physical iOS/Safari/QQ remain untested. Earlier exhaustive source/material/task content runs below were not repeated in full for these paint-only edits.
+
+The pre-refinement checkpoint `checkpoint/deep-blue-before-rim-polish-20261019`
+and earlier source/dist backups remain. Experimental builds must stay isolated
+until rendered verification, so another failed paint trial cannot overwrite the
+user's preview. Final preview remains on port 8002; no push or deployment.
+
+## Previous Verified Checkpoint
+
 Latest user corrections are implemented and rechecked: originally unframed
 primary regions receive the shared raised treatment; header/summary align with
 the other panels; actual header controls fit at both breakpoint sides; plan

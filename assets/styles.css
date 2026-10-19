@@ -1,19 +1,31 @@
 :root {
   color-scheme: dark;
-  --bg: #050b14;
-  --bg-2: #081321;
-  --glass: #0e2a40;
-  --glass-strong: #102f48;
-  --group: #16394f;
-  --row: #0b2439;
-  --surface-inset: #071827;
-  --surface-control: #0c283e;
-  --surface-hover: #19425b;
-  --surface-header: #0d263b;
-  --edge-highlight: rgba(177, 220, 249, 0.28);
-  --shadow-panel: 0 16px 30px rgba(0, 4, 11, 0.5), 0 4px 8px rgba(0, 4, 11, 0.38), inset 0 1px 0 var(--edge-highlight), inset 0 0 0 1px rgba(108, 182, 221, 0.08), inset 0 -1px 0 rgba(0, 5, 12, 0.32);
-  --shadow-control: 0 5px 10px rgba(0, 4, 11, 0.42), 0 1px 2px rgba(0, 4, 11, 0.3), inset 0 1px 0 rgba(177, 220, 249, 0.2), inset 0 -1px 0 rgba(0, 5, 12, 0.3);
-  --shadow-inset: inset 0 2px 5px rgba(0, 4, 11, 0.5), inset 0 -1px 0 rgba(177, 220, 249, 0.08);
+  --bg: #041322;
+  --bg-2: #081a2b;
+  --glass: #092337;
+  --glass-strong: #0b2a43;
+  --group: #102d42;
+  --row: #0d2b42;
+  --surface-inset: #061a2b;
+  --surface-control: #092237;
+  --surface-hover: #1b455f;
+  --surface-selected: #164f68;
+  --edge-hover: #72bedb;
+  --shadow-hover: inset 0 0 0 1px rgba(126, 221, 242, 0.56), var(--shadow-control);
+  --shadow-active: inset 3px 0 0 var(--cyan), inset 0 0 0 1px var(--cyan), var(--shadow-control);
+  --surface-header: #0e2f48;
+  --surface-command: #192a34;
+  --edge-highlight: rgba(171, 217, 250, 0.4);
+  --edge-panel: rgba(101, 169, 220, 0.36);
+  --shadow-elevation: 0 16px 28px rgba(0, 5, 13, 0.5), 0 3px 5px rgba(0, 4, 11, 0.4);
+  --shadow-panel: var(--shadow-elevation), inset 0 1px 0 var(--edge-highlight), inset 0 5px 6px -4px rgba(94, 183, 243, 0.58), inset 1px 0 0 rgba(111, 185, 235, 0.08), inset -1px 0 0 rgba(111, 185, 235, 0.08), inset 0 -1px 0 rgba(0, 6, 14, 0.45);
+  --shadow-joined: var(--shadow-elevation), inset 1px 0 0 rgba(111, 185, 235, 0.08), inset -1px 0 0 rgba(111, 185, 235, 0.08), inset 0 -1px 0 rgba(0, 6, 14, 0.45);
+  --shadow-control-elevation: 0 5px 8px rgba(0, 5, 13, 0.5), 0 1px 2px rgba(0, 4, 11, 0.3);
+  --shadow-control-edge: inset 0 1px 0 rgba(172, 220, 250, 0.25), inset 0 3px 4px -3px rgba(100, 185, 240, 0.3), inset 0 -1px 0 rgba(0, 7, 15, 0.6);
+  --shadow-control: var(--shadow-control-elevation), var(--shadow-control-edge);
+  --shadow-inset: inset 0 3px 6px rgba(0, 4, 11, 0.55), inset 0 -1px 0 rgba(132, 205, 248, 0.12);
+  --shadow-command: inset 0 1px 0 rgba(255, 217, 152, 0.32), var(--shadow-control);
+  --shadow-selected: inset 0 1px 0 rgba(255, 255, 255, 0.5), var(--shadow-control);
   --line: rgba(100, 221, 255, 0.3);
   --line-soft: rgba(113, 220, 255, 0.16);
   --text: #e2f6ff;
@@ -356,7 +368,7 @@ input:focus {
   border-bottom: 1px solid rgba(126, 221, 242, 0.18);
   border-radius: 0 0 18px 18px;
   background: var(--glass-strong);
-  box-shadow: var(--shadow-panel);
+  box-shadow: var(--shadow-joined);
 }
 
 .summary-primary {
@@ -402,8 +414,8 @@ input:focus {
   border: 1px solid rgba(255, 196, 104, 0.34);
   border-radius: 10px;
   color: var(--orange);
-  background: var(--surface-control);
-  box-shadow: var(--shadow-control);
+  background: var(--surface-command);
+  box-shadow: var(--shadow-command);
   font: inherit;
   font-size: 11px;
   font-weight: 820;
@@ -441,12 +453,13 @@ input:focus {
   color: #071019;
   border-color: var(--cyan);
   background: var(--cyan);
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-selected);
 }
 
 .filter-board {
   margin: 12px clamp(0px, 2vw, 28px) 0;
   border: 1px solid rgba(118, 226, 255, 0.25);
+  border-color: var(--edge-panel);
   border-radius: 18px;
   color: var(--text);
   background: var(--glass-strong);
@@ -507,7 +520,7 @@ input:focus {
 .mode-tab.active {
   color: #06131e;
   background: var(--cyan);
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-selected);
 }
 
 .summary-mode-switch {
@@ -528,7 +541,7 @@ input:focus {
 }
 
 .summary-mode-switch .mode-tab.active {
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-selected);
 }
 
 .filter-result-badge {
@@ -676,6 +689,7 @@ input:focus {
   overflow: auto;
   padding: 6px;
   border: 1px solid rgba(118, 226, 255, 0.3);
+  border-color: var(--edge-panel);
   border-radius: 12px;
   background: var(--glass-strong);
   box-shadow: var(--shadow-panel);
@@ -709,10 +723,10 @@ input:focus {
   white-space: nowrap;
 }
 
-.filter-option:hover,
 .filter-option.active {
   color: #06131e;
   background: var(--cyan);
+  box-shadow: var(--shadow-selected);
 }
 
 .results-scroll::-webkit-scrollbar,
@@ -778,7 +792,8 @@ html[data-query-mode="dismantle"] .reset-button {
   padding: 0 12px;
   color: var(--orange);
   border-color: rgba(255, 196, 104, 0.28);
-  background: var(--surface-control);
+  background: var(--surface-command);
+  box-shadow: var(--shadow-command);
 }
 
 .workbench {
@@ -791,6 +806,7 @@ html[data-query-mode="dismantle"] .reset-button {
 .results-panel,
 .detail-panel {
   border: 1px solid rgba(118, 226, 255, 0.25);
+  border-color: var(--edge-panel);
   border-radius: 22px;
   background: var(--glass);
   box-shadow: var(--shadow-panel);
@@ -957,16 +973,16 @@ html[data-query-mode="dismantle"] .reset-button {
   box-shadow: var(--shadow-control);
 }
 
-.result-card:hover,
-.result-card.active {
-  border-color: rgba(126, 221, 242, 0.5);
+.result-card:hover:not(.active) {
+  border-color: var(--edge-hover);
   background: var(--surface-hover);
+  box-shadow: var(--shadow-hover);
 }
 
 .result-card.active {
-  box-shadow:
-    inset 0 0 0 1px rgba(126, 221, 242, 0.22),
-    var(--shadow-control);
+  border-color: var(--cyan);
+  background: var(--surface-selected);
+  box-shadow: var(--shadow-active);
 }
 
 .row-dot {
@@ -1155,8 +1171,9 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 .plan-material-table thead th { padding-top: 0; padding-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 500; }
 .plan-material-table th:first-child { padding-left: 0; }
 .plan-material-table tbody th { color: var(--text-strong); font-size: 13px; font-weight: 700; }
-.plan-material-table tbody tr { box-shadow: var(--shadow-control); }
-.plan-material-table tbody th, .plan-material-table tbody td { border-bottom: 0; background: var(--row); }
+/* Keep the table's three cells intact; cell fills would cover a row's inset rim. */
+.plan-material-table tbody tr { box-shadow: var(--shadow-control-elevation); }
+.plan-material-table tbody th, .plan-material-table tbody td { border-bottom: 0; background: var(--row); box-shadow: var(--shadow-control-edge); }
 .plan-material-table tbody th:first-child { padding-left: 8px; border-radius: 4px 0 0 4px; }
 .plan-material-table tbody td:last-child { padding-right: 8px; border-radius: 0 4px 4px 0; }
 .plan-material-table td:nth-child(2) { color: var(--muted); }
@@ -1723,6 +1740,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
   border: 1px solid rgba(126, 221, 242, 0.36);
+  border-color: var(--edge-panel);
   border-radius: 20px;
   background: var(--glass);
   box-shadow: var(--shadow-panel), 0 24px 64px rgba(0, 4, 11, 0.3);
@@ -2043,6 +2061,7 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
   max-height: calc(100dvh - 32px);
   padding: 0;
   border: 1px solid rgba(126, 221, 242, 0.36);
+  border-color: var(--edge-panel);
   border-radius: 16px;
   background: var(--glass);
   color: var(--text-strong);
@@ -2152,13 +2171,6 @@ input[type="checkbox"]:not(:focus) {
   box-shadow: none;
 }
 
-.material-location-badge:hover,
-.mineral-system-filter button[aria-pressed="true"],
-button.source-mission-button:hover,
-.mission-blueprint-row:hover {
-  background: var(--surface-hover);
-}
-
 .mission-close {
   background: var(--surface-control);
   box-shadow: var(--shadow-control);
@@ -2167,6 +2179,10 @@ button.source-mission-button:hover,
 .site-link,
 .mineral-signal-badge {
   box-shadow: var(--shadow-control);
+}
+
+.fleet-link {
+  box-shadow: var(--shadow-selected);
 }
 
 .mission-dialog-head,
@@ -2184,6 +2200,85 @@ button.source-mission-button:hover,
 .plan-stepper button:hover:not(:disabled),
 .plan-stepper button:focus-visible {
   background: var(--surface-hover);
+}
+
+/* Keep the approved feedback, excluding plain material/expand text from framing. */
+@media (hover: hover) {
+  :where(button:not(:disabled):not(.material-item-button), a.site-link, select, .mineral-template-group > summary):hover {
+    border-color: var(--edge-hover);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .filter-trigger:not(:disabled):hover,
+  .filter-option:not(.active):hover,
+  .mineral-system-filter button:not([aria-pressed="true"]):hover,
+  .mineral-template-group > summary:hover,
+  .material-location-badge:hover,
+  button.source-mission-button:hover,
+  .mission-blueprint-row:hover,
+  .mission-close:hover,
+  .mineral-signal-head button:hover,
+  .plan-remove:hover,
+  .plan-choice select:hover,
+  .plan-toolbar .favorite-detail-button:hover {
+    background: var(--surface-hover);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .favorites-toggle:not(.active):hover,
+  .favorite-detail-button:not(.active):hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: #3c3b32;
+    box-shadow: var(--shadow-command);
+  }
+
+  .mineral-signal-badge:hover {
+    border-color: var(--orange);
+    background: #4a3a25;
+    box-shadow: inset 0 0 0 1px rgba(255, 196, 104, 0.65), var(--shadow-control);
+  }
+
+  .quality-number:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  .base-stats > summary:hover,
+  .mission-requirements > summary:hover {
+    color: #ffdda2;
+  }
+
+  .source-more > summary:hover,
+  .mission-places > summary:hover {
+    color: #b5efff;
+  }
+
+  :where(input:not([type="range"]):not([type="checkbox"])):hover {
+    border-color: var(--edge-hover);
+  }
+}
+
+.filter-select.open .filter-trigger,
+.mineral-system-filter button[aria-pressed="true"] {
+  border-color: var(--cyan);
+  background: var(--surface-selected);
+  box-shadow: var(--shadow-active);
+}
+
+.mineral-signal-badge[aria-expanded="true"] {
+  color: #071019;
+  border-color: var(--orange);
+  background: var(--orange);
+  box-shadow: var(--shadow-selected);
+}
+
+.quality-number:focus-within {
+  box-shadow: var(--shadow-hover);
+}
+
+:where(button:not(.material-item-button), a[href], input, select, .mineral-template-group > summary):focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
 }
 
 @media (max-width: 620px) {

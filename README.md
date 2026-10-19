@@ -29,6 +29,23 @@ The robot ship card is a shadow reference
 only. Per-item time remains in its original plan row, left of quantity controls,
 at 12px with its original formatting and 16px gap. Quality 0/1 remains unchanged.
 
+The latest local refinement darkens the surface cores and confines the blue rim
+to their edges. The latest user correction restores the stronger hover/selected
+treatment, including task-source feedback, and removes only the unwanted nested
+boxes around material names, base attributes and source-expand summaries. Those
+three plain-text surfaces retain text-color feedback without new fills/shadows
+or global focus rings. Results keep distinct hover/selected fills and an inset
+selected marker; filter options retain cyan selection and commands retain gold
+semantics. Hover additions are capability-gated; dimensions remain unchanged.
+
+Plan table elevation is split between the row's exterior shadow and the cells'
+inner rim, so opaque cell fills do not hide the highlight. Never attach generated
+decorative content to a table row: the failed trial disrupted column sizing.
+The affected preview was restored before the replacement was tested. Build future
+visual candidates in an isolated ignored copy on another local port; replace the
+user-facing port 8002 build only after rendered QA passes. The pre-refinement
+checkpoint is `checkpoint/deep-blue-before-rim-polish-20261019` (`5faedd3`).
+
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
 `checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and
