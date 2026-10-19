@@ -121,7 +121,8 @@ class PublicCopyTests(unittest.TestCase):
         columns = styles.split('.material-item.has-quality {', 1)[1].split('}', 1)[0]
         self.assertIn('minmax(130px, 35%) minmax(180px, 1fr) minmax(112px, auto)', columns)
         side = styles.split('.material-side {', 1)[1].split('}', 1)[0]
-        self.assertIn('justify-content: flex-end', side)
+        self.assertIn('justify-content: flex-start', side)
+        self.assertIn('min-width: 112px', side)
         slider = styles.split('.material-quality input[type="range"] {', 1)[1].split('}', 1)[0]
         self.assertIn('margin: 0', slider)
         self.assertIn('@media (max-width: 880px), (min-width: 1101px) and (max-width: 1320px)', styles)
