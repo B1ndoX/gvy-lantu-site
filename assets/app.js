@@ -128,6 +128,7 @@ function setSlotQuality(record, slotIndex, value) {
   if (existing) existing.outerHTML = renderQualityModifiers(slot, quality);
   const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
   if (summary) summary.outerHTML = renderQualitySummaryContent(record);
+  fitQualitySummary();
 }
 
 function validPlan(value) {
@@ -736,6 +737,50 @@ function formatQualityValue(value, digits = 2, unit = "") {
   return `${text}${unit ? ` ${unit}` : ""}`;
 }
 
+function renderCompactableQualityValue(value, digits, unit) {
+  const full = formatQualityValue(value, digits, unit);
+  if (!Number.isFinite(value) || Math.abs(value) < 10000) return escapeHtml(full);
+  const number = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 3 }).format(value / 10000);
+  const short = `${number}万${unit ? ` ${unit}` : ""}`;
+  const brief = `${new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 }).format(value / 10000)}万${unit ? ` ${unit}` : ""}`;
+  return `<abbr class="compact-number" title="${escapeHtml(full)}" data-full="${escapeHtml(full)}" data-short="${escapeHtml(short)}" data-brief="${escapeHtml(brief)}">${escapeHtml(full)}</abbr>`;
+}
+
+function fitQualitySummary() {
+  const summary = els.detailPanel.querySelector("[data-quality-summary-content]");
+  if (!summary) return;
+  summary.querySelectorAll(".quality-result-item").forEach(card => {
+    const numbers = [...card.querySelectorAll(".compact-number")];
+    if (!numbers.length) return;
+    const probe = card.cloneNode(true);
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.removeProperty("min-height");
+    Object.assign(probe.style, { position: "absolute", visibility: "hidden", pointerEvents: "none", left: "0", top: "0", width: `${card.getBoundingClientRect().width}px`, height: "auto" });
+    probe.querySelectorAll(".compact-number").forEach(number => { number.textContent = number.dataset.full; });
+    summary.append(probe);
+    const fullHeight = probe.getBoundingClientRect().height;
+    // Compare with this card's original Q500 layout, not a taller shared row.
+    const result = probe.querySelector(".quality-result-values b");
+    const change = probe.querySelector(".quality-result-values em");
+    const resultHTML = result.innerHTML;
+    const changeText = change.textContent;
+    result.innerHTML = probe.querySelector(".quality-result-values small").innerHTML;
+    change.textContent = "无变化";
+    const baselineHeight = probe.getBoundingClientRect().height;
+    const compact = fullHeight > baselineHeight + 0.5;
+    let brief = false;
+    if (compact) {
+      result.innerHTML = resultHTML;
+      change.textContent = changeText;
+      probe.querySelectorAll(".compact-number").forEach(number => { number.textContent = number.dataset.short; });
+      brief = probe.getBoundingClientRect().height > baselineHeight + 0.5;
+    }
+    probe.remove();
+    numbers.forEach(number => { number.textContent = compact ? (brief ? number.dataset.brief : number.dataset.short) : number.dataset.full; });
+    card.style.minHeight = `${baselineHeight}px`;
+  });
+}
+
 function signedQualityChange(value, suffix = "%") {
   const rounded = Math.abs(value) < 0.005 ? 0 : value;
   return `${rounded > 0 ? "+" : ""}${rounded.toFixed(2).replace(/\.00$/, "")}${suffix}`;
@@ -765,9 +810,9 @@ function renderQualitySummaryContent(record) {
       <div class="quality-result-item${changed ? " changed" : ""}">
         <strong>${escapeHtml(metric.label)}</strong>
         <span class="quality-result-values">
-          <small>${escapeHtml(formatQualityValue(baseValue, metric.digits, metric.unit))}</small>
+          <small>${renderCompactableQualityValue(baseValue, metric.digits, metric.unit)}</small>
           <i aria-hidden="true">→</i>
-          <b>${escapeHtml(formatQualityValue(finalValue, metric.digits, metric.unit))}</b>
+          <b>${renderCompactableQualityValue(finalValue, metric.digits, metric.unit)}</b>
           <em>${escapeHtml(changed ? signedQualityChange(percent) : "无变化")}</em>
         </span>
       </div>
@@ -1914,6 +1959,7 @@ function bindEvents() {
   window.addEventListener("resize", () => {
     closeLocationSignals();
     document.querySelectorAll(".filter-select.open").forEach(select => positionFilterMenu(select));
+    fitQualitySummary();
   });
 
   els.detailPanel.addEventListener("click", (event) => {
@@ -2264,6 +2310,7 @@ function renderDetail() {
       </section>
     </div>
   `;
+  fitQualitySummary();
 }
 
 function recordMissions(record) {

@@ -705,6 +705,15 @@ Each material card reads its slot's `modifiers` from the selected LIVE SCMDB cra
 
 The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version primary item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
 
+Absolute quality-summary values default to their full existing format. Only when
+a value of at least 10,000 makes its card taller than that card's original Q500
+layout does the summary use a `万` abbreviation (up to three decimals, two if
+still necessary). The complete value remains in its title; calculations and
+percentage changes keep their original precision. Resizing restores full text
+when it fits. Preserve the original compact card geometry/fonts; the rejected
+fixed-height two-row trial must not return. Other numbers, including tasks,
+materials, quality minima, signals and base attributes, are not abbreviated.
+
 The validated 4.10.2 LIVE snapshot has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; these calculations cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
 Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and plan/favorites entries. Sorting options live in the filter header below. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.

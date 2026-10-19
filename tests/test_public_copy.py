@@ -8,6 +8,23 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_conditional_compact_values_preserve_the_original_quality_card_layout(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        card = styles.split('.quality-result-item {', 1)[1].split('}', 1)[0]
+        values = styles.split('.quality-result-values {', 1)[1].split('}', 1)[0]
+        self.assertIn('display: flex', card)
+        self.assertIn('min-height: 27px', card)
+        self.assertIn('padding: 4px 8px', card)
+        self.assertNotIn('grid-template-columns:', card)
+        self.assertIn('display: inline-flex', values)
+        self.assertNotIn('min-height:', values)
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        fitting = app.split('function fitQualitySummary() {', 1)[1].split('function signedQualityChange', 1)[0]
+        self.assertIn('fullHeight > baselineHeight + 0.5', fitting)
+        self.assertIn('number.dataset.short) : number.dataset.full', fitting)
+        self.assertIn('probe.remove()', fitting)
+        self.assertIn('fitQualitySummary();', app.split('function setSlotQuality', 1)[1].split('function validPlan', 1)[0])
+
     def test_result_headers_match_detail_label_size_and_color(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         header = styles.split('.result-head {', 1)[1].split('}', 1)[0]
