@@ -2362,6 +2362,11 @@ input[type="checkbox"]:not(:focus) {
   box-shadow: var(--shadow-selected);
 }
 
+.mineral-signal-badge[aria-pressed="true"] {
+  border-color: #ffd28a;
+  background: #ffd28a;
+}
+
 .quality-number:focus-within {
   box-shadow: var(--shadow-hover);
 }

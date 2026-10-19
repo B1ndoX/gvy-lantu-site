@@ -584,7 +584,7 @@ test("signal entries distinguish shared per-rock readings and expose keyboard-ac
   const {button, panel}=api.renderLocationSignals({en:"<location>",signals:[{mode:"fps",primaryMaterialZh:"宝石",shared:true,base:3000,values:[3000],clusterKnown:true,clusterCounts:[10,11]}]}, "Hadanite", 3);
   const html = button + panel;
   assert.match(html,/type="button" class="mineral-signal-badge"/);
-  assert.match(button,/aria-expanded="false" aria-controls="mineralSignal-3"/);
+  assert.match(button,/aria-expanded="false" aria-pressed="false" aria-controls="mineralSignal-3"/);
   assert.match(button,/aria-haspopup="dialog"/);
   assert.match(panel,/<template id="mineralSignal-3-content">/);
   assert.match(panel,/aria-label="单矿：3,000"><b>3,000<\/b>/);

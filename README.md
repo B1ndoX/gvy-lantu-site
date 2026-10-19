@@ -8,6 +8,53 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## 2026-10-20 Signal Pin Release
+
+The user subsequently authorized safe deployment of reviewed `4295bc0` after
+another existing-Safari desktop/mobile-size check. This supersedes the local-only
+restriction below for this batch. Safari 26.6.2 passed 23 viewport interaction
+cases and all 531 signal entries at 320/390/1920px, with zero captured runtime
+errors. Real mouse clicks and wheel scrolling at 1100/390px also verified pinning,
+single-click switching, outside dismissal and equal anchor/panel movement.
+Fixed-size Safari frames are desktop Safari rendering, not iPhone hardware or
+touch/browser-bar evidence. No product fix was needed after this audit.
+Retain `checkpoint/before-signal-pin-release-20261020` at `c1f19da` and the original
+backup. Reviewed source/dist archives are added to the same batch backup directory,
+keeping ten manual snapshot directories. Release through main/EdgeOne with exact
+client-asset and paired-JSON health checks; no gameplay-data refresh or Wikelo work.
+
+The initial preview was local-only on `feat/signal-pin-preview-20261020`, based on
+production `c1f19da`; its no-publishing restriction is now superseded above. Backups
+of source, running dist and handoff are in
+`.git/visual-backups/signal-pin-before-20261020/`, with
+`checkpoint/before-signal-pin-20261020` retaining the baseline.
+
+Keep the existing signal popover, capsules, side-lane avoidance, dimensions and
+mineral data. Hover remains temporary; a click, tap or Enter/Space pins the one
+existing panel. Hover cannot replace or downgrade a pinned signal. Clicking a
+different signal switches and pins it; clicking the same pinned signal, outside,
+the close button or Escape dismisses it. Inside clicks and scrolling do not
+dismiss it. Pinned panels follow scroll/resize once per animation frame and close
+when their anchor is no longer visible or when the mineral/system view is removed.
+Keyboard focus behavior remains usable; only the existing signal button gets a
+slightly brighter pinned color, with no added control or surrounding frame.
+
+Local manual backup retention is now at most ten snapshot directories, oldest
+first. After validating this new snapshot, the oldest
+`pre-redesign-20261019-5bf9add` manual backup was removed. This limit does not
+change automatic 14-day `.data-backups/` retention or Git history/checkpoints;
+historical backup references below may therefore point to a retired manual copy.
+
+Original preview verification: 179 Python and 70 Node tests, syntax, paired-cache validation and
+build passed. Existing independent Chrome/Playwright passed 23 desktop/mobile
+viewports (320-3840px) plus four touch simulations, seven unchanged-geometry
+comparisons and all 531 signal entries at six sizes. Final 8002 passed six more
+interaction/long-content stress cases and exact asset/data byte checks. Browser
+skill was unavailable; no browser/dependency download or Safari setting change.
+These phone-size/touch simulations are not real iPhone or renewed Safari QA.
+Evidence is in `.git/visual-previews/signal-pin-20261020/`. Candidate 8003 and the
+named test browser are closed; the original local 8002 preview remains running.
+
 ## 2026-10-20 Usability Preview
 
 This batch was reviewed locally on `feat/rea-usability-preview-20261020`, based on

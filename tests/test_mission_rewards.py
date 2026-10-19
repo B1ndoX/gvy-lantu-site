@@ -185,6 +185,11 @@ class MissionRewardTests(unittest.TestCase):
                                 text=True, capture_output=True, timeout=30)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_signal_popover_helpers(self):
+        result = subprocess.run(["node", "--test", "tests/signal_popover.test.mjs"], cwd=ROOT,
+                                text=True, capture_output=True, timeout=30)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_task_dialog_shrinks_to_content_and_switches_column_count(self):
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
         dialog = styles.split(".mission-dialog {", 1)[1].split("}", 1)[0]
