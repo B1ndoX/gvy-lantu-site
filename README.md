@@ -30,7 +30,14 @@ only. Per-item time remains in its original plan row, left of quantity controls,
 at 12px with its original formatting and 16px gap. Quality 0/1 remains unchanged.
 
 The latest local refinement darkens the surface cores and confines the blue rim
-to their edges. The latest user correction restores the stronger hover/selected
+to their edges. The follow-up depth pass uses #06233e primary panels, #061c32
+main panels and #071e35 rows, with lower-alpha blue rather than whitish rim
+highlights. This corrects the pale gray-blue cast seen against the selected
+concept. Uniform fills remain; no gradients or global filters are added.
+Hover/selected colors and all semantic text tokens stay exactly unchanged.
+Only existing :root paint values change in this pass, not component rules.
+
+The latest user correction restores the stronger hover/selected
 treatment, including task-source feedback, and removes only the unwanted nested
 boxes around material names, base attributes and source-expand summaries. Those
 three plain-text surfaces retain text-color feedback without new fills/shadows
@@ -45,6 +52,8 @@ The affected preview was restored before the replacement was tested. Build futur
 visual candidates in an isolated ignored copy on another local port; replace the
 user-facing port 8002 build only after rendered QA passes. The pre-refinement
 checkpoint is `checkpoint/deep-blue-before-rim-polish-20261019` (`5faedd3`).
+The subsequent color-depth checkpoint is
+`checkpoint/deep-blue-before-depth-20261019` (`786f079`).
 
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch

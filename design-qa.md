@@ -2,7 +2,40 @@
 
 final result: passed
 
-## Latest Repair And State Contrast
+## Latest Navy Depth Pass
+
+User review found the preceding candidate pale/gray-blue compared with the
+selected concept. The comparison is reopened; the earlier pass below is not
+proof of color acceptance. This pass fixes that P2 finding with deeper uniform
+normal fills and lower-alpha blue rather than whitish rim light. The candidate
+was checked on isolated port 8003 before replacing port 8002. This is local
+technical/design acceptance, not final user style approval or deployment.
+
+### Evidence And Findings
+
+- Exact source remains `/Users/bindox/.codex/generated_images/019ec6a8-7788-76e3-ae3c-ae7a03b52189/exec-aa8ec7b3-2baa-4210-a4ba-6cb77e570476.png` (1672 x 941), normalized to 1280 x 720 for comparison. IAB actual route is VK-00/manufacturing/no filters/collapsed attributes/default quality, at 1280 x 720 CSS pixels, DPR 2; screenshot API returns 1280 x 720. Independent Chromium uses DPR 1. No screenshot was recolored. Output PNGs have no embedded ICC; RGB samples below describe the captured image, not monitor calibration or a guaranteed cross-browser literal CSS-to-pixel mapping.
+- `.git/visual-previews/deep-blue-depth-20261019/` retains the before image, isolated candidate, final served IAB/Chromium captures and QA scripts. `gvy-blue-depth-source-final-20261019.png` combines source left/final right at 2560 x 720; `gvy-blue-depth-before-after-20261019.png` combines actual old/new IAB pages at the same dimensions. Both were opened and reviewed. The final user-origin captures keep favorites 1/plan 0 unchanged.
+- Focused comparison `gvy-blue-depth-focused-20261019.png` is 1200 x 140, source/old/new left-to-right, corresponding filter/control crops. Earlier combined comparison found overly pale panel cores and neutral rim light (P2), not an acceptable deviation. Final primary core is #06233e, main #061c32, row #071e35; rim uses blue RGB(93,174,235) at 0.3 rather than whitish RGB(171,217,250) at 0.4. Actual IAB 32 x 8 empty-panel patch changes uniformly from RGB(20,40,65) to RGB(14,34,59), with no blotching. The sampled edge at (400,200) changes from RGB(38,67,99) to RGB(19,48,80).
+- Intentional remaining source differences: the user's uniform-fill requirement excludes the concept's broad uneven gradients; existing page geometry, font sizes and true logo remain authoritative. Do not copy the mock's typography/layout drift to make this color-only pass appear pixel-identical. No actionable P0/P1/P2 remains within this color correction; art-direction preference still belongs to the user.
+
+### Fidelity And Verification
+
+- Typography: exact original fonts, sizes, weights, line heights and wrapping. Spacing/layout: all 405 non-paint CSSOM rules and 14 sizes / 42 main, plan and mineral geometry snapshots match the pre-pass baseline. Every byte outside :root is unchanged, so this pass adds no selectors, frames, spacing or component behavior.
+- Color: darker opaque constant fills and blue edge light, no new gradients/filters/textures. Approved hover/selected colors and every semantic foreground token are unchanged. Normal foreground-token contrast remains at least 5.25:1 on the checked navy normal/hover/selected fills, excluding disabled/placeholder and dark-on-accent states.
+- Assets: real logos, dimensions and crop unchanged; no new images/icons/dependencies. Copy/content: HTML, JS, both public snapshots, qualities, quantities, mission sources and cancelled unit-time move unchanged.
+- 18 widths from 320 to 3840px verify panel/real-header-control bounds, opaque untextured surfaces, craft/dismantle, search-empty/reset, filter/Escape, keyboard plan, mineral hover/Escape, exact task opening and 390px touch mineral-neighbor/plan interactions. No application errors/warnings. IAB final console is also clear.
+- 18 sizes x four plan scenarios pass actual 50/22/28 columns, cell text bounds, 4px spacing, rims and viewport bounds. Five sizes / 20 targeted checks confirm material-name/base-attribute/source-expand text still has no added frame and task-source hover stays explicitly enabled.
+- 165 Python tests (including 38 Node), standalone 38 Node, JS syntax, offline blueprint/mining pair, build and diff checks pass. Browser plugin/skill unavailable; existing independent Playwright uses the user's prior explicit approval. Physical iOS/Safari/QQ remain untested; earlier full-content audits are not claimed as rerun.
+- Final local CSS `6ad5fcc42258`; JS `b085889e5719` and data `data-0f6906d31548ddd6` unchanged. Source/dist historical backups and checkpoint `checkpoint/deep-blue-before-depth-20261019` at `786f079` remain. No push, PR, workflow, data refresh or deployment; normal scoped revert is the rollback path.
+
+### Checklist
+
+1. Pre-color checkpoint and original source/dist backups retained.
+2. Actual IAB source/old/new full and focused comparison reviewed after correction.
+3. Geometry, targeted feedback, responsive interactions and tests passed.
+4. Final local preview restored to port 8002 with user storage unchanged.
+
+## Previous Repair And State Contrast
 
 This section supersedes the preceding checkpoint's acceptance below. This remains
 local technical/design QA, not final user style approval or deployment authority.

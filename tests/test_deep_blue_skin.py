@@ -8,8 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class DeepBlueSkinTests(unittest.TestCase):
     def test_surfaces_are_uniform_navy_without_background_gradients(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
-        for token in ["--bg: #041322", "--bg-2: #081a2b", "--glass: #092337",
-                      "--glass-strong: #0b2a43", "--row: #0d2b42"]:
+        for token in ["--bg: #030e1c", "--bg-2: #061526", "--glass: #061c32",
+                      "--glass-strong: #06233e", "--row: #071e35"]:
             self.assertIn(token, styles)
         self.assertNotRegex(styles, r"(?:linear|radial|conic)-gradient\s*\(")
         self.assertIn("background: var(--bg);", styles)
@@ -73,6 +73,16 @@ class DeepBlueSkinTests(unittest.TestCase):
         commands = styles.split(".favorite-detail-button {", 1)[1].split("}", 1)[0]
         self.assertIn("background: var(--surface-command)", commands)
         self.assertIn("box-shadow: var(--shadow-command)", commands)
+
+    def test_navy_depth_uses_blue_edges_without_changing_interaction_colors(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        self.assertIn("--edge-highlight: rgba(93, 174, 235, 0.3)", styles)
+        self.assertIn("--shadow-control-edge: inset 0 1px 0 rgba(88, 163, 217, 0.23)", styles)
+        self.assertIn("--surface-hover: #1b455f", styles)
+        self.assertIn("--surface-selected: #164f68", styles)
+        for token in ["--text: #e2f6ff", "--text-strong: #f4faff", "--muted: #aed0de",
+                      "--cyan: #7eddf2", "--orange: #ffc468"]:
+            self.assertIn(token, styles)
 
     def test_hover_and_selection_keep_distinct_approved_paint(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
