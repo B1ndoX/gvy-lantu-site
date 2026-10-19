@@ -82,13 +82,13 @@ body::before,
   transform: translateX(-50%);
   pointer-events: none;
   background: url("./fleet-watermark.png") center / contain no-repeat;
-  opacity: 0.04;
+  opacity: 0.06;
 }
 
 .mission-dialog::before,
 .mineral-card::before {
   width: min(86%, 640px);
-  opacity: 0.03;
+  opacity: 0.05;
 }
 
 button,
