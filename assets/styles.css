@@ -1459,9 +1459,10 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .material-side {
+  min-width: 112px;
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 8px;
   white-space: nowrap;
 }

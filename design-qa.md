@@ -2,6 +2,40 @@
 
 final result: passed
 
+## Material Location Column Alignment
+
+The latest correction left-aligns each manufacturing material's mineral badge
+at the existing amount-column start instead of moving it with the amount's
+right edge. Product code changes only two declarations: `.material-side` gets
+`min-width:112px` and `justify-content:flex-start`. The 8px internal gap, parent
+tracks, typography, quantities, sliders, quality formulas and dialogs remain.
+The column can still grow for future content rather than clipping it.
+
+Actual installed Safari independently renders all 1,618 manufacturing records /
+4,316 material rows at 16 sizes: 320x568, 360x640, 375x667, 390x844,
+620/621/880/881/1100/1101/1264/1320/1321x793, 1920x1080, 2560x1440 and
+3440x1440. All 69,056 row checks pass: badge starts align across each list,
+visible text stays within its row, quality sliders share position/width and
+capsules stay 72x23. Both mineral/no-location labels are covered; the largest
+current side group is 112px. No captured runtime errors or page overflow.
+An initial harness false positive included an invisible positioned input hint;
+visible-text checking now excludes hidden/transparent text, not visible faults.
+
+Native CUA opens/closes Torite from the aligned desktop badge. Inputting 750
+sets the slider to 750 and recoil effects to 80% / 0.8x; a native range click
+sets 655 in both controls and 87.60% / 0.876x. At 390px the badge opens the
+mineral dialog, Stanton filtering updates results, its signal opens, and two
+Escape presses close the signal/dialog in order and return focus to the badge.
+Desktop/phone screenshots were opened and reviewed. Browser skill is absent;
+the user requires existing Safari only. Fixed desktop Safari viewports are not
+iPhone hardware/touch/keyboard evidence, nor a DevTools console audit. Runtime
+capture and screenshot checks found no relevant overlay/blank screen.
+
+175 Python / 42 Node tests, syntax/diff and offline blueprint/mining pairing
+pass. Build/candidate byte matching and exact-client production release gates
+are recorded in the required handoff; local QA alone is not deployment proof.
+No application JS, data, production HTML, refresh workflow or dependency changes.
+
 ## Both Units Retained (Latest)
 
 The user's next correction explicitly retains the first scale/unit. Both sides

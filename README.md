@@ -261,9 +261,11 @@ Quality sliders grow with available space up to 260px instead of stopping at
 118px; the underlying quality capsule stays 72px by 23px. Modifier labels/values
 below the slider are 12px and wrap without truncation. The independent name
 column uses 35% of the row so different right-side amounts cannot shift each
-slider's left edge. Reserve at least 112px for the right-aligned location/amount
-column (the current longest content measures about 102.33px), keeping slider
-lengths and quality capsules consistent within the material list. Let that
+slider's left edge. Reserve at least 112px for the location/amount column and
+its inner group, with contents starting at the column's left edge. Mineral
+badges then align vertically instead of following each amount's right edge,
+including rows without quality controls and narrow two-row layouts. This keeps
+slider lengths and quality capsules consistent within the material list. Let that
 column grow rather than clip unexpected future values. Remove native range margins to align sliders with
 the modifier blocks below. Long names wrap within their own column.
 On phones (up to 880px)
