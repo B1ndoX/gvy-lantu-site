@@ -706,11 +706,13 @@ Each material card reads its slot's `modifiers` from the selected LIVE SCMDB cra
 The manufacturing detail panel contains a compact `成品品质效果` summary above the material cards. When the exact-version primary item export provides a reliable base attribute, the summary shows `Q500 base -> selected-quality result` and the percentage change. Metrics without a trustworthy base attribute show only the SCMDB-derived relative change. Blueprints whose crafting slots expose no modifier formula do not show a slider or a quality-result panel; the interface must not fabricate effects for them.
 
 Absolute quality-summary values default to their full existing format. Only when
-a value of at least 10,000 makes its card taller than that card's original Q500
-layout does the summary use a `万` abbreviation (up to three decimals, two if
-still necessary). The complete value remains in its title; calculations and
+a value of at least 10,000 forces the label and values onto separate lines
+does the summary use a `万` abbreviation, rounded to a whole ten-thousand.
+Compact comparisons share the trailing scale/unit when both values qualify;
+each abbreviated value retains its complete value/unit in its hover title.
+Only compact cards use slightly tighter horizontal gaps. Calculations and
 percentage changes keep their original precision. Resizing restores full text
-when it fits. Preserve the original compact card geometry/fonts; the rejected
+when it fits. Preserve compact card heights/fonts; the rejected
 fixed-height two-row trial must not return. Other numbers, including tasks,
 materials, quality minima, signals and base attributes, are not abbreviated.
 

@@ -1362,6 +1362,9 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 
 .quality-result-values .compact-number { text-decoration: none; white-space: nowrap; }
 
+.quality-result-item.compact-values { column-gap: 6px; }
+.quality-result-item.compact-values .quality-result-values { column-gap: 2px; }
+
 .quality-result-values small,
 .quality-result-values i,
 .quality-result-values em {

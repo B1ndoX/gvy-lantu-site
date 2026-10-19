@@ -16,36 +16,42 @@ function app(document = { querySelector: () => ({}), querySelectorAll: () => [] 
 
 test("large quality values keep full precision unless a layout explicitly chooses compact text", () => {
   const api = app();
-  for (const [value, full, short] of [[200000,"200,000 km/s","20万 km/s"], [209834.2,"209,834.2 km/s","20.983万 km/s"], [209750.27,"209,750.27 km/s","20.975万 km/s"], [-200000,"-200,000 km/s","-20万 km/s"], [10000,"10,000 km/s","1万 km/s"]]) {
+  for (const [value, full, short] of [[200000,"200,000 km/s","20万 km/s"], [209834.2,"209,834.2 km/s","21万 km/s"], [230775.57,"230,775.57 km/s","23万 km/s"], [205000,"205,000 km/s","21万 km/s"], [-205000,"-205,000 km/s","-21万 km/s"], [10000,"10,000 km/s","1万 km/s"]]) {
     const html = api.renderCompactableQualityValue(value, 2, "km/s");
     assert.ok(html.includes(`title="${full}"`));
     assert.ok(html.includes(`data-short="${short}"`));
     assert.ok(html.endsWith(`>${full}</abbr>`));
   }
   assert.equal(api.renderCompactableQualityValue(9999, 2, "km/s"), "9,999 km/s");
+  assert.match(api.renderCompactableQualityValue(209834.2, 2, "km/s", false), /title="209,834.2 km\/s".*data-short="21"/);
+  const comparison = api.renderQualitySummaryContent({qualityStats:[{label:"速度",value:200000,digits:2,unit:"km/s",properties:[]}]});
+  assert.match(comparison, /<small><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20"/);
+  assert.match(comparison, /<b><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20万 km\/s"/);
   const unsafe = api.renderCompactableQualityValue(200000, 2, '<img src=x onerror="bad">');
   assert.doesNotMatch(unsafe, /<img/);
   assert.match(unsafe, /&lt;img/);
   assert.equal(api.renderBaseStats({ baseStats:[{label:"速度",value:200000,digits:2,unit:"km/s"}] }).includes("compact-number"), false);
 });
 
-test("quality fitting shortens only an extra wrapped line and restores full text when it fits", () => {
-  let width = 200, grows = true, forceBrief = false, probes = 0, removed = 0;
+test("quality fitting keeps large values with their label and restores full text when it fits", () => {
+  let width = 200, probes = 0, removed = 0, compact = false;
   const makeStyle = () => ({ minHeight:"", removeProperty(key) { if (key === "min-height") this.minHeight = ""; } });
   const numbers = [
-    {dataset:{full:"209,834.2 km/s",short:"20.983万 km/s",brief:"20.98万 km/s"},textContent:"209,834.2 km/s"},
-    {dataset:{full:"230,775.57 km/s",short:"23.078万 km/s",brief:"23.08万 km/s"},textContent:"230,775.57 km/s"},
+    {dataset:{full:"209,834.2 km/s",short:"21"},textContent:"209,834.2 km/s"},
+    {dataset:{full:"230,775.57 km/s",short:"23万 km/s"},textContent:"230,775.57 km/s"},
   ];
   const card = {
+    classList:{toggle(name,value){assert.equal(name,"compact-values");compact=value;}},
     style:makeStyle(), querySelectorAll:()=>numbers, getBoundingClientRect:()=>({width}),
     cloneNode() {
-      const start = {innerHTML:"baseline"}, end = {innerHTML:"current"}, change = {textContent:"+9.98%"};
+      const style = makeStyle(), values = {style:makeStyle()};
       const probeNumbers = numbers.map(n=>({dataset:{...n.dataset},textContent:n.textContent}));
       return {
-        style:makeStyle(),setAttribute(){},
+        classList:{remove(){}},
+        style,setAttribute(){},
         querySelectorAll:()=>probeNumbers,
-        querySelector:s=>s.endsWith(" small")?start:s.endsWith(" b")?end:change,
-        getBoundingClientRect:()=>({height:width>=300?27:grows&&end.innerHTML!==start.innerHTML&&(forceBrief||probeNumbers.some(n=>n.textContent===n.dataset.full))?54:38}),
+        querySelector:()=>values,
+        getBoundingClientRect:()=>({height:width>=300||style.flexWrap==="nowrap"?27:38}),
         remove(){removed++;},
       };
     },
@@ -54,16 +60,12 @@ test("quality fitting shortens only an extra wrapped line and restores full text
   const api = app({querySelector:s=>s==="#detailPanel"?{querySelector:()=>summary}:{},querySelectorAll:()=>[]});
   api.fitQualitySummary();
   assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.short));
-  assert.equal(card.style.minHeight,"38px");
+  assert.equal(card.style.minHeight,"");
+  assert.equal(compact,true);
   width=300;api.fitQualitySummary();
   assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.full));
-  assert.equal(card.style.minHeight,"27px");
-  width=200;grows=false;api.fitQualitySummary();
-  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.full));
-  assert.equal(card.style.minHeight,"38px");
-  grows=true;forceBrief=true;api.fitQualitySummary();
-  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.brief));
-  assert.equal(card.style.minHeight,"38px");
+  assert.equal(card.style.minHeight,"");
+  assert.equal(compact,false);
   assert.equal(probes,removed);
 });
 
