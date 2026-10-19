@@ -1439,6 +1439,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .material-min-quality {
+  display: inline-block;
   white-space: nowrap;
 }
 

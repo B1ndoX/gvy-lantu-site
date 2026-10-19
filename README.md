@@ -81,6 +81,16 @@ The pre-audit checkpoint is `checkpoint/deep-blue-before-full-audit-20261019`
 (`4425164`), with its source archive and fresh audit evidence in
 `.git/visual-previews/deep-blue-full-audit-20261019/`.
 
+The follow-up actual Safari 26.6.2 audit found a 375px narrow-view case where
+TH-01's `minimum quality 600` phrase extended 2.49px beyond its name column.
+The existing no-wrap phrase now uses an atomic inline block, so Safari moves it
+to the next line when it does not fit. Text, fonts, minimums and all calculations
+are unchanged. Quality capsules, plans and task sources are checked in the
+existing Safari using isolated same-origin fixed viewports; this is not a claim
+of iPhone hardware, soft-keyboard or touch testing. No browser download or Safari
+setting change is needed. The pre-fix checkpoint is
+`checkpoint/before-safari-audit-20261019` (`230ca01`).
+
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
 `checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and
