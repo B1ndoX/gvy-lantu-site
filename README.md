@@ -161,7 +161,10 @@ Quality sliders grow with available space up to 260px instead of stopping at
 118px; the underlying quality capsule stays 72px by 23px. Modifier labels/values
 below the slider are 12px and wrap without truncation. The independent name
 column uses 35% of the row so different right-side amounts cannot shift each
-slider's left edge; remove the range input's native margins to align it with
+slider's left edge. Reserve at least 112px for the right-aligned location/amount
+column (the current longest content measures about 102.33px), keeping slider
+lengths and quality capsules consistent within the material list. Let that
+column grow rather than clip unexpected future values. Remove native range margins to align sliders with
 the modifier blocks below. Long names wrap within their own column.
 On phones (up to 880px)
 and narrow two-panel desktops (1101-1320px), quality controls occupy a separate

@@ -80,7 +80,9 @@ class PublicCopyTests(unittest.TestCase):
     def test_material_quality_column_and_modifier_share_a_stable_left_edge(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         columns = styles.split('.material-item.has-quality {', 1)[1].split('}', 1)[0]
-        self.assertIn('minmax(130px, 35%) minmax(180px, 1fr) auto', columns)
+        self.assertIn('minmax(130px, 35%) minmax(180px, 1fr) minmax(112px, auto)', columns)
+        side = styles.split('.material-side {', 1)[1].split('}', 1)[0]
+        self.assertIn('justify-content: flex-end', side)
         slider = styles.split('.material-quality input[type="range"] {', 1)[1].split('}', 1)[0]
         self.assertIn('margin: 0', slider)
         self.assertIn('@media (max-width: 880px), (min-width: 1101px) and (max-width: 1320px)', styles)
