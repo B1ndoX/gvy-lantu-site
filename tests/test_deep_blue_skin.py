@@ -159,7 +159,7 @@ class DeepBlueSkinTests(unittest.TestCase):
         self.assertIn("box-shadow: var(--shadow-active)", active)
         self.assertIn("--shadow-hover", styles)
         self.assertIn("inset 3px 0 0 var(--cyan)", styles)
-        self.assertIn(".filter-option:not(.active):hover", styles)
+        self.assertIn(".filter-option:not(.active):not(:disabled):hover", styles)
         self.assertIn('.mineral-system-filter button:not([aria-pressed="true"]):hover', styles)
         self.assertIn("@media (hover: hover)", styles)
         self.assertNotIn(":where(button, a[href], input, select, summary):focus-visible", styles)

@@ -19,8 +19,9 @@ Keep the prior production commit and original source/dist backups for rollback.
 The built local preview remains at `http://127.0.0.1:8002/`.
 
 Surfaces use uniform opaque navy fills, shared exterior elevation shadows and
-continuous 1px inner-edge highlights. No gradients, noise, decorative textures or
-new assets are used. The selected navy concept defines color/elevation only;
+continuous 1px inner-edge highlights. No gradients, noise or decorative textures
+are used. The subsequently approved fleet watermark is a separate decorative
+layer; opaque panel colors remain unchanged. The selected navy concept defines color/elevation only;
 existing layout, templates, breakpoints, fonts, semantic foreground colors and
 all functionality remain unchanged, with two user-requested visual corrections:
 the joined header/summary now aligns to the same side insets as the main panels,
@@ -167,15 +168,60 @@ The filter order is fixed:
 
 1. 类型
 2. 组件类型
-3. 等级
-4. 组件类别
-5. 材料
-6. 任务类型
-7. 制造商
-8. 任务奖励来源
-9. 重置筛选
+3. 尺寸
+4. 等级
+5. 组件类别
+6. 材料
+7. 任务类型
+8. 制造商
+9. 任务奖励来源
+10. 重置筛选
 
 `组件类型` is enabled only when `类型` is `舰船组件`. Its options are generated from the current blueprint data and include available component types such as 冷却器、电源、护盾、量子驱动、雷达、采矿激光、牵引光束、加油模块 and 打捞模块. `组件类别` is also enabled only for ship components and represents 军用、民用、隐形、竞赛、工业等类别.
+
+The 2026-10-20 linked-filter and watermark batch was previewed against production
+`79f3b22`. The user then approved the 6%/5% original-color watermarks and authorized
+safe deployment of this complete batch after renewed desktop/mobile audit.
+Preserve the existing production data/version/time, release the audited code
+through the normal main/EdgeOne path, and verify exact client assets, both JSON
+forms and the original PNG after publishing. The pre-edit source/dist/handoff backup is in
+`.git/visual-backups/filters-watermark-before-20261020/`; its checkpoint is
+`checkpoint/before-linked-filters-watermark-20261020`.
+
+Filter applicability is distinct from raw field presence. Grade/class filtering
+uses cooler, powerplant, shield, quantumdrive and radar components, not unrelated
+armor/weapon internal grade integers. Other categories or specialized ship tools
+show disabled `无` controls. Size filtering applies to ship components and ship
+weapons only, includes a genuine S0, excludes missing sizes from explicit size
+selections, and lists actual numeric sizes without filling gaps. A size-only
+selection keeps category `全部` and searches both supported ship categories.
+
+All option counts are unique blueprints under the other active conditions,
+including search, favorites, mission-source restriction and query mode. A facet
+ignores its own selected value so alternatives remain available. `全部` includes
+records lacking that facet. Parent choices count the actual normalized next
+state: changing category/type removes only structurally invalid conditions.
+Valid conditions that merely have zero matches are retained and remain clearable;
+zero-count unselected options are disabled. Materials count each blueprint once
+even when several slots use the same resource; dismantling counts recovered
+outputs rather than crafting inputs. No raw snapshot or recipe is changed.
+
+Desktop retains the compact horizontal bar, tablets wrap, and phones retain two
+columns. Only filter spacing/closed widths are tightened to accommodate size;
+fonts and main/result/detail/dialog layouts are unchanged. Menus clamp to both
+viewport axes, open above when appropriate and scroll internally when needed.
+Disabled fields and options use native disabled semantics and are skipped by
+keyboard navigation; clearing a condition remains possible in an empty result.
+
+`assets/fleet-watermark.png` is the exact user-selected download, without editing
+the original. CSS displays the transparent PNG directly, preserving its original
+colors and internal detail without a monochrome mask, filter or blend mode:
+one non-repeating, bottom-anchored page watermark (6%) and independent compact
+dialog watermarks (5%). Width and height caps preserve proportions across mobile
+and large screens;
+the decorative layer is below content, cannot receive pointer events, does not
+alter panel opacity, and never creates generated table rows/cells. No Wikelo
+project changes or coordination are included in this blueprint release.
 
 The closed filter controls must remain compact. 等级、材料和制造商使用相同的短框宽度；任务奖励来源按文字内容收紧，不能保留无意义的横向空白。宽屏时整组控件铺满筛选栏，并让最后的重置按钮与右侧内边距对齐。
 

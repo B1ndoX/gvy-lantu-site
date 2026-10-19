@@ -7,6 +7,7 @@ const state = {
   selectedId: null,
   category: "all",
   componentType: "none",
+  size: "all",
   grade: "all",
   componentClass: "none",
   manufacturer: "all",
@@ -33,6 +34,8 @@ const SOURCE_TASK_PREVIEW_LIMIT = 12;
 const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 const PLAN_STORAGE_KEY = "gvy-lantu-craft-plan-v1";
+const FILTER_KEYS = ["category", "componentType", "size", "grade", "componentClass", "material", "missionType", "manufacturer"];
+const GRADED_COMPONENT_TYPES = new Set(["cooler", "powerplant", "shield", "quantumdrive", "radar"]);
 let searchInputTimer = 0;
 let mineralOpener = null;
 let mineralPreviousOverflow = "";
@@ -60,6 +63,7 @@ const els = {
   modeTabs: [...document.querySelectorAll("[data-mode]")],
   categoryFilters: document.querySelector("#categoryFilters"),
   componentTypeFilters: document.querySelector("#componentTypeFilters"),
+  sizeFilters: document.querySelector("#sizeFilters"),
   gradeFilters: document.querySelector("#gradeFilters"),
   componentClassFilters: document.querySelector("#componentClassFilters"),
   manufacturerFilters: document.querySelector("#manufacturerFilters"),
@@ -1486,6 +1490,10 @@ function prepareRecord(record) {
   return {
     ...record,
     _searchText: recordSearchText(record),
+    _filterValues: Object.fromEntries([
+      ...FILTER_KEYS.map((key) => [key, recordFilterValues(record, key, "craft")]),
+      ["recoveredMaterial", recordFilterValues(record, "material", "dismantle")],
+    ]),
   };
 }
 
@@ -1509,7 +1517,8 @@ function optionTag(value, label, count, activeValue, triggerLabel = label) {
   const suffix = count === undefined ? "" : `（${formatNumber(count)}）`;
   const display = `${label}${suffix}`;
   const selected = value === activeValue;
-  return `<button type="button" role="option" aria-selected="${selected}" class="filter-option${selected ? " active" : ""}" data-value="${escapeHtml(value)}" data-trigger-label="${escapeHtml(triggerLabel)}" title="${escapeHtml(display)}">${escapeHtml(display)}</button>`;
+  const disabled = value !== "all" && !selected && count === 0;
+  return `<button type="button" role="option" aria-selected="${selected}"${disabled ? ' disabled aria-disabled="true"' : ""} class="filter-option${selected ? " active" : ""}" data-value="${escapeHtml(value)}" data-trigger-label="${escapeHtml(triggerLabel)}" title="${escapeHtml(display)}">${escapeHtml(display)}</button>`;
 }
 
 function selectedOptionLabel(container, value) {
@@ -1517,14 +1526,23 @@ function selectedOptionLabel(container, value) {
   return option?.dataset.triggerLabel || option?.textContent || "全部";
 }
 
-function renderDropdown(container, optionsHtml, activeValue) {
-  container.innerHTML = `
+function renderDropdown(container, optionsHtml, activeValue, disabled = false) {
+  if (!container.querySelector(".filter-trigger")) container.innerHTML = `
     <button type="button" class="filter-trigger" aria-haspopup="listbox" aria-expanded="false">
       <span>${escapeHtml("全部")}</span>
       <span class="filter-arrow">⌄</span>
     </button>
     <div class="filter-menu" role="listbox">${optionsHtml}</div>
   `;
+  container.querySelector(".filter-menu").innerHTML = optionsHtml;
+  container.classList.toggle("disabled", disabled);
+  const trigger = container.querySelector(".filter-trigger");
+  trigger.disabled = disabled;
+  trigger.setAttribute("aria-label", container.dataset.label);
+  if (disabled) {
+    container.classList.remove("open");
+    trigger.setAttribute("aria-expanded", "false");
+  }
   setSelectValue(container, activeValue);
 }
 
@@ -1543,6 +1561,18 @@ function positionFilterMenu(select, viewportWidth = window.innerWidth) {
   const rect = menu.getBoundingClientRect();
   const offset = Math.max(8 - rect.left, Math.min(0, viewportWidth - 8 - rect.right));
   menu.style.setProperty("--filter-menu-offset", `${offset}px`);
+  const trigger = select.querySelector(".filter-trigger");
+  if (!trigger?.getBoundingClientRect) return;
+  menu.style.removeProperty("top");
+  menu.style.removeProperty("max-height");
+  const button = trigger.getBoundingClientRect();
+  const height = menu.getBoundingClientRect().height;
+  const below = Math.max(0, window.innerHeight - button.bottom - 14);
+  const above = Math.max(0, button.top - 14);
+  const upwards = height > below && above > below;
+  const room = upwards ? above : below;
+  menu.style.maxHeight = `${Math.min(height, room)}px`;
+  if (upwards) menu.style.top = `${-Math.min(height, room) - 6}px`;
 }
 
 function setSelectValue(container, value) {
@@ -1559,35 +1589,20 @@ function setSelectValue(container, value) {
   if (trigger) trigger.title = label;
 }
 
-function syncShipComponentFilters() {
-  const visible = state.category === "ship_component";
-  for (const [select, key] of [
-    [els.componentTypeFilters, "componentType"],
-    [els.componentClassFilters, "componentClass"],
-  ]) {
-    select.classList.toggle("disabled", !visible);
-    if (!visible) {
-      state[key] = "none";
-      setSelectValue(select, state[key]);
-      select.classList.remove("open");
-    } else if (state[key] === "none") {
-      state[key] = "all";
-      setSelectValue(select, state[key]);
-    }
-  }
-}
-
 function modeRecords() {
   return state.mode === "dismantle" ? state.records.filter(hasDismantleOutputs) : state.records;
 }
 
-function getPopularMaterials(records = modeRecords()) {
+function getPopularMaterials(records = modeRecords(), mode = state.mode) {
   const labelByName = new Map();
   const counts = new Map();
   for (const record of records) {
-    const materials = state.mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record);
+    const materials = mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record);
+    const seen = new Set();
     for (const material of materials) {
       if (!labelByName.has(material.name)) labelByName.set(material.name, materialZhName(material));
+      if (seen.has(material.name)) continue;
+      seen.add(material.name);
       counts.set(material.name, (counts.get(material.name) || 0) + 1);
     }
   }
@@ -1601,105 +1616,109 @@ function getPopularMaterials(records = modeRecords()) {
   return [...ordered, ...remaining];
 }
 
-function countBy(records, getter) {
-  const counts = new Map();
-  for (const record of records) {
-    const value = getter(record);
-    if (!value) continue;
-    counts.set(value, (counts.get(value) || 0) + 1);
+function recordFilterValues(record, key, mode = state.mode) {
+  const cacheKey = key === "material" && mode === "dismantle" ? "recoveredMaterial" : key;
+  if (record._filterValues?.[cacheKey]) return record._filterValues[cacheKey];
+  const graded = record.category.id === "ship_component" && GRADED_COMPONENT_TYPES.has(record.type);
+  let values = [];
+  if (key === "category") values = [record.category.id];
+  if (key === "componentType" && record.category.id === "ship_component") values = [record.type];
+  if (key === "size" && ["ship_component", "ship_weapon"].includes(record.category.id)) {
+    const size = record.stats?.size;
+    if (size !== null && size !== undefined && size !== "" && Number.isInteger(Number(size)) && Number(size) >= 0) values = [String(Number(size))];
   }
-  return counts;
+  if (key === "grade" && graded && gradeOrder.some(([id]) => id === String(record.stats?.grade))) values = [String(record.stats.grade)];
+  if (key === "componentClass" && graded) values = [recordClass(record)];
+  if (key === "manufacturer") values = [record.manufacturer];
+  if (key === "material") values = (mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record)).map((item) => item.name);
+  if (key === "missionType") values = recordMissionTypes(record).map((type) => type.name);
+  return [...new Set(values.filter((value) => value !== null && value !== undefined && value !== "").map(String))];
 }
 
-function countMissionTypes(records) {
-  const counts = new Map();
-  for (const record of records) {
-    for (const type of recordMissionTypes(record)) {
-      counts.set(type.name, (counts.get(type.name) || 0) + 1);
-    }
+function filterScope(records, filters) {
+  return records.filter((record) => (filters.category === "all" || record.category.id === filters.category)
+    && (filters.category !== "ship_component" || ["all", "none"].includes(filters.componentType) || record.type === filters.componentType));
+}
+
+function filterDomain(records, key, mode) {
+  return new Set(records.flatMap((record) => recordFilterValues(record, key, mode)));
+}
+
+function normalizeFilterSelection(filters, records) {
+  const next = { ...filters };
+  if (!filterDomain(records, "category", next.mode).has(next.category)) next.category = "all";
+  const components = records.filter((record) => record.category.id === "ship_component");
+  if (next.category !== "ship_component" || !components.length) next.componentType = "none";
+  else if (!filterDomain(components, "componentType", next.mode).has(next.componentType)) next.componentType = "all";
+  const scope = filterScope(records, next);
+  for (const key of ["size", "grade", "componentClass", "material", "missionType", "manufacturer"]) {
+    if (key === "missionType" && next.mode === "dismantle") { next[key] = "all"; continue; }
+    const domain = key === "componentClass" && next.category !== "ship_component" ? new Set() : filterDomain(scope, key, next.mode);
+    if (!domain.size) next[key] = "none";
+    else if (!domain.has(next[key])) next[key] = "all";
   }
-  return counts;
+  return next;
+}
+
+function recordMatchesFilters(record, filters, except = "") {
+  for (const key of FILTER_KEYS) {
+    const value = filters[key];
+    if (key === except || value === "all" || value === "none") continue;
+    if (key === "missionType" && filters.mode === "dismantle") continue;
+    if (!recordFilterValues(record, key, filters.mode).includes(value)) return false;
+  }
+  if (filters.mode === "craft" && filters.sourceOnly && !(record.sourceCount > 0)) return false;
+  if (filters.favoritesOnly && !filters.favorites.has(record.id)) return false;
+  const query = normalizeSearchText(filters.query);
+  return !query || (record._searchText || recordSearchText(record)).includes(query);
+}
+
+function filterCandidates(records, key, filters) {
+  const scope = key === "category" ? records : key === "componentType"
+    ? records.filter((record) => record.category.id === filters.category) : filterScope(records, filters);
+  if (key === "componentType" && filters.category !== "ship_component") return [];
+  if (key === "componentClass" && filters.category !== "ship_component") return [];
+  if (key === "missionType" && filters.mode === "dismantle") return [];
+  const domain = filterDomain(scope, key, filters.mode);
+  const orders = { category: categoryOrder, componentType: componentTypeOrder, grade: gradeOrder, componentClass: componentClassOrder, missionType: missionTypeOrder };
+  if (orders[key]) return orders[key].filter(([id]) => domain.has(id));
+  if (key === "size") return [...domain].sort((a, b) => Number(a) - Number(b)).map((value) => [value, sizeLabel(value)]);
+  if (key === "material") return getPopularMaterials(scope, filters.mode).map(([name, label]) => [name, materialDisplayLabel(name, label)]);
+  return [...domain].sort((a, b) => a.localeCompare(b, "en")).map((name) => {
+    const record = scope.find((item) => item.manufacturer === name);
+    const zh = recordManufacturer(record);
+    return [name, zh && zh !== name ? `${zh} (${name})` : name, zh || name];
+  });
+}
+
+function buildFilterModel(records, filters) {
+  return Object.fromEntries(FILTER_KEYS.map((key) => {
+    const candidates = filterCandidates(records, key, filters);
+    if (!candidates.length) return [key, { disabled: true, value: "none", options: [{ value: "none", label: "无" }] }];
+    // A facet ignores its own selection. Parent options use the exact state a click would produce.
+    const context = records.filter((record) => recordMatchesFilters(record, filters, key));
+    const counts = new Map();
+    for (const record of context) for (const value of recordFilterValues(record, key, filters.mode)) counts.set(value, (counts.get(value) || 0) + 1);
+    const countOption = (value) => {
+      if (!["category", "componentType"].includes(key)) return value === "all" ? context.length : counts.get(value) || 0;
+      const selection = normalizeFilterSelection({ ...filters, [key]: value }, records);
+      return records.filter((record) => recordMatchesFilters(record, selection)).length;
+    };
+    const options = [["all", "全部"], ...candidates].map(([value, label, triggerLabel = label]) => ({ value, label, triggerLabel, count: countOption(value) }));
+    return [key, { disabled: false, value: filters[key], options }];
+  }));
 }
 
 function initFilters() {
   const records = modeRecords();
-  const categoryCounts = countBy(records, (record) => record.category.id);
-  renderDropdown(els.categoryFilters, categoryOrder
-    .filter(([id]) => id === "all" || categoryCounts.has(id))
-    .map(([id, label]) => {
-      const count = id === "all" ? records.length : categoryCounts.get(id) || 0;
-      return optionTag(id, label, count, state.category);
-    })
-    .join(""), state.category);
-
-  renderDropdown(els.gradeFilters, gradeOrder
-    .filter(([id]) => id === "all" || records.some((record) => String(record.stats.grade || "") === id))
-    .map(([id, label]) => {
-      const count = id === "all" ? records.length : records.filter((record) => String(record.stats.grade || "") === id).length;
-      return optionTag(id, label, count, state.grade);
-    })
-    .join(""), state.grade);
-
-  const componentRecords = records.filter((record) => record.category.id === "ship_component");
-  const componentTypeCounts = countBy(componentRecords, (record) => record.type);
-  const componentTypeActive = state.category === "ship_component" ? state.componentType : "none";
-  renderDropdown(els.componentTypeFilters, [
-    optionTag("none", "无", undefined, componentTypeActive),
-    ...componentTypeOrder
-      .filter(([id]) => id === "all" || componentTypeCounts.has(id))
-      .map(([id, label]) => {
-        const count = id === "all" ? componentRecords.length : componentTypeCounts.get(id) || 0;
-        return optionTag(id, label, count, componentTypeActive);
-      }),
-  ].join(""), componentTypeActive);
-
-  const componentClassCounts = countBy(componentRecords, recordClass);
-  const componentClassActive = state.category === "ship_component" ? state.componentClass : "none";
-  renderDropdown(els.componentClassFilters, [
-    optionTag("none", "无", undefined, componentClassActive),
-    ...componentClassOrder
-      .filter(([id]) => id === "all" || componentClassCounts.has(id))
-      .map(([id, label]) => {
-        const count = id === "all" ? componentRecords.length : componentClassCounts.get(id) || 0;
-        return optionTag(id, label, count, componentClassActive);
-      }),
-  ].join(""), componentClassActive);
-
-  const manufacturerLabel = new Map();
-  const manufacturerTriggerLabel = new Map();
-  for (const record of records) {
-    if (!manufacturerLabel.has(record.manufacturer)) {
-      const zh = recordManufacturer(record);
-      const en = record.manufacturer;
-      manufacturerLabel.set(en, zh && zh !== en ? `${zh} (${en})` : en);
-      manufacturerTriggerLabel.set(en, zh || en);
-    }
+  Object.assign(state, normalizeFilterSelection(state, records));
+  const model = buildFilterModel(records, state);
+  for (const key of FILTER_KEYS) {
+    const { options, value, disabled } = model[key];
+    const select = els[`${key}Filters`];
+    renderDropdown(select, options.map((option) => optionTag(option.value, option.label, option.count, value, option.triggerLabel)).join(""), value, disabled);
+    if (select.classList.contains("open")) positionFilterMenu(select);
   }
-  renderDropdown(els.manufacturerFilters, [
-    optionTag("all", "全部", records.length, state.manufacturer),
-    ...[...countBy(records, (record) => record.manufacturer).entries()]
-      .sort((a, b) => b[1] - a[1])
-      .map(([name, count]) => optionTag(name, manufacturerLabel.get(name) || name, count, state.manufacturer, manufacturerTriggerLabel.get(name) || name)),
-  ].join(""), state.manufacturer);
-
-  renderDropdown(els.materialFilters, [
-    optionTag("all", "全部", records.length, state.material),
-    ...getPopularMaterials(records).map(([name, label, count]) => {
-      const display = materialDisplayLabel(name, label);
-      return optionTag(name, display, count, state.material, display);
-    }),
-  ].join(""), state.material);
-
-  const missionTypeCounts = countMissionTypes(records);
-  renderDropdown(els.missionTypeFilters, missionTypeOrder
-    .filter(([id]) => id === "all" || missionTypeCounts.has(id))
-    .map(([id, label]) => {
-      const count = id === "all" ? records.filter((record) => recordMissionTypes(record).length).length : missionTypeCounts.get(id) || 0;
-      return optionTag(id, label, count, state.missionType);
-    })
-    .join(""), state.missionType);
-
-  syncShipComponentFilters();
 }
 
 function updateModeUI() {
@@ -1729,6 +1748,7 @@ function setMode(mode) {
   state.mode = mode;
   state.category = "all";
   state.componentType = "none";
+  state.size = "all";
   state.grade = "all";
   state.componentClass = "none";
   state.manufacturer = "all";
@@ -1738,13 +1758,13 @@ function setMode(mode) {
   state.selectedId = null;
   els.sourceOnly.checked = false;
   updateModeUI();
-  initFilters();
   applyFilters();
 }
 
 function resetFilters() {
   state.category = "all";
   state.componentType = "none";
+  state.size = "all";
   state.grade = "all";
   state.componentClass = "none";
   state.manufacturer = "all";
@@ -1754,12 +1774,12 @@ function resetFilters() {
   els.sourceOnly.checked = false;
   setSelectValue(els.categoryFilters, state.category);
   setSelectValue(els.componentTypeFilters, state.componentType);
+  setSelectValue(els.sizeFilters, state.size);
   setSelectValue(els.gradeFilters, state.grade);
   setSelectValue(els.componentClassFilters, state.componentClass);
   setSelectValue(els.manufacturerFilters, state.manufacturer);
   setSelectValue(els.materialFilters, state.material);
   setSelectValue(els.missionTypeFilters, state.missionType);
-  syncShipComponentFilters();
   applyFilters();
 }
 
@@ -1776,16 +1796,17 @@ function bindFilterSelect(select, key) {
       if (willOpen) positionFilterMenu(select);
       return;
     }
-    if (!option) return;
+    if (!option || option.disabled) return;
     state[key] = option.dataset.value;
     setSelectValue(select, state[key]);
     closeDropdowns();
-    if (key === "category") syncShipComponentFilters();
     applyFilters();
+    select.querySelector(".filter-trigger")?.focus({ preventScroll: true });
   });
 
   select.addEventListener("keydown", (event) => {
-    const options = [...select.querySelectorAll(".filter-option")];
+    if (select.classList.contains("disabled")) return;
+    const options = [...select.querySelectorAll(".filter-option:not(:disabled)")];
     const currentIndex = options.indexOf(document.activeElement);
 
     if (event.key === "Escape") {
@@ -1835,6 +1856,7 @@ function bindEvents() {
 
   bindFilterSelect(els.categoryFilters, "category");
   bindFilterSelect(els.componentTypeFilters, "componentType");
+  bindFilterSelect(els.sizeFilters, "size");
   bindFilterSelect(els.gradeFilters, "grade");
   bindFilterSelect(els.componentClassFilters, "componentClass");
   bindFilterSelect(els.manufacturerFilters, "manufacturer");
@@ -2049,45 +2071,9 @@ function bindEvents() {
   });
 }
 
-function materialMatches(record) {
-  if (state.material === "all") return true;
-  const materials = state.mode === "dismantle" ? getDismantleOutputs(record) : getAllMaterials(record);
-  return materials.some((item) => item.name === state.material || item.nameZh === state.material);
-}
-
-function componentClassMatches(record) {
-  if (state.category !== "ship_component") return true;
-  return state.componentClass === "all" || state.componentClass === "none" || recordClass(record) === state.componentClass;
-}
-
-function componentTypeMatches(record) {
-  if (state.category !== "ship_component") return true;
-  return state.componentType === "all" || state.componentType === "none" || record.type === state.componentType;
-}
-
-function missionTypeMatches(record) {
-  if (state.mode === "dismantle") return true;
-  return state.missionType === "all" || recordMissionTypes(record).some((type) => type.name === state.missionType);
-}
-
 function applyFilters() {
-  const query = normalizeSearchText(state.query);
-  syncShipComponentFilters();
-
-  state.filtered = state.records.filter((record) => {
-    if (state.mode === "dismantle" && !hasDismantleOutputs(record)) return false;
-    if (state.category !== "all" && record.category.id !== state.category) return false;
-    if (!componentTypeMatches(record)) return false;
-    if (state.grade !== "all" && String(record.stats.grade || "") !== state.grade) return false;
-    if (!componentClassMatches(record)) return false;
-    if (state.manufacturer !== "all" && record.manufacturer !== state.manufacturer) return false;
-    if (!materialMatches(record)) return false;
-    if (!missionTypeMatches(record)) return false;
-    if (state.mode === "craft" && state.sourceOnly && !(record.sourceCount > 0)) return false;
-    if (state.favoritesOnly && !isFavorite(record)) return false;
-    if (query && !(record._searchText || recordSearchText(record)).includes(query)) return false;
-    return true;
-  });
+  initFilters();
+  state.filtered = modeRecords().filter((record) => recordMatchesFilters(record, state));
 
   state.filtered.sort((a, b) => {
     if (state.sort === "name") return recordName(a).localeCompare(recordName(b), "zh-CN");
@@ -2110,10 +2096,10 @@ function applyFilters() {
 }
 
 function activeFilterCount() {
-  const values = [state.category, state.grade, state.manufacturer, state.material];
+  const values = [state.category, state.size, state.grade, state.manufacturer, state.material];
   if (state.mode === "craft") values.push(state.missionType);
   if (state.category === "ship_component") values.push(state.componentType, state.componentClass);
-  return values.filter((value) => value !== "all").length + (state.mode === "craft" && state.sourceOnly ? 1 : 0) + (state.favoritesOnly ? 1 : 0);
+  return values.filter((value) => value !== "all" && value !== "none").length + (state.mode === "craft" && state.sourceOnly ? 1 : 0) + (state.favoritesOnly ? 1 : 0);
 }
 
 function renderCounts() {
@@ -2391,7 +2377,6 @@ async function boot() {
       `${state.data.version}，${formatDataUpdatedAt(state.data.dataUpdatedAt)}，北京时间`,
     );
     updateModeUI();
-    initFilters();
     bindEvents();
     applyFilters();
     updatePlanCount();
