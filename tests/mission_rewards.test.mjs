@@ -13,6 +13,27 @@ function app(document = { querySelector: () => ({}), querySelectorAll: () => [] 
   return context.api;
 }
 
+test("quality summaries retain full quantum values, units and changes around the baseline", () => {
+  const api = app();
+  const record = {
+    id: "quality-test",
+    qualityStats: [{ label: "量子速度", value: 209834.2, digits: 2, unit: "km/s", properties: ["quantum_speed"] }],
+    tiers: [{ slots: [{ options: [{ minQuality: 1 }], modifiers: [
+      { propertyKey: "quantum_speed", propertyName: "量子速度", startQuality: 0, endQuality: 500, modifierAtStart: 0.8, modifierAtEnd: 1 },
+      { propertyKey: "quantum_speed", propertyName: "量子速度", startQuality: 500, endQuality: 1000, modifierAtStart: 1, modifierAtEnd: 1.2 },
+    ] }] }],
+  };
+  for (const [quality, value, change] of [[500,"209,834.2 km/s","无变化"], [499,"209,750.27 km/s","-0.04%"], [501,"209,918.13 km/s","+0.04%"], [750,"230,817.62 km/s","+10%"], [1000,"251,801.04 km/s","+20%"], [500,"209,834.2 km/s","无变化"]]) {
+    api.state.qualityValues["quality-test:0"] = quality;
+    const html = api.renderQualitySummaryContent(record);
+    assert.ok(html.includes('<strong>量子速度</strong>'));
+    assert.ok(html.includes('<small>209,834.2 km/s</small>'));
+    assert.ok(html.includes(`<b>${value}</b>`));
+    assert.ok(html.includes(`<em>${change}</em>`));
+    assert.equal((html.match(/class="quality-result-item/g) || []).length, 1);
+  }
+});
+
 test("empty results distinguish no favorites, search and filters without changing selection", () => {
   const list = { innerHTML: "" };
   const api = app({ querySelector: selector => selector === "#resultList" ? list : {}, querySelectorAll: () => [] });
