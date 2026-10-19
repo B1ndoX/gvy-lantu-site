@@ -2,6 +2,47 @@
 
 final result: passed
 
+## Latest Full-Site Audit And Refinements
+
+The user requested a whole-site audit, explicitly authorized direct fixes, then
+requested the Wikelo-style site footer and removal of nested numeric focus
+frames. These are scoped corrections to the hierarchy below, not a new theme,
+layout redesign or deployment authorization.
+
+### Findings, Fixed
+
+1. The left results panel's opaque sticky header covered the shared parent inset rim, unlike the right detail. The header now paints the common narrow `--shadow-panel-rim` itself, with no exterior header shadow or dimension change. Actual IAB before/after crop confirms the correction.
+2. Search/default-quality text was hard to read. Flat-fill composite contrast changes from 2.94 to 5.41 and 3.99 to 5.97 respectively; default quality remains gray and unconfirmed, edited quality remains cyan. These token calculations are not a claim of complete accessibility compliance.
+3. Empty favorites/search/filter states all said `暂无蓝图 / 无`. Existing empty-state structure now reports the actual reason; filters, selected IDs, data and favorites are unchanged.
+4. Opening all seven dropdowns reproduced horizontal clipping at 320/390px and an 820px tablet. A first phone-only alignment trial was insufficient. The final helper measures the actual natural-width menu and applies only a horizontal offset, retaining an 8px viewport margin on click, keyboard opening and resize. No filter-grid change, label shrinking or option-width change.
+5. The requested footer now blends into the canvas like the user's Wikelo reference, with a thin separator and the same filing icon dimensions. The audit also found a narrow-screen implicit grid/nowrap contribution extending footer children beyond their panel. A shrinkable grid track and normal filing wrapping correct it; existing legal text, URLs, logos and dialog footers are retained.
+6. Global focus styling added a rectangle inside the quality capsule. The analogous plan quantity field had the same problem. Both inner numeric inputs now have no outline/shadow; the outer capsule/stepper retains clear focus-within feedback. Standalone search/share fields and normal keyboard indicators are not globally disabled. Six viewport sizes and fresh touch testing verify this.
+
+### Current Evidence And Scope
+
+- Fresh numbered steps `gvy-full-audit-01` through `17` capture main/filter, expanded detail/quality, task sources and rewards, filled/empty plan, empty/filled favorites, share fallback, mineral/signal, dismantle, footer and responsive views. They were saved and opened during this audit, not borrowed from a prior run. Corrections have separate `gvy-full-audit-final-*` evidence. Scripts, before source archive, failure evidence and captures are retained in `.git/visual-previews/deep-blue-full-audit-20261019/`.
+- Exact original navy source remains `exec-aa8ec7b3-2baa-4210-a4ba-6cb77e570476.png`, normalized from 1672x941 to 1280x720. `gvy-full-audit-source-final-20261019.png` puts it beside the final actual IAB capture (1280x720 CSS/DPR2; screenshot API returns 1280x720). Both pages show craft VK-00/no filters/default quality/collapsed base attributes. Full-view and focused `gvy-full-audit-rim-before-after-20261019.png` were opened and reviewed. Independent Chromium uses DPR1; no screenshot recoloring or monitor-calibration claim.
+- The new footer reference is the user's `截屏2026-10-19 12.09.44.png`. Its actual Wikelo footer CSS was read only, not edited here. Main blueprint panel widths/layout remain authoritative, rather than expanding the whole site to match a differently cropped reference. Focus-removal reference is the user's `截屏2026-10-19 12.26.57.png`; final quality/quantity screenshots show one outer field boundary only.
+- Fidelity: existing typography, name sizes, colors, material names, content and logos remain unchanged except the requested footer's readable mobile filing style. All 397 non-paint CSSOM rules outside the explicit footer/menu-offset/inner-focus exceptions match. The 14-size/42-state snapshots match outside the requested footer and its natural page-height contribution. Five prior hierarchy roles and approved hover/selected colors remain unchanged. Broad gradients, generated mock geometry drift and screenshot density differences remain intentional exclusions. No outstanding actionable P0/P1/P2 remains in this scope; user style acceptance is separate.
+
+### Verification
+
+- Final matrix: 27 viewport sizes, 320 through 3840px, including 360/375/414 phones, 768/820/834/1024 tablets, both sides of existing breakpoints, 2K/ultrawide, 760x320 and 1100x420 short windows. All 189 menu openings, actual header children, main panels, plan bounds, footer children and complete filing links pass. Search/empty/reset, empty favorites, simulated 503/retry and missing-blueprint states pass. The simulated failure is an intentional separate QA context, not a production outage.
+- This audit reran all 4316 material rows / 3718 quality controls at 13 widths (56108 / 48334 checks), and all 7476 source rows at seven widths (52332), including specification/type ordering, text bounds and slider equality/alignment. It also reran all 672 tasks / 37 minerals at nine sizes (6048 / 333 dialogs) and all 531 signal associations at nine sizes (4779 layers, 58834 visible-trigger hit checks). No overlap, hidden neighbor signal, domain-data mutation or text-bound failure. Later scoped menu/focus/footer corrections have their dedicated final matrix/focus and geometry checks; do not imply every exhaustive content pass was repeated after every last paint declaration.
+- Final served port 8002 rechecks 18 sizes x four plan scenarios, three real 50/22/28 cells, 4px row spacing, no table pseudos, text bounds and elevation. Five-size/20 checks preserve the three unframed text exclusions plus task-source hover. Six-size numeric focus and fresh 390px touch check both wrapper feedback and inner outline removal; standalone search focus remains visible. Header/actions/share/favorite/add-plan focus restoration passes 80 cases at ten widths. Ten pointer targets retain distinct approved states without resizing.
+- 172 Python tests (including Node subprocess coverage), standalone 40 Node tests, JS syntax, offline blueprint/mining pair, build and diff checks pass. No relevant application error/warning in normal flows. Browser plugin/skill absent; the requested frontend-testing-debugging/audit skills use the user's explicitly authorized existing independent Playwright, plus actual IAB checks. Physical Safari/iOS/QQ, real OS text zoom and full assistive-technology compliance remain unverified.
+- QA harness corrections: normalize disposable favorites/plan badges across origins before geometry comparisons, allow only the requested footer's natural page-height delta, and compare share links to the actual candidate origin rather than hard-coded 8002. These fixture failures were investigated and rerun; they were not hidden as product regressions or used to widen layout exceptions.
+- Final local CSS `de4648290200`, JS `2bc5ce5932cd`; data `data-0f6906d31548ddd6`, exact LIVE/counts and 05:12 timestamp unchanged. Only UI paint, menu-boundary presentation and empty-result copy change; no domain calculations, minima, refresh scripts, workflows or schedules change. Pre-audit checkpoint `4425164` and full source/dist backups remain. No push, PR, workflow dispatch, data refresh or deployment.
+
+### Audit Steps
+
+1. Main, filters and all menus: passed, viewport clipping fixed.
+2. Craft/dismantle, attributes/materials and task sources: passed, readable placeholders and shared rim fixed.
+3. Task/mineral/signal dialogs: passed, compact widths and height-first behavior retained.
+4. Plan/favorites/share/empty/retry: passed, clearer empty reasons and scoped numeric focus fixed.
+5. Site footer: passed, requested style and narrow-screen wrapping implemented.
+6. Responsive, pointer, keyboard and touch: passed within the tested Chromium/IAB scope; physical-browser limits above remain.
+
 ## Latest Semantic Hierarchy Audit
 
 The user stopped the flat-unification trial, then explicitly requested an audit

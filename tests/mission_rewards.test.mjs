@@ -7,9 +7,46 @@ function app(document = { querySelector: () => ({}), querySelectorAll: () => [] 
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
   runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordSpecificationType, manufacturingSpecifications, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext("globalThis.api.renderResults = renderResults;", context);
+  runInNewContext("globalThis.api.positionFilterMenu = positionFilterMenu;", context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
+
+test("empty results distinguish no favorites, search and filters without changing selection", () => {
+  const list = { innerHTML: "" };
+  const api = app({ querySelector: selector => selector === "#resultList" ? list : {}, querySelectorAll: () => [] });
+  for (const [mode, query, favoritesOnly, favoriteIds, title, message] of [
+    ["craft", "", false, [], "暂无蓝图", "当前筛选条件下没有匹配结果。"],
+    ["dismantle", "", false, [], "暂无可拆解物品", "当前筛选条件下没有匹配结果。"],
+    ["craft", "<untrusted>", false, [], "暂无蓝图", "当前搜索和筛选条件下没有匹配结果。"],
+    ["craft", "", true, [], "暂无收藏", "当前收藏为空。"],
+    ["dismantle", "", true, ["one"], "暂无可拆解物品", "当前筛选条件下没有匹配的收藏。"],
+    ["craft", "query", true, ["one"], "暂无蓝图", "当前搜索和筛选条件下没有匹配结果。"],
+  ]) {
+    Object.assign(api.state, { mode, query, favoritesOnly, favorites: new Set(favoriteIds), filtered: [], selectedId: "unchanged" });
+    api.renderResults();
+    assert.ok(list.innerHTML.includes(`<h3>${title}</h3>`));
+    assert.ok(list.innerHTML.includes(`<p>${message}</p>`));
+    assert.doesNotMatch(list.innerHTML, /<untrusted>/);
+    assert.equal(api.state.selectedId, "unchanged");
+    assert.deepEqual([...api.state.favorites], favoriteIds);
+  }
+});
+
+test("filter menus stay within phone and tablet edges without changing their width", () => {
+  const api = app();
+  for (const [width, left, right, expected] of [[320,214,358.25,-46.25],[390,249,393.25,-11.25],[820,659.4375,885,-73],[390,4,220,4],[320,64,288,0]]) {
+    const values = [];
+    const menu = { style: {setProperty: (key, value) => values.push([key, value])}, getBoundingClientRect: () => ({left, right}) };
+    const select = { querySelector: () => menu, classList: {contains: () => true} };
+    api.positionFilterMenu(select, width);
+    assert.deepEqual(values, [["--filter-menu-offset", "0px"], ["--filter-menu-offset", `${expected}px`]]);
+    assert.ok(left + expected >= 8);
+    assert.ok(right + expected <= width - 8);
+  }
+  api.positionFilterMenu({querySelector:()=>null},320);
+});
 
 test("mission systems retain all values and explicitly mark missing data", () => {
   const api = app();

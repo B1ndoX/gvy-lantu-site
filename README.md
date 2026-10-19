@@ -63,6 +63,21 @@ The subsequent color-depth checkpoint is
 The hierarchy checkpoint is `checkpoint/deep-blue-before-unify-20261019`
 (`4c0ea08`); the stopped flat-unification trial was never installed on port 8002.
 
+The subsequent full-site audit fixes the sticky results header hiding its
+parent's top rim, faint search/default-quality placeholders and ambiguous empty
+results. Empty results now distinguish empty favorites from search/filter misses
+without changing the filters. All dropdowns clamp their natural width inside the
+viewport on pointer/keyboard opening and resize; the audit reproduced clipping
+at 320/390px and again on an 820px tablet, so this is not a phone-only CSS patch.
+The user-requested Wikelo-style site footer blends into the canvas, uses a thin
+filing divider and wraps complete filing links on small screens. Dialog footers
+are unchanged. Quality and plan numeric fields have no nested input-focus box;
+their existing outer capsule/stepper provides feedback, while standalone inputs
+keep their focus cues. No formula, data, quality minimum or main-layout/font change.
+The pre-audit checkpoint is `checkpoint/deep-blue-before-full-audit-20261019`
+(`4425164`), with its source archive and fresh audit evidence in
+`.git/visual-previews/deep-blue-full-audit-20261019/`.
+
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
 `checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and

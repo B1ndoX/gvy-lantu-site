@@ -21,7 +21,9 @@ class DeepBlueSkinTests(unittest.TestCase):
     def test_elevation_uses_shared_shadows_and_thin_edge_highlights(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
         panel = styles.split("--shadow-panel:", 1)[1].split(";", 1)[0]
-        self.assertIn("inset 0 1px 0 var(--edge-highlight)", panel)
+        rim = styles.split("--shadow-panel-rim:", 1)[1].split(";", 1)[0]
+        self.assertIn("var(--shadow-panel-rim)", panel)
+        self.assertIn("inset 0 1px 0 var(--edge-highlight)", rim)
         for selector in [".filter-board {", ".results-panel,\n.detail-panel {",
                          ".filter-menu {", ".mineral-card {", ".mission-dialog {"]:
             rule = styles.split(selector, 1)[1].split("}", 1)[0]
@@ -66,13 +68,55 @@ class DeepBlueSkinTests(unittest.TestCase):
 
     def test_rim_light_stays_local_and_joined_header_has_no_second_top_rim(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
-        panel = styles.split("--shadow-panel:", 1)[1].split(";", 1)[0]
-        self.assertIn("inset 0 5px 6px -4px", panel)
+        rim = styles.split("--shadow-panel-rim:", 1)[1].split(";", 1)[0]
+        self.assertIn("inset 0 5px 6px -4px", rim)
         summary = styles.split(".summary-strip {", 1)[1].split("}", 1)[0]
         self.assertIn("box-shadow: var(--shadow-joined)", summary)
         commands = styles.split(".favorite-detail-button {", 1)[1].split("}", 1)[0]
         self.assertIn("background: var(--surface-command)", commands)
         self.assertIn("box-shadow: var(--shadow-command)", commands)
+
+    def test_opaque_sticky_result_header_preserves_the_shared_top_rim(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        header = styles.split(".result-head {", 1)[1].split("}", 1)[0]
+        self.assertIn("background: var(--surface-header)", header)
+        self.assertIn("box-shadow: var(--shadow-panel-rim)", header)
+        self.assertNotIn("var(--shadow-elevation)", header)
+
+    def test_unconfirmed_placeholders_are_brighter_without_becoming_confirmed(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        self.assertIn("color: rgba(174, 208, 222, 0.65)", styles)
+        self.assertIn("color: rgba(172, 183, 191, 0.78)", styles)
+        self.assertIn('.material-quality .quality-number[data-confirmed="true"] { color: var(--cyan); }', styles)
+
+    def test_nested_numeric_fields_highlight_the_wrapper_not_an_inner_box(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        for selector in [".quality-number input:focus {", ".plan-row input:focus {"]:
+            rule = styles.split(selector, 1)[1].split("}", 1)[0]
+            self.assertIn("outline: none", rule)
+            self.assertIn("box-shadow: none", rule)
+        stepper = styles.split(".plan-stepper:focus-within {", 1)[1].split("}", 1)[0]
+        self.assertIn("border-color: var(--cyan)", stepper)
+        self.assertIn("box-shadow: var(--shadow-hover)", stepper)
+        self.assertIn(".quality-number:focus-within {", styles)
+
+    def test_filter_menu_offset_does_not_change_its_size_or_filter_grid(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        menu = styles.split(".filter-menu {", 1)[1].split("}", 1)[0]
+        self.assertIn("translateX(var(--filter-menu-offset, 0px))", menu)
+        self.assertIn("width: max-content", menu)
+        self.assertIn("max-width: min(360px, calc(100vw - 32px))", menu)
+
+    def test_site_footer_matches_the_requested_unframed_wikelo_style(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        html = (ROOT / "index.html").read_text(encoding="utf-8")
+        footer = styles.split(".site-footer {", 1)[1].split("}", 1)[0]
+        self.assertIn("background: transparent", footer)
+        self.assertIn("border-top: 1px", footer)
+        self.assertIn('class="footer-beian-separator" aria-hidden="true"></span>', html)
+        self.assertIn('alt="公安联网备案图标" width="15" height="17"', html)
+        for url in ["https://beian.miit.gov.cn/", "https://beian.mps.gov.cn/#/query/webSearch?code=61019702000690"]:
+            self.assertIn(url, html)
 
     def test_navy_depth_uses_blue_edges_without_changing_interaction_colors(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")

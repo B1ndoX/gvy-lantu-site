@@ -18,7 +18,8 @@
   --edge-highlight: rgba(93, 174, 235, 0.3);
   --edge-panel: rgba(70, 138, 189, 0.38);
   --shadow-elevation: 0 16px 28px rgba(0, 5, 13, 0.5), 0 3px 5px rgba(0, 4, 11, 0.4);
-  --shadow-panel: var(--shadow-elevation), inset 0 1px 0 var(--edge-highlight), inset 0 5px 6px -4px rgba(49, 139, 208, 0.4), inset 1px 0 0 rgba(66, 143, 199, 0.08), inset -1px 0 0 rgba(66, 143, 199, 0.08), inset 0 -1px 0 rgba(0, 6, 14, 0.45);
+  --shadow-panel-rim: inset 0 1px 0 var(--edge-highlight), inset 0 5px 6px -4px rgba(49, 139, 208, 0.4);
+  --shadow-panel: var(--shadow-elevation), var(--shadow-panel-rim), inset 1px 0 0 rgba(66, 143, 199, 0.08), inset -1px 0 0 rgba(66, 143, 199, 0.08), inset 0 -1px 0 rgba(0, 6, 14, 0.45);
   --shadow-joined: var(--shadow-elevation), inset 1px 0 0 rgba(111, 185, 235, 0.08), inset -1px 0 0 rgba(111, 185, 235, 0.08), inset 0 -1px 0 rgba(0, 6, 14, 0.45);
   --shadow-control-elevation: 0 5px 8px rgba(0, 5, 13, 0.5), 0 1px 2px rgba(0, 4, 11, 0.3);
   --shadow-control-edge: inset 0 1px 0 rgba(88, 163, 217, 0.23), inset 0 3px 4px -3px rgba(50, 136, 201, 0.24), inset 0 -1px 0 rgba(0, 7, 15, 0.6);
@@ -193,7 +194,7 @@ input {
 }
 
 input::placeholder {
-  color: rgba(174, 208, 222, 0.42);
+  color: rgba(174, 208, 222, 0.65);
 }
 
 input:focus {
@@ -686,6 +687,7 @@ input:focus {
   min-width: 100%;
   max-width: min(360px, calc(100vw - 32px));
   max-height: 260px;
+  transform: translateX(var(--filter-menu-offset, 0px));
   overflow: auto;
   padding: 6px;
   border: 1px solid rgba(118, 226, 255, 0.3);
@@ -833,7 +835,7 @@ html[data-query-mode="dismantle"] .reset-button {
   padding: 20px 4px max(20px, env(safe-area-inset-bottom));
   border-top: 1px solid rgba(126, 221, 242, 0.16);
   color: rgba(174, 208, 222, 0.62);
-  background: var(--bg-2);
+  background: transparent;
 }
 
 .footer-brand {
@@ -871,7 +873,7 @@ html[data-query-mode="dismantle"] .reset-button {
 }
 
 .footer-summary {
-  max-width: 880px;
+  max-width: 760px;
   margin: 0;
   font-size: 0.75rem;
   line-height: 1.7;
@@ -898,6 +900,13 @@ html[data-query-mode="dismantle"] .reset-button {
   font-size: 0.75rem;
 }
 
+.footer-beian-separator {
+  flex: 0 0 1px;
+  width: 1px;
+  height: 13px;
+  background: rgba(126, 221, 242, 0.16);
+}
+
 .public-security-beian {
   display: inline-flex;
   align-items: center;
@@ -907,8 +916,8 @@ html[data-query-mode="dismantle"] .reset-button {
 
 .public-security-beian img {
   display: block;
-  width: 12px;
-  height: 13px;
+  width: 15px;
+  height: 17px;
   object-fit: contain;
   flex: 0 0 auto;
 }
@@ -945,6 +954,7 @@ html[data-query-mode="dismantle"] .reset-button {
   border-bottom: 1px solid rgba(126, 221, 242, 0.16);
   color: rgba(126, 221, 242, 0.82);
   background: var(--surface-header);
+  box-shadow: var(--shadow-panel-rim);
   font-size: 12px;
   font-weight: 820;
   line-height: 1.4;
@@ -1131,7 +1141,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 .quality-number input { flex: 0 0 auto; width: calc(var(--quality-digits, 3) * 1ch); min-width: 0; min-height: 0; height: 14px; padding: 0; border: 0; border-radius: 0; color: inherit; background: transparent; font: inherit; font-variant-numeric: tabular-nums; line-height: 14px; text-align: center; appearance: textfield; -moz-appearance: textfield; }
 .quality-number > span:first-child { line-height: 14px; }
 .quality-number input::-webkit-inner-spin-button, .quality-number input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.quality-number input:focus { box-shadow: none; }
+.quality-number input:focus { outline: none; outline-offset: 0; box-shadow: none; }
 .mission-dialog.planner-dialog { width: min(720px, calc(100vw - 20px)); min-width: 0; max-width: calc(100vw - 20px); }
 .planner-dialog .plan-summary { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(126, 221, 242, 0.12); }
 .plan-summary > div { display: flex; flex-wrap: wrap; align-items: baseline; min-width: 0; gap: 6px; }
@@ -1159,6 +1169,8 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 .plan-stepper button:disabled { opacity: 0.35; }
 .plan-stepper button:focus-visible { outline: 2px solid var(--cyan); outline-offset: -3px; }
 .plan-row input { width: 44px; height: 32px; min-width: 0; min-height: 0; padding: 0; border: 0; border-right: 1px solid rgba(126, 221, 242, 0.12); border-left: 1px solid rgba(126, 221, 242, 0.12); border-radius: 0; background: transparent; color: var(--text-strong); font: inherit; font-size: 14px; text-align: center; appearance: textfield; -moz-appearance: textfield; }
+.plan-row input:focus { outline: none; outline-offset: 0; box-shadow: none; }
+.plan-stepper:focus-within { border-color: var(--cyan); box-shadow: var(--shadow-hover); }
 .plan-row input::-webkit-inner-spin-button, .plan-row input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .plan-remove { width: 32px; height: 32px; border: 0; border-radius: 6px; color: var(--muted); background: transparent; font-size: 18px; }
 .plan-choice { grid-column: 1 / -1; flex-wrap: wrap; }
@@ -1558,7 +1570,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
   white-space: nowrap;
 }
 
-.material-quality .quality-number { position: relative; flex: 0 0 72px; width: 72px; justify-content: center; gap: 4px; padding-inline: 6px; color: rgba(172, 183, 191, 0.6); cursor: text; }
+.material-quality .quality-number { position: relative; flex: 0 0 72px; width: 72px; justify-content: center; gap: 4px; padding-inline: 6px; color: rgba(172, 183, 191, 0.78); cursor: text; }
 .material-quality .quality-number[data-confirmed="true"] { color: var(--cyan); }
 .material-quality .quality-number:hover, .material-quality .quality-number:focus-within { border-color: var(--cyan); }
 .quality-number input::placeholder { color: inherit; opacity: 1; }
@@ -2446,6 +2458,7 @@ input[type="checkbox"]:not(:focus) {
 
   .site-footer {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     justify-items: start;
     margin-top: 14px;
     padding-top: 16px;
@@ -2454,17 +2467,19 @@ input[type="checkbox"]:not(:focus) {
   }
 
   .footer-summary {
-    max-width: 34rem;
+    min-width: 0;
+    max-width: 100%;
     font-size: 0.7rem;
     white-space: normal;
   }
 
   .footer-beian {
+    min-width: 0;
     margin-left: 0;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: flex-start;
     gap: 4px;
-    font-size: clamp(0.62rem, 2.75vw, 0.68rem);
+    font-size: 0.7rem;
   }
 
   .footer-beian-separator {
