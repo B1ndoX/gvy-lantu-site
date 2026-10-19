@@ -8,12 +8,15 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
-## Deep Blue Local Preview
+## Deep Blue Skin
 
-The 2026-10-19 skin is a local-only candidate on
+The 2026-10-19 skin was reviewed locally on
 `feat/deep-blue-local-preview-20261019`, based on production `5bf9add`.
-Do not push, open a release PR, dispatch workflows or deploy without renewed user
-authorization. Preview the built `dist` at `http://127.0.0.1:8002/`.
+The user subsequently authorized safe deployment after audit. Release this
+code-only change through the normal reviewed main/EdgeOne path, preserve the
+verified production data, and require exact client-URL health verification.
+Keep the prior production commit and original source/dist backups for rollback.
+The built local preview remains at `http://127.0.0.1:8002/`.
 
 Surfaces use uniform opaque navy fills, shared exterior elevation shadows and
 continuous 1px inner-edge highlights. No gradients, noise, decorative textures or

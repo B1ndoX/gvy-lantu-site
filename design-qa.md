@@ -2,6 +2,16 @@
 
 final result: passed
 
+## Release Authorization
+
+After the local corrections and audit below, the user explicitly authorized safe
+deployment after final checks. This supersedes historical local-only notes for
+this reviewed batch. The release preserves the verified production data and
+requires exact-client-URL EdgeOne health verification; Git push is not deployment
+proof. No further Wikelo coordination is requested; that site is separately
+deployed. Final production revision and verification are recorded in the project
+handoff after publishing.
+
 ## Latest Full-Site Audit And Refinements
 
 The user requested a whole-site audit, explicitly authorized direct fixes, then
