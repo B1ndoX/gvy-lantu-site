@@ -80,10 +80,14 @@
       <section class="filter-board" id="filterModal" aria-label="筛选条件">
         <header class="filter-head">
           <h2 id="filterTitle">制造蓝图</h2>
-          <div class="sort-group" role="group" aria-label="排序方式">
-            <button type="button" class="sort active" data-sort="relevance" aria-pressed="true">默认</button>
-            <button type="button" class="sort" data-sort="name" aria-pressed="false">名称</button>
-            <button type="button" class="sort" id="sourceSort" data-sort="sources" aria-pressed="false">来源</button>
+          <div class="filter-sort-tools">
+            <div class="sort-group" role="group" aria-label="排序方式">
+              <button type="button" class="sort active" data-sort="relevance" aria-pressed="true">默认</button>
+              <button type="button" class="sort" data-sort="name" aria-pressed="false">名称</button>
+              <button type="button" class="sort" id="sourceSort" data-sort="sources" aria-pressed="false">来源</button>
+            </div>
+            <button type="button" class="icon-button" id="shareFilters" aria-label="分享当前筛选"><span class="action-icon icon-share" aria-hidden="true"></span><span class="action-tooltip" role="tooltip">分享当前筛选</span></button>
+            <span class="copy-status" id="filterShareStatus" role="status"></span>
           </div>
           <span class="filter-result-badge"><span id="filterResultLabel">相关蓝图</span> <strong id="modalResultCount">0</strong> 个</span>
         </header>

@@ -186,6 +186,47 @@ function planTotals(plan, records) {
   return {materials: [...materials.values()], seconds, warnings};
 }
 
+function planMaterialQuantity(value) {
+  return new Intl.NumberFormat("zh-CN", {maximumFractionDigits: 6}).format(Number(value.toFixed(6)));
+}
+
+function craftPlanText() {
+  const plan = validPlan(state.craftPlan);
+  const totals = planTotals(plan, state.records);
+  const lines = ["制作清单", ...plan.map(row => {
+    const record = state.records.find(item => item.id === row.recordId);
+    return `${record ? recordName(record) : `当前版本未收录：${row.recordId}`} ×${row.quantity}`;
+  }), "", "材料合计"];
+  for (const item of totals.materials) {
+    const quality = typeof item.minQuality === "number" ? `至少 ${formatNumber(item.minQuality)}` : "品质未注明";
+    lines.push(`${materialName(item)}：${planMaterialQuantity(item.quantity)} ${item.kind === "resource" ? "SCU" : "件"} · ${quality}`);
+  }
+  lines.push("", `计划制作 ${formatNumber(plan.reduce((sum, row) => sum + row.quantity, 0))} 件`,
+    `清单总耗时 ${formatTime(totals.seconds)}`, "材料与耗时按全部物品及数量合计；耗时为依次制作估算，不含排队。");
+  if (totals.warnings.length) lines.push("", ...totals.warnings);
+  lines.push("", state.data.version, formatDataUpdatedAt(state.data.dataUpdatedAt).replace(/^更新/, "数据更新"));
+  return lines.join("\n");
+}
+
+async function copyCraftPlan(dialog, button) {
+  const text = craftPlanText();
+  try {
+    await navigator.clipboard.writeText(text);
+    if (button.isConnected) {
+      button.querySelector(".action-tooltip").textContent = "已复制清单";
+      dialog.querySelector("[data-copy-status]").textContent = "制作清单已复制";
+    }
+  } catch {
+    if (!dialog.isConnected || !dialog.open || !button.isConnected) return;
+    const fallback = dialog.querySelector("[data-plan-copy-fallback]");
+    fallback.hidden = false;
+    const field = fallback.querySelector("textarea");
+    field.value = text;
+    field.focus();
+    field.select();
+  }
+}
+
 function openUtilityDialog(title, content, opener, className = "") {
   if (document.querySelector("dialog[open]")) return null;
   const previousOverflow = document.body.style.overflow;
@@ -224,9 +265,11 @@ function renderPlanBody() {
     }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
     <section class="detail-section plan-material-section"><h3>材料合计</h3><p class="plan-explanation">材料与耗时均按清单内全部物品及数量合计；耗时按依次制作估算，不含排队。</p>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
       <thead><tr><th scope="col">材料</th><th scope="col">品质要求</th><th scope="col">所需总量</th></tr></thead>
-      <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 <strong class="plan-quality-value">${formatNumber(item.minQuality)}</strong>` : "未注明"}</td><td><strong class="plan-amount-value">${formatNumber(Number(item.quantity.toFixed(6)))}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
+      <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 <strong class="plan-quality-value">${formatNumber(item.minQuality)}</strong>` : "未注明"}</td><td><strong class="plan-amount-value">${planMaterialQuantity(item.quantity)}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
     <div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>清单总耗时</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
-    <div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>`;
+    <div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><div class="plan-toolbar-actions"><button type="button" class="icon-button" data-copy-plan aria-label="复制制作清单" ${!state.craftPlan.length ? "disabled" : ""}><span class="action-icon icon-copy" aria-hidden="true"></span><span class="action-tooltip" role="tooltip">复制清单</span></button><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div></div>
+    <span class="copy-status" data-copy-status role="status"></span>
+    <div class="copy-fallback" data-plan-copy-fallback hidden><label>未能自动复制，可选择以下清单文本<textarea class="share-link-input" readonly aria-label="制作清单文本" rows="6"></textarea></label></div>`;
 }
 
 function openCraftPlan(opener) {
@@ -247,18 +290,35 @@ function openCraftPlan(opener) {
       element.querySelector('[data-plan-step="-1"]').disabled = row.quantity <= 1;
       element.querySelector('[data-plan-step="1"]').disabled = row.quantity >= 9999;
     }
+    dialog.querySelector("[data-copy-plan] .action-tooltip").textContent = "复制清单";
+    dialog.querySelector("[data-copy-status]").textContent = "";
+    const fallback = dialog.querySelector("[data-plan-copy-fallback]");
+    if (!fallback.hidden) fallback.querySelector("textarea").value = craftPlanText();
   };
-  dialog.addEventListener("change", event => {
-    const row = state.craftPlan.find(item => item.recordId === event.target.closest("[data-plan-row]")?.dataset.planRow);
+  const commitRow = target => {
+    const row = state.craftPlan.find(item => item.recordId === target.closest("[data-plan-row]")?.dataset.planRow);
     if (!row) return;
-    if (event.target.matches("[data-plan-quantity]")) {
-      const n = Number(event.target.value);
-      row.quantity = Number.isFinite(n) && event.target.value.trim() ? Math.min(9999, Math.max(1, Math.round(n))) : row.quantity;
-    } else if (event.target.matches("[data-plan-choice]")) row.choices[event.target.dataset.planChoice] = Number(event.target.value);
+    if (target.matches("[data-plan-quantity]")) {
+      const n = Number(target.value);
+      row.quantity = Number.isFinite(n) && target.value.trim() ? Math.min(9999, Math.max(1, Math.round(n))) : row.quantity;
+    } else if (target.matches("[data-plan-choice]")) row.choices[target.dataset.planChoice] = Number(target.value);
     else return;
     update(true);
+  };
+  dialog.addEventListener("change", event => commitRow(event.target));
+  dialog.addEventListener("pointerdown", event => {
+    // Commit the quantity after activation, so blur cannot move the copy target mid-tap.
+    if (event.target.closest("[data-copy-plan]")) event.preventDefault();
   });
   dialog.addEventListener("click", event => {
+    const copy = event.target.closest("[data-copy-plan]");
+    if (copy) {
+      const draft = dialog.querySelector("[data-plan-quantity]:focus");
+      if (draft) commitRow(draft);
+      copy.focus({preventScroll: true});
+      copyCraftPlan(dialog, copy);
+      return;
+    }
     const step = event.target.closest("[data-plan-step]");
     if (step) {
       const element = step.closest("[data-plan-row]");
@@ -314,6 +374,87 @@ function restoreSharedBlueprint() {
   state.query = ""; els.searchInput.value = ""; state.favoritesOnly = false;
   setMode(params.get("mode") === "dismantle" && hasDismantleOutputs(record) ? "dismantle" : "craft");
   resetFilters(); updateFavoriteControl(); selectRecord(id);
+}
+
+function filterShareUrl(filters = state) {
+  const mode = filters.mode === "dismantle" ? "dismantle" : "craft";
+  const records = mode === "dismantle" ? state.records.filter(hasDismantleOutputs) : state.records;
+  const selection = normalizeFilterSelection({...filters, mode, favoritesOnly: false}, records);
+  const params = new URLSearchParams({view: "filters", v: "1", mode});
+  const query = selection.query.trim();
+  if (query.length > 1000) throw new Error("搜索词过长，无法生成筛选链接。");
+  if (query) params.set("q", query);
+  for (const key of FILTER_KEYS) if (!["all", "none"].includes(selection[key])) params.set(key, selection[key]);
+  if (mode === "craft" && selection.sourceOnly) params.set("source", "1");
+  if (["name", "sources"].includes(selection.sort)) params.set("sort", selection.sort);
+  if (state.data.version) params.set("live", state.data.version);
+  if (params.toString().length > 12000) throw new Error("筛选链接过长，无法生成分享链接。");
+  const url = new URL(window.location.href);
+  url.search = "";
+  url.hash = params.toString();
+  return url.href;
+}
+
+function parseSharedFilters(params) {
+  const keys = ["view", "v", "mode", "q", "source", "sort", "live", ...FILTER_KEYS];
+  if (params.toString().length > 12000 || params.get("view") !== "filters" || params.get("v") !== "1"
+    || !["craft", "dismantle"].includes(params.get("mode"))
+    || keys.some(key => params.getAll(key).length > 1)
+    || keys.some(key => (params.get(key) || "").length > (key === "q" ? 1000 : 300))
+    || (params.has("source") && !["0", "1"].includes(params.get("source")))
+    || (params.has("sort") && !["relevance", "name", "sources"].includes(params.get("sort")))) {
+    return {error: "筛选链接格式无效或版本不支持，未应用该链接。"};
+  }
+  const selection = {mode: params.get("mode"), query: (params.get("q") || "").trim(),
+    sort: params.get("sort") || "relevance", sourceOnly: params.get("source") === "1", favoritesOnly: false};
+  for (const key of FILTER_KEYS) selection[key] = params.get(key) || (key === "componentType" || key === "componentClass" ? "none" : "all");
+  const records = selection.mode === "dismantle" ? state.records.filter(hasDismantleOutputs) : state.records;
+  const normalized = normalizeFilterSelection(selection, records);
+  normalized.sourceOnly = normalized.mode === "craft" && normalized.sourceOnly;
+  const adjusted = FILTER_KEYS.some(key => params.has(key) && selection[key] !== normalized[key])
+    || (selection.mode === "dismantle" && selection.sourceOnly);
+  const changedVersion = params.has("live") && params.get("live") !== state.data.version;
+  return {selection: normalized, adjusted, changedVersion};
+}
+
+async function shareFilters(button) {
+  let link;
+  try { link = filterShareUrl(); }
+  catch (error) { openUtilityDialog("无法分享筛选", `<p class="mission-empty">${escapeHtml(error.message)}</p>`, button); return; }
+  try {
+    await navigator.clipboard.writeText(link);
+    if (button.isConnected) {
+      button.querySelector(".action-tooltip").textContent = "筛选链接已复制（不含收藏）";
+      document.querySelector("#filterShareStatus").textContent = "筛选链接已复制，不包含收藏或制作清单";
+    }
+  } catch {
+    if (!button.isConnected) return;
+    const dialog = openUtilityDialog("筛选链接", `<label class="share-link-label">当前公开筛选（不含收藏和制作清单）<input class="share-link-input" value="${escapeHtml(link)}" readonly aria-label="筛选链接" /></label>`, button);
+    dialog?.querySelector("input")?.select();
+  }
+}
+
+function restoreSharedLocation() {
+  const params = new URLSearchParams(window.location.hash.slice(1));
+  if (params.get("view") !== "filters") { restoreSharedBlueprint(); return; }
+  const result = parseSharedFilters(params);
+  if (result.error) { openUtilityDialog("筛选链接未应用", `<p class="mission-empty">${escapeHtml(result.error)}</p>`); return; }
+  window.clearTimeout(searchInputTimer);
+  document.querySelector("dialog[open]")?.close();
+  closeMineralInfo(false);
+  closeDropdowns();
+  Object.assign(state, result.selection, {selectedId: null});
+  els.searchInput.value = state.query;
+  els.sourceOnly.checked = state.sourceOnly;
+  updateModeUI();
+  document.querySelectorAll(".sort").forEach(button => {
+    button.classList.toggle("active", button.dataset.sort === state.sort);
+    button.setAttribute("aria-pressed", String(button.dataset.sort === state.sort));
+  });
+  applyFilters();
+  const notes = [result.changedVersion ? "数据版本已变化，筛选结果以当前版本为准。" : "",
+    result.adjusted ? "链接中的部分筛选已不可用，已按当前数据调整。" : ""].filter(Boolean);
+  if (notes.length) openUtilityDialog("筛选已恢复", `<p class="mission-empty">${escapeHtml(notes.join(" "))}</p>`);
 }
 
 function formatDataUpdatedAt(value) {
@@ -1839,7 +1980,8 @@ function bindFilterSelect(select, key) {
 
 function bindEvents() {
   document.querySelector("#openPlan")?.addEventListener("click", event => openCraftPlan(event.currentTarget));
-  window.addEventListener("hashchange", restoreSharedBlueprint);
+  document.querySelector("#shareFilters")?.addEventListener("click", event => shareFilters(event.currentTarget));
+  window.addEventListener("hashchange", restoreSharedLocation);
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
 
   els.searchInput.addEventListener("input", (event) => {
@@ -1963,6 +2105,9 @@ function bindEvents() {
   });
   els.detailPanel.addEventListener("toggle", event => {
     if (!event.target.open && mineralSignal && event.target.contains(mineralSignal.button)) closeLocationSignals();
+    if (event.target.matches(".source-more") && event.target.open) {
+      event.target.closest(".source-item").querySelectorAll("[data-source-variants]").forEach(button => toggleSourceVariants(button, true));
+    }
   }, true);
   document.addEventListener("scroll", event => {
     if (mineralSignal && !mineralSignal.panel.contains(event.target)) closeLocationSignals();
@@ -1974,6 +2119,8 @@ function bindEvents() {
   });
 
   els.detailPanel.addEventListener("click", (event) => {
+    const variants = event.target.closest("[data-source-variants]");
+    if (variants) { toggleSourceVariants(variants); return; }
     if (event.target.closest("[data-close-signal]")) { closeLocationSignals(true); return; }
     if (mineralSignal && !mineralSignalContains(event.target)) closeLocationSignals();
     const qualityCapsule = event.target.closest(".quality-number");
@@ -2072,6 +2219,10 @@ function bindEvents() {
 }
 
 function applyFilters() {
+  const share = document.querySelector("#shareFilters .action-tooltip");
+  if (share) share.textContent = "分享当前筛选";
+  const shareStatus = document.querySelector("#filterShareStatus");
+  if (shareStatus) shareStatus.textContent = "";
   initFilters();
   state.filtered = modeRecords().filter((record) => recordMatchesFilters(record, state));
 
@@ -2261,7 +2412,7 @@ function renderDetail() {
                       <button class="material-summary material-item-button" type="button" data-mineral="${escapeHtml(item.name)}">
                         <span>
                           <strong>${escapeHtml(materialName(item))}</strong>
-                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality > 1 ? ` · <span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>` : ""}</small>
+                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${["resource", "item"].includes(item.kind) ? ` · <span class="material-unit">${item.kind === "resource" ? "SCU" : "件"}</span>` : ""}${item.minQuality > 1 ? ` · <span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>` : ""}</small>
                         </span>
                       </button>
                       ${renderMaterialQuality(record, item.slotData, item.slotIndex)}
@@ -2299,6 +2450,37 @@ function recordMissions(record) {
   return [...missions.values()];
 }
 
+function missionVariantKey(mission) {
+  const rewards = mission.id && state.data.missionRewards?.missions?.[mission.id];
+  if (!rewards?.requirements || !Array.isArray(rewards.items) || !rewards.pools?.length
+    || rewards.requirements.unresolvedLocations || rewards.requirements.additionalRestrictions?.length
+    || rewards.pools.some(pool => !pool.id || !pool.trigger || !Number.isFinite(pool.chance))) return null;
+  // Compare every recorded field except identity; unknown fields remain part of the comparison.
+  const source = Object.fromEntries(Object.entries(mission).filter(([key]) => !["id", "debugName"].includes(key)));
+  const ordered = value => Array.isArray(value) ? value.map(ordered)
+    : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, ordered(value[key])])) : value;
+  return JSON.stringify(ordered({source, rewards}));
+}
+
+function groupSourceMissions(missions) {
+  const groups = new Map();
+  for (const mission of missions) {
+    const key = missionVariantKey(mission) ?? mission;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(mission);
+  }
+  return [...groups.values()];
+}
+
+function toggleSourceVariants(button, expanded = button.getAttribute("aria-expanded") !== "true") {
+  const list = els.detailPanel.querySelector(`#${button.dataset.sourceVariants}`);
+  if (!list) return;
+  list.hidden = !expanded;
+  button.setAttribute("aria-expanded", String(expanded));
+  button.setAttribute("aria-label", `${expanded ? "收起" : "展开"}同条件任务（另有 ${list.children.length} 条）`);
+  button.title = button.getAttribute("aria-label");
+}
+
 function renderSources(record) {
   const missions = recordMissions(record);
   if (!missions.length) {
@@ -2310,13 +2492,21 @@ function renderSources(record) {
     `;
   }
 
-  const rows = missions.map((mission) => {
+  const renderMission = (mission) => {
     const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
     const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
     const type = mission.missionType ? missionTypeOrder.find(([id]) => id === mission.missionType)?.[1] || mission.missionType : "类型未注明";
     const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
     const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b> · <span class="source-mission-type">${escapeHtml(type)}</span>${faction}${reward}</small>`;
-    return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
+    return clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`;
+  };
+  const rows = groupSourceMissions(missions).map((group, index) => {
+    const first = renderMission(group[0]);
+    if (group.length === 1) return `<li>${first}</li>`;
+    const id = `source-variants-${index}`;
+    const label = `展开同条件任务（另有 ${group.length - 1} 条）`;
+    return `<li><div class="source-variant-head"><button type="button" class="source-variant-toggle" data-source-variants="${id}" aria-controls="${id}" aria-expanded="false" aria-label="${label}" title="${label}"><span class="action-icon icon-chevron" aria-hidden="true"></span></button>${first}</div>
+      <ul class="source-missions source-variant-members" id="${id}" hidden>${group.slice(1).map(mission => `<li>${renderMission(mission)}</li>`).join("")}</ul></li>`;
   });
   const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN
     ? rows.length : SOURCE_TASK_PREVIEW_LIMIT;
@@ -2380,7 +2570,7 @@ async function boot() {
     bindEvents();
     applyFilters();
     updatePlanCount();
-    restoreSharedBlueprint();
+    restoreSharedLocation();
   } catch (error) {
     console.error("蓝图数据加载失败。", error);
     els.resultList.innerHTML = `

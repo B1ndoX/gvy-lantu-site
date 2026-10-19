@@ -148,7 +148,9 @@ class PublicCopyTests(unittest.TestCase):
         self.assertLess(header.index('class="sort-group"'), header.index('class="filter-result-badge"'))
         self.assertNotIn('>推荐</button>', html)
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
-        self.assertIn('.filter-head .sort-group { grid-column: 1 / -1; grid-row: 2; }', styles)
+        self.assertIn('<div class="filter-sort-tools">', header)
+        self.assertIn('id="shareFilters" aria-label="分享当前筛选"', header)
+        self.assertIn('.filter-head .filter-sort-tools { grid-column: 1 / -1; grid-row: 2;', styles)
 
     def test_detail_actions_are_grouped_in_add_favorite_share_order(self) -> None:
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
