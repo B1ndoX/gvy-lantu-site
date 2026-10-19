@@ -8,6 +8,84 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## Deep Blue Skin
+
+The 2026-10-19 skin was reviewed locally on
+`feat/deep-blue-local-preview-20261019`, based on production `5bf9add`.
+The user subsequently authorized safe deployment after audit. Release this
+code-only change through the normal reviewed main/EdgeOne path, preserve the
+verified production data, and require exact client-URL health verification.
+Keep the prior production commit and original source/dist backups for rollback.
+The built local preview remains at `http://127.0.0.1:8002/`.
+
+Surfaces use uniform opaque navy fills, shared exterior elevation shadows and
+continuous 1px inner-edge highlights. No gradients, noise, decorative textures or
+new assets are used. The selected navy concept defines color/elevation only;
+existing layout, templates, breakpoints, fonts, semantic foreground colors and
+all functionality remain unchanged, with two user-requested visual corrections:
+the joined header/summary now aligns to the same side insets as the main panels,
+and plan material rows have 4px separation and the shared raised-row treatment.
+Header tracks reserve the real action-control minima on narrow desktops/phones;
+no navigation or content regions are rearranged. The old structural page wrapper
+is transparent so it no longer visually encloses the independent raised panels.
+The robot ship card is a shadow reference
+only. Per-item time remains in its original plan row, left of quantity controls,
+at 12px with its original formatting and 16px gap. Quality 0/1 remains unchanged.
+
+The latest hierarchy audit supersedes the attempted all-one-color unification.
+Top/header/filter, left/right main panels and dialog shells/headers share the
+right detail's #061c32 base. Repeated data cards (results, materials, base/quality
+attributes, plan items/material cells, rewards, mineral entries and dismantled
+outputs) share #0b243b. Nested groups (quality results, task sources and reward
+pools) use recessed #031321, also used by inset inputs/steppers. Compact buttons
+and specification chips retain #061e33. Gold commands and cyan/gold state
+semantics remain intentional exceptions, not extra content tiers.
+Same-role surfaces share paint, while different roles keep depth. The scoped
+quality capsule no longer overrides its opaque inset fill with legacy RGBA.
+Only paint changes: no DOM, layout, font or data changes. Lower-alpha blue rim
+light, exterior elevation, approved hover/selected colors and the three explicit
+unframed-text exclusions remain unchanged. See the latest `design-qa.md` role map.
+
+The latest user correction restores the stronger hover/selected
+treatment, including task-source feedback, and removes only the unwanted nested
+boxes around material names, base attributes and source-expand summaries. Those
+three plain-text surfaces retain text-color feedback without new fills/shadows
+or global focus rings. Results keep distinct hover/selected fills and an inset
+selected marker; filter options retain cyan selection and commands retain gold
+semantics. Hover additions are capability-gated; dimensions remain unchanged.
+
+Plan table elevation is split between the row's exterior shadow and the cells'
+inner rim, so opaque cell fills do not hide the highlight. Never attach generated
+decorative content to a table row: the failed trial disrupted column sizing.
+The affected preview was restored before the replacement was tested. Build future
+visual candidates in an isolated ignored copy on another local port; replace the
+user-facing port 8002 build only after rendered QA passes. The pre-refinement
+checkpoint is `checkpoint/deep-blue-before-rim-polish-20261019` (`5faedd3`).
+The subsequent color-depth checkpoint is
+`checkpoint/deep-blue-before-depth-20261019` (`786f079`).
+The hierarchy checkpoint is `checkpoint/deep-blue-before-unify-20261019`
+(`4c0ea08`); the stopped flat-unification trial was never installed on port 8002.
+
+The subsequent full-site audit fixes the sticky results header hiding its
+parent's top rim, faint search/default-quality placeholders and ambiguous empty
+results. Empty results now distinguish empty favorites from search/filter misses
+without changing the filters. All dropdowns clamp their natural width inside the
+viewport on pointer/keyboard opening and resize; the audit reproduced clipping
+at 320/390px and again on an 820px tablet, so this is not a phone-only CSS patch.
+The user-requested Wikelo-style site footer blends into the canvas, uses a thin
+filing divider and wraps complete filing links on small screens. Dialog footers
+are unchanged. Quality and plan numeric fields have no nested input-focus box;
+their existing outer capsule/stepper provides feedback, while standalone inputs
+keep their focus cues. No formula, data, quality minimum or main-layout/font change.
+The pre-audit checkpoint is `checkpoint/deep-blue-before-full-audit-20261019`
+(`4425164`), with its source archive and fresh audit evidence in
+`.git/visual-previews/deep-blue-full-audit-20261019/`.
+
+Before editing, source/dist/handoff backups were saved under
+`.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch
+`checkpoint/deep-blue-before-20261019`. See that folder's manifest for hashes and
+scoped recovery, and `design-qa.md` for local browser comparisons and test scope.
+
 ## Reviewed Releases
 
 The original refresh workflow accepts an optional manual `prepare_only` input

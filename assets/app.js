@@ -1502,6 +1502,15 @@ function closeDropdowns(except = null) {
   });
 }
 
+function positionFilterMenu(select, viewportWidth = window.innerWidth) {
+  const menu = select.querySelector(".filter-menu");
+  if (!menu || !select.classList.contains("open")) return;
+  menu.style.setProperty("--filter-menu-offset", "0px");
+  const rect = menu.getBoundingClientRect();
+  const offset = Math.max(8 - rect.left, Math.min(0, viewportWidth - 8 - rect.right));
+  menu.style.setProperty("--filter-menu-offset", `${offset}px`);
+}
+
 function setSelectValue(container, value) {
   container.dataset.value = value;
   container.querySelectorAll(".filter-option").forEach((option) => {
@@ -1730,6 +1739,7 @@ function bindFilterSelect(select, key) {
       closeDropdowns(select);
       select.classList.toggle("open", willOpen);
       trigger.setAttribute("aria-expanded", String(willOpen));
+      if (willOpen) positionFilterMenu(select);
       return;
     }
     if (!option) return;
@@ -1755,6 +1765,7 @@ function bindFilterSelect(select, key) {
       closeDropdowns(select);
       select.classList.add("open");
       select.querySelector(".filter-trigger")?.setAttribute("aria-expanded", "true");
+      positionFilterMenu(select);
       const selectedIndex = options.findIndex((option) => option.getAttribute("aria-selected") === "true");
       options[Math.max(0, selectedIndex)]?.focus();
       return;
@@ -1900,7 +1911,10 @@ function bindEvents() {
   document.addEventListener("scroll", event => {
     if (mineralSignal && !mineralSignal.panel.contains(event.target)) closeLocationSignals();
   }, true);
-  window.addEventListener("resize", () => closeLocationSignals());
+  window.addEventListener("resize", () => {
+    closeLocationSignals();
+    document.querySelectorAll(".filter-select.open").forEach(select => positionFilterMenu(select));
+  });
 
   els.detailPanel.addEventListener("click", (event) => {
     if (event.target.closest("[data-close-signal]")) { closeLocationSignals(true); return; }
@@ -2077,10 +2091,16 @@ function renderCounts() {
 
 function renderResults() {
   if (!state.filtered.length) {
+    const emptyFavorites = state.favoritesOnly && state.favorites.size === 0;
+    const title = emptyFavorites ? "暂无收藏" : state.mode === "dismantle" ? "暂无可拆解物品" : "暂无蓝图";
+    const explanation = emptyFavorites ? "当前收藏为空。"
+      : state.query.trim() ? "当前搜索和筛选条件下没有匹配结果。"
+      : state.favoritesOnly ? "当前筛选条件下没有匹配的收藏。"
+      : "当前筛选条件下没有匹配结果。";
     els.resultList.innerHTML = `
       <div class="empty-state">
-        <h3>${state.mode === "dismantle" ? "暂无可拆解物品" : "暂无蓝图"}</h3>
-        <p>无</p>
+        <h3>${title}</h3>
+        <p>${explanation}</p>
       </div>
     `;
     return;
