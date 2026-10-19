@@ -167,7 +167,7 @@ class PublicCopyTests(unittest.TestCase):
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         name = styles.split('.row-main strong {', 1)[1].split('}', 1)[0]
         self.assertIn('color: var(--text-strong)', name)
-        self.assertIn('font-size: 18px', name)
+        self.assertIn('font-size: 21px', name)
         self.assertNotIn('white-space: nowrap', name)
         self.assertIn('.source-mission-type { color: #d6dce2; }', styles)
         self.assertIn('（${escapeHtml(recordCompactSpecification(record))}）', app)
@@ -211,7 +211,7 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
         self.assertIn("color: var(--text-strong)", name)
-        self.assertIn("font-size: 18px", name)
+        self.assertIn("font-size: 21px", name)
         self.assertIn("line-height: 1.45", name)
         metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]
         self.assertIn("color: var(--muted)", metadata)
@@ -229,6 +229,17 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn("font-weight: 400", unit_time)
         controls = styles.split(".plan-controls {", 1)[1].split("}", 1)[0]
         self.assertIn("gap: 16px", controls)
+
+    def test_detail_item_titles_are_30px_with_tighter_vertical_spacing(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        title = styles.split('.detail-panel h2 {', 1)[1].split('}', 1)[0]
+        self.assertIn('font-size: 30px', title)
+        self.assertIn('margin: 4px 0 11px', title)
+        self.assertIn('padding-bottom: 6px', title)
+        self.assertIn('line-height: 1.2', title)
+        self.assertIn('overflow-wrap: anywhere', title)
+        material = styles.split('.material-item .material-summary strong {', 1)[1].split('}', 1)[0]
+        self.assertIn('font-size: 18px', material)
 
     def test_base_attribute_labels_can_wrap_without_truncation(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")

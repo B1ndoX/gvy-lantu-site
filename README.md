@@ -122,7 +122,8 @@ the actual result-card columns, including their compact 320px padding. Only
 manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
 missing-source gray and dismantling's recovery badges keep their colors.
 
-Main result rows now follow the crafting-plan name/metadata pattern: the 18px
+Detail item titles use 30px. Main result rows follow the crafting-plan
+name/metadata pattern: the 21px
 standard white name (`var(--text-strong)`) is followed inline by 13px muted parentheses containing category,
 specific component/weapon type, size and verified compact class/grade. Reuse the
 same specification helper as plans. Full names and metadata wrap naturally on
@@ -132,6 +133,13 @@ visible parentheses. Reward-pool summaries and detail specifications keep their
 own formats; do not globally change summary ordering to style the main list.
 The user's latest choice restores the existing standard white for names, replacing
 the custom silver and blue shades while keeping menu yellow and material green intact.
+The 30px detail title and 21px list/plan names also apply on phones. Preserve
+compact panel/dialog widths and all other font sizes; wrap complete long names
+instead of shrinking text, truncating it or changing the layout. Retain the
+detail label and divider styling. The latest spacing correction brings the name
+closer to both: use a 4px top margin and 6px bottom padding, retaining the 11px
+margin after the divider and 1.2 line height. Long names may add natural lines;
+never force a fixed title height that clips or overlaps them.
 
 Manufacturing places one compact specification row directly under the name:
 category, specific type, size, verified full class/grade (only when available),
@@ -378,7 +386,7 @@ The plan dialog stays content-height driven up to the available window height.
 Its width is a compact 720px (only 80px wider than the previous 640px for the
 larger names and controls), always fitting inside phone margins. Do not scale
 it with monitor width or change the row/table layout. Planned item
-names come first at 18px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
+names come first at 21px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
 Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
 fields; without a recognized class omit the grade too, rather than showing a bare A-D.
