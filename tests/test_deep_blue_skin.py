@@ -9,7 +9,7 @@ class DeepBlueSkinTests(unittest.TestCase):
     def test_surfaces_are_uniform_navy_without_background_gradients(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
         for token in ["--bg: #030e1c", "--bg-2: #061526", "--glass: #061c32",
-                      "--glass-strong: #06233e", "--row: #071e35"]:
+                      "--glass-strong: var(--glass)", "--row: #0b243b"]:
             self.assertIn(token, styles)
         self.assertNotRegex(styles, r"(?:linear|radial|conic)-gradient\s*\(")
         self.assertIn("background: var(--bg);", styles)
@@ -83,6 +83,28 @@ class DeepBlueSkinTests(unittest.TestCase):
         for token in ["--text: #e2f6ff", "--text-strong: #f4faff", "--muted: #aed0de",
                       "--cyan: #7eddf2", "--orange: #ffc468"]:
             self.assertIn(token, styles)
+
+    def test_same_role_surfaces_share_tokens_without_flattening_the_hierarchy(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        for token in ["--glass-strong", "--surface-header"]:
+            self.assertIn(f"{token}: var(--glass);", styles)
+        self.assertIn("--group: var(--row);", styles)
+        self.assertIn("--row: #0b243b;", styles)
+        self.assertIn("--surface-inset: #031321;", styles)
+        self.assertIn("--surface-control: #061e33;", styles)
+        self.assertNotIn("--row: var(--glass);", styles)
+        rows = styles.split(".plan-row,\n.quality-result-item,", 1)[1].split("}", 1)[0]
+        self.assertIn("background: var(--row)", rows)
+        self.assertIn("box-shadow: var(--shadow-control)", rows)
+
+    def test_nested_groups_and_quality_fields_use_opaque_recessed_surfaces(self) -> None:
+        styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")
+        groups = styles.split(".source-item,\n.mission-pool,\n.plan-stepper,", 1)[1].split("}", 1)[0]
+        self.assertIn("background: var(--surface-inset)", groups)
+        self.assertIn("box-shadow: var(--shadow-inset)", groups)
+        quality = styles.split(".material-quality .quality-number,\n.dismantle-summary span {", 1)[1].split("}", 1)[0]
+        self.assertIn("background: var(--surface-inset)", quality)
+        self.assertNotIn("rgba(", quality.split("background:", 1)[1].split(";", 1)[0])
 
     def test_hover_and_selection_keep_distinct_approved_paint(self) -> None:
         styles = (ROOT / "assets/styles.css").read_text(encoding="utf-8")

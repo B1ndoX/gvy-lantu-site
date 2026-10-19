@@ -29,13 +29,19 @@ The robot ship card is a shadow reference
 only. Per-item time remains in its original plan row, left of quantity controls,
 at 12px with its original formatting and 16px gap. Quality 0/1 remains unchanged.
 
-The latest local refinement darkens the surface cores and confines the blue rim
-to their edges. The follow-up depth pass uses #06233e primary panels, #061c32
-main panels and #071e35 rows, with lower-alpha blue rather than whitish rim
-highlights. This corrects the pale gray-blue cast seen against the selected
-concept. Uniform fills remain; no gradients or global filters are added.
-Hover/selected colors and all semantic text tokens stay exactly unchanged.
-Only existing :root paint values change in this pass, not component rules.
+The latest hierarchy audit supersedes the attempted all-one-color unification.
+Top/header/filter, left/right main panels and dialog shells/headers share the
+right detail's #061c32 base. Repeated data cards (results, materials, base/quality
+attributes, plan items/material cells, rewards, mineral entries and dismantled
+outputs) share #0b243b. Nested groups (quality results, task sources and reward
+pools) use recessed #031321, also used by inset inputs/steppers. Compact buttons
+and specification chips retain #061e33. Gold commands and cyan/gold state
+semantics remain intentional exceptions, not extra content tiers.
+Same-role surfaces share paint, while different roles keep depth. The scoped
+quality capsule no longer overrides its opaque inset fill with legacy RGBA.
+Only paint changes: no DOM, layout, font or data changes. Lower-alpha blue rim
+light, exterior elevation, approved hover/selected colors and the three explicit
+unframed-text exclusions remain unchanged. See the latest `design-qa.md` role map.
 
 The latest user correction restores the stronger hover/selected
 treatment, including task-source feedback, and removes only the unwanted nested
@@ -54,6 +60,8 @@ user-facing port 8002 build only after rendered QA passes. The pre-refinement
 checkpoint is `checkpoint/deep-blue-before-rim-polish-20261019` (`5faedd3`).
 The subsequent color-depth checkpoint is
 `checkpoint/deep-blue-before-depth-20261019` (`786f079`).
+The hierarchy checkpoint is `checkpoint/deep-blue-before-unify-20261019`
+(`4c0ea08`); the stopped flat-unification trial was never installed on port 8002.
 
 Before editing, source/dist/handoff backups were saved under
 `.git/visual-backups/deep-blue-before-20261019-0947/`, with the checkpoint branch

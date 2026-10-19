@@ -2,6 +2,59 @@
 
 final result: passed
 
+## Latest Semantic Hierarchy Audit
+
+The user stopped the flat-unification trial, then explicitly requested an audit
+before repainting: same-role surfaces must match, different roles must retain
+depth. The trial was never installed on port 8002. This section supersedes the
+older depth-pass palette below. This is local technical QA, not final user style
+approval or permission to deploy.
+
+### Findings And Corrections
+
+- [P2, fixed] Same-level primary panels differed: top/filter #06233e, detail/dialog #061c32 and structural headers #071d33. Fresh main/plan/task/mineral/dismantle captures plus computed styles confirmed the mismatch. They now share the approved right-detail #061c32 token.
+- [P2, fixed] Repeated cards differed (#071e35 rows versus #0b2338 quality effects), and the stopped trial would have flattened all rows into the main panel. All repeated data cards now share distinct #0b243b with the existing raised-card shadow; quality-effect cells join that same role.
+- [P2, fixed] Nested task-source groups used a row surface and reward pools used a control surface. They now share the existing recessed #031321 group role with quality-results groups. Source-row hover feedback remains explicitly enabled.
+- [P2, fixed] The higher-specificity `.material-quality .quality-number` retained legacy RGBA and overrode the common opaque field token. Its original scoped declaration now uses #031321. No input or quality mechanism changed.
+
+| Role | Components | Normal Fill |
+| --- | --- | --- |
+| Primary | Top/summary/filter, results/detail, plan/task/mineral shells and structural heads/feet | #061c32 |
+| Raised data card | Results, materials, base/quality cells, plan items/material cells, reward rows, mineral entries, dismantled outputs | #0b243b |
+| Recessed group | Quality-effects section, task-source section, reward pools | #031321 |
+| Compact control | Normal buttons, filter triggers, specification chips, unselected system buttons | #061e33 |
+| Inset field | Search/quality fields, stepper, modifier chips, small inset capsules | #031321 |
+| Interaction | Existing hover / selected, plus original semantic gold/cyan exceptions | #1b455f / #164f68 |
+
+Roles describe component function, not arbitrary DOM depth. Recessed groups and
+fields deliberately share the inset token. Transparent plain-text targets remain
+transparent; semantic badges, gold commands and accent-selected buttons are not
+forced into resting content colors. The page canvas/footer remain unchanged.
+
+### Evidence And Fidelity
+
+- Source visual truth: `/Users/bindox/.codex/generated_images/019ec6a8-7788-76e3-ae3c-ae7a03b52189/exec-aa8ec7b3-2baa-4210-a4ba-6cb77e570476.png`, 1672 x 941 normalized to 1280 x 720. Route is manufacturing VK-00, no filters, collapsed base attributes/default quality. IAB uses 1280 x 720 CSS/DPR 2, screenshot API returns 1280 x 720; independent Chromium uses DPR 1. Actual IAB favorites 1/plan 0 remain unchanged; isolated Chromium uses disposable QA state.
+- Before captures `gvy-hierarchy-01-main-before-20261019.png` through `06-dismantle-before` were opened before edits. After detail/plan/task/mineral/dismantle desktop and 390px captures were opened as well. Evidence and scripts are retained in `.git/visual-previews/deep-blue-hierarchy-20261019/`.
+- Full-view `gvy-hierarchy-source-final-iab-20261019.png` puts source left/final IAB right; `gvy-hierarchy-before-after-iab-20261019.png` puts actual pre-pass IAB left/final right, both 2560 x 720. Focused `gvy-hierarchy-source-before-final-focused-20261019.png` compares corresponding filter/control regions source/before/final left-to-right, 1200 x 140. All were opened together and reviewed; screenshots are not recolored.
+- Colors/elevation: same-role panels now agree, card/group depth remains visible, opaque uniform fills avoid the rejected blotchy shading. This is intentionally not pixel-identical to the generated concept's gradients; latest explicit role/deep-base choices and existing geometry override mock drift. No unresolved actionable P0/P1/P2 remains within this paint-only scope; user art-direction acceptance remains pending.
+- Typography: existing fonts/fallbacks, sizes, weights, line heights, wrapping and white/mint/muted/semantic foregrounds unchanged. Layout: all 405 non-paint CSSOM rules plus 14-size/42-state geometry snapshots match the real pre-pass baseline exactly. Radii, responsive tracks, widths and spacing are unchanged. Unlike the preceding pass, some scoped component paint rules now change; do not claim everything outside :root is byte-identical.
+- Assets: existing real logos, crops, dimensions and icons retained, no generated substitutes or new dependencies. Copy/content: HTML/JS/data unchanged; quality minima, grouping/formulas, per-item time placement and labels untouched.
+
+### Verification
+
+- Five sizes (320/390/1920/2560/3440), 25 main/plan/task/mineral/dismantle states assert 1235 actual component backgrounds against their assigned role, including the scoped quality field. All opaque/untextured. The same checks also pass against the final served 8002 build, not only the isolated candidate.
+- 18 sizes from 320 to 3840 verify panels and actual header descendants, no page overflow, manufacturing/dismantling, filter open/Escape, search/empty/reset, keyboard plan and mineral/task close, hover signal bridge/Escape and fresh 390px touch neighboring-signal/plan flows. No relevant application error/warning or blank/error overlay. IAB final console is clear.
+- 18 sizes x four plan scenarios pass real 50/22/28 cell proportions, text bounds, 4px spacing, inset rims and outer bounds. Five-size/20 targeted checks retain the three unframed text exclusions and task-source hover. Ten representative pointer targets change state without resizing; selection remains distinct, and touch-selected results stay visible without hover.
+- 167 Python tests (including Node subprocess coverage), standalone 38 Node tests, JS syntax, offline blueprint/mining pair, whitespace checks and isolated/final builds pass. Browser plugin/skill absent; user-authorized existing independent Playwright is used, no new dependency installed. Physical iOS/Safari/QQ and the earlier exhaustive all-content audits were not rerun in this paint-only pass.
+- Local CSS `48e40718b2c0`, JS `b085889e5719`, data `data-0f6906d31548ddd6`; exact LIVE, record counts and 05:12 timestamp unchanged. Original full backups and checkpoint `checkpoint/deep-blue-before-unify-20261019` at `4c0ea08` remain. No push, PR, workflow, refresh or deployment. Recovery is a normal scoped revert of this hierarchy commit.
+
+### Checklist
+
+1. Fresh screenshots/computed-style role audit completed before editing.
+2. Role-specific paint corrected in isolated 8003; geometry and interaction gates passed.
+3. Revised source/candidate plus actual source/IAB full and focused comparisons reviewed.
+4. Final 8002 role checks and user-storage-preserving IAB capture passed; preview retained.
+
 ## Latest Navy Depth Pass
 
 User review found the preceding candidate pale/gray-blue compared with the

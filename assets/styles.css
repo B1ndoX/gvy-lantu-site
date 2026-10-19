@@ -3,9 +3,9 @@
   --bg: #030e1c;
   --bg-2: #061526;
   --glass: #061c32;
-  --glass-strong: #06233e;
-  --group: #0b2338;
-  --row: #071e35;
+  --glass-strong: var(--glass);
+  --group: var(--row);
+  --row: #0b243b;
   --surface-inset: #031321;
   --surface-control: #061e33;
   --surface-hover: #1b455f;
@@ -13,7 +13,7 @@
   --edge-hover: #72bedb;
   --shadow-hover: inset 0 0 0 1px rgba(126, 221, 242, 0.56), var(--shadow-control);
   --shadow-active: inset 3px 0 0 var(--cyan), inset 0 0 0 1px var(--cyan), var(--shadow-control);
-  --surface-header: #071d33;
+  --surface-header: var(--glass);
   --surface-command: #11232d;
   --edge-highlight: rgba(93, 174, 235, 0.3);
   --edge-panel: rgba(70, 138, 189, 0.38);
@@ -1552,7 +1552,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
   border: 1px solid rgba(126, 221, 242, 0.22);
   border-radius: 999px;
   color: var(--cyan);
-  background: rgba(4, 22, 34, 0.54);
+  background: var(--surface-inset);
   font-size: 10px;
   font-weight: 820;
   white-space: nowrap;
@@ -2137,13 +2137,13 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
 .craft-specs > div,
 .dismantle-info-line > span,
 .mineral-system-filter button,
-.mineral-template-group > summary,
-.mission-pool {
+.mineral-template-group > summary {
   background: var(--surface-control);
   box-shadow: var(--shadow-control);
 }
 
 .plan-row,
+.quality-result-item,
 .mineral-location-item,
 .mineral-empty,
 .mission-blueprint-row,
@@ -2152,6 +2152,8 @@ button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible
   box-shadow: var(--shadow-control);
 }
 
+.source-item,
+.mission-pool,
 .plan-stepper,
 .plan-choice select,
 .share-link-input,
