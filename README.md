@@ -262,7 +262,9 @@ Quality sliders grow with available space up to 260px instead of stopping at
 below the slider are 12px and wrap without truncation. The independent name
 column uses 35% of the row so different right-side amounts cannot shift each
 slider's left edge. Reserve at least 112px for the location/amount column and
-its inner group, with contents starting at the column's left edge. Mineral
+its inner group, with contents starting 8px inside the column's left edge. The
+latest inset moves the badge/amount right to reduce trailing space without
+changing the column width, slider positions or right-aligning varying amounts. Mineral
 badges then align vertically instead of following each amount's right edge,
 including rows without quality controls and narrow two-row layouts. This keeps
 slider lengths and quality capsules consistent within the material list. Let that

@@ -1460,6 +1460,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 
 .material-side {
   min-width: 112px;
+  padding-left: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
