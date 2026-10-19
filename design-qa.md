@@ -2,7 +2,32 @@
 
 final result: passed
 
-## Conditional Compact Quality Values
+## Inline Rounded Quality Values
+
+PR15 (48189a9) passed the production gate, but the user correctly pointed out
+that its label still sat above the numbers. The latest correction supersedes
+the stage-one policy below: compare full text against the natural one-line
+height, not against the original two-line baseline. Only large values that
+wrap use whole 万, rounded half away from zero (20.983万 -> 21万), with each
+full original value/unit retained in its hover title. Both sides share the
+final scale/unit only when both qualify. Only compact cards tighten horizontal
+gaps to 6px between label/values and 2px within values. No new fixed/minimum
+height, smaller fonts, overflow hiding, formula or percentage changes.
+
+Installed Safari independently reran the same 14 viewports and targeted
+13-record / nine-quality matrix: 1,638 states, 6,426 card-bound/height checks,
+1,400 range input events, complete titles and integer-compact checks pass.
+VK-00's quantum card is now 27px in all 14 sizes, including 1264px, with label
+and values together. Slider/scroll/focus remain stable, with no captured runtime
+error or page overflow. Early 320px VK-00 and Allegro negative-percentage edges
+were caught and fixed by sharing scale/unit and scoped horizontal spacing.
+Native UI entry to 750 and actual desktop/390px screenshots were reviewed.
+The exact result stays 230,775.57 km/s / +9.98%, displayed as 23万 only when
+needed. This is a new run, not reuse of stage-one evidence. Existing browser
+and phone-hardware limitations below still apply. Production identifiers and
+final health status are recorded in the required handoff.
+
+## Stage-One Compact Values (Superseded)
 
 The taller fixed two-row trial in PR13 was rejected and reverted by PR14.
 Its old matrix is not evidence for this replacement. The restored baseline is

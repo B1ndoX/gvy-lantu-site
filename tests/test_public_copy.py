@@ -20,8 +20,9 @@ class PublicCopyTests(unittest.TestCase):
         self.assertNotIn('min-height:', values)
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         fitting = app.split('function fitQualitySummary() {', 1)[1].split('function signedQualityChange', 1)[0]
-        self.assertIn('fullHeight > baselineHeight + 0.5', fitting)
-        self.assertIn('number.dataset.short) : number.dataset.full', fitting)
+        self.assertIn('fullHeight > singleLineHeight + 0.5', fitting)
+        self.assertIn('compact ? number.dataset.short : number.dataset.full', fitting)
+        self.assertNotIn('card.style.minHeight =', fitting)
         self.assertIn('probe.remove()', fitting)
         self.assertIn('fitQualitySummary();', app.split('function setSlotQuality', 1)[1].split('function validPlan', 1)[0])
 
