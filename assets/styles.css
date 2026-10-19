@@ -1002,7 +1002,7 @@ html[data-query-mode="dismantle"] .reset-button {
 
 .row-main strong {
   color: var(--text-strong);
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 780;
   line-height: 1.45;
   overflow-wrap: anywhere;
@@ -1126,7 +1126,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 .planner-dialog .plan-toolbar .favorite-detail-button { border-color: rgba(126, 221, 242, 0.18); background: transparent; color: var(--muted); }
 .plan-list { display: grid; gap: 6px; }
 .plan-row { display: grid; grid-template-columns: minmax(0, 1fr) auto 32px; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 6px; background: rgba(4, 18, 27, 0.58); }
-.plan-row > strong { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; min-width: 0; overflow-wrap: anywhere; color: var(--text-strong); font-size: 18px; font-weight: 750; line-height: 1.45; }
+.plan-row > strong { display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; min-width: 0; overflow-wrap: anywhere; color: var(--text-strong); font-size: 21px; font-weight: 750; line-height: 1.45; }
 .plan-item-meta { min-width: 0; color: var(--muted); font-size: 12px; font-weight: 400; line-height: 1.45; overflow-wrap: anywhere; }
 .share-link-label { min-width: 0; overflow-wrap: anywhere; font-size: 12px; }
 .plan-row label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
@@ -1173,11 +1173,11 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .detail-panel h2 {
-  margin: 10px 0 11px;
-  padding-bottom: 12px;
+  margin: 4px 0 11px;
+  padding-bottom: 6px;
   border-bottom: 1px solid rgba(126, 221, 242, 0.16);
   color: var(--text-strong);
-  font-size: 24px;
+  font-size: 30px;
   font-weight: 820;
   line-height: 1.2;
   overflow-wrap: anywhere;
