@@ -179,9 +179,12 @@ The filter order is fixed:
 
 `组件类型` is enabled only when `类型` is `舰船组件`. Its options are generated from the current blueprint data and include available component types such as 冷却器、电源、护盾、量子驱动、雷达、采矿激光、牵引光束、加油模块 and 打捞模块. `组件类别` is also enabled only for ship components and represents 军用、民用、隐形、竞赛、工业等类别.
 
-The 2026-10-20 linked-filter and watermark batch is a local preview only, based
-on production `79f3b22`. Do not push, dispatch workflows or deploy it without
-renewed user authorization. The pre-edit source/dist/handoff backup is in
+The 2026-10-20 linked-filter and watermark batch was previewed against production
+`79f3b22`. The user then approved the 6%/5% original-color watermarks and authorized
+safe deployment of this complete batch after renewed desktop/mobile audit.
+Preserve the existing production data/version/time, release the audited code
+through the normal main/EdgeOne path, and verify exact client assets, both JSON
+forms and the original PNG after publishing. The pre-edit source/dist/handoff backup is in
 `.git/visual-backups/filters-watermark-before-20261020/`; its checkpoint is
 `checkpoint/before-linked-filters-watermark-20261020`.
 
@@ -218,7 +221,7 @@ dialog watermarks (5%). Width and height caps preserve proportions across mobile
 and large screens;
 the decorative layer is below content, cannot receive pointer events, does not
 alter panel opacity, and never creates generated table rows/cells. No Wikelo
-project changes or coordination are included in this blueprint preview.
+project changes or coordination are included in this blueprint release.
 
 The closed filter controls must remain compact. 等级、材料和制造商使用相同的短框宽度；任务奖励来源按文字内容收紧，不能保留无意义的横向空白。宽屏时整组控件铺满筛选栏，并让最后的重置按钮与右侧内边距对齐。
 
