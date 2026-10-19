@@ -6,7 +6,7 @@ import test from "node:test";
 function app(document = { querySelector: () => ({}), querySelectorAll: () => [] }) {
   const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
   const context = { document, URL, URLSearchParams, window: { location: {href: "https://example.test/?q=private#old"}, getComputedStyle: () => ({ lineHeight: "14px" }) } };
-  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordClassGrade, recordSummary, renderRecordSummary, fitRecordSummaries, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
+  runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordSpecificationType, manufacturingSpecifications, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
@@ -61,6 +61,24 @@ test("source rows show systems and task IDs without implying item drop certainty
   assert.doesNotMatch(html, /100%|奖励池触发/);
   assert.match(html, /&lt;script&gt;<span class="mission-placeholder">\[地点\]<\/span>&lt;\/script&gt;/);
   assert.doesNotMatch(html, /<script>/);
+});
+
+test("each source row puts its verified task type after systems, before faction, without guessing from names", () => {
+  const api=app();
+  const missions=[
+    {id:"bounty",title:"Same task",systems:["Pyro"],missionType:"Bounty Hunter",factionZh:"猎头帮",rewardUEC:43250},
+    {id:"mercenary",title:"Same task",systems:["Nyx","Stanton"],missionType:"Mercenary"},
+    {id:"unknown",title:"Bounty Hunter Mission",systems:["Pyro"],missionType:""},
+    {id:"new",title:"New task",missionType:"<New Type>"},
+  ];
+  for(const m of missions)api.state.data.missionRewards.missions[m.id]={};
+  const html=api.renderSources({sources:[{missions}]});
+  assert.match(html,/<b>派罗 \(Pyro\)<\/b> · <span class="source-mission-type">赏金猎人<\/span> · 猎头帮 · 43,250 aUEC/);
+  assert.match(html,/<b>尼克斯 \(Nyx\) \/ Stanton<\/b> · <span class="source-mission-type">雇佣兵<\/span>/);
+  assert.match(html,/Bounty Hunter Mission<\/strong> <small>· <b>派罗 \(Pyro\)<\/b> · <span class="source-mission-type">类型未注明<\/span>/);
+  assert.match(html,/<span class="source-mission-type">&lt;New Type&gt;<\/span>/);
+  assert.doesNotMatch(html,/<New Type>/);
+  assert.equal((html.match(/class="source-mission-type"/g)||[]).length,4);
 });
 
 test("source pools share one compact task list, deduplicated by ID with twelve initial rows", () => {
@@ -170,7 +188,7 @@ test("prerequisite and excluded mission titles remove blueprint hints and color 
 test("compact class-grade labels preserve verified classes without inventing a weapon class", () => {
   const api = app();
   for (const [itemClass, grade, expected] of [["Military",1,"军A"],["Stealth",1,"隐A"],["Industrial",3,"工C"],["Civilian",2,"民B"],["Competition",4,"竞D"],
-    [undefined,1,"A"],["Unknown",2,"B"],["Military",null,"军"],[undefined,null,""]]) {
+    [undefined,1,""],["Unknown",2,""],["Military",null,"军"],[undefined,null,""]]) {
     assert.equal(api.recordClassGrade({flowcld:{itemClass},stats:{grade}}),expected);
   }
 });
@@ -197,31 +215,68 @@ test("specific ship weapon types use the primary subtype and a verified family, 
   assert.equal(api.recordWeaponType({name:"Laser Rifle",category:{id:"personal_weapon"},subtype:"rifle",zh:{subtype:"步枪"}}),"步枪");
 });
 
-test("reward and result summaries show compact grades, escape text and index both full and short types", () => {
+test("reward and result summaries retain complete weapon types, escape text and omit bare grades", () => {
   const api=app();
   const cooler={name:"Cooler",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,grade:1},flowcld:{itemClass:"Stealth"}};
   assert.equal(api.recordSummary(cooler),"舰船组件 · 冷却器 · 隐A · S1");
   const weapon={name:"M7A Cannon",category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"<Maker>",subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1,tags:"LaserCannon"}};
   const html=api.renderRecordSummary(weapon,true);
-  assert.match(html,/data-summary-full="舰船武器 · 激光加农炮 · A · S5 · &lt;Maker&gt;"/);
-  assert.match(html,/data-summary-short="舰船武器 · 激光 · A · S5 · &lt;Maker&gt;"/);
+  assert.match(html,/<small class="weapon-summary"/);
+  assert.match(html,/>舰船武器 · 激光加农炮 · S5 · &lt;Maker&gt;<\/small>/);
+  assert.doesNotMatch(html,/data-summary-(?:full|short)/);
+  assert.doesNotMatch(html,/ · A(?: 级)?(?: ·|&quot;|")/);
   assert.doesNotMatch(html,/<Maker>|军A/);
   assert.match(api.recordSearchText(weapon),/激光加农炮/);
   assert.match(api.recordSearchText(cooler),/隐a/);
 });
 
-test("summary fitting falls back on overflow or a second line and restores full names when space returns", () => {
+test("long manufacturers cannot replace complete weapon types with generic ammunition labels", () => {
   const api=app();
-  const small={dataset:{summaryFull:"full type",summaryShort:"short"},textContent:"short",clientWidth:120,
-    get scrollWidth(){return this.textContent==="full type"?150:50;},getBoundingClientRect(){return {height:14};}};
-  const root={querySelectorAll:()=>[small]};
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
-  small.clientWidth=200;
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"full type");
-  small.getBoundingClientRect=()=>({height:28});
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"short");
-  small.clientWidth=0;small.textContent="hidden";
-  api.fitRecordSummaries(root);assert.equal(small.textContent,"hidden");
+  for(const [name,subtype,label,type] of [["Cannon","laser","激光","激光加农炮"],["Repeater","laser","激光","激光速射炮"],["Gatling","ballistic","实弹","实弹加特林"]]) {
+    const record={name,subtype,zh:{subtype:label},category:{id:"ship_weapon",label:"舰船武器"},manufacturer:"Very long manufacturer ".repeat(8),stats:{size:2}};
+    assert.match(api.renderRecordSummary(record,true),new RegExp(`>舰船武器 · ${type} · S2 · Very long`));
+    assert.equal(api.recordSummary(record),`舰船武器 · ${type} · S2`);
+  }
+});
+
+test("manufacturing specification types distinguish components, weapons, armor slots and ammunition without name guesses", () => {
+  const api=app();
+  for(const [record,expected] of [
+    [{category:{id:"ship_component"},type:"quantumdrive"},"量子驱动"],
+    [{category:{id:"ship_weapon"},name:"Repeater",subtype:"laser",zh:{subtype:"激光"}},"激光速射炮"],
+    [{category:{id:"ship_weapon"},name:"Unknown",subtype:"laser",zh:{subtype:"激光"}},"激光"],
+    [{category:{id:"personal_weapon"},subtype:"smg",zh:{subtype:"冲锋枪"}},"冲锋枪"],
+    [{category:{id:"personal_weapon"},subtype:"sniper"},"狙击步枪"],
+    [{category:{id:"personal_weapon"},subtype:"shotgun"},"霰弹枪"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Char_Armor_Helmet",zh:{attachType:"头盔"}}},"头盔"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Char_Armor_Torso",zh:{attachType:"胸甲"}}},"胸甲"],
+    [{category:{id:"armor"},type:"armour",stats:{attachType:"Char_Clothing_Feet",zh:{attachType:"角色服装脚"}}},"鞋履"],
+    [{category:{id:"armor"},type:"armour",zh:{type:"护甲"},stats:{attachType:"Unknown_Internal_Slot"}},"护甲"],
+    [{category:{id:"weapon_attachment"},type:"ammo",subtype:"ballistic",zh:{subtype:"实弹"}},"实弹弹药"],
+    [{category:{id:"weapon_attachment"},type:"ammo",subtype:"unknown"},"弹药"],
+    [{category:{id:"other"},type:"unknown",zh:{type:"未知"},name:"Laser Cannon Helmet"},"未知"],
+  ]) assert.equal(api.recordSpecificationType(record),expected);
+});
+
+test("manufacturing specifications retain only approved fields, exact unit time and known class grades", () => {
+  const api=app();
+  const record={category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:0,componentClass:"Stealth",grade:3},tiers:[{craftTimeSeconds:570}],sources:[{missions:[{missionType:"Refueling"}]}]};
+  assert.equal(JSON.stringify(api.manufacturingSpecifications(record)),JSON.stringify([
+    ["分类","舰船组件"],["类型","冷却器"],["尺寸","S0"],["等级","隐形C"],["单件制作耗时","9 分 30 秒"]
+  ]));
+  for (const [name,full,compact] of [["Military","军用C","军C"],["Industrial","工业C","工C"],["Civilian","民用C","民C"],["Competition","竞赛C","竞C"]]) {
+    record.stats.componentClass=name;
+    assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="等级")[1],full);
+    assert.equal(api.recordClassGrade(record),compact);
+  }
+  record.stats.componentClass=null;
+  assert.ok(!api.manufacturingSpecifications(record).some(([label])=>label==="等级"));
+  assert.equal(api.recordClassGrade(record,true),"");
+  record.tiers[0].craftTimeSeconds=0;record.sources=[];
+  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"0 秒");
+  assert.ok(!api.manufacturingSpecifications(record).some(([label])=>label==="任务类型"));
+  delete record.tiers;
+  assert.equal(api.manufacturingSpecifications(record).find(([label])=>label==="单件制作耗时")[1],"未知");
 });
 
 test("requirements keep optional entry points, distinct locations, false flags and zero XP", () => {
@@ -249,6 +304,8 @@ test("base stats preserve exact units and escape labels, while dismantling inclu
   const api = app();
   const html = api.renderBaseStats({ baseStats: [{ id: "speed", label: "<speed>", value: 1234.5, unit: "m/s", digits: 1 }], baseStatNotes: ["<note>"] });
   assert.match(html, /Q500 基准/);
+  assert.match(html, /<details class="detail-section base-stats">/);
+  assert.doesNotMatch(html, /<details[^>]*\bopen\b/);
   assert.match(html, /1,234.5 m\/s/);
   assert.match(html, /&lt;speed&gt;/);
   assert.doesNotMatch(html, /<note>/);
@@ -263,7 +320,7 @@ test("primary class and task types cannot be replaced by a conflicting legacy ca
   assert.equal(api.recordComponentClass(record),"工业");
   assert.equal(api.recordMissionTypes(record)[0].label,"加油");
   record.stats.componentClass=null;
-  assert.equal(api.recordClassGrade(record),"C");
+  assert.equal(api.recordClassGrade(record),"");
   record.stats.componentClass="Laser";
   assert.equal(api.recordComponentClass(record),"");
 });
@@ -297,14 +354,14 @@ test("planner explains aggregate amounts and separates quality, quantities and u
   api.state.craftPlan=[{recordId:"a",quantity:2,choices:{}}];
   const html=api.renderPlanBody();
   assert.match(html,/计划制作<\/span><strong>2 <small>件/);
-  assert.match(html,/逐件耗时合计<\/span><strong>21 分钟/);
-  assert.match(html,/材料用量已按清单件数合计/);
+  assert.match(html,/清单总耗时<\/span><strong>21 分钟/);
+  assert.match(html,/材料与耗时均按清单内全部物品及数量合计/);
   assert.match(html,/不含排队/);
   for(const label of ["材料", "品质要求", "所需总量"])assert.ok(html.includes(`scope="col">${label}</th>`));
-  assert.match(html,/<td>至少 1<\/td><td><strong>0\.32<\/strong> <span>SCU<\/span>/);
-  assert.match(html,/<td>至少 1<\/td><td><strong>0\.2<\/strong> <span>SCU<\/span>/);
-  assert.match(html,/<td>至少 0<\/td><td><strong>4<\/strong> <span>件<\/span>/);
-  assert.match(html,/<td>未注明<\/td><td><strong>2<\/strong> <span>件<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">1<\/strong><\/td><td><strong class="plan-amount-value">0\.32<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">1<\/strong><\/td><td><strong class="plan-amount-value">0\.2<\/strong> <span>SCU<\/span>/);
+  assert.match(html,/<td>至少 <strong class="plan-quality-value">0<\/strong><\/td><td><strong class="plan-amount-value">4<\/strong> <span>件<\/span>/);
+  assert.match(html,/<td>未注明<\/td><td><strong class="plan-amount-value">2<\/strong> <span>件<\/span>/);
   assert.match(html,/&lt;unsafe&gt;/);
   assert.match(html,/data-plan-step="-1"/);
   assert.match(html,/data-plan-step="1"/);
@@ -329,6 +386,62 @@ test("empty or unavailable plans remain explicit without fabricating material to
   html=api.renderPlanBody();
   assert.match(html,/class="plan-warning">当前版本未收录：missing/);
   assert.match(html,/data-remove-plan/);
+});
+
+test("planner reading order prioritizes planned items and materials before secondary totals", () => {
+  const api=app();
+  api.state.records=[{id:"snow",name:"SnowBlind",tiers:[{craftTimeSeconds:630,slots:[{name:"Shell",options:[{kind:"resource",name:"Savrilium",quantity:.16,minQuality:1}]}]}]}];
+  api.state.craftPlan=[{recordId:"snow",quantity:2,choices:{}}];
+  const html=api.renderPlanBody();
+  assert.ok(html.indexOf('class="plan-list"')<html.indexOf('class="detail-section plan-material-section"'));
+  assert.ok(html.indexOf('class="plan-material-table"')<html.indexOf('class="plan-summary"'));
+  assert.ok(html.indexOf('class="plan-summary"')<html.indexOf('class="plan-toolbar"'));
+  assert.equal((html.match(/class="plan-explanation"/g)||[]).length,1);
+  assert.match(html,/清单总耗时<\/span><strong>21 分钟/);
+});
+
+test("planner shows per-item unit time left of quantity without multiplying it by the count", () => {
+  const api=app();
+  api.state.records=[
+    {id:"snow",name:"SnowBlind",tiers:[{craftTimeSeconds:630,slots:[]}]},
+    {id:"part",name:"Part",tiers:[{craftTimeSeconds:90,slots:[]}]},
+  ];
+  api.state.craftPlan=[{recordId:"snow",quantity:2,choices:{}},{recordId:"part",quantity:3,choices:{}}];
+  let html=api.renderPlanBody();
+  assert.match(html,/class="plan-unit-time"><span>单件耗时<\/span><span>10 分 30 秒<\/span><\/div>\s*<div class="plan-quantity"/);
+  assert.match(html,/class="plan-unit-time"><span>单件耗时<\/span><span>1 分 30 秒<\/span>/);
+  assert.match(html,/清单总耗时<\/span><strong>25 分 30 秒/);
+  api.state.craftPlan[0].quantity=4;
+  html=api.renderPlanBody();
+  assert.match(html,/单件耗时<\/span><span>10 分 30 秒/);
+  assert.match(html,/清单总耗时<\/span><strong>46 分 30 秒/);
+  for(const time of [undefined,null,-1,Infinity,"630",0]) {
+    api.state.records[0].tiers[0].craftTimeSeconds=time;
+    const expected=time===0?"0 秒":"未知";
+    assert.ok(api.renderPlanBody().includes(`单件耗时</span><span>${expected}</span>`));
+  }
+  api.state.craftPlan=[{recordId:"missing",quantity:2,choices:{}}];
+  assert.match(api.renderPlanBody(),/单件耗时<\/span><span>未知/);
+});
+
+test("planner appends category, specific component or weapon type, size and verified class-grade metadata", () => {
+  const api=app();
+  api.state.records=[
+    {id:"military",name:"Military",category:{id:"ship_component",label:"舰船组件"},type:"powerplant",stats:{size:0,componentClass:"Military",grade:1}},
+    {id:"stealth",name:"SnowBlind",category:{id:"ship_component",label:"舰船组件"},type:"cooler",stats:{size:1,componentClass:"Stealth",grade:1}},
+    {id:"weapon",name:"Weapon Cannon",category:{id:"ship_weapon",label:"舰船武器"},subtype:"laser",zh:{subtype:"激光"},stats:{size:5,grade:1}},
+    {id:"partial",name:"Partial",category:{label:"<unsafe>"},stats:{size:""}},
+    {id:"empty",name:"Empty"},
+  ];
+  api.state.craftPlan=api.state.records.map(r=>({recordId:r.id,quantity:1,choices:{}}));
+  const html=api.renderPlanBody();
+  for(const text of ["舰船组件 · 电源 · S0 · 军A","舰船组件 · 冷却器 · S1 · 隐A","舰船武器 · 激光加农炮 · S5","&lt;unsafe&gt;"]) {
+    assert.ok(html.includes(`<small class="plan-item-meta">（${text}）</small>`));
+  }
+  assert.equal((html.match(/class="plan-item-meta"/g)||[]).length,4);
+  assert.doesNotMatch(html,/<unsafe>|Sundefined|Snull|S ·|未知尺寸|S5 · (?:军)?A/);
+  api.state.craftPlan=[{recordId:"unavailable",quantity:1,choices:{}}];
+  assert.doesNotMatch(api.renderPlanBody(),/class="plan-item-meta"/);
 });
 
 test("quality controls preserve the original compact slider and expose only a constrained numeric value", () => {
@@ -368,7 +481,8 @@ test("signal entries distinguish shared per-rock readings and expose keyboard-ac
   assert.match(button,/aria-haspopup="dialog"/);
   assert.match(panel,/<template id="mineralSignal-3-content">/);
   assert.match(panel,/aria-label="单矿：3,000"><b>3,000<\/b>/);
-  assert.match(html,/同类共通信号/);assert.match(html,/不按矿簇数量叠加/);
+  assert.match(html,/扫描信号/);assert.match(html,/多种矿物信号相同，按单矿计。/);
+  assert.doesNotMatch(html,/同类共通|不按矿簇数量叠加/);
   assert.doesNotMatch(html,/33,000|10 块|11 块|伴生|产出权重|<location>|role="tooltip"/);
 });
 
@@ -423,13 +537,36 @@ test("mineral location and mixed-material labels escape untrusted text", () => {
   assert.doesNotMatch(button + panel, /<location>|<Tin>|<铜>/);
 });
 
-test("signal popovers fit the dialog bounds and flip above their anchor when needed", () => {
+test("signal popovers prefer side lanes and reflow before covering any visible trigger column", () => {
   const api = app();
   const bounds = {left: 30, right: 730, top: 100, bottom: 650};
   const size = {width: 360, height: 200};
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 30, top: 152}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 740, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 370, top: 372}));
-  assert.equal(JSON.stringify(api.mineralSignalBounds({right: 50, top: 105, bottom: 129}, {width: 360, height: 540}, bounds)), JSON.stringify({left: 30, top: 100}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 322, right: 360, top: 120, bottom: 144}, size, bounds)), JSON.stringify({left: 368, top: 120}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 692, right: 730, top: 580, bottom: 604}, size, bounds)), JSON.stringify({left: 324, top: 450}));
+  const shortBounds = {...bounds, bottom: 350};
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 680, right: 718, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 312, top: 150}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 40, right: 78, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 86, top: 150}));
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left: 342, right: 380, top: 200, bottom: 224}, size, shortBounds)), JSON.stringify({left: 388, top: 150, maxWidth: 342}));
+  const neighbors=[{left:330,right:368,top:160,bottom:184},{left:680,right:718,top:300,bottom:324}];
+  assert.equal(JSON.stringify(api.mineralSignalBounds({left:680,right:718,top:200,bottom:224},size,bounds,neighbors)),JSON.stringify({left:376,top:200,maxWidth:296}));
+});
+
+test("signal placement stays bounded and separated for narrow, short and large content cases", () => {
+  const api = app();
+  for (const width of [280, 350, 700, 1500]) for (const height of [160, 250, 550]) {
+    const bounds = {left: 20, right: 20 + width, top: 80, bottom: 80 + height};
+    for (const x of [20, 20 + width / 2 - 19, bounds.right - 38]) for (const y of [80, 80 + height / 2 - 12, bounds.bottom - 24]) {
+      const anchor = {left: x, right: x + 38, top: y, bottom: y + 24};
+      for (const contentHeight of [100, 200, 400]) {
+        const size = {width: Math.min(360, width), height: Math.min(contentHeight, height)};
+        const p = api.mineralSignalBounds(anchor, size, bounds);
+        const actualWidth = p.maxWidth ?? size.width;
+        assert.ok(p.left >= bounds.left && p.left + actualWidth <= bounds.right);
+        assert.ok(p.top >= bounds.top && p.top + size.height <= bounds.bottom);
+        assert.ok(p.left + actualWidth <= anchor.left - 8 || p.left >= anchor.right + 8);
+      }
+    }
+  }
 });
 
 test("signal capsules preserve count gaps and mining modes without generating table columns", () => {

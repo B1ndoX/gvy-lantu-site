@@ -74,18 +74,16 @@
         <div class="summary-controls">
           <button type="button" class="favorites-toggle" id="openPlan" aria-haspopup="dialog">制作清单 <strong id="planCount">0</strong></button>
           <button type="button" class="favorites-toggle" id="favoritesToggle" aria-pressed="false">我的蓝图 <strong id="favoritesCount">0</strong></button>
-          <div class="sort-group" aria-label="排序">
-            <button type="button" class="sort active" data-sort="relevance" aria-pressed="true">推荐</button>
-            <button type="button" class="sort" data-sort="name" aria-pressed="false">名称</button>
-            <button type="button" class="sort" id="sourceSort" data-sort="sources" aria-pressed="false">来源</button>
-          </div>
         </div>
       </section>
 
       <section class="filter-board" id="filterModal" aria-label="筛选条件">
         <header class="filter-head">
-          <div class="filter-head-main">
-            <h2 id="filterTitle">制造蓝图</h2>
+          <h2 id="filterTitle">制造蓝图</h2>
+          <div class="sort-group" role="group" aria-label="排序方式">
+            <button type="button" class="sort active" data-sort="relevance" aria-pressed="true">默认</button>
+            <button type="button" class="sort" data-sort="name" aria-pressed="false">名称</button>
+            <button type="button" class="sort" id="sourceSort" data-sort="sources" aria-pressed="false">来源</button>
           </div>
           <span class="filter-result-badge"><span id="filterResultLabel">相关蓝图</span> <strong id="modalResultCount">0</strong> 个</span>
         </header>
@@ -140,7 +138,7 @@
           <div class="results-scroll">
             <div class="result-head">
               <span aria-hidden="true"></span>
-              <span>名称 / 分类 / 制造商 / 规格</span>
+              <span>物品名称 / 规格</span>
               <span id="resultMetaLabel">来源</span>
             </div>
             <div class="result-list" id="resultList"></div>

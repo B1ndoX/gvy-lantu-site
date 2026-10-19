@@ -34,7 +34,6 @@ const SOURCE_TASK_MIN_HIDDEN = 4;
 const FAVORITES_STORAGE_KEY = "gvy-lantu-favorite-blueprints-v1";
 const PLAN_STORAGE_KEY = "gvy-lantu-craft-plan-v1";
 let searchInputTimer = 0;
-let summaryResizeFrame = 0;
 let mineralOpener = null;
 let mineralPreviousOverflow = "";
 let mineralSignal = null;
@@ -203,23 +202,25 @@ function openUtilityDialog(title, content, opener, className = "") {
 function renderPlanBody() {
   const totals = planTotals(state.craftPlan, state.records);
   const count = validPlan(state.craftPlan).reduce((sum, row) => sum + row.quantity, 0);
-  return `<div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>逐件耗时合计</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
-    <p class="plan-explanation">材料用量已按清单件数合计；耗时按逐件制作估算，不含排队。</p>
-    <div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
+  return `<div class="plan-warnings">${totals.warnings.map(warning => `<p class="plan-warning">${escapeHtml(warning)}</p>`).join("")}</div>
     <div class="plan-list">${state.craftPlan.map(row => {
       const record = state.records.find(item => item.id === row.recordId);
-      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}</strong>
+      const tier = record ? getFirstTier(record) : null;
+      const specification = record ? recordCompactSpecification(record) : "";
+      return `<div class="plan-row" data-plan-row="${escapeHtml(row.recordId)}"><strong>${escapeHtml(record ? recordName(record) : `当前版本未收录：${row.recordId}`)}${specification ? `<small class="plan-item-meta">（${escapeHtml(specification)}）</small>` : ""}</strong>
+        <div class="plan-controls"><div class="plan-unit-time"><span>单件耗时</span><span>${escapeHtml(formatTime(tier?.craftTimeSeconds))}</span></div>
         <div class="plan-quantity"><span>数量</span><div class="plan-stepper" role="group" aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量调整">
           <button type="button" data-plan-step="-1" aria-label="减少${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="减少一件" ${row.quantity <= 1 ? "disabled" : ""}>−</button>
           <input type="number" inputmode="numeric" min="1" max="9999" step="1" value="${row.quantity}" data-plan-quantity aria-label="${escapeHtml(record ? recordName(record) : row.recordId)}制作数量" />
           <button type="button" data-plan-step="1" aria-label="增加${escapeHtml(record ? recordName(record) : row.recordId)}数量" title="增加一件" ${row.quantity >= 9999 ? "disabled" : ""}>+</button>
-        </div></div>
+        </div></div></div>
         <button type="button" class="plan-remove" data-remove-plan aria-label="移除${escapeHtml(record ? recordName(record) : row.recordId)}" title="移出清单">×</button>
-        ${record ? getFirstTier(record).slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
+        ${tier ? tier.slots.map((slot, index) => slot.options.length > 1 ? `<label class="plan-choice">${escapeHtml(preferZh(slot.nameZh, slot.name))}<select data-plan-choice="${index}" aria-label="${escapeHtml(preferZh(slot.nameZh, slot.name))}材料选项">${slot.options.map((option, i) => `<option value="${i}" ${i === (row.choices[index] ?? 0) ? "selected" : ""}>${escapeHtml(materialName(option))}</option>`).join("")}</select></label>` : "").join("") : ""}</div>`;
     }).join("") || '<p class="mission-empty">清单为空</p>'}</div>
-    <section class="detail-section plan-material-section"><h3>材料合计</h3>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
+    <section class="detail-section plan-material-section"><h3>材料合计</h3><p class="plan-explanation">材料与耗时均按清单内全部物品及数量合计；耗时按依次制作估算，不含排队。</p>${totals.materials.length ? `<table class="plan-material-table" aria-label="制作清单材料合计"><colgroup><col class="plan-material-name" /><col class="plan-material-quality" /><col class="plan-material-quantity" /></colgroup>
       <thead><tr><th scope="col">材料</th><th scope="col">品质要求</th><th scope="col">所需总量</th></tr></thead>
-      <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 ${formatNumber(item.minQuality)}` : "未注明"}</td><td><strong>${formatNumber(Number(item.quantity.toFixed(6)))}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
+      <tbody>${totals.materials.map(item => `<tr><th scope="row">${escapeHtml(materialName(item))}</th><td>${typeof item.minQuality === "number" ? `至少 <strong class="plan-quality-value">${formatNumber(item.minQuality)}</strong>` : "未注明"}</td><td><strong class="plan-amount-value">${formatNumber(Number(item.quantity.toFixed(6)))}</strong> <span>${item.kind === "resource" ? "SCU" : "件"}</span></td></tr>`).join("")}</tbody></table>` : '<p class="mission-empty">暂无材料</p>'}</section>
+    <div class="plan-summary"><div><span>计划制作</span><strong>${formatNumber(count)} <small>件</small></strong></div><div><span>清单总耗时</span><strong>${escapeHtml(formatTime(totals.seconds))}</strong></div></div>
     <div class="plan-toolbar"><span class="detail-note">${state.planSaved ? "本机已保存" : "浏览器存储不可用，仅本次会话保留"}</span><button type="button" class="favorite-detail-button" data-clear-plan ${!state.craftPlan.length ? "disabled" : ""}>清空清单</button></div>`;
 }
 
@@ -913,7 +914,7 @@ function renderLocationSignals(location, name, index) {
     const paired = !signal.shared && signal.clusterKnown && signal.clusterCounts?.length === signal.values.length;
     const mode = {ship: "舰采", roc: "ROC", fps: "手采"}[signal.mode] || "";
     const primary = signal.primaryMaterialZh || signal.primaryMaterial;
-    const relation = signal.shared ? "共通信号" : primary
+    const relation = signal.shared ? "扫描信号" : primary
       ? `${primary}为主矿${signal.primaryMaterial !== name ? `，伴生${material}` : ""}` : "信号参考";
     const values = signal.values.map((value, i) => {
       const label = signal.shared ? "单矿" : paired ? `${signal.clusterCounts[i]} 块` : "单矿参考";
@@ -924,7 +925,7 @@ function renderLocationSignals(location, name, index) {
   }).join("");
   const panel = `<template id="${id}-content"><header class="mineral-signal-head"><div><strong id="${id}-title">${escapeHtml(mineralLocationLabel(location))}</strong><small>${escapeHtml(mineralLocationSubline(location))}</small></div><button type="button" data-close-signal aria-label="关闭信号">×</button></header>
     <div class="mineral-signal-content" tabindex="0" role="region" aria-label="矿体信号">${entries}
-      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "同类共通信号，不代表某一种材料独有；不按矿簇数量叠加。" : ""}</p>
+      <p class="mineral-signal-note">${signals.some(signal => !signal.shared) ? "混合矿体使用主矿信号，不代表只含该材料。" : ""}${signals.some(signal => signal.shared) ? "多种矿物信号相同，按单矿计。" : ""}</p>
     </div>
   </template>`;
   return {button, panel};
@@ -940,11 +941,17 @@ function closeLocationSignals(restoreFocus = false) {
   if (restoreFocus && button.isConnected) button.focus({preventScroll: true});
 }
 
-function mineralSignalBounds(anchor, size, bounds) {
-  const left = Math.max(bounds.left, Math.min(anchor.right - size.width, bounds.right - size.width));
-  const below = anchor.bottom + 8;
-  const top = below + size.height <= bounds.bottom ? below : Math.max(bounds.top, anchor.top - size.height - 8);
-  return {left, top: Math.min(top, bounds.bottom - size.height)};
+function mineralSignalBounds(anchor, size, bounds, triggers = []) {
+  // Keep both columns' visible signal-button lanes clear, not only the active button.
+  const leftEdge = triggers.reduce((edge, rect) => rect.right <= anchor.left ? Math.max(edge, rect.right + 8) : edge, bounds.left);
+  const rightEdge = triggers.reduce((edge, rect) => rect.left >= anchor.right ? Math.min(edge, rect.left - 8) : edge, bounds.right);
+  const leftSpace = Math.max(0, anchor.left - leftEdge - 8);
+  const rightSpace = Math.max(0, rightEdge - anchor.right - 8);
+  const toLeft = size.width <= leftSpace || (size.width > rightSpace && leftSpace >= rightSpace);
+  const width = Math.min(size.width, toLeft ? leftSpace : rightSpace);
+  const top = Math.max(bounds.top, Math.min(anchor.top, bounds.bottom - size.height));
+  return {left: toLeft ? anchor.left - width - 8 : anchor.right + 8, top,
+    ...(width < size.width ? {maxWidth: width} : {})};
 }
 
 function showLocationSignals(button, mode = "hover") {
@@ -973,7 +980,15 @@ function showLocationSignals(button, mode = "hover") {
   panel.style.width = "max-content";
   panel.style.maxWidth = `${Math.min(360, bounds.right - bounds.left)}px`;
   panel.style.maxHeight = `${Math.min(400, bounds.bottom - bounds.top)}px`;
-  const position = mineralSignalBounds(button.getBoundingClientRect(), panel.getBoundingClientRect(), bounds);
+  const triggers = [...overlay.querySelectorAll("[data-signal-trigger]")]
+    .map(trigger => trigger.getBoundingClientRect())
+    .filter(rect => rect.width && rect.bottom > Math.max(body.top, bounds.top) && rect.top < Math.min(body.bottom, bounds.bottom));
+  const anchor = button.getBoundingClientRect();
+  let position = mineralSignalBounds(anchor, panel.getBoundingClientRect(), bounds, triggers);
+  if (position.maxWidth !== undefined) {
+    panel.style.maxWidth = `${position.maxWidth}px`;
+    position = mineralSignalBounds(anchor, panel.getBoundingClientRect(), bounds, triggers);
+  }
   panel.style.left = `${position.left}px`;
   panel.style.top = `${position.top}px`;
   button.setAttribute("aria-expanded", "true");
@@ -1275,7 +1290,6 @@ function openMissionInfo(id, opener) {
     if (event.target.closest("[data-close-mission]") || outside) dialog.close();
   });
   dialog.showModal();
-  fitRecordSummaries(dialog);
 }
 
 function missionFaction(mission) {
@@ -1315,35 +1329,58 @@ function recordWeaponType(record) {
   return family === "质量驱动炮" ? family : `${subtype}${family}`;
 }
 
-function recordClassGrade(record) {
-  const abbreviation = { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
-  const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
-  return `${abbreviation}${grade}`;
+function recordSpecificationType(record) {
+  if (record.category.id === "ship_component") return recordComponentType(record);
+  if (record.category.id === "ship_weapon") return recordWeaponType(record);
+  if (record.category.id === "armor") {
+    if (record.stats?.attachType === "Char_Clothing_Feet") return "鞋履";
+    return preferZh(record.stats?.zh?.attachType) || recordType(record);
+  }
+  if (record.category.id === "personal_weapon") {
+    return {sniper: "狙击步枪", shotgun: "霰弹枪"}[record.subtype] || recordSubtype(record) || recordType(record);
+  }
+  if (record.category.id === "weapon_attachment" && record.type === "ammo") {
+    return `${record.subtype && record.subtype !== "unknown" ? recordSubtype(record) : ""}弹药`;
+  }
+  return recordType(record);
 }
 
-function recordSummary(record, fullType = false, manufacturer = false) {
+function manufacturingSpecifications(record) {
+  const classGrade = recordClassGrade(record, true);
+  return [
+    ["分类", record.category.label],
+    ["类型", recordSpecificationType(record)],
+    ["尺寸", sizeLabel(record.stats?.size)],
+    ...(classGrade ? [["等级", classGrade]] : []),
+    ["单件制作耗时", formatTime(getFirstTier(record).craftTimeSeconds)],
+  ];
+}
+
+function recordClassGrade(record, fullClass = false) {
+  const classLabel = fullClass ? recordComponentClass(record) : { Military: "军", Stealth: "隐", Industrial: "工", Civilian: "民", Competition: "竞" }[recordClass(record)] || "";
+  const grade = { 1: "A", 2: "B", 3: "C", 4: "D" }[record.stats?.grade] || "";
+  return classLabel ? `${classLabel}${grade}` : "";
+}
+
+function recordCompactSpecification(record) {
+  const size = record.stats?.size;
+  const type = record.category?.id === "ship_component" ? recordComponentType(record)
+    : record.category?.id === "ship_weapon" ? recordWeaponType(record) : "";
+  return [record.category?.label, type, size == null || size === "" ? "" : sizeLabel(size), recordClassGrade(record)].filter(Boolean).join(" · ");
+}
+
+function recordSummary(record, manufacturer = false) {
   const type = record.category.id === "ship_component" ? recordComponentType(record)
-    : fullType ? recordWeaponType(record) : recordSubtype(record);
+    : recordWeaponType(record);
   const parts = [record.category.label, type, recordClassGrade(record), sizeLabel(record.stats?.size)];
   if (manufacturer) parts.push(recordManufacturer(record));
   return parts.filter(Boolean).join(" · ");
 }
 
 function renderRecordSummary(record, manufacturer = false) {
-  const short = recordSummary(record, false, manufacturer);
-  const full = recordSummary(record, true, manufacturer);
-  const description = [full, recordComponentClass(record), record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
-  const adaptive = full !== short ? ` data-summary-full="${escapeHtml(full)}" data-summary-short="${escapeHtml(short)}"` : "";
-  return `<small${adaptive} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
-}
-
-function fitRecordSummaries(root) {
-  const candidates = [...root.querySelectorAll("[data-summary-full]")].filter(el => el.clientWidth);
-  candidates.forEach(el => { el.textContent = el.dataset.summaryFull; });
-  // Measure every full label before writes, so narrow rows fall back in one pass.
-  const compact = candidates.filter(el => el.scrollWidth > el.clientWidth + 1
-    || el.getBoundingClientRect().height > parseFloat(window.getComputedStyle(el).lineHeight) + 1);
-  compact.forEach(el => { el.textContent = el.dataset.summaryShort; });
+  const full = recordSummary(record, manufacturer);
+  const description = [full, recordComponentClass(record), recordComponentClass(record) && record.stats?.grade ? gradeLabel(record.stats.grade) : ""].filter(Boolean).join(" · ");
+  return `<small${record.category.id === "ship_weapon" ? ' class="weapon-summary"' : ""} title="${escapeHtml(description)}">${escapeHtml(full)}</small>`;
 }
 
 function recordMissionTypes(record) {
@@ -1737,10 +1774,6 @@ function bindFilterSelect(select, key) {
 function bindEvents() {
   document.querySelector("#openPlan")?.addEventListener("click", event => openCraftPlan(event.currentTarget));
   window.addEventListener("hashchange", restoreSharedBlueprint);
-  window.addEventListener("resize", () => {
-    window.cancelAnimationFrame(summaryResizeFrame);
-    summaryResizeFrame = window.requestAnimationFrame(() => fitRecordSummaries(document));
-  });
   els.searchForm.addEventListener("submit", (event) => event.preventDefault());
 
   els.searchInput.addEventListener("input", (event) => {
@@ -2065,7 +2098,7 @@ function renderResults() {
           <span class="row-dot"></span>
           <span class="row-main">
             <strong>${escapeHtml(recordName(record))}</strong>
-            ${renderRecordSummary(record, true)}
+            <small title="${escapeHtml(recordSummary(record, true))}">（${escapeHtml(recordCompactSpecification(record))}）</small>
           </span>
           <span class="source-badge ${state.mode === "craft" && !(record.sourceCount > 0) ? "muted" : ""}">${sourceLabel}</span>
         </button>
@@ -2077,7 +2110,6 @@ function renderResults() {
     ? `<button class="load-more-results" type="button" data-load-more>继续加载 <strong>${formatNumber(state.visibleResults)}</strong> / ${formatNumber(state.filtered.length)}</button>`
     : "";
   els.resultList.innerHTML = cards + loadMore;
-  fitRecordSummaries(els.resultList);
 }
 
 function selectRecord(id) {
@@ -2108,11 +2140,10 @@ function renderDismantleDetail(record) {
   els.detailPanel.innerHTML = `
     <div class="detail-scroll dismantle-detail">
       <div class="detail-head">
-        <span>拆解详情</span>
-        <span class="detail-head-actions">
-          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
+        <span class="detail-head-labels"><span>拆解详情</span><strong>${formatNumber(outputs.length)} 种回收物</strong></span>
+        <span class="detail-head-actions" role="group" aria-label="物品操作">
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏物品"}</button>
-          <strong>${formatNumber(outputs.length)} 种回收物</strong>
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享</button>
         </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
@@ -2149,48 +2180,29 @@ function renderDetail() {
     return;
   }
 
-  const tier = getFirstTier(record);
   const materials = getAllMaterials(record);
-  const componentClass = recordComponentClass(record);
-  const componentType = record.category.id === "ship_component" ? recordComponentType(record) : recordType(record);
-  const missionTypes = recordMissionTypes(record);
-  const specs = [
-    ["分类", record.category.label],
-    ["类型", componentType],
-    ["子类", recordSubtype(record)],
-    ["组件类别", componentClass || "无"],
-    ["装备域", recordGear(record)],
-    ["挂点", statZh(record, "attachType") || "未知"],
-    ["尺寸", sizeLabel(record.stats.size)],
-    ["等级", record.stats.grade ? gradeLabel(record.stats.grade) : "未知"],
-    ["任务类型", missionTypes.length ? missionTypes.map((type) => type.label).join(" / ") : "无"],
-  ];
+  const specs = manufacturingSpecifications(record);
 
   els.detailPanel.innerHTML = `
     <div class="detail-scroll">
       <div class="detail-head">
-        <span>蓝图详情</span>
-        <span class="detail-head-actions">
+        <span class="detail-head-labels">蓝图详情 · ${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</span>
+        <span class="detail-head-actions" role="group" aria-label="蓝图操作">
+          <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
           <button type="button" class="favorite-detail-button${isFavorite(record) ? " active" : ""}" data-toggle-favorite="${escapeHtml(record.id)}" aria-pressed="${isFavorite(record)}">${isFavorite(record) ? "已收藏" : "收藏蓝图"}</button>
-          <strong>${record.sourceCount > 0 ? "任务奖励" : "暂无任务来源"}</strong>
+          <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
         </span>
       </div>
       <h2>${escapeHtml(recordName(record))}</h2>
-      <div class="detail-tags">
-        <span>${escapeHtml(record.category.label)}</span>
-        ${record.category.id === "ship_component" ? `<span>${escapeHtml(componentType)}</span>` : ""}
-        <span>${escapeHtml(recordManufacturer(record))}</span>
-        ${componentClass ? `<span>${escapeHtml(componentClass)}</span>` : ""}
-        <span>制作 ${formatTime(tier.craftTimeSeconds)}</span>
-      </div>
+      <section class="detail-section craft-spec-section">
+        <h3>规格</h3>
+        <dl class="craft-specs" aria-label="蓝图规格">
+          ${specs.map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("")}
+        </dl>
+      </section>
 
-      <div class="detail-tools">
-        <button type="button" class="favorite-detail-button" data-add-plan="${escapeHtml(record.id)}">加入制作清单</button>
-        <button type="button" class="favorite-detail-button" data-share-blueprint="${escapeHtml(record.id)}">分享蓝图</button>
-      </div>
-
-      ${renderQualitySummary(record)}
       ${renderBaseStats(record)}
+      ${renderQualitySummary(record)}
 
       <section class="detail-section">
         <h3>制作材料</h3>
@@ -2208,7 +2220,7 @@ function renderDetail() {
                       <button class="material-summary material-item-button" type="button" data-mineral="${escapeHtml(item.name)}">
                         <span>
                           <strong>${escapeHtml(materialName(item))}</strong>
-                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""}</small>
+                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality > 1 ? ` · <span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>` : ""}</small>
                         </span>
                       </button>
                       ${renderMaterialQuality(record, item.slotData, item.slotIndex)}
@@ -2229,13 +2241,6 @@ function renderDetail() {
       <section class="detail-section">
         <h3>获取方法</h3>
         <div class="source-list">${renderSources(record)}</div>
-      </section>
-
-      <section class="detail-section">
-        <h3>规格</h3>
-        <div class="spec-grid">
-          ${specs.map(([label, value]) => `<div class="spec-item"><strong>${escapeHtml(label)}</strong><span>${escapeHtml(value)}</span></div>`).join("")}
-        </div>
       </section>
     </div>
   `;
@@ -2266,8 +2271,9 @@ function renderSources(record) {
   const rows = missions.map((mission) => {
     const reward = mission.rewardUEC != null ? ` · ${formatNumber(mission.rewardUEC)} aUEC` : "";
     const faction = missionFaction(mission) ? ` · ${escapeHtml(missionFaction(mission))}` : "";
+    const type = mission.missionType ? missionTypeOrder.find(([id]) => id === mission.missionType)?.[1] || mission.missionType : "类型未注明";
     const clickable = Boolean(mission.id && state.data.missionRewards?.missions?.[mission.id]);
-    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b>${faction}${reward}</small>`;
+    const content = `<strong>${renderMissionText(missionTitle(mission))}</strong> <small>· <b>${escapeHtml(missionSystemLabels(mission))}</b> · <span class="source-mission-type">${escapeHtml(type)}</span>${faction}${reward}</small>`;
     return `<li>${clickable ? `<button type="button" class="source-mission-button" data-mission-id="${escapeHtml(mission.id)}" aria-haspopup="dialog" title="查看任务奖励">${content}<span aria-hidden="true">›</span></button>` : `<div class="source-mission-button">${content}</div>`}</li>`;
   });
   const previewCount = rows.length - SOURCE_TASK_PREVIEW_LIMIT < SOURCE_TASK_MIN_HIDDEN

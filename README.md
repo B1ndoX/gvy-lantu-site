@@ -19,13 +19,17 @@ production domain, or reports that a deployment passed. Both source steps must
 succeed before the candidate artifact can be produced. Scheduled runs and normal
 manual refreshes keep their existing publish, health-check and rollback behavior.
 
-For a reviewed code release, start from production `main`, pick code changes only,
+For a reviewed code release containing unpublished preview data, start from production `main`, pick code changes only,
 prepare cloud data on the release branch, inspect its immutable run/head and
 artifact, then commit only the generated-data allowlist to that same branch.
 Rerun tests, coverage/version validation, build and browser QA before merging the
 reviewed code and data together. Do not publish local preview-data checkpoints.
 After merge, verify the actual EdgeOne client URLs against that final revision;
 keep the previous production commit and cloud backup available for rollback.
+For a code-only release already based on current production `main`, preserve the
+unchanged production snapshots, verify the current stable-LIVE manifest and
+blueprint/mining pair, and audit the complete code diff. A UI release alone must
+not import preview data or advance data-update timestamps.
 
 Official localization version labels may start with a numeric series or the
 official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
@@ -94,11 +98,100 @@ Responsive behavior:
 
 ## Detail Text Layout
 
+Sorting uses the `默认 / 名称 / 来源` options beside the filter heading and
+result count, not the upper summary toolbar. These are sorting options, not
+filters or personalized recommendations; the existing default relevance score
+is unchanged. Dismantling labels the last option `回收种类`. Above 620px they
+share one header row; phones put the options below the heading/count.
+
+The upper `制作清单` and `我的蓝图` entries retain their original rounded
+shape and plain inline counts. Only enlarge labels/counts to 15px and minimum
+height to 42px. The latest correction uses the existing softer yellow-orange
+`var(--orange)` for text/outline/states, not the earlier saturated `darkorange`.
+Counts remain 15px on phones. Do not restore the canceled count compartments,
+dividers, square corners, exact screenshot color matching or other experimental effects;
+detail actions stay unchanged. No new color-setting or sampling logic is needed.
+
+Manufacturing starts with the plain 14px label `蓝图详情 · 任务奖励` (or
+`暂无任务来源`), without a yellow badge. Its actions are grouped in order:
+`加入制作清单 / 收藏蓝图 / 分享蓝图`, wrapping without overlap on phones.
+Dismantling places its recovery count by its detail label, then favorite/share
+actions in that order. Item names remain larger and primary. The result-list
+header uses 12px `物品名称 / 规格` and a centered source heading, aligned with
+the actual result-card columns, including their compact 320px padding. Only
+manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
+missing-source gray and dismantling's recovery badges keep their colors.
+
+Main result rows now follow the crafting-plan name/metadata pattern: the 18px
+standard white name (`var(--text-strong)`) is followed inline by 13px muted parentheses containing category,
+specific component/weapon type, size and verified compact class/grade. Reuse the
+same specification helper as plans. Full names and metadata wrap naturally on
+narrow screens without shrinking text or colliding with the separate source
+badge. Manufacturer remains searchable and in the full-summary tooltip, not the
+visible parentheses. Reward-pool summaries and detail specifications keep their
+own formats; do not globally change summary ordering to style the main list.
+The user's latest choice restores the existing standard white for names, replacing
+the custom silver and blue shades while keeping menu yellow and material green intact.
+
+Manufacturing places one compact specification row directly under the name:
+category, specific type, size, verified full class/grade (only when available),
+and single-item craft duration, with a visible `规格` heading. Task types no
+longer occupy this row; they belong to their individual task-source rows.
+The detail grade spells out its class, such as `军用A`, `工业A` or `隐形C`;
+lists, plans and reward summaries retain compact class/grade labels.
+Each small box keeps its muted label and complete value on one baseline, such as
+`分类 舰船组件` or `等级 工业A`. Use natural widths rather than equal-width empty
+cells; narrow screens wrap whole boxes, not their text. Preserve the existing
+border and background. Remove the repeated name-tag row and bottom specification
+section, including manufacturer, gear and redundant subtype/mount fields from
+this view only; original data, search, filters and dismantling stay intact.
+Specific types retain component types and complete ship-weapon families; personal
+weapons use their gun subtype, armor uses its localized slot, and ammunition keeps
+its reported subtype. Missing evidence never authorizes a name-based guess.
+The sequence is specifications, collapsed-by-default base attributes, quality
+effects, crafting materials, then acquisition methods. No extra toggle state is
+stored. Missing base/quality data keep their existing omission behavior.
+Crafting-material names use 18px soft mint `#9de2bf`, with 13px descriptions;
+both wrap inside their existing rows. Hide the redundant `最低品质 1` description;
+show minimums above 1 as an unbroken `最低品质 N` phrase, without changing recipe
+requirements, quality-input limits or plan-table values.
+The cyan 矿点 badge is 13px, and its amount is 15px pale yellow `#f3e2a4`,
+separate from orange section headings. Preserve material hover and focus feedback.
+Quality sliders grow with available space up to 260px instead of stopping at
+118px; the underlying quality capsule stays 72px by 23px. Modifier labels/values
+below the slider are 12px and wrap without truncation. The independent name
+column uses 35% of the row so different right-side amounts cannot shift each
+slider's left edge. Reserve at least 112px for the right-aligned location/amount
+column (the current longest content measures about 102.33px), keeping slider
+lengths and quality capsules consistent within the material list. Let that
+column grow rather than clip unexpected future values. Remove native range margins to align sliders with
+the modifier blocks below. Long names wrap within their own column.
+On phones (up to 880px)
+and narrow two-panel desktops (1101-1320px), quality controls occupy a separate
+row so larger text and longer sliders do not crowd the material identity or amount.
+This affects only manufacturing materials, not plan typography, dismantling,
+source tasks, quality calculations or the separate item-name color selection.
+The plan still displays each stored minimum, including 0 and 1. An online audit
+of the exact `4.10.2-live.12913470` export checked every option by blueprint ID,
+tier, slot and option index: all 4,316 explicitly provide `minQuality`, with no
+missing fields or differences from the public snapshot. The source has 2,917
+zeros, 1,377 ones and 22 higher minima. Bendix requires Borase 0; Balandin requires
+Borase 1. These are source recipe values, not missing-field defaults. The normalizer
+does have a fallback of 0 for a future absent field, but that path does not explain
+this snapshot. Do not claim why the game chose these values or that 0 and 1 are
+equivalent; neither is established by this export. Their unification remains
+explicitly deferred. No normalization or plan calculation changes were made.
+
+Dialog close crosses (task, crafting plan, share link, mineral and signal) and
+plan-row remove crosses share zero-padding grid centering, unit line height and
+an Arial glyph. Keep each control's existing dimensions, border, color, accessible
+name, focus behavior and action; do not compensate by moving the whole button.
+
 The seven dismantling information fields remain separate compact boxes with centered labels and values. Grid children must stretch to the cell width, not retain an overflowing intrinsic width. Values wrap completely inside their boxes, including uninterrupted English identifiers; do not shorten official manufacturer names or hide them behind an ellipsis. Box height follows the content.
 
 Desktop keeps seven columns. Up to 620 px, use four columns with the fifth field (manufacturer) spanning two: four fields in the first row, then manufacturer, size and grade in the second row. Keep that field order when maintaining the markup.
 
-Manufacturing specification values, detail titles and recovered-material names also allow long tokens to wrap. Quality-result rows and their value groups wrap when space is insufficient, preserving the displayed numbers and units. Compact result-list summaries and closed filter controls retain their intentional ellipsis behavior.
+Detail titles and recovered-material names allow long tokens to wrap. Manufacturing specification labels and values stay inline, with whole boxes wrapping as needed. Quality-result rows and their value groups wrap when space is insufficient, preserving the displayed numbers and units. Compact result-list summaries and closed filter controls retain their intentional ellipsis behavior.
 
 When names or layout rules change, inspect actual text bounds inside each box, not only the page's total scroll width: an overflowing centered value may leave the page width unchanged. Include long manufacturers, English specification identifiers and large quality values at 320/390 px, responsive breakpoints, 16:9 desktop, 2K and ultrawide.
 
@@ -106,6 +199,10 @@ When names or layout rules change, inspect actual text bounds inside each box, n
 
 Each acquisition task shows its reported star system(s). Missing systems are
 explicitly marked; template locations are not replaced with guessed places.
+After the system label, show that exact contract's reported task type before
+faction and aUEC, using 11px gray-white `#d6dce2` and the existing translations.
+The title stays primary white, systems cyan, and faction/reward muted blue-gray.
+Missing types say `类型未注明`; never infer one from a title or another task's type.
 Clicking a task opens its blueprint reward pools and any recorded physical item
 rewards, including quantities and owner-only/delivery conditions. Blueprint rows
 open the corresponding blueprint without changing saved favorites.
@@ -129,8 +226,10 @@ old suffix never determines reward eligibility or probability.
 
 Reward candidates and result-list summaries show verified compact class/grade
 labels: Military/Stealth/Industrial/Civilian/Competition become 军/隐/工/民/竞,
-combined with A-D only when the data provides a valid grade. Missing classes do
-not become military; a weapon with grade A but no class shows only A. Summary
+combined with A-D only when the data provides a valid grade. Without a recognized
+class, omit the compact class/grade field entirely, including a bare A-D. Do not
+invent a class or show a lone grade in plan metadata, reward pools, list summaries
+or their summary tooltips. Original grade fields, search and filtering remain intact. Summary
 order is category, component/weapon type, compact class/grade, size, and optional
 manufacturer (for example, 舰船组件 · 冷却器 · 隐C · S1 · 制造商).
 Keep class/grade before trailing size/manufacturer text and verify actual visible
@@ -144,12 +243,12 @@ or mass driver. Never relabel every laser weapon as a cannon or override the
 primary subtype with a conflicting legacy calibration/tag. Unknown families keep
 their existing subtype. Full types also appear in detailed manufacturing and
 dismantling information and participate in search, as do compact class/grades.
-Summary rows try the full type, measure actual width and line height, and fall
-back to the original subtype if it would overflow or wrap. Recheck after result
-rendering, dialog opening and a frame-debounced window resize. Wider layouts
-restore full names. Keep fonts, colors, row styling and responsive columns intact;
-do not shrink text or hide names to force a full type to fit. Main-list trailing
-manufacturer text retains its existing intentional ellipsis and full tooltip.
+Ship-weapon summaries now always retain the complete known type in main lists
+and reward pools. Their smaller text wraps naturally when narrow; a long
+manufacturer must not downgrade `激光加农炮` to `激光` or `实弹加特林` to
+`实弹`. This latest user correction supersedes the former measured abbreviation
+fallback, whose resize/measurement code has been removed. Keep the existing
+fonts, colors and columns; other categories retain their compact ellipsis.
 
 Reward lookup uses the exact contract ID and its explicit pool IDs, not a task
 name, faction or a transitive shared-blueprint association. Same-title tasks in
@@ -177,8 +276,11 @@ official contextual/keyed Chinese first. Unresolved game label keys do not becom
 user-facing place names. Preserve the mineral dialog's existing content-driven layout.
 
 The dialog follows its content height up to the viewport cap, with a scrollable
-body and a non-overlapping footer. Its width follows content within responsive
-limits: candidate lists use two columns above 620 px and one column on phones.
+body and a non-overlapping footer. Preserve the original content-fit task width
+between 680px and 1040px, constrained by screen margins. Use the available browser
+height instead of stopping at 900px; do not stretch width with the monitor.
+Short share dialogs keep the same compact width. Candidate lists use two
+columns above 620 px and one column on phones.
 Chinese/English star systems and displayed task titles participate in the
 existing full-text search; this is not a dedicated star-system filter and does
 not describe a manufacturing site or mineral location. Opening a reward from
@@ -272,17 +374,39 @@ totals with a warning. Storage failure leaves the current session usable and
 explicitly reports that it was not saved. No login, cloud permanence or device
 synchronization is implied.
 
-The plan dialog stays content-height driven and at most 640px wide. Its compact
-summary highlights planned pieces and sequential craft time; one short note
-states that material quantities already include all planned pieces and that time
-excludes queueing. Materials use aligned `material / quality requirement / total
-amount` columns rather than two-column cards or a dot-separated sentence.
+The plan dialog stays content-height driven up to the available window height.
+Its width is a compact 720px (only 80px wider than the previous 640px for the
+larger names and controls), always fitting inside phone margins. Do not scale
+it with monitor width or change the row/table layout. Planned item
+names come first at 18px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
+Their following parentheses show `category · specific type · size · compact class/grade` at 12px
+in muted regular text, wrapping naturally without shrinking the name. Omit missing
+fields; without a recognized class omit the grade too, rather than showing a bare A-D.
+Ship components include their verified type, such as 冷却器、量子驱动 or 采矿激光;
+ship weapons reuse the complete known weapon type from the result/reward helper.
+Other categories do not gain unrelated subtype fields.
+Each row places its single-item craft duration to the left of the quantity
+controls, separated by 16px. This is secondary 12px muted text, not multiplied
+by the row count; narrow screens let its label/value wrap within that left area.
+Use the same first-tier recipe duration as the total calculation, showing unknown
+when unavailable and preserving a real zero. Do not invent missing durations.
+Planned-piece and `清单总耗时` totals follow the materials at a secondary 14px in
+white, with smaller muted labels. One short note explicitly states that material
+and time totals include every item and its quantity in the whole plan; time is
+estimated for sequential crafting, excluding queueing, not a single-item duration
+or promised parallel completion time. Materials use aligned `material / quality
+requirement / total amount` columns rather than two-column cards or a dot-separated sentence.
 Resource totals retain SCU, item totals retain pieces, and missing quality stays
 explicit instead of being invented. Saved-state and clear controls are secondary.
-Each quantity has separate 44px increment/decrement targets and direct input,
+Within the material table, only quality digits use pale periwinkle `#b8c9f1`
+(13px) and total-amount digits use soft mint `#9de2bf` (14px). Prefixes, units and
+column labels stay muted; keep both below the white item name's visual priority.
+Each quantity has separate 32px desktop increment/decrement targets and direct input,
 bounded to 1-9999. Recalculation preserves editable row/action nodes so input
 blur cannot swallow the next click or disrupt keyboard Tab. Mobile places the
-quantity controls below the item name without shrinking their touch targets.
+quantity controls below the item name with 40px touch targets. Quantity-control
+borders and symbols stay muted, rather than visually dominating the item name.
+Check actual reading order, relative typography and color, not only overflow.
 
 Share links encode only the exact blueprint ID and craft/dismantle mode in the
 URL fragment. They do not export favorites, filters or the craft plan. Clipboard
@@ -385,7 +509,9 @@ This automatic policy supersedes the former manual-only signal rule. The old `re
 Mixed deposits show their primary mineral's signal, not the searched secondary material's global signature. Actual possible cluster counts are preserved. FPS/ROC signatures are shared per-rock readings and are not multiplied into invented cluster totals. Named areas retain system/parent context; generic Lagrange or asteroid templates are explicitly regions, never expanded into named stations. The export does not provide validated surface coordinates, so none are invented.
 
 The mineral dialog retains its existing styling and content-driven height, capped
-by the viewport. Location lists use two columns above 620 px and one column on
+by the viewport rather than a fixed 720px. Preserve the original 760px width,
+always inside screen margins; a wider monitor must not create a wider, emptier
+dialog. Location lists use two columns above 620 px and one column on
 phones. Compact star-system controls filter exact reported systems without merging
 location identities; known system/parent paths remain visible. Named distribution
 areas are separate from generic region templates. Templates start collapsed when
@@ -402,8 +528,13 @@ Filtering, scrolling the location list, resizing and closing the dialog remove
 the old popover. The portal is outside the scrolling card, clamped to the dialog
 and viewport, with internal scrolling for unusually long signal content.
 Both dimensions follow the contents; 360px width and 400px height are upper
-limits, not fixed sizes. Signal-button occlusion was explicitly deferred by the
-user, so this compacting change leaves the original positioning helper intact.
+limits, not fixed sizes. The latest correction uses horizontal lanes, not the
+former below/above-first placement. Prefer left, then right where the natural
+width fits. If neither fits, narrow to the larger free side and remeasure its
+wrapped height. Keep 8px clear of every visible signal-button column, including
+the opposite location column, so neighboring buttons remain directly hoverable.
+Height still follows content up to the existing scrolling limit. Other background
+location text can still be covered by this overlay, not the signal buttons.
 
 Prioritize the searched primary mineral and explicitly label secondary matches.
 Signal readings use the original gold capsules in a wrapping flex row, never
@@ -413,6 +544,9 @@ capsule's accessible label. More readings wrap naturally without widening the po
 Shared FPS/ROC values stay per-rock readings in their own labeled groups.
 Explanatory signal notes appear once in smaller text at the bottom of the layer,
 not repeatedly between each group heading and its readings.
+Shared FPS/ROC headings say `扫描信号`, with the shorter note
+`多种矿物信号相同，按单矿计。` This means a reading cannot identify one mineral
+uniquely, not that all those minerals necessarily spawn together at this location.
 Single-mode headings omit the mode already shown outside; only genuinely mixed
 signal modes retain their compact labels, without the redundant mineral-body suffix.
 Generic templates are marked as
@@ -473,7 +607,7 @@ The manufacturing detail panel contains a compact `成品品质效果` summary a
 
 The validated 4.10.2 LIVE snapshot has 1,618 blueprints, 1,617 exact item matches, 1,549 with quality modifiers, and 1,440 with a trustworthy absolute quality metric. These are coverage observations, not hardcoded limits or proof of a complete weapon panel for every item. Unsupported metrics retain relative effects only; these calculations cannot guarantee that the in-game UI displays every crafted adjustment identically.
 
-Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and sorting controls. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
+Manufacturing and dismantling are separate query modes selected from the prominent centered mode switch in the summary strip, between the result count and plan/favorites entries. Sorting options live in the filter header below. The manufacturing mode keeps material quality controls inside their corresponding material cards. The dismantling mode only lists records with verified recoverable outputs, changes the material filter to recovered output, hides mission-only controls, and renders a dedicated dismantling detail view.
 
 Production builds fingerprint `assets/styles.css` and the transformed `assets/app.js` in the generated `dist/index.html`. During that build, `DATA_VERSION` is generated from the combined content hash of `data/blueprint-index.json` and `data/mineral-locations.json`; the generated revision also changes the application fingerprint. This is required because EdgeOne serves assets with a long immutable cache lifetime. Blueprint and mineral JSON requests use that content-derived query key and retain the previous verified cache when refresh validation fails. Refresh scripts must only update validated data files; they must never write a timestamp or version string into `assets/app.js` or `index.html`.
 
