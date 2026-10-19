@@ -9,9 +9,63 @@ function app(document = { querySelector: () => ({}), querySelectorAll: () => [] 
   runInNewContext(`${source}\n globalThis.api = { state, initMissionRewards, missionSystemLabels, renderSources, renderMissionItems, renderMissionPools, renderMissionRequirements, renderBaseStats, renderQualitySummaryContent, renderDismantle, openMissionInfo, recordSearchText, recordMissions, recordWeaponType, recordSpecificationType, manufacturingSpecifications, recordClassGrade, recordSummary, renderRecordSummary, recordType, validPlan, planTotals, renderPlanBody, blueprintShareUrl, renderMaterialQuality, renderLocationSignals, renderMineralLocationGroups, mineralLocationEntries, mineralSystems, renderMineralSystems, mineralLocationSubline, mineralSignalBounds, recordMissionTypes, recordComponentClass, formatTime };`, context);
   runInNewContext("globalThis.api.renderResults = renderResults;", context);
   runInNewContext("globalThis.api.positionFilterMenu = positionFilterMenu;", context);
+  runInNewContext("globalThis.api.renderCompactableQualityValue = renderCompactableQualityValue; globalThis.api.fitQualitySummary = fitQualitySummary;", context);
   context.api.state.data = { missionRewards: { systems: [{ name: "Nyx", nameZh: "尼克斯" }, { name: "Pyro", nameZh: "派罗" }], missions: {} } };
   return context.api;
 }
+
+test("large quality values keep full precision unless a layout explicitly chooses compact text", () => {
+  const api = app();
+  for (const [value, full, short] of [[200000,"200,000 km/s","20万 km/s"], [209834.2,"209,834.2 km/s","20.983万 km/s"], [209750.27,"209,750.27 km/s","20.975万 km/s"], [-200000,"-200,000 km/s","-20万 km/s"], [10000,"10,000 km/s","1万 km/s"]]) {
+    const html = api.renderCompactableQualityValue(value, 2, "km/s");
+    assert.ok(html.includes(`title="${full}"`));
+    assert.ok(html.includes(`data-short="${short}"`));
+    assert.ok(html.endsWith(`>${full}</abbr>`));
+  }
+  assert.equal(api.renderCompactableQualityValue(9999, 2, "km/s"), "9,999 km/s");
+  const unsafe = api.renderCompactableQualityValue(200000, 2, '<img src=x onerror="bad">');
+  assert.doesNotMatch(unsafe, /<img/);
+  assert.match(unsafe, /&lt;img/);
+  assert.equal(api.renderBaseStats({ baseStats:[{label:"速度",value:200000,digits:2,unit:"km/s"}] }).includes("compact-number"), false);
+});
+
+test("quality fitting shortens only an extra wrapped line and restores full text when it fits", () => {
+  let width = 200, grows = true, forceBrief = false, probes = 0, removed = 0;
+  const makeStyle = () => ({ minHeight:"", removeProperty(key) { if (key === "min-height") this.minHeight = ""; } });
+  const numbers = [
+    {dataset:{full:"209,834.2 km/s",short:"20.983万 km/s",brief:"20.98万 km/s"},textContent:"209,834.2 km/s"},
+    {dataset:{full:"230,775.57 km/s",short:"23.078万 km/s",brief:"23.08万 km/s"},textContent:"230,775.57 km/s"},
+  ];
+  const card = {
+    style:makeStyle(), querySelectorAll:()=>numbers, getBoundingClientRect:()=>({width}),
+    cloneNode() {
+      const start = {innerHTML:"baseline"}, end = {innerHTML:"current"}, change = {textContent:"+9.98%"};
+      const probeNumbers = numbers.map(n=>({dataset:{...n.dataset},textContent:n.textContent}));
+      return {
+        style:makeStyle(),setAttribute(){},
+        querySelectorAll:()=>probeNumbers,
+        querySelector:s=>s.endsWith(" small")?start:s.endsWith(" b")?end:change,
+        getBoundingClientRect:()=>({height:width>=300?27:grows&&end.innerHTML!==start.innerHTML&&(forceBrief||probeNumbers.some(n=>n.textContent===n.dataset.full))?54:38}),
+        remove(){removed++;},
+      };
+    },
+  };
+  const summary = {querySelectorAll:()=>[card],append(){probes++;}};
+  const api = app({querySelector:s=>s==="#detailPanel"?{querySelector:()=>summary}:{},querySelectorAll:()=>[]});
+  api.fitQualitySummary();
+  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.short));
+  assert.equal(card.style.minHeight,"38px");
+  width=300;api.fitQualitySummary();
+  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.full));
+  assert.equal(card.style.minHeight,"27px");
+  width=200;grows=false;api.fitQualitySummary();
+  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.full));
+  assert.equal(card.style.minHeight,"38px");
+  grows=true;forceBrief=true;api.fitQualitySummary();
+  assert.deepEqual(numbers.map(n=>n.textContent),numbers.map(n=>n.dataset.brief));
+  assert.equal(card.style.minHeight,"38px");
+  assert.equal(probes,removed);
+});
 
 test("empty results distinguish no favorites, search and filters without changing selection", () => {
   const list = { innerHTML: "" };

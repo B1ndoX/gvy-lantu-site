@@ -2,6 +2,47 @@
 
 final result: passed
 
+## Conditional Compact Quality Values
+
+The taller fixed two-row trial in PR13 was rejected and reverted by PR14.
+Its old matrix is not evidence for this replacement. The restored baseline is
+22ffc45 (same source tree as c0a43e4). The new flow is VK-00 -> change Tungsten
+quality -> keep the original card/section height and slider/scroll position.
+
+Only absolute quality-summary values >=10,000 receive a full-value title and
+optional compact text. An invisible, out-of-flow clone compares current full
+text with the original Q500/no-change natural height at the same card width.
+Only an extra line triggers 万, up to three decimals or two if still necessary
+(the Allegro 1920px boundary). Resizing can restore full text. The original
+flex card CSS, font sizes, padding and natural baseline height remain intact;
+normal values, relative percentages, tasks/materials/signals and formulas are
+unchanged. At 1264px VK-00 stays 114px overall / 38px quantum card, not 56px.
+
+Actual installed Safari 26.6.2: 14 fixed CSS viewports, 320x568, 375x667,
+390x844, 620/621/880/881/1100/1101/1264/1321x793, 1920x1080, 2560x1440 and
+3440x1440. Thirteen targeted long-value/label/many-effect records per viewport,
+nine qualities for a slot affecting a large metric: 1,638 states / 6,426 card
+bounds and baseline-height checks pass. Another 1,400 actual range input events
+on VK-00 preserve range position, detail/page scrolling and focus, with no
+captured error/unhandledrejection or horizontal page overflow. This is targeted
+large-value coverage, not every item/quality/slot. A diagnostic changing all
+slots together also found an unrelated small relative-percentage wrap at
+320px; that is intentionally outside the user's final oversized-number scope.
+
+Native Safari numeric entry to 750 shows the real 230,775.57 km/s / +9.98%.
+At 1264px it becomes 23.078万 km/s; at 390px the full value fits and remains full.
+Both screenshots were opened and visually reviewed. Browser skill is absent;
+the user's installed-Safari-only constraint is retained, with no browser
+download or setting changes. No framework overlay/blank page was visible.
+Runtime error capture is not a DevTools console audit; fixed Safari iframes
+are not iPhone hardware, touch, soft-keyboard or browser-bar evidence.
+
+175 Python / 42 Node tests, syntax and diff checks pass before release; build,
+candidate-byte comparison, exact blueprint/mining pairing and production gate
+must also pass. Temporary harness files remain outside deployable source/dist.
+Release identifiers and final production verification are recorded in the
+required project handoff rather than treating a local pass as deployment.
+
 ## Result Header Match
 
 Following the Safari fix, the user requested that the left `item name/spec` and

@@ -1360,6 +1360,8 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
   white-space: nowrap;
 }
 
+.quality-result-values .compact-number { text-decoration: none; white-space: nowrap; }
+
 .quality-result-values small,
 .quality-result-values i,
 .quality-result-values em {
