@@ -156,7 +156,7 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         name = styles.split('.row-main strong {', 1)[1].split('}', 1)[0]
-        self.assertIn('color: #f4f6f8', name)
+        self.assertIn('color: var(--text-strong)', name)
         self.assertIn('font-size: 18px', name)
         self.assertNotIn('white-space: nowrap', name)
         self.assertIn('.source-mission-type { color: #d6dce2; }', styles)
@@ -198,7 +198,7 @@ class PublicCopyTests(unittest.TestCase):
     def test_plan_item_names_have_priority_over_secondary_totals_and_controls(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
-        self.assertIn("color: #f4f6f8", name)
+        self.assertIn("color: var(--text-strong)", name)
         self.assertIn("font-size: 16px", name)
         self.assertIn("line-height: 1.45", name)
         metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]

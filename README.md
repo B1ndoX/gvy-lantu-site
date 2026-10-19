@@ -119,15 +119,15 @@ manufacturing's nonempty task-source badges use pale blue `#9cccf5`;
 missing-source gray and dismantling's recovery badges keep their colors.
 
 Main result rows now follow the crafting-plan name/metadata pattern: the 18px
-bright silver-white name (`#f4f6f8`) is followed inline by 13px muted parentheses containing category,
+standard white name (`var(--text-strong)`) is followed inline by 13px muted parentheses containing category,
 specific component/weapon type, size and verified compact class/grade. Reuse the
 same specification helper as plans. Full names and metadata wrap naturally on
 narrow screens without shrinking text or colliding with the separate source
 badge. Manufacturer remains searchable and in the full-summary tooltip, not the
 visible parentheses. Reward-pool summaries and detail specifications keep their
 own formats; do not globally change summary ordering to style the main list.
-The user's latest choice is bright silver-white for names, replacing ice blue-white
-while remaining distinct from menu yellow and material green.
+The user's latest choice restores the existing standard white for names, replacing
+the custom silver and blue shades while keeping menu yellow and material green intact.
 
 Manufacturing places one compact specification row directly under the name:
 category, specific type, size, verified full class/grade (only when available),
@@ -360,7 +360,7 @@ synchronization is implied.
 
 The plan dialog stays content-height driven; its width grows from 640px with 70%
 of the viewport up to 1440px, always fitting inside phone margins. Planned item
-names come first at 16px in the selected bright silver-white (`#f4f6f8`), ahead of material requirements.
+names come first at 16px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
 Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
 fields; without a recognized class omit the grade too, rather than showing a bare A-D.
