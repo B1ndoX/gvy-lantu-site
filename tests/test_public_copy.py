@@ -23,6 +23,7 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn('fullHeight > singleLineHeight + 0.5', fitting)
         self.assertIn('compact ? number.dataset.short : number.dataset.full', fitting)
         self.assertNotIn('card.style.minHeight =', fitting)
+        self.assertIn('.quality-result-item.compact-values .quality-result-values em { min-width: 8ch; }', styles)
         self.assertIn('probe.remove()', fitting)
         self.assertIn('fitQualitySummary();', app.split('function setSlotQuality', 1)[1].split('function validPlan', 1)[0])
 
