@@ -146,12 +146,24 @@ its reported subtype. Missing evidence never authorizes a name-based guess.
 The sequence is specifications, collapsed-by-default base attributes, quality
 effects, crafting materials, then acquisition methods. No extra toggle state is
 stored. Missing base/quality data keep their existing omission behavior.
-Crafting-material names alone are 15px soft mint `#9de2bf`, wrapping completely
-inside their existing rows. Descriptions, quality controls, units/amounts, plan
-names and dismantling outputs keep their own typography/colors; material hover
-and keyboard focus feedback remain available.
-The amount beside each 矿点 badge uses pale yellow `#f3e2a4`, separate from orange
-section headings; the location badge remains cyan and the quantity is unchanged.
+Crafting-material names use 18px soft mint `#9de2bf`, with 13px descriptions;
+both wrap inside their existing rows. Hide the redundant `最低品质 1` description;
+show minimums above 1 as an unbroken `最低品质 N` phrase, without changing recipe
+requirements, quality-input limits or plan-table values.
+The cyan 矿点 badge is 13px, and its amount is 15px pale yellow `#f3e2a4`,
+separate from orange section headings. Preserve material hover and focus feedback.
+Quality sliders grow with available space up to 260px instead of stopping at
+118px; the underlying quality capsule stays 72px by 23px. Modifier labels/values
+below the slider are 12px and wrap without truncation. On phones (up to 880px)
+and narrow two-panel desktops (1101-1320px), quality controls occupy a separate
+row so larger text and longer sliders do not crowd the material identity or amount.
+This affects only manufacturing materials, not plan typography, dismantling,
+source tasks, quality calculations or the pending item-name color selection.
+The plan still displays each stored minimum, including 0 and 1. The existing
+normalizer defaults a missing source `minQuality` to 0; the public snapshot alone
+cannot distinguish such a default from an explicit source zero. Do not label
+every zero as a verified absence of quality requirements or silently unify it
+with 1. This readability change does not alter normalization or plan calculations.
 
 Dialog close crosses (task, crafting plan, share link, mineral and signal) and
 plan-row remove crosses share zero-padding grid centering, unit line height and

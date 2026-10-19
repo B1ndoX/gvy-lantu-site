@@ -43,10 +43,32 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split('.material-item .material-summary strong {', 1)[1].split('}', 1)[0]
         self.assertIn('color: #9de2bf', name)
-        self.assertIn('font-size: 15px', name)
+        self.assertIn('font-size: 18px', name)
         self.assertIn('white-space: normal', name)
         self.assertIn('overflow-wrap: anywhere', name)
         self.assertIn('.material-item-button:hover strong {', styles)
+
+    def test_craft_material_details_and_controls_are_larger_without_resizing_quality_capsules(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        description = styles.split('.material-item .material-summary small {', 1)[1].split('}', 1)[0]
+        badge = styles.split('.material-location-badge {', 1)[1].split('}', 1)[0]
+        amount = styles.split('.material-side strong {', 1)[1].split('}', 1)[0]
+        slider = styles.split('.material-quality input[type="range"] {', 1)[1].split('}', 1)[0]
+        modifier = styles.split('.quality-modifier-list strong {', 1)[1].split('}', 1)[0]
+        self.assertIn('font-size: 13px', description)
+        self.assertIn('font-size: 13px', badge)
+        self.assertIn('font-size: 15px', amount)
+        self.assertIn('flex: 1 1 220px', slider)
+        self.assertIn('max-width: 260px', slider)
+        self.assertIn('min-width: 0', slider)
+        self.assertIn('font-size: 12px', modifier)
+        self.assertIn('.quality-modifier-list small {\n  font-size: 12px;', styles)
+        self.assertIn('@media (max-width: 880px), (min-width: 1101px) and (max-width: 1320px)', styles)
+        self.assertIn('flex: 0 0 72px; width: 72px;', styles)
+        self.assertIn('.material-min-quality {\n  white-space: nowrap;', styles)
+        app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('<span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>', app)
+        self.assertIn('${item.minQuality > 1 ? ` · <span class="material-min-quality">', app)
 
     def test_craft_material_amounts_are_pale_yellow_without_recoloring_titles_or_badges(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")

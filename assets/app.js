@@ -2220,7 +2220,7 @@ function renderDetail() {
                       <button class="material-summary material-item-button" type="button" data-mineral="${escapeHtml(item.name)}">
                         <span>
                           <strong>${escapeHtml(materialName(item))}</strong>
-                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality ? ` · 最低品质 ${formatNumber(item.minQuality)}` : ""}</small>
+                          <small>${escapeHtml(materialSlot(item))} · ${escapeHtml(materialKind(item))}${item.minQuality > 1 ? ` · <span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>` : ""}</small>
                         </span>
                       </button>
                       ${renderMaterialQuality(record, item.slotData, item.slotIndex)}
