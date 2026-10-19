@@ -2,6 +2,41 @@
 
 final result: passed
 
+## Actual Safari Follow-Up
+
+The user requested Safari/mobile checks and explicitly chose the installed
+Safari only. Safari 26.6.2 was operated through native CUA in a separate private
+window. No browser download, dependency install, Safari setting/developer-mode
+change or Wikelo coordination occurred. The flow under test was material quality
+input -> plan editing/scrolling -> expanded task sources -> task dialog/close.
+
+### Finding, Fixed
+
+At 375x667, TH-01's Aluminum `minimum quality 600` phrase extended 2.49 CSS px
+past its material-name column (text right 214.4739, column right 211.9844).
+The existing inline no-wrap span did not move as a whole in this Safari case.
+Adding only `display: inline-block` makes the phrase wrap atomically. The text
+now ends at 136.1012 inside the column; the row grows naturally by 18px. Original
+fonts, complete text, all thresholds including 0/1, data and formulas remain.
+The regression test locks the inline-block/no-wrap pair without width/font fixes.
+
+### Final Scope And Evidence
+
+- Actual Safari rendered an isolated byte-matched site copy in same-origin fixed CSS viewports. The harness asserts each iframe's real innerWidth/innerHeight; it does not substitute Chromium, fake UA rendering or a recreated UI. Test HTML/bridge/server stay outside source and public dist.
+- Twelve bounded batches passed: 320x568, 360x640, 375x667, 390x844, 393x852, 414x896, 430x932, 568x320, 667x375, 844x390, 1024x768 and 1264x793. Each covers 47 selected records, including all 17 recipes with minimum quality above 1, longest material/source titles, largest source lists/material sets, and 16 complex/long task dialogs.
+- Final totals: 1,620 material rows, 1,296 quality controls, 14,316 task-source rows, 48 plan scenarios and 192 task dialogs. Empty, missing-ID, two-item and 100 longest-name items x 9999 plans retain their true text/cell bounds. Capsule dimensions, inner outline removal, slider synchronization, tooltip bounds, page overflow, dialog head/body/footer separation and unobstructed close buttons pass. No captured application error or unhandled rejection; domain records unchanged.
+- Earlier exhaustive baseline checks passed 320/360 then caught the 375px bug. A later exhaustive rerun was stopped after native window-control timeouts; the user closed only the hung QA window. Final results above are the completed focused batches, not a claim that all 1,618 recipes and 672 tasks passed all twelve sizes. Smaller batches completed without that tool blockage.
+- Native UI interaction at 390px: type quality 1000/Tab -> slider 1000 and coefficient 1.2x; type plan quantity 9999/Tab -> plus disabled, 10,002 pieces and material totals update; scroll to plan bottom -> totals/footer remain readable; Escape closes plan. Open a real source from the 125-task list -> expand requirements -> close button returns focus to its original source. Screenshots were saved and visually opened.
+- Evidence: `/tmp/gvy-safari-audit-20261019/result.json`, `result-before.json`, `minimum-before.json`, `minimum-after.json`, and actual native captures `/tmp/gvy-safari-01-desktop-20261019.png` through `12-task-final-20261019.png`. Retain the original full-window images when providing focused screenshot crops.
+- 173 Python tests, 40 standalone Node tests, syntax, diff, build and offline version-pair checks pass. Built CSS 754f0d027d20 is byte-equal to the final Safari-tested candidate; JS 2bc5ce5932cd and data-0f6906d31548ddd6 are unchanged. Latest stable LIVE still 4.10.2-live.12913470; data/timestamps, app JS, public HTML, scripts and workflows have no changes. Pre-fix healthy main/checkpoint is 230ca01, with an integrity-checked source archive retained for scoped rollback. Exact-client-URL production verification is required before reporting deployment. Full originals, result JSON and the isolated harness are also retained under `.git/visual-previews/safari-native-20261019/`, never shipped.
+
+This is desktop Safari's real narrow-viewport CSS rendering and native input,
+not iPhone hardware/iOS browser chrome, safe-area, touch, soft-keyboard or system
+text-zoom verification. Safari DevTools was not enabled, so runtime error capture
+is not a claim of an exhaustive developer-console warning audit. Browser plugin
+skill was not listed; the existing-Safari-only direction takes precedence over
+installing a separate Playwright WebKit runtime.
+
 ## Release Authorization
 
 After the local corrections and audit below, the user explicitly authorized safe

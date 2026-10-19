@@ -65,10 +65,19 @@ class PublicCopyTests(unittest.TestCase):
         self.assertIn('.quality-modifier-list small {\n  font-size: 12px;', styles)
         self.assertIn('@media (max-width: 880px), (min-width: 1101px) and (max-width: 1320px)', styles)
         self.assertIn('flex: 0 0 72px; width: 72px;', styles)
-        self.assertIn('.material-min-quality {\n  white-space: nowrap;', styles)
+        minimum = styles.split('.material-min-quality {', 1)[1].split('}', 1)[0]
+        self.assertIn('white-space: nowrap', minimum)
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         self.assertIn('<span class="material-min-quality">最低品质 ${formatNumber(item.minQuality)}</span>', app)
         self.assertIn('${item.minQuality > 1 ? ` · <span class="material-min-quality">', app)
+
+    def test_material_minimum_uses_an_atomic_inline_box_for_safari_wrapping(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        minimum = styles.split('.material-min-quality {', 1)[1].split('}', 1)[0]
+        self.assertIn('display: inline-block', minimum)
+        self.assertIn('white-space: nowrap', minimum)
+        self.assertNotIn('font-size:', minimum)
+        self.assertNotIn('width:', minimum)
 
     def test_craft_material_amounts_are_pale_yellow_without_recoloring_titles_or_badges(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
