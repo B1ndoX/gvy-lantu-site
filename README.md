@@ -211,9 +211,11 @@ Disabled fields and options use native disabled semantics and are skipped by
 keyboard navigation; clearing a condition remains possible in an empty result.
 
 `assets/fleet-watermark.png` is the exact user-selected download, without editing
-the original. CSS uses its alpha mask in a blue-gray tint: one non-repeating,
-bottom-anchored page watermark (4%) and independent compact dialog watermarks
-(3%). Width and height caps preserve proportions across mobile and large screens;
+the original. CSS displays the transparent PNG directly, preserving its original
+colors and internal detail without a monochrome mask, filter or blend mode:
+one non-repeating, bottom-anchored page watermark (4%) and independent compact
+dialog watermarks (3%). Width and height caps preserve proportions across mobile
+and large screens;
 the decorative layer is below content, cannot receive pointer events, does not
 alter panel opacity, and never creates generated table rows/cells. No Wikelo
 project changes or coordination are included in this blueprint preview.

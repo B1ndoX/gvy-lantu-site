@@ -81,10 +81,8 @@ body::before,
   aspect-ratio: 1;
   transform: translateX(-50%);
   pointer-events: none;
-  background: #a4c6df;
+  background: url("./fleet-watermark.png") center / contain no-repeat;
   opacity: 0.04;
-  -webkit-mask: url("./fleet-watermark.png") center / contain no-repeat;
-  mask: url("./fleet-watermark.png") center / contain no-repeat;
 }
 
 .mission-dialog::before,
