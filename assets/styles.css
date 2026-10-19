@@ -1364,6 +1364,7 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 
 .quality-result-item.compact-values { column-gap: 6px; }
 .quality-result-item.compact-values .quality-result-values { column-gap: 2px; }
+.quality-result-item.compact-values .quality-result-values em { min-width: 8ch; }
 
 .quality-result-values small,
 .quality-result-values i,

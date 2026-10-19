@@ -708,9 +708,12 @@ The manufacturing detail panel contains a compact `成品品质效果` summary a
 Absolute quality-summary values default to their full existing format. Only when
 a value of at least 10,000 forces the label and values onto separate lines
 does the summary use a `万` abbreviation, rounded to a whole ten-thousand.
-Compact comparisons share the trailing scale/unit when both values qualify;
-each abbreviated value retains its complete value/unit in its hover title.
-Only compact cards use slightly tighter horizontal gaps. Calculations and
+Both sides keep their own scale and unit (`21万km/s -> 23万km/s`); each
+abbreviated value retains its complete value/unit in its hover title.
+Only compact cards use slightly tighter horizontal gaps and a stable horizontal
+allowance for the change indicator. Very narrow cards wrap naturally, without
+fixed taller heights or changing line counts during the tested slider inputs.
+Calculations and
 percentage changes keep their original precision. Resizing restores full text
 when it fits. Preserve compact card heights/fonts; the rejected
 fixed-height two-row trial must not return. Other numbers, including tasks,

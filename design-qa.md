@@ -2,7 +2,26 @@
 
 final result: passed
 
-## Inline Rounded Quality Values
+## Both Units Retained (Latest)
+
+The user's next correction explicitly retains the first scale/unit. Both sides
+now show complete whole-万 abbreviations, `21万km/s -> 23万km/s`, with separate
+full original titles. No shared/omitted first suffix or space inside the compact
+number/unit; complete full-value formatting is unchanged. Only compact change
+indicators reserve 8ch horizontally, preventing short/long percentages from
+switching wrap points. No fixed taller heights or font reductions are added.
+
+The full targeted Safari matrix reran independently: 14 viewports, 1,638 states,
+6,426 card-bound/height checks and 1,400 repeated range input events pass, with
+no captured runtime error/page overflow and complete integer/title checks.
+The screenshot's 1264px quantum card remains one line / 27px; 320px and 1101px
+narrow cards naturally use 38px across the tested states, rather than dropping
+units to claim every size is one line. All other tested widths use 27px. Native
+750 entry and the final desktop screenshot confirm both units and +9.98%.
+Earlier shared-unit screenshots/results below are superseded, not final proof.
+Existing Safari/phone-hardware limitations and scoped data guarantees remain.
+
+## Shared-Unit Trial (Superseded)
 
 PR15 (48189a9) passed the production gate, but the user correctly pointed out
 that its label still sat above the numbers. The latest correction supersedes

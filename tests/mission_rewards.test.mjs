@@ -16,17 +16,16 @@ function app(document = { querySelector: () => ({}), querySelectorAll: () => [] 
 
 test("large quality values keep full precision unless a layout explicitly chooses compact text", () => {
   const api = app();
-  for (const [value, full, short] of [[200000,"200,000 km/s","20万 km/s"], [209834.2,"209,834.2 km/s","21万 km/s"], [230775.57,"230,775.57 km/s","23万 km/s"], [205000,"205,000 km/s","21万 km/s"], [-205000,"-205,000 km/s","-21万 km/s"], [10000,"10,000 km/s","1万 km/s"]]) {
+  for (const [value, full, short] of [[200000,"200,000 km/s","20万km/s"], [209834.2,"209,834.2 km/s","21万km/s"], [230775.57,"230,775.57 km/s","23万km/s"], [205000,"205,000 km/s","21万km/s"], [-205000,"-205,000 km/s","-21万km/s"], [10000,"10,000 km/s","1万km/s"]]) {
     const html = api.renderCompactableQualityValue(value, 2, "km/s");
     assert.ok(html.includes(`title="${full}"`));
     assert.ok(html.includes(`data-short="${short}"`));
     assert.ok(html.endsWith(`>${full}</abbr>`));
   }
   assert.equal(api.renderCompactableQualityValue(9999, 2, "km/s"), "9,999 km/s");
-  assert.match(api.renderCompactableQualityValue(209834.2, 2, "km/s", false), /title="209,834.2 km\/s".*data-short="21"/);
   const comparison = api.renderQualitySummaryContent({qualityStats:[{label:"速度",value:200000,digits:2,unit:"km/s",properties:[]}]});
-  assert.match(comparison, /<small><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20"/);
-  assert.match(comparison, /<b><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20万 km\/s"/);
+  assert.match(comparison, /<small><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20万km\/s"/);
+  assert.match(comparison, /<b><abbr[^>]*title="200,000 km\/s"[^>]*data-short="20万km\/s"/);
   const unsafe = api.renderCompactableQualityValue(200000, 2, '<img src=x onerror="bad">');
   assert.doesNotMatch(unsafe, /<img/);
   assert.match(unsafe, /&lt;img/);
@@ -37,8 +36,8 @@ test("quality fitting keeps large values with their label and restores full text
   let width = 200, probes = 0, removed = 0, compact = false;
   const makeStyle = () => ({ minHeight:"", removeProperty(key) { if (key === "min-height") this.minHeight = ""; } });
   const numbers = [
-    {dataset:{full:"209,834.2 km/s",short:"21"},textContent:"209,834.2 km/s"},
-    {dataset:{full:"230,775.57 km/s",short:"23万 km/s"},textContent:"230,775.57 km/s"},
+    {dataset:{full:"209,834.2 km/s",short:"21万km/s"},textContent:"209,834.2 km/s"},
+    {dataset:{full:"230,775.57 km/s",short:"23万km/s"},textContent:"230,775.57 km/s"},
   ];
   const card = {
     classList:{toggle(name,value){assert.equal(name,"compact-values");compact=value;}},

@@ -737,11 +737,11 @@ function formatQualityValue(value, digits = 2, unit = "") {
   return `${text}${unit ? ` ${unit}` : ""}`;
 }
 
-function renderCompactableQualityValue(value, digits, unit, compactSuffix = true) {
+function renderCompactableQualityValue(value, digits, unit) {
   const full = formatQualityValue(value, digits, unit);
   if (!Number.isFinite(value) || Math.abs(value) < 10000) return escapeHtml(full);
   const number = new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 0 }).format(value / 10000);
-  const short = `${number}${compactSuffix ? `万${unit ? ` ${unit}` : ""}` : ""}`;
+  const short = `${number}万${unit || ""}`;
   return `<abbr class="compact-number" title="${escapeHtml(full)}" data-full="${escapeHtml(full)}" data-short="${escapeHtml(short)}">${escapeHtml(full)}</abbr>`;
 }
 
@@ -799,7 +799,7 @@ function renderQualitySummaryContent(record) {
       <div class="quality-result-item${changed ? " changed" : ""}">
         <strong>${escapeHtml(metric.label)}</strong>
         <span class="quality-result-values">
-          <small>${renderCompactableQualityValue(baseValue, metric.digits, metric.unit, !(Math.abs(baseValue) >= 10000 && Math.abs(finalValue) >= 10000))}</small>
+          <small>${renderCompactableQualityValue(baseValue, metric.digits, metric.unit)}</small>
           <i aria-hidden="true">→</i>
           <b>${renderCompactableQualityValue(finalValue, metric.digits, metric.unit)}</b>
           <em>${escapeHtml(changed ? signedQualityChange(percent) : "无变化")}</em>
