@@ -182,25 +182,27 @@ class PublicCopyTests(unittest.TestCase):
 
     def test_planner_has_scoped_responsive_layout_and_independent_explanation_spacing(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
-        self.assertIn(".mission-dialog.planner-dialog { width: min(clamp(640px, 70vw, 1440px),", styles)
+        self.assertIn(".mission-dialog.planner-dialog { width: min(720px,", styles)
         explanation = styles.split(".planner-dialog .plan-explanation {", 1)[1].split("}", 1)[0]
         self.assertIn("margin: 0 0 10px", explanation)
         self.assertIn(".plan-material-table { width: 100%; border-collapse: collapse; table-layout: fixed; }", styles)
         self.assertIn("grid-template-columns: 32px 44px 32px", styles)
         self.assertIn("grid-template-columns: 40px 48px 40px", styles)
 
-    def test_rich_dialogs_grow_with_the_viewport_without_fixed_height_caps(self) -> None:
+    def test_rich_dialogs_use_available_height_without_stretching_their_width(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         mineral = styles.split('.mineral-card {', 1)[1].split('}', 1)[0]
         mission = styles.split('.mission-dialog {', 1)[1].split('}', 1)[0]
-        self.assertIn('clamp(760px, 70vw, 1680px)', mineral)
+        self.assertIn('width: min(760px, calc(100vw - 44px))', mineral)
         self.assertIn('max-height: calc(100dvh - 44px)', mineral)
-        self.assertIn('clamp(680px, 70vw, 1680px)', mission)
+        self.assertIn('min-width: min(680px, calc(100vw - 32px))', mission)
+        self.assertIn('max-width: min(1040px, calc(100vw - 32px))', mission)
         self.assertIn('height: fit-content', mission)
         self.assertIn('max-height: calc(100dvh - 32px)', mission)
-        self.assertNotIn('720px', mineral)
+        self.assertNotIn('max-height: min(90dvh, 720px)', mineral)
         self.assertNotIn('900px', mission)
-        self.assertIn('.utility-dialog:not(.planner-dialog)', styles)
+        self.assertNotIn('70vw', mineral)
+        self.assertNotIn('70vw', mission)
         self.assertIn(".plan-stepper button {", styles)
         self.assertIn("input::-webkit-inner-spin-button", styles)
         self.assertNotIn(".plan-time", styles)

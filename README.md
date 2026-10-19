@@ -171,11 +171,16 @@ and narrow two-panel desktops (1101-1320px), quality controls occupy a separate
 row so larger text and longer sliders do not crowd the material identity or amount.
 This affects only manufacturing materials, not plan typography, dismantling,
 source tasks, quality calculations or the separate item-name color selection.
-The plan still displays each stored minimum, including 0 and 1. The existing
-normalizer defaults a missing source `minQuality` to 0; the public snapshot alone
-cannot distinguish such a default from an explicit source zero. Do not label
-every zero as a verified absence of quality requirements or silently unify it
-with 1. This readability change does not alter normalization or plan calculations.
+The plan still displays each stored minimum, including 0 and 1. An online audit
+of the exact `4.10.2-live.12913470` export checked every option by blueprint ID,
+tier, slot and option index: all 4,316 explicitly provide `minQuality`, with no
+missing fields or differences from the public snapshot. The source has 2,917
+zeros, 1,377 ones and 22 higher minima. Bendix requires Borase 0; Balandin requires
+Borase 1. These are source recipe values, not missing-field defaults. The normalizer
+does have a fallback of 0 for a future absent field, but that path does not explain
+this snapshot. Do not claim why the game chose these values or that 0 and 1 are
+equivalent; neither is established by this export. Their unification remains
+explicitly deferred. No normalization or plan calculation changes were made.
 
 Dialog close crosses (task, crafting plan, share link, mineral and signal) and
 plan-row remove crosses share zero-padding grid centering, unit line height and
@@ -271,10 +276,10 @@ official contextual/keyed Chinese first. Unresolved game label keys do not becom
 user-facing place names. Preserve the mineral dialog's existing content-driven layout.
 
 The dialog follows its content height up to the viewport cap, with a scrollable
-body and a non-overlapping footer. Task width grows with 70% of the viewport from
-680px to 1680px, with room for wider intrinsic content up to 1800px; all dimensions
-stay within screen margins. Height no longer stops at a fixed 900px on large screens.
-Short share dialogs retain their content-oriented width. Candidate lists use two
+body and a non-overlapping footer. Preserve the original content-fit task width
+between 680px and 1040px, constrained by screen margins. Use the available browser
+height instead of stopping at 900px; do not stretch width with the monitor.
+Short share dialogs keep the same compact width. Candidate lists use two
 columns above 620 px and one column on phones.
 Chinese/English star systems and displayed task titles participate in the
 existing full-text search; this is not a dedicated star-system filter and does
@@ -369,8 +374,10 @@ totals with a warning. Storage failure leaves the current session usable and
 explicitly reports that it was not saved. No login, cloud permanence or device
 synchronization is implied.
 
-The plan dialog stays content-height driven; its width grows from 640px with 70%
-of the viewport up to 1440px, always fitting inside phone margins. Planned item
+The plan dialog stays content-height driven up to the available window height.
+Its width is a compact 720px (only 80px wider than the previous 640px for the
+larger names and controls), always fitting inside phone margins. Do not scale
+it with monitor width or change the row/table layout. Planned item
 names come first at 18px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
 Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
@@ -502,8 +509,9 @@ This automatic policy supersedes the former manual-only signal rule. The old `re
 Mixed deposits show their primary mineral's signal, not the searched secondary material's global signature. Actual possible cluster counts are preserved. FPS/ROC signatures are shared per-rock readings and are not multiplied into invented cluster totals. Named areas retain system/parent context; generic Lagrange or asteroid templates are explicitly regions, never expanded into named stations. The export does not provide validated surface coordinates, so none are invented.
 
 The mineral dialog retains its existing styling and content-driven height, capped
-by the viewport rather than a fixed 720px. Width grows from 760px with 70% of the
-viewport up to 1680px, always preserving screen margins. Location lists use two columns above 620 px and one column on
+by the viewport rather than a fixed 720px. Preserve the original 760px width,
+always inside screen margins; a wider monitor must not create a wider, emptier
+dialog. Location lists use two columns above 620 px and one column on
 phones. Compact star-system controls filter exact reported systems without merging
 location identities; known system/parent paths remain visible. Named distribution
 areas are separate from generic region templates. Templates start collapsed when
