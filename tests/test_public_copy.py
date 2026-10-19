@@ -156,7 +156,7 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         name = styles.split('.row-main strong {', 1)[1].split('}', 1)[0]
-        self.assertIn('color: #9fe9f5', name)
+        self.assertIn('color: #f4f6f8', name)
         self.assertIn('font-size: 18px', name)
         self.assertNotIn('white-space: nowrap', name)
         self.assertIn('.source-mission-type { color: #d6dce2; }', styles)
@@ -170,14 +170,27 @@ class PublicCopyTests(unittest.TestCase):
         default = styles.split(".source-badge {", 1)[1].split("}", 1)[0]
         self.assertIn("color: var(--orange)", default)
 
-    def test_planner_has_scoped_compact_layout_and_independent_explanation_spacing(self) -> None:
+    def test_planner_has_scoped_responsive_layout_and_independent_explanation_spacing(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
-        self.assertIn(".mission-dialog.planner-dialog { width: min(640px,", styles)
+        self.assertIn(".mission-dialog.planner-dialog { width: min(clamp(640px, 70vw, 1440px),", styles)
         explanation = styles.split(".planner-dialog .plan-explanation {", 1)[1].split("}", 1)[0]
         self.assertIn("margin: 0 0 10px", explanation)
         self.assertIn(".plan-material-table { width: 100%; border-collapse: collapse; table-layout: fixed; }", styles)
         self.assertIn("grid-template-columns: 32px 44px 32px", styles)
         self.assertIn("grid-template-columns: 40px 48px 40px", styles)
+
+    def test_rich_dialogs_grow_with_the_viewport_without_fixed_height_caps(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        mineral = styles.split('.mineral-card {', 1)[1].split('}', 1)[0]
+        mission = styles.split('.mission-dialog {', 1)[1].split('}', 1)[0]
+        self.assertIn('clamp(760px, 70vw, 1680px)', mineral)
+        self.assertIn('max-height: calc(100dvh - 44px)', mineral)
+        self.assertIn('clamp(680px, 70vw, 1680px)', mission)
+        self.assertIn('height: fit-content', mission)
+        self.assertIn('max-height: calc(100dvh - 32px)', mission)
+        self.assertNotIn('720px', mineral)
+        self.assertNotIn('900px', mission)
+        self.assertIn('.utility-dialog:not(.planner-dialog)', styles)
         self.assertIn(".plan-stepper button {", styles)
         self.assertIn("input::-webkit-inner-spin-button", styles)
         self.assertNotIn(".plan-time", styles)
@@ -185,7 +198,7 @@ class PublicCopyTests(unittest.TestCase):
     def test_plan_item_names_have_priority_over_secondary_totals_and_controls(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
-        self.assertIn("color: #9fe9f5", name)
+        self.assertIn("color: #f4f6f8", name)
         self.assertIn("font-size: 16px", name)
         self.assertIn("line-height: 1.45", name)
         metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]
