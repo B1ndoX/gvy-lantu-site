@@ -8,6 +8,36 @@ Do not configure GitHub Pages for this repository, and do not point DNS back to 
 
 Official fleet website content belongs in the separate `gvy-official-site` project.
 
+## 2026-10-20 Usability Preview
+
+This batch was reviewed locally on `feat/rea-usability-preview-20261020`, based on
+production `19e6a017`. The user subsequently authorized safe deployment after a
+fresh existing-Safari desktop/mobile-size audit. Publish the reviewed code through
+the normal main/EdgeOne path, retaining production data and requiring exact-client
+asset and paired-JSON health verification. The original source, running dist and
+handoff are backed up in `.git/visual-backups/rea-usability-before-20261020/`;
+`checkpoint/before-rea-usability-20261020` retains the production base.
+The release checkpoint is `checkpoint/before-rea-usability-release-20261020`;
+reviewed source/dist/handoff are also preserved in
+`.git/visual-backups/rea-usability-release-20261020/`.
+
+Safari 26.6.2 passed 75 checks: 18 viewports from 320 to 3840px for task arrows,
+material units, plan copying and filter sharing, plus all 1,618 records at three
+viewport sizes. Native clipboard copy/paste and a fresh-document S3 link restore
+also passed. Fixed-size Safari frames are desktop Safari rendering, not iPhone
+hardware, touch, browser-bar or soft-keyboard proof. No browser download or Safari
+settings change was used; the temporary QA harness must never enter dist.
+
+The batch adds explicit SCU/piece units inside existing material subtitles,
+a copy command in the existing plan toolbar, a separate filter-share icon beside
+the existing sort controls, and arrow-only folding of verified equivalent task
+source rows. Preserve all existing navy surfaces, fonts, columns, material
+controls, quality formulas/minima, data snapshots and update timestamps. Do not
+implement the generated concept images literally: there is no fixed task metadata
+column, extra variant-count badge, larger panel or new surrounding frame.
+The trailing task chevron centers against its own row, including wrapped rows;
+it must not retain a fixed top offset or change task text geometry.
+
 ## Deep Blue Skin
 
 The 2026-10-19 skin was reviewed locally on
@@ -358,7 +388,7 @@ rewards, including quantities and owner-only/delivery conditions. Blueprint rows
 open the corresponding blueprint without changing saved favorites.
 
 Acquisition tasks share one compact list across source pools, deduplicated by
-contract ID without merging distinct same-title tasks. Show twelve rows initially;
+contract ID without merging distinct same-title tasks. Show twelve entries initially;
 if only one to three would remain hidden, show them too (up to fifteen total).
 The current 678 task-linked blueprints average 11.03 unique contracts; twelve is
 a stable display limit, not a live average that changes the layout on each refresh.
@@ -366,6 +396,16 @@ Use the native disclosure only when at least four rows remain hidden.
 Clickable task names are white without underlines, with an arrow and visible
 hover/focus feedback; non-clickable legacy rows retain neutral text. A task's
 reward dialog still keeps its independent pools separate.
+The latest local preview may fold equivalent entries behind a small downward
+arrow in the first row's existing left inset. Compare every recorded source field
+except ID/debug name and the entire exact-ID reward/requirements record, including
+pool identities, triggers, chances and physical rewards. Missing/incomplete records
+or unresolved additional restrictions are not folded. Keep every task ID and the
+original total; the text row and reward click target remain unchanged. A collapsed
+group has an independent keyboard-accessible toggle and hidden member rows, not
+a new frame or fixed column. The twelve-entry preview limit applies to top-level
+entries after folding; opening the existing all-tasks disclosure reveals its
+remaining entries and folded members. Do not group merely by visible title.
 Hide the redundant literal `[蓝图]` hint from all displayed task titles, including
 source rows, reward-dialog headings and prerequisite/completed/excluded tasks.
 Preserve original localization and reward data. Bracketed runtime placeholders
@@ -562,6 +602,27 @@ Share links encode only the exact blueprint ID and craft/dismantle mode in the
 URL fragment. They do not export favorites, filters or the craft plan. Clipboard
 failure opens a selectable link. Opening an unavailable ID reports the missing
 blueprint rather than substituting a same-name result.
+
+The separate `分享当前筛选` command uses a versioned, allowlisted fragment with
+query mode, search, the eight existing facets, public mission-source restriction
+and sorting. It never exports favorites, plan IDs/counts, quality values or the
+current blueprint ID. Restoring exits favorites-only mode without modifying saved
+favorites or plans. Preserve valid zero-result combinations; reject malformed,
+duplicate or oversized fields, normalize retired/inapplicable values through the
+existing filter rules, and report adjusted fields or a changed LIVE build. Search
+is bounded to 1000 characters and the encoded fragment to 12000. Existing
+blueprint links retain their original exact-ID/mode-only contract.
+
+`复制制作清单` copies the current bounded item counts, the same material totals
+as the table with SCU/piece units and separate quality minima, sequential duration,
+warnings and current data version/time. It does not copy quality-preview values
+as recipe requirements or alter any stored plan/favorite. Amount formatting is
+shared by the table and text and retains up to six decimal places, without large
+number abbreviation. Clipboard denial exposes a selectable text field within the
+same plan dialog; subsequent edits keep that text current. No nested modal is
+opened, and existing editable row nodes remain mounted during recalculation.
+The three small static icons are attributed to Lucide/Feather in
+`assets/icons/LICENSE.txt`; there is no new runtime package or network service.
 
 ## Local Preview
 
