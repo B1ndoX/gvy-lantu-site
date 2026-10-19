@@ -77,6 +77,14 @@ class PublicCopyTests(unittest.TestCase):
         badge = styles.split('.material-location-badge {', 1)[1].split('}', 1)[0]
         self.assertIn('color: var(--cyan)', badge)
 
+    def test_material_quality_column_and_modifier_share_a_stable_left_edge(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        columns = styles.split('.material-item.has-quality {', 1)[1].split('}', 1)[0]
+        self.assertIn('minmax(130px, 35%) minmax(180px, 1fr) auto', columns)
+        slider = styles.split('.material-quality input[type="range"] {', 1)[1].split('}', 1)[0]
+        self.assertIn('margin: 0', slider)
+        self.assertIn('@media (max-width: 880px), (min-width: 1101px) and (max-width: 1320px)', styles)
+
     def test_dialog_crosses_use_shared_centering_without_native_button_padding(self) -> None:
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         cross = styles.split('.mission-close,\n.mineral-close,\n.mineral-signal-head button,\n.plan-remove {', 1)[1].split('}', 1)[0]
@@ -199,7 +207,7 @@ class PublicCopyTests(unittest.TestCase):
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         name = styles.split(".plan-row > strong {", 1)[1].split("}", 1)[0]
         self.assertIn("color: var(--text-strong)", name)
-        self.assertIn("font-size: 16px", name)
+        self.assertIn("font-size: 18px", name)
         self.assertIn("line-height: 1.45", name)
         metadata = styles.split(".plan-item-meta {", 1)[1].split("}", 1)[0]
         self.assertIn("color: var(--muted)", metadata)

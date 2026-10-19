@@ -19,13 +19,17 @@ production domain, or reports that a deployment passed. Both source steps must
 succeed before the candidate artifact can be produced. Scheduled runs and normal
 manual refreshes keep their existing publish, health-check and rollback behavior.
 
-For a reviewed code release, start from production `main`, pick code changes only,
+For a reviewed code release containing unpublished preview data, start from production `main`, pick code changes only,
 prepare cloud data on the release branch, inspect its immutable run/head and
 artifact, then commit only the generated-data allowlist to that same branch.
 Rerun tests, coverage/version validation, build and browser QA before merging the
 reviewed code and data together. Do not publish local preview-data checkpoints.
 After merge, verify the actual EdgeOne client URLs against that final revision;
 keep the previous production commit and cloud backup available for rollback.
+For a code-only release already based on current production `main`, preserve the
+unchanged production snapshots, verify the current stable-LIVE manifest and
+blueprint/mining pair, and audit the complete code diff. A UI release alone must
+not import preview data or advance data-update timestamps.
 
 Official localization version labels may start with a numeric series or the
 official `Alpha ` prefix (for example, `Alpha 4.10：奥里森之围`). The reader
@@ -155,7 +159,11 @@ The cyan 矿点 badge is 13px, and its amount is 15px pale yellow `#f3e2a4`,
 separate from orange section headings. Preserve material hover and focus feedback.
 Quality sliders grow with available space up to 260px instead of stopping at
 118px; the underlying quality capsule stays 72px by 23px. Modifier labels/values
-below the slider are 12px and wrap without truncation. On phones (up to 880px)
+below the slider are 12px and wrap without truncation. The independent name
+column uses 35% of the row so different right-side amounts cannot shift each
+slider's left edge; remove the range input's native margins to align it with
+the modifier blocks below. Long names wrap within their own column.
+On phones (up to 880px)
 and narrow two-panel desktops (1101-1320px), quality controls occupy a separate
 row so larger text and longer sliders do not crowd the material identity or amount.
 This affects only manufacturing materials, not plan typography, dismantling,
@@ -360,7 +368,7 @@ synchronization is implied.
 
 The plan dialog stays content-height driven; its width grows from 640px with 70%
 of the viewport up to 1440px, always fitting inside phone margins. Planned item
-names come first at 16px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
+names come first at 18px in the existing standard white (`var(--text-strong)`), ahead of material requirements.
 Their following parentheses show `category · specific type · size · compact class/grade` at 12px
 in muted regular text, wrapping naturally without shrinking the name. Omit missing
 fields; without a recognized class omit the grade too, rather than showing a bare A-D.
@@ -382,7 +390,7 @@ Resource totals retain SCU, item totals retain pieces, and missing quality stays
 explicit instead of being invented. Saved-state and clear controls are secondary.
 Within the material table, only quality digits use pale periwinkle `#b8c9f1`
 (13px) and total-amount digits use soft mint `#9de2bf` (14px). Prefixes, units and
-column labels stay muted; keep both below the gold item name's visual priority.
+column labels stay muted; keep both below the white item name's visual priority.
 Each quantity has separate 32px desktop increment/decrement targets and direct input,
 bounded to 1-9999. Recalculation preserves editable row/action nodes so input
 blur cannot swallow the next click or disrupt keyboard Tab. Mobile places the
