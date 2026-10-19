@@ -2,6 +2,29 @@
 
 final result: passed
 
+## Result Header Match
+
+Following the Safari fix, the user requested that the left `item name/spec` and
+source headings match the right detail label's size/color, then explicitly
+authorized safe deployment after all checks. Only `.result-head` changes from
+12px / translucent cyan to 14px / `var(--cyan)`; item names, geometry and data
+remain unchanged. A regression test asserts the shared label size/color and
+existing minimum height; the older 12px expectation is updated for this request.
+
+Actual Safari checks both modes at 320/390/620/621/880/881/1100/1101/1320/1321/
+1920/2560/3440/3840px: 28 states, equal 14px/rgb(126,221,242) labels, unchanged
+36px header, full text inside each cell, no horizontal overflow, unchanged
+21px item names/30px detail title. Desktop screenshot 13 and an actual native
+320x568 select/result-click screenshot 14 were visually opened; the phone header
+is complete and readable. This is a focused header delta, not another full
+material/task matrix. Earlier Safari scope/limits below still apply.
+
+174 Python tests, 40 Node tests, syntax/diff, build and blueprint/mining validation
+pass. Built CSS c7ad53ec405a is byte-identical to the Safari candidate. JS and
+data revisions are unchanged. Prior Safari release PR #11 / b750832 passed the
+exact EdgeOne health gate with CSS 754f0d027d20 before this separate header delta.
+Its production verification is not substituted for the new release's health gate.
+
 ## Actual Safari Follow-Up
 
 The user requested Safari/mobile checks and explicitly chose the installed

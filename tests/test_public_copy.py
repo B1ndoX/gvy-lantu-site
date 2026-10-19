@@ -8,6 +8,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class PublicCopyTests(unittest.TestCase):
+    def test_result_headers_match_detail_label_size_and_color(self) -> None:
+        styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
+        header = styles.split('.result-head {', 1)[1].split('}', 1)[0]
+        detail = styles.split('.detail-head {', 1)[1].split('}', 1)[0]
+        labels = styles.split('.detail-head-labels {', 1)[1].split('}', 1)[0]
+        self.assertIn('color: var(--cyan)', header)
+        self.assertIn('color: var(--cyan)', detail)
+        self.assertIn('font-size: 14px', header)
+        self.assertIn('font-size: 14px', labels)
+        self.assertIn('min-height: 36px', header)
+
     def test_craft_specs_replace_tags_and_footer_before_collapsed_base_then_quality(self) -> None:
         app = (ROOT / "assets" / "app.js").read_text(encoding="utf-8")
         detail = app.split("function renderDetail() {", 1)[1].split("function recordMissions", 1)[0]
@@ -138,7 +149,7 @@ class PublicCopyTests(unittest.TestCase):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
         header = styles.split(".result-head {", 1)[1].split("}", 1)[0]
-        self.assertIn("font-size: 12px", header)
+        self.assertIn("font-size: 14px", header)
         self.assertIn("padding: 5px 23px", header)
         self.assertIn("gap: 10px", header)
         self.assertIn("物品名称 / 规格", html)
