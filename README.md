@@ -10,11 +10,23 @@ Official fleet website content belongs in the separate `gvy-official-site` proje
 
 ## 2026-10-20 Usability Preview
 
-This batch is local-only on `feat/rea-usability-preview-20261020`, based on
-production `19e6a017`. Do not push, open a release PR, dispatch workflows or
-deploy without renewed authorization. The original source, running dist and
+This batch was reviewed locally on `feat/rea-usability-preview-20261020`, based on
+production `19e6a017`. The user subsequently authorized safe deployment after a
+fresh existing-Safari desktop/mobile-size audit. Publish the reviewed code through
+the normal main/EdgeOne path, retaining production data and requiring exact-client
+asset and paired-JSON health verification. The original source, running dist and
 handoff are backed up in `.git/visual-backups/rea-usability-before-20261020/`;
 `checkpoint/before-rea-usability-20261020` retains the production base.
+The release checkpoint is `checkpoint/before-rea-usability-release-20261020`;
+reviewed source/dist/handoff are also preserved in
+`.git/visual-backups/rea-usability-release-20261020/`.
+
+Safari 26.6.2 passed 75 checks: 18 viewports from 320 to 3840px for task arrows,
+material units, plan copying and filter sharing, plus all 1,618 records at three
+viewport sizes. Native clipboard copy/paste and a fresh-document S3 link restore
+also passed. Fixed-size Safari frames are desktop Safari rendering, not iPhone
+hardware, touch, browser-bar or soft-keyboard proof. No browser download or Safari
+settings change was used; the temporary QA harness must never enter dist.
 
 The batch adds explicit SCU/piece units inside existing material subtitles,
 a copy command in the existing plan toolbar, a separate filter-share icon beside
