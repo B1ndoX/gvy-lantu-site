@@ -54,6 +54,8 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
@@ -64,6 +66,31 @@ body {
     "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   font-size: 13px;
   letter-spacing: 0;
+}
+
+body::before,
+.mission-dialog::before,
+.mineral-card::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: -1;
+  width: min(88%, 1180px);
+  max-height: 85%;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: #a4c6df;
+  opacity: 0.04;
+  -webkit-mask: url("./fleet-watermark.png") center / contain no-repeat;
+  mask: url("./fleet-watermark.png") center / contain no-repeat;
+}
+
+.mission-dialog::before,
+.mineral-card::before {
+  width: min(86%, 640px);
+  opacity: 0.03;
 }
 
 button,
@@ -561,18 +588,18 @@ input:focus {
 
 .filter-body {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: 8px;
+  gap: 5px;
   align-items: center;
   padding: 10px;
 }
 
 .filter-group {
   display: grid;
-  grid-template-columns: auto 76px;
+  grid-template-columns: auto 70px;
   flex: 0 0 auto;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   min-width: 0;
   margin: 0;
@@ -592,16 +619,22 @@ input:focus {
 
 .filter-group[data-filter-group="category"] {
   grid-area: category;
-  grid-template-columns: auto 106px;
+  grid-template-columns: auto 86px;
 }
 
 .filter-group[data-filter-group="component-type"] {
   grid-area: component-type;
-  grid-template-columns: auto 106px;
+  grid-template-columns: auto 86px;
 }
 
 .filter-group[data-filter-group="grade"] {
   grid-area: grade;
+  grid-template-columns: auto 64px;
+}
+
+.filter-group[data-filter-group="size"] {
+  grid-area: size;
+  grid-template-columns: auto 64px;
 }
 
 .filter-group[data-filter-group="component-class"] {
@@ -618,7 +651,7 @@ input:focus {
 
 .filter-group[data-filter-group="mission-type"] {
   grid-area: mission;
-  grid-template-columns: auto 82px;
+  grid-template-columns: auto 76px;
 }
 
 .filter-select {
@@ -731,6 +764,11 @@ input:focus {
   box-shadow: var(--shadow-selected);
 }
 
+.filter-option:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
 .results-scroll::-webkit-scrollbar,
 .detail-scroll::-webkit-scrollbar {
   width: 6px;
@@ -754,10 +792,10 @@ input:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   min-height: 34px;
   margin-top: 0;
-  padding: 0 10px;
+  padding: 0 8px;
   border: 1px solid rgba(113, 220, 255, 0.22);
   border-radius: 10px;
   color: var(--muted);
@@ -788,7 +826,7 @@ html[data-query-mode="dismantle"] .reset-button {
 
 .reset-button {
   grid-area: reset;
-  flex: 0 0 96px;
+  flex: 0 0 84px;
   min-height: 34px;
   margin-top: 0;
   padding: 0 12px;
@@ -1755,6 +1793,8 @@ html[data-query-mode="craft"] .source-badge:not(.muted) {
 }
 
 .mineral-card {
+  position: relative;
+  isolation: isolate;
   width: min(760px, calc(100vw - 44px));
   max-height: calc(100dvh - 44px);
   display: grid;
@@ -2074,6 +2114,7 @@ button.source-mission-button:hover, .mission-blueprint-row:hover { background: r
 button.source-mission-button:focus-visible, .mission-blueprint-row:focus-visible, .mission-close:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 
 .mission-dialog {
+  isolation: isolate;
   width: fit-content;
   min-width: min(680px, calc(100vw - 32px));
   max-width: min(1040px, calc(100vw - 32px));
@@ -2233,7 +2274,7 @@ input[type="checkbox"]:not(:focus) {
   }
 
   .filter-trigger:not(:disabled):hover,
-  .filter-option:not(.active):hover,
+  .filter-option:not(.active):not(:disabled):hover,
   .mineral-system-filter button:not([aria-pressed="true"]):hover,
   .mineral-template-group > summary:hover,
   .material-location-badge:hover,
@@ -2502,9 +2543,10 @@ input[type="checkbox"]:not(:focus) {
     display: grid;
     grid-template-columns: max-content max-content max-content;
     grid-template-areas:
-      "category component-type grade"
-      "component-class material mission"
-      "manufacturer source reset";
+      "category component-type size"
+      "grade component-class material"
+      "mission manufacturer source"
+      "reset reset reset";
     justify-content: start;
   }
 }
@@ -2561,16 +2603,18 @@ input[type="checkbox"]:not(:focus) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
       "category component-type"
-      "grade component-class"
-      "material mission"
-      "manufacturer source"
-      "reset reset";
+      "size grade"
+      "component-class material"
+      "mission manufacturer"
+      "source reset";
     align-items: center;
   }
 
   .filter-group,
   .filter-group[data-filter-group="category"],
   .filter-group[data-filter-group="component-type"],
+  .filter-group[data-filter-group="grade"],
+  .filter-group[data-filter-group="size"],
   .filter-group[data-filter-group="mission-type"] {
     grid-template-columns: auto minmax(0, 1fr);
     gap: 6px;
@@ -2590,7 +2634,7 @@ input[type="checkbox"]:not(:focus) {
   }
 
   .reset-button {
-    justify-self: center;
+    justify-self: end;
     width: min(180px, 100%);
   }
 }

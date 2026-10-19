@@ -94,13 +94,28 @@ test("filter menus stay within phone and tablet edges without changing their wid
   for (const [width, left, right, expected] of [[320,214,358.25,-46.25],[390,249,393.25,-11.25],[820,659.4375,885,-73],[390,4,220,4],[320,64,288,0]]) {
     const values = [];
     const menu = { style: {setProperty: (key, value) => values.push([key, value])}, getBoundingClientRect: () => ({left, right}) };
-    const select = { querySelector: () => menu, classList: {contains: () => true} };
+    const select = { querySelector: (selector) => selector === ".filter-menu" ? menu : null, classList: {contains: () => true} };
     api.positionFilterMenu(select, width);
     assert.deepEqual(values, [["--filter-menu-offset", "0px"], ["--filter-menu-offset", `${expected}px`]]);
     assert.ok(left + expected >= 8);
     assert.ok(right + expected <= width - 8);
   }
   api.positionFilterMenu({querySelector:()=>null},320);
+});
+
+test("filter menus use available vertical space without changing the trigger or page layout", () => {
+  const source = readFileSync(new URL("../assets/app.js", import.meta.url), "utf8").replace(/\nboot\(\);\s*$/, "");
+  const context = { document: { querySelector: () => ({}), querySelectorAll: () => [] }, window: {innerHeight:568}, URL, URLSearchParams };
+  runInNewContext(`${source}\nglobalThis.position = positionFilterMenu;`, context);
+  for (const [top, bottom, expectedHeight, expectedTop] of [[500,534,220,"-226px"],[10,44,220,undefined],[270,304,256,"-262px"]]) {
+    const style = {setProperty(){},removeProperty(key){delete this[key];}};
+    const menu = {style,getBoundingClientRect:()=>({left:20,right:220,height:top===270?400:220})};
+    const trigger = {getBoundingClientRect:()=>({top,bottom})};
+    const select = {classList:{contains:()=>true},querySelector:(selector)=>selector===".filter-menu"?menu:trigger};
+    context.position(select,320);
+    assert.equal(style.maxHeight,`${expectedHeight}px`);
+    assert.equal(style.top,expectedTop);
+  }
 });
 
 test("mission systems retain all values and explicitly mark missing data", () => {
