@@ -139,10 +139,12 @@ test("every real source keeps its exact task IDs, raw data, search and reward re
   }
   assert.ok(folded > 0);
   assert.equal(JSON.stringify(data), before);
-  assert.equal(api.state.missions.size, 672);
+  const sourceMissionIds = new Set(data.records.flatMap(record =>
+    (record.sources || []).flatMap(source => (source.missions || []).map(mission => mission.id))).filter(Boolean));
+  assert.deepEqual([...api.state.missions.keys()].sort(), [...sourceMissionIds].sort());
   const vk = api.state.records.find(record => record.id === "33be7f1a-3f75-4627-bb8b-88e6d6b42f4e");
   const html = api.renderSources(vk);
-  assert.match(html, /任务 16/);
+  assert.match(html, new RegExp(`任务 ${api.recordMissions(vk).length}`));
   assert.match(html, /aria-expanded="false"/);
   assert.match(html, /class="source-missions source-variant-members"[^>]* hidden/);
   assert.doesNotMatch(html, /个变体|source-variant-label/);
