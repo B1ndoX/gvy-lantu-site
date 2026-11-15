@@ -2,7 +2,7 @@
   "blueprintRefresh": "success",
   "mineralLocationsRefresh": "success",
   "mineralSignalsRefresh": "success",
-  "commit": "d9d22bd97d71ec815b288cb2f1745f6d27cdcede",
-  "lastMaintenanceAt": "2026-11-01T21:22:27.922935Z",
-  "workflowRunId": "41351634838"
+  "commit": "54d9db49f6fdc2d0a9a35340c9b6a64ae8280879",
+  "lastMaintenanceAt": "2026-11-15T22:03:16.277100Z",
+  "workflowRunId": "43767043117"
 }
