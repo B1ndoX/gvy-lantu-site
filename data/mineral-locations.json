@@ -2,10 +2,10 @@
   "metadata": {
     "schemaVersion": 2,
     "source": "SCMDB",
-    "sourceUrl": "https://scmdb.net/data/mining_data-4.10.3-live.13165946.json",
-    "sourceVersion": "4.10.3-live.13165946",
-    "signalSourceVersion": "4.10.3-live.13165946",
-    "retrievedAt": "2026-11-12T23:34:40.883107+00:00"
+    "sourceUrl": "https://scmdb.net/data/mining_data-4.10.3-live.13220821.json",
+    "sourceVersion": "4.10.3-live.13220821",
+    "signalSourceVersion": "4.10.3-live.13220821",
+    "retrievedAt": "2026-11-21T06:59:53.277405+00:00"
   },
   "materials": {
     "Agricium": {
@@ -1043,7 +1043,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "艾格瑞金属",
       "nameLocalizationKey": "items_commodities_agricium"
     },
@@ -1750,7 +1750,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "铝",
       "nameLocalizationKey": "items_commodities_aluminum"
     },
@@ -3103,7 +3103,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "紫钠水晶",
       "nameLocalizationKey": "items_commodities_aphorite"
     },
@@ -4015,7 +4015,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "阿斯莱晶体",
       "nameLocalizationKey": "items_commodities_aslarite"
     },
@@ -4940,7 +4940,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "冰蓝珀",
       "nameLocalizationKey": "items_commodities_beradom"
     },
@@ -5822,7 +5822,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "绿柱石",
       "nameLocalizationKey": "items_commodities_beryl"
     },
@@ -6615,7 +6615,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "贝沙电气石",
       "nameLocalizationKey": "items_commodities_bexalite"
     },
@@ -7408,7 +7408,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "波射石",
       "nameLocalizationKey": "items_commodities_borase"
     },
@@ -7485,7 +7485,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "科力晶",
       "nameLocalizationKey": "items_commodities_carinite"
     },
@@ -8583,7 +8583,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "铜",
       "nameLocalizationKey": "items_commodities_copper"
     },
@@ -9290,7 +9290,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "刚玉",
       "nameLocalizationKey": "items_commodities_corundum"
     },
@@ -10600,7 +10600,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "暗橄榄石",
       "nameLocalizationKey": "items_commodities_dolivine"
     },
@@ -11543,7 +11543,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "熵瞬晶",
       "nameLocalizationKey": "items_commodities_feynmaline"
     },
@@ -12469,7 +12469,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "冰碛棉",
       "nameLocalizationKey": "items_commodities_glacosite"
     },
@@ -13300,7 +13300,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "金",
       "nameLocalizationKey": "items_commodities_gold"
     },
@@ -14227,7 +14227,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "哈丹水晶",
       "nameLocalizationKey": "items_commodities_hadanite"
     },
@@ -15289,7 +15289,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "火神石",
       "nameLocalizationKey": "items_commodities_hephaestanite"
     },
@@ -16459,7 +16459,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "铁",
       "nameLocalizationKey": "items_commodities_iron,p"
     },
@@ -17009,7 +17009,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "加纳石",
       "nameLocalizationKey": "items_commodities_janalite"
     },
@@ -17651,7 +17651,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "砬兰石",
       "nameLocalizationKey": "items_commodities_laranite"
     },
@@ -17757,7 +17757,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "林登金",
       "nameLocalizationKey": "items_commodities_lindinium"
     },
@@ -17950,7 +17950,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "欧拉特烃",
       "nameLocalizationKey": "items_commodities_ouratite"
     },
@@ -18778,7 +18778,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "压缩冰",
       "nameLocalizationKey": "items_commodities_pressurized_ice,p"
     },
@@ -19492,7 +19492,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "量子矿物",
       "nameLocalizationKey": "items_commodities_quantainium"
     },
@@ -20114,7 +20114,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "石英",
       "nameLocalizationKey": "items_commodities_quartz"
     },
@@ -20434,7 +20434,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "愈金",
       "nameLocalizationKey": "items_commodities_riccite"
     },
@@ -20493,7 +20493,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "萨达瑞晶",
       "nameLocalizationKey": "items_commodities_sadaryx"
     },
@@ -20552,7 +20552,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "烁迪银矿石",
       "nameLocalizationKey": "items_commodities_saldynium_ore"
     },
@@ -20691,7 +20691,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "萨维里金属",
       "nameLocalizationKey": "items_commodities_savrilium"
     },
@@ -21753,7 +21753,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "硅",
       "nameLocalizationKey": "items_commodities_silicon"
     },
@@ -22055,7 +22055,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "稀钛铁",
       "nameLocalizationKey": "items_commodities_stileron"
     },
@@ -22619,7 +22619,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "塔兰导电石",
       "nameLocalizationKey": "items_commodities_taranite"
     },
@@ -23717,7 +23717,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "锡",
       "nameLocalizationKey": "items_commodities_tin"
     },
@@ -24629,7 +24629,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "钛",
       "nameLocalizationKey": "items_commodities_titanium"
     },
@@ -24909,7 +24909,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "托瑞特金属",
       "nameLocalizationKey": "items_commodities_torite"
     },
@@ -25367,7 +25367,7 @@
       },
       "hasReliableLocations": true,
       "status": "current",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "钨",
       "nameLocalizationKey": "items_commodities_tungsten"
     },
@@ -25381,7 +25381,7 @@
       },
       "hasReliableLocations": false,
       "status": "unmapped",
-      "sourceVersion": "4.10.3-live.13165946",
+      "sourceVersion": "4.10.3-live.13220821",
       "nameZh": "约曼迪之眼",
       "nameLocalizationKey": "items_commodities_yormandi_eye"
     }
