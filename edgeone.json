@@ -1,8 +1,8 @@
 {
   "buildCommand": "npm run build",
-  "installCommand": "node --version",
+  "installCommand": "node scripts/check-node.mjs && npm --version",
   "outputDirectory": "./dist",
-  "nodeVersion": "24.5.0",
+  "nodeVersion": "24.22.1",
   "headers": [
     {
       "source": "/",
