@@ -7,6 +7,6 @@
     "check:node": "node scripts/check-node.mjs"
   },
   "engines": {
-    "node": "24.22.1"
+    "node": "24.18.0"
   }
 }
