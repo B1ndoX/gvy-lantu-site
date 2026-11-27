@@ -3,6 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build-site.mjs"
+    "build": "node scripts/build-site.mjs",
+    "check:node": "node scripts/check-node.mjs"
+  },
+  "engines": {
+    "node": "24.22.1"
   }
 }
